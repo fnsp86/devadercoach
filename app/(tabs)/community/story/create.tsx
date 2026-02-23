@@ -68,7 +68,13 @@ export default function CreateStory() {
         category,
         image_url,
       });
-      router.back();
+      // If we came from another tab (e.g. help page with prefill),
+      // navigate to community feed so the tab doesn't keep showing create
+      if (prefill) {
+        router.replace('/(tabs)/community');
+      } else {
+        router.back();
+      }
     } catch (err: any) {
       Alert.alert('Fout', err.message ?? 'Kon verhaal niet plaatsen');
     }
