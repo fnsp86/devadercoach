@@ -77,13 +77,13 @@ const progStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
+    gap: 5,
     flex: 1,
     paddingRight: 40,
   },
   dot: {
-    height: 10,
-    borderRadius: 5,
+    height: 8,
+    borderRadius: 4,
   },
 });
 
@@ -248,6 +248,9 @@ function InsightCardsStage({
     });
   };
 
+  // Count non-summary cards for numbering
+  const contentCards = cards.filter((c) => !c.isSamenvatting);
+
   return (
     <View style={stageShared.container}>
       {/* Verticale kaartlijst */}
@@ -255,6 +258,7 @@ function InsightCardsStage({
         const isAlwaysOpen = !!card.isSamenvatting;
         const isExpanded = isAlwaysOpen || expandedCards.has(i);
         const isCollapsible = !isAlwaysOpen;
+        const cardNumber = card.isSamenvatting ? 0 : contentCards.indexOf(card) + 1;
 
         return (
           <Pressable
@@ -263,29 +267,36 @@ function InsightCardsStage({
             style={[
               insightStyles.card,
               {
-                backgroundColor: card.isSamenvatting ? skillColor + '08' : colors.surface,
-                borderColor: card.isSamenvatting ? skillColor + '30' : colors.border,
+                backgroundColor: card.isSamenvatting ? skillColor + '06' : colors.surface,
+                borderColor: card.isSamenvatting ? skillColor + '25' : colors.border,
               },
             ]}
           >
-            {card.emoji && (
-              <View style={insightStyles.emojiIcon}>
-                <AppIcon name="lightbulb" size="lg" variant="featured" color={skillColor} bgColor={skillColor + '12'} />
-              </View>
+            {/* Top accent line */}
+            {!card.isSamenvatting && i === 0 && (
+              <View style={[insightStyles.topAccent, { backgroundColor: skillColor }]} />
             )}
 
             {/* Samenvatting badge */}
             {card.isSamenvatting && (
-              <View style={[insightStyles.samenvattingBadge, { backgroundColor: skillColor + '20' }]}>
+              <View style={[insightStyles.samenvattingBadge, { backgroundColor: skillColor + '15', borderColor: skillColor + '25' }]}>
+                <InlineIcon name="lightbulb" size={12} color={skillColor} />
                 <Text style={[insightStyles.samenvattingText, { color: skillColor }]}>IN HET KORT</Text>
               </View>
             )}
 
             {!card.isSamenvatting && (
               <View style={insightStyles.titleRow}>
+                {contentCards.length > 1 && (
+                  <View style={[insightStyles.cardNumber, { backgroundColor: skillColor + '12' }]}>
+                    <Text style={[insightStyles.cardNumberText, { color: skillColor }]}>{cardNumber}</Text>
+                  </View>
+                )}
                 <Text style={[insightStyles.title, { color: colors.text, flex: 1 }]}>{card.title}</Text>
                 {isCollapsible && (
-                  <InlineIcon name={isExpanded ? 'chevronUp' : 'chevronDown'} size={14} color={colors.text3} />
+                  <View style={[insightStyles.chevronBg, { backgroundColor: isExpanded ? skillColor + '12' : colors.surface2 }]}>
+                    <InlineIcon name={isExpanded ? 'chevronUp' : 'chevronDown'} size={14} color={isExpanded ? skillColor : colors.text3} />
+                  </View>
                 )}
               </View>
             )}
@@ -294,7 +305,7 @@ function InsightCardsStage({
               <>
                 {/* Highlight callout */}
                 {card.highlight && (
-                  <View style={[insightStyles.highlightBlock, { borderLeftColor: skillColor }]}>
+                  <View style={[insightStyles.highlightBlock, { backgroundColor: skillColor + '08', borderLeftColor: skillColor }]}>
                     <Text style={[insightStyles.highlightText, { color: skillColor }]}>{card.highlight}</Text>
                   </View>
                 )}
@@ -312,6 +323,7 @@ function InsightCardsStage({
         style={[stageShared.ctaButton, { backgroundColor: skillColor }]}
       >
         <Text style={stageShared.ctaText}>Volgende etappe</Text>
+        <InlineIcon name="arrowRight" size={16} color="#fff" />
       </Pressable>
     </View>
   );
@@ -322,32 +334,68 @@ const insightStyles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     padding: 24,
-    marginBottom: 16,
+    marginBottom: 14,
     position: 'relative',
+    overflow: 'hidden',
+  },
+  topAccent: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 3,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   samenvattingBadge: {
     alignSelf: 'flex-start',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderRadius: 8,
-    marginBottom: 8,
+    borderWidth: 1,
+    marginBottom: 12,
   },
   samenvattingText: {
     fontSize: 10,
     fontWeight: '800',
     letterSpacing: 1.5,
   },
-  emojiIcon: { marginBottom: 10 },
-  titleRow: { flexDirection: 'row' as const, alignItems: 'flex-start' as const, gap: 8, marginBottom: 12 },
-  title: { fontSize: 19, fontWeight: '800', lineHeight: 25 },
+  cardNumber: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cardNumberText: {
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  titleRow: { flexDirection: 'row' as const, alignItems: 'center' as const, gap: 10, marginBottom: 14 },
+  title: { fontSize: 18, fontWeight: '800', lineHeight: 24 },
+  chevronBg: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   highlightBlock: {
     borderLeftWidth: 3,
-    paddingLeft: 12,
-    marginBottom: 14,
+    paddingLeft: 14,
+    paddingVertical: 10,
+    paddingRight: 8,
+    marginBottom: 16,
+    borderRadius: 6,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
   },
   highlightText: {
     fontSize: 14,
-    lineHeight: 20,
+    lineHeight: 21,
     fontWeight: '700',
     fontStyle: 'italic',
   },
@@ -542,6 +590,7 @@ function ScenarioStage({
             style={[stageShared.ctaButton, { backgroundColor: skillColor, marginTop: 20 }]}
           >
             <Text style={stageShared.ctaText}>Volgende etappe</Text>
+            <InlineIcon name="arrowRight" size={16} color="#fff" />
           </Pressable>
         </Animated.View>
       )}
@@ -551,13 +600,13 @@ function ScenarioStage({
 
 const scenarioStyles = StyleSheet.create({
   situationCard: {
-    borderRadius: 18,
+    borderRadius: 20,
     padding: 24,
-    marginBottom: 20,
+    marginBottom: 24,
   },
   situationText: {
     fontSize: 16,
-    lineHeight: 25,
+    lineHeight: 26,
     fontWeight: '500',
   },
   prompt: {
@@ -983,16 +1032,41 @@ function ReflectionStage({
   skillColor,
   onComplete,
   summaryCard,
+  stageId,
+  moduleId,
+  moduleTitle,
+  skill,
 }: {
   reflectionQuestion?: string;
   allQuestions?: string[];
   skillColor: string;
   onComplete: () => void;
   summaryCard?: { title: string; body: string };
+  stageId?: string;
+  moduleId?: string;
+  moduleTitle?: string;
+  skill?: string;
 }) {
   const { colors } = useTheme();
+  const { addReflectionNote } = useStore();
   const [journal, setJournal] = useState('');
   const [showMore, setShowMore] = useState(false);
+
+  function handleComplete() {
+    // Sla reflectie-notitie op als de gebruiker iets heeft geschreven
+    if (journal.trim() && moduleId && stageId && skill) {
+      addReflectionNote({
+        moduleId,
+        moduleTitle: moduleTitle || '',
+        skill,
+        stageId,
+        question: reflectionQuestion || 'Wat neem je mee uit deze module?',
+        note: journal.trim(),
+        createdAt: new Date().toISOString(),
+      });
+    }
+    onComplete();
+  }
 
   return (
     <View style={stageShared.container}>
@@ -1014,6 +1088,11 @@ function ReflectionStage({
           value={journal}
           onChangeText={setJournal}
         />
+        {journal.trim().length > 0 && (
+          <Text style={[reflectStyles.savedHint, { color: colors.text3 }]}>
+            Je notitie wordt opgeslagen bij het afronden
+          </Text>
+        )}
 
         {allQuestions && allQuestions.length > 1 && (
           <View>
@@ -1043,7 +1122,7 @@ function ReflectionStage({
         )}
 
         <Pressable
-          onPress={onComplete}
+          onPress={handleComplete}
           style={[stageShared.ctaButton, { backgroundColor: skillColor, marginTop: 24 }]}
         >
           <Text style={stageShared.ctaText}>Afronden</Text>
@@ -1064,6 +1143,12 @@ const reflectStyles = StyleSheet.create({
     minHeight: 100,
     fontSize: 15,
     lineHeight: 22,
+  },
+  savedHint: {
+    fontSize: 12,
+    marginTop: 6,
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
   moreToggle: { alignSelf: 'center', paddingVertical: 10, marginTop: 8 },
   moreToggleText: { fontSize: 14, fontWeight: '700' },
@@ -1120,14 +1205,17 @@ function ModuleCompletionScreen({
     <ScrollView contentContainerStyle={completeStyles.container} showsVerticalScrollIndicator={false}>
       <Animated.View style={[completeStyles.inner, { opacity: opacityAnim, transform: [{ scale: scaleAnim }] }]}>
         <View style={completeStyles.bigCheckIcon}>
-          <AppIcon name="checkCircle" size="lg" variant="featured" color="#22C55E" bgColor="rgba(34,197,94,0.12)" iconSize={40} />
+          <AppIcon name="checkCircle" size="lg" variant="featured" color="#22C55E" bgColor="rgba(34,197,94,0.10)" iconSize={44} />
         </View>
         <Text style={[completeStyles.title, { color: colors.text }]}>Missie Voltooid!</Text>
         <Text style={[completeStyles.moduleName, { color: skillColor }]}>{moduleStages.title}</Text>
 
         {/* XP summary */}
-        <View style={[completeStyles.xpCard, { backgroundColor: '#F59E0B18', borderColor: '#F59E0B40' }]}>
-          <Text style={completeStyles.xpValue}>+{moduleStages.totalXP} XP</Text>
+        <View style={[completeStyles.xpCard, { backgroundColor: '#F59E0B0D', borderColor: '#F59E0B30' }]}>
+          <View style={completeStyles.xpIconRow}>
+            <InlineIcon name="star" size={24} color="#F59E0B" />
+            <Text style={completeStyles.xpValue}>+{moduleStages.totalXP} XP</Text>
+          </View>
           <Text style={[completeStyles.xpLabel, { color: colors.text2 }]}>verdiend</Text>
         </View>
 
@@ -1194,20 +1282,21 @@ function ModuleCompletionScreen({
 const completeStyles = StyleSheet.create({
   container: { paddingVertical: 40, paddingHorizontal: 24, alignItems: 'center' },
   inner: { width: '100%', alignItems: 'center' },
-  bigCheckIcon: { marginBottom: 16 },
-  title: { fontSize: 26, fontWeight: '900', marginBottom: 6 },
-  moduleName: { fontSize: 16, fontWeight: '700', marginBottom: 24, textAlign: 'center' },
+  bigCheckIcon: { marginBottom: 20 },
+  title: { fontSize: 28, fontWeight: '900', marginBottom: 6, letterSpacing: -0.5 },
+  moduleName: { fontSize: 16, fontWeight: '700', marginBottom: 28, textAlign: 'center' },
   xpCard: {
-    borderRadius: 16,
+    borderRadius: 20,
     borderWidth: 1,
-    paddingVertical: 20,
+    paddingVertical: 24,
     paddingHorizontal: 32,
     alignItems: 'center',
     marginBottom: 16,
     width: '100%',
   },
-  xpValue: { fontSize: 32, fontWeight: '900', color: '#F59E0B' },
-  xpLabel: { fontSize: 14, fontWeight: '600', marginTop: 2 },
+  xpIconRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  xpValue: { fontSize: 34, fontWeight: '900', color: '#F59E0B', letterSpacing: -0.5 },
+  xpLabel: { fontSize: 14, fontWeight: '600', marginTop: 4 },
   scoreCard: {
     borderRadius: 14,
     borderWidth: 1,
@@ -1221,21 +1310,21 @@ const completeStyles = StyleSheet.create({
   scoreTitle: { fontSize: 15, fontWeight: '700' },
   scoreValue: { fontSize: 20, fontWeight: '900' },
   takeawaysCard: {
-    borderRadius: 14,
+    borderRadius: 18,
     borderWidth: 1,
-    padding: 20,
+    padding: 22,
     width: '100%',
     marginBottom: 24,
   },
-  takeawaysTitle: { fontSize: 16, fontWeight: '700', marginBottom: 14 },
-  takeawayRow: { flexDirection: 'row', gap: 10, marginBottom: 10 },
+  takeawaysTitle: { fontSize: 16, fontWeight: '800', marginBottom: 16, letterSpacing: 0.3 },
+  takeawayRow: { flexDirection: 'row', gap: 12, marginBottom: 12 },
   takeawayDot: { width: 6, height: 6, borderRadius: 3, marginTop: 8 },
-  takeawayText: { fontSize: 14, lineHeight: 21, flex: 1 },
+  takeawayText: { fontSize: 14, lineHeight: 22, flex: 1 },
   buttons: { width: '100%', gap: 12 },
   primaryBtn: {
-    borderRadius: 14,
-    paddingVertical: 16,
-    paddingHorizontal: 20,
+    borderRadius: 16,
+    paddingVertical: 18,
+    paddingHorizontal: 22,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -1280,10 +1369,13 @@ const stageShared = StyleSheet.create({
     textTransform: 'uppercase',
   },
   ctaButton: {
-    borderRadius: 14,
+    borderRadius: 16,
     paddingVertical: 16,
+    flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 12,
+    justifyContent: 'center',
+    gap: 8,
+    marginTop: 16,
   },
   ctaText: {
     color: '#fff',
@@ -1584,7 +1676,11 @@ export default function ModulePlayer() {
         contentContainerStyle={mainStyles.stageScrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {currentStage && renderStage(currentStage, skillColor, handleStageComplete, quizScore, setQuizScore)}
+        {currentStage && renderStage(currentStage, skillColor, handleStageComplete, quizScore, setQuizScore, {
+          moduleId: moduleId || '',
+          moduleTitle: moduleStages?.title || '',
+          skill,
+        })}
 
         {/* Vorige etappe knop */}
         {stageIndex > 0 && (
@@ -1615,6 +1711,7 @@ function renderStage(
   onComplete: (xp: number) => void,
   quizScore: { correct: number; total: number },
   setQuizScore: (s: { correct: number; total: number }) => void,
+  moduleInfo?: { moduleId: string; moduleTitle: string; skill: string },
 ) {
   switch (stage.type) {
     case 'insight_cards':
@@ -1678,6 +1775,10 @@ function renderStage(
           skillColor={skillColor}
           onComplete={() => onComplete(stage.xpReward)}
           summaryCard={stage.summaryCard}
+          stageId={stage.id}
+          moduleId={moduleInfo?.moduleId}
+          moduleTitle={moduleInfo?.moduleTitle}
+          skill={moduleInfo?.skill}
         />
       );
     default:
@@ -1706,13 +1807,14 @@ const mainStyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 4,
+    paddingTop: 14,
+    paddingBottom: 6,
   },
   stepLabel: {
     fontSize: 11,
     fontWeight: '800',
-    letterSpacing: 1.5,
+    letterSpacing: 2,
+    textTransform: 'uppercase',
   },
   stepCount: {
     fontSize: 12,

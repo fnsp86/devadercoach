@@ -28,15 +28,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Zijn amygdala heeft de regie en rationele woorden bereiken hem niet",
-        isCorrect: true,
-        feedback: "Correct. De amygdala stuurt fight-or-flight aan. Pas als deze kalmeert (door co-regulatie) kan de PFC weer online komen."
-      },
-      {
-        id: "c",
         text: "Hij leert dat dit gedrag niet mag en zal het onthouden",
         isCorrect: false,
         feedback: "Nee. Leren vereist een actieve PFC. Tijdens een driftbui slaat het brein geen lessen op - alleen de stresservaring."
+      },
+      {
+        id: "c",
+        text: "Zijn amygdala heeft de regie en rationele woorden bereiken hem niet",
+        isCorrect: true,
+        feedback: "Correct. De amygdala stuurt fight-or-flight aan. Pas als deze kalmeert (door co-regulatie) kan de PFC weer online komen."
       },
     ],
     explanation: "Bij hoge emotionele arousal verschuift de bloedstroom van de PFC naar de amygdala. Het kind zit in overlevingsmodus en kan geen rationele informatie verwerken.",
@@ -115,9 +115,9 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Een tik activeert de amygdala nog meer en verlengt de driftbui in plaats van hem te stoppen",
-        isCorrect: true,
-        feedback: "Juist! Pijn = gevaar-signaal voor het brein. De amygdala gaat in overdrive en de driftbui escaleert of het kind bevriest van angst."
+        text: "Een tik werkt wel, maar alleen als je het consequent doet",
+        isCorrect: false,
+        feedback: "Nee. Fysieke straf onderdrukt gedrag door angst, niet door begrip. Het brein leert: gevaar, niet regulatie."
       },
       {
         id: "b",
@@ -127,9 +127,9 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
       },
       {
         id: "c",
-        text: "Een tik werkt wel, maar alleen als je het consequent doet",
-        isCorrect: false,
-        feedback: "Nee. Fysieke straf onderdrukt gedrag door angst, niet door begrip. Het brein leert: gevaar, niet regulatie."
+        text: "Een tik activeert de amygdala nog meer en verlengt de driftbui in plaats van hem te stoppen",
+        isCorrect: true,
+        feedback: "Juist! Pijn = gevaar-signaal voor het brein. De amygdala gaat in overdrive en de driftbui escaleert of het kind bevriest van angst."
       },
     ],
     explanation: "Fysieke straf tijdens een emotionele piek activeert de amygdala verder (meer cortisol, meer stress). Het kind stopt misschien uit angst, maar leert geen regulatie.",
@@ -177,15 +177,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Ze was nog niet klaar met haar emotie - de stilte was geen teken van regulatie",
-        isCorrect: false,
-        feedback: "Deels waar, maar specifieker: cortisol was nog volop actief. De stilte was uitputting, niet regulatie."
-      },
-      {
-        id: "b",
         text: "De cortisol in haar systeem was nog niet afgebroken (duurt 20-45 min) - je was te vroeg",
         isCorrect: true,
         feedback: "Precies! Cortisol heeft 20-45 minuten nodig om af te breken. Na 8 minuten is het brein nog in stress-modus, ook al lijkt ze kalm."
+      },
+      {
+        id: "b",
+        text: "Ze was nog niet klaar met haar emotie - de stilte was geen teken van regulatie",
+        isCorrect: false,
+        feedback: "Deels waar, maar specifieker: cortisol was nog volop actief. De stilte was uitputting, niet regulatie."
       },
       {
         id: "c",
@@ -213,15 +213,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "'Je voelt je gekwetst.' (vaststelling)",
-        isCorrect: true,
-        feedback: "Juist! Een vaststelling geeft validatie zonder cognitieve druk. Haar PFC wordt geactiveerd door het emotiewoord, waardoor de amygdala kalmeert."
-      },
-      {
-        id: "b",
         text: "'Wat is er precies gebeurd?' (open vraag)",
         isCorrect: false,
         feedback: "Een open vraag vereist rationeel nadenken. Tijdens emotionele overstroom is de PFC te beperkt voor complexe uitleg."
+      },
+      {
+        id: "b",
+        text: "'Je voelt je gekwetst.' (vaststelling)",
+        isCorrect: true,
+        feedback: "Juist! Een vaststelling geeft validatie zonder cognitieve druk. Haar PFC wordt geactiveerd door het emotiewoord, waardoor de amygdala kalmeert."
       },
       {
         id: "c",
@@ -250,15 +250,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "'Je voelt je gefrustreerd en misschien ook een beetje beschaamd.' (gelaagd label)",
-        isCorrect: true,
-        feedback: "Excellent! Meerdere, specifieke emotiewoorden activeren de PFC sterker dan een enkel generiek woord. Emotionele granulariteit helpt beter reguleren."
-      },
-      {
-        id: "c",
         text: "'Je bent een beetje geprikkeld.' (vaag label)",
         isCorrect: false,
         feedback: "'Geprikkeld' is te vaag en minimaliseert de intensiteit. Specifieke woorden zoals 'gefrustreerd' en 'beschaamd' werken krachtiger."
+      },
+      {
+        id: "c",
+        text: "'Je voelt je gefrustreerd en misschien ook een beetje beschaamd.' (gelaagd label)",
+        isCorrect: true,
+        feedback: "Excellent! Meerdere, specifieke emotiewoorden activeren de PFC sterker dan een enkel generiek woord. Emotionele granulariteit helpt beter reguleren."
       },
     ],
     explanation: "Emotionele granulariteit: hoe specifieker en gelaagder het label, hoe meer PFC-activatie. 'Gefrustreerd en beschaamd' geeft meer houvast dan alleen 'boos'.",
@@ -343,15 +343,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "30+ emotiewoorden verdeeld over verschillende emotiefamilies",
-        isCorrect: true,
-        feedback: "Juist! Kinderen met 30+ emotiewoorden tonen betere regulatie, minder angst en depressie, en sterkere sociale vaardigheden."
-      },
-      {
-        id: "c",
         text: "Zoveel mogelijk - meer is altijd beter",
         isCorrect: false,
         feedback: "Niet perse. Het gaat om functionele granulariteit: 30-40 goed begrepen woorden is effectiever dan 100 woorden die oppervlakkig gekend zijn."
+      },
+      {
+        id: "c",
+        text: "30+ emotiewoorden verdeeld over verschillende emotiefamilies",
+        isCorrect: true,
+        feedback: "Juist! Kinderen met 30+ emotiewoorden tonen betere regulatie, minder angst en depressie, en sterkere sociale vaardigheden."
       },
     ],
     explanation: "Emotional granularity: een woordenschat van 30+ emotiewoorden correleert met betere emotieregulatie. Het brein heeft specifieke taal nodig om emoties te differentiëren en reguleren.",
@@ -368,15 +368,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "'Vertel nou wat er is, dan kan ik je helpen.' (aandringen)",
-        isCorrect: false,
-        feedback: "Aandringen creëert cognitieve druk terwijl zijn PFC al beperkt werkt. Dit verhoogt frustratie en afstand."
-      },
-      {
-        id: "b",
         text: "'Ik zie dat je van slag bent. Je hoeft niets te zeggen. Ik ben hier.' (labelen + geen druk)",
         isCorrect: true,
         feedback: "Perfect! Je benoemt wat je ziet (affect label), biedt veiligheid, en geeft geen cognitieve druk. Woorden komen vanzelf als de PFC terugkomt."
+      },
+      {
+        id: "b",
+        text: "'Vertel nou wat er is, dan kan ik je helpen.' (aandringen)",
+        isCorrect: false,
+        feedback: "Aandringen creëert cognitieve druk terwijl zijn PFC al beperkt werkt. Dit verhoogt frustratie en afstand."
       },
       {
         id: "c",
@@ -403,15 +403,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Niets - ze speelt rustig, dus alles is goed",
-        isCorrect: false,
-        feedback: "Nee. Stil terugtrekken kan een signaal zijn van verdriet of onzekerheid. Stap 1 is: de emotie OPMERKEN, ook stille emoties."
-      },
-      {
-        id: "b",
         text: "Je herkent dit als mogelijk verdriet of onzekerheid en gaat bij haar zitten",
         isCorrect: true,
         feedback: "Juist! Stap 1 (emotie opmerken) geldt ook voor stille, internaliserende emoties. Niet alleen driftbuien verdienen aandacht."
+      },
+      {
+        id: "b",
+        text: "Niets - ze speelt rustig, dus alles is goed",
+        isCorrect: false,
+        feedback: "Nee. Stil terugtrekken kan een signaal zijn van verdriet of onzekerheid. Stap 1 is: de emotie OPMERKEN, ook stille emoties."
       },
       {
         id: "c",
@@ -434,9 +434,9 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "'Dat is echt vervelend. Vertel me er meer over.' (validatie + uitnodiging)",
-        isCorrect: true,
-        feedback: "Perfect! Stap 3 = luisteren met empathie en de emotie valideren. Je erkent zijn pijn zonder te oordelen en nodigt hem uit meer te delen."
+        text: "'Ga dan met iemand anders spelen.' (direct oplossen)",
+        isCorrect: false,
+        feedback: "Te snel. Oplossen is stap 5. Zonder eerst te luisteren en valideren (stap 3) voelt een oplossing als afwijzing van zijn pijn."
       },
       {
         id: "b",
@@ -446,9 +446,9 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
       },
       {
         id: "c",
-        text: "'Ga dan met iemand anders spelen.' (direct oplossen)",
-        isCorrect: false,
-        feedback: "Te snel. Oplossen is stap 5. Zonder eerst te luisteren en valideren (stap 3) voelt een oplossing als afwijzing van zijn pijn."
+        text: "'Dat is echt vervelend. Vertel me er meer over.' (validatie + uitnodiging)",
+        isCorrect: true,
+        feedback: "Perfect! Stap 3 = luisteren met empathie en de emotie valideren. Je erkent zijn pijn zonder te oordelen en nodigt hem uit meer te delen."
       },
     ],
     explanation: "Gottman stap 3 (luisteren en valideren): toon empathie, spiegel de emotie, en geef ruimte om te vertellen. Niet oordelen, niet oplossen - gewoon er zijn.",
@@ -465,9 +465,9 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "1) Emotie opmerken 2) Verbinding maken 3) Luisteren en valideren 4) Emotie benoemen 5) Grenzen en oplossingen",
-        isCorrect: true,
-        feedback: "Juist! Deze volgorde is cruciaal. Elke stap bouwt voort op de vorige. Stappen overslaan of verwisselen maakt de aanpak minder effectief."
+        text: "1) Grenzen stellen 2) Emotie opmerken 3) Oplossing bieden 4) Benoemen 5) Valideren",
+        isCorrect: false,
+        feedback: "Nee. Grenzen stellen als eerste stap blokkeert het proces. Zonder emotionele veiligheid komen grenzen niet aan."
       },
       {
         id: "b",
@@ -477,9 +477,9 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
       },
       {
         id: "c",
-        text: "1) Grenzen stellen 2) Emotie opmerken 3) Oplossing bieden 4) Benoemen 5) Valideren",
-        isCorrect: false,
-        feedback: "Nee. Grenzen stellen als eerste stap blokkeert het proces. Zonder emotionele veiligheid komen grenzen niet aan."
+        text: "1) Emotie opmerken 2) Verbinding maken 3) Luisteren en valideren 4) Emotie benoemen 5) Grenzen en oplossingen",
+        isCorrect: true,
+        feedback: "Juist! Deze volgorde is cruciaal. Elke stap bouwt voort op de vorige. Stappen overslaan of verwisselen maakt de aanpak minder effectief."
       },
     ],
     explanation: "Gottmans 5 stappen: 1) Opmerken 2) Verbinden 3) Luisteren/valideren 4) Benoemen 5) Grenzen + oplossingen. De volgorde waarborgt emotionele veiligheid voor het kind.",
@@ -564,15 +564,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Betere emotieregulatie, sterkere sociale vaardigheden en minder gedragsproblemen",
-        isCorrect: true,
-        feedback: "Juist! Gottmans longitudinaal onderzoek toont: kinderen van emotion-coaching ouders reguleren beter, hebben meer vrienden, en tonen minder externaliserende problemen."
-      },
-      {
-        id: "c",
         text: "Minder driftbuien door betere discipline",
         isCorrect: false,
         feedback: "Emotiecoaching is geen disciplinetechniek. Het effect is breder: betere regulatie, sociale vaardigheden en mentale gezondheid."
+      },
+      {
+        id: "c",
+        text: "Betere emotieregulatie, sterkere sociale vaardigheden en minder gedragsproblemen",
+        isCorrect: true,
+        feedback: "Juist! Gottmans longitudinaal onderzoek toont: kinderen van emotion-coaching ouders reguleren beter, hebben meer vrienden, en tonen minder externaliserende problemen."
       },
     ],
     explanation: "Gottmans meta-emotion onderzoek toont: de manier waarop ouders reageren op emoties voorspelt emotieregulatie, sociale competentie en gedragsproblemen van het kind.",
@@ -594,15 +594,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Angst (ben ik vergeten? ben ik niet belangrijk?) en verdriet (teleurstelling)",
-        isCorrect: true,
-        feedback: "Juist! Woede bij kinderen maskeert bijna altijd kwetsbaardere emoties. Hier: angst om vergeten te worden + verdriet om de teleurstelling."
-      },
-      {
-        id: "b",
         text: "Alleen woede - hij is gewoon boos en dat is de hele emotie",
         isCorrect: false,
         feedback: "Nee. Woede is bijna altijd een secundaire emotie die een kwetsbaardere primaire emotie beschermt. Kijk altijd dieper."
+      },
+      {
+        id: "b",
+        text: "Angst (ben ik vergeten? ben ik niet belangrijk?) en verdriet (teleurstelling)",
+        isCorrect: true,
+        feedback: "Juist! Woede bij kinderen maskeert bijna altijd kwetsbaardere emoties. Hier: angst om vergeten te worden + verdriet om de teleurstelling."
       },
       {
         id: "c",
@@ -625,15 +625,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "De angst wordt erger omdat haar emotie niet gevalideerd wordt en ze leert dat haar gevoelens niet kloppen",
-        isCorrect: true,
-        feedback: "Precies. Angst ontkennen versterkt de angst. Ze leert: 'Mijn gevoelens zijn fout' + 'Ik kan volwassenen niet vertrouwen met mijn emoties'."
-      },
-      {
-        id: "b",
         text: "Ze leert dat honden niet gevaarlijk zijn en de angst verdwijnt geleidelijk",
         isCorrect: false,
         feedback: "Nee. Rationele uitleg ('die hond doet niets') bereikt de amygdala niet. Angst verdwijnt door geleidelijke blootstelling MET emotionele veiligheid."
+      },
+      {
+        id: "b",
+        text: "De angst wordt erger omdat haar emotie niet gevalideerd wordt en ze leert dat haar gevoelens niet kloppen",
+        isCorrect: true,
+        feedback: "Precies. Angst ontkennen versterkt de angst. Ze leert: 'Mijn gevoelens zijn fout' + 'Ik kan volwassenen niet vertrouwen met mijn emoties'."
       },
       {
         id: "c",
@@ -656,15 +656,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "'We kopen morgen een nieuwe!' (snel oplossen)",
-        isCorrect: false,
-        feedback: "Dit ontkent haar verdriet. Ze rouwt om DEZE vis. Een nieuwe vis vervangt haar band niet en zegt: 'je verdriet is onnodig'."
-      },
-      {
-        id: "b",
         text: "'Je mist Bubbles heel erg. Het is verdrietig als iemand waar je van houdt er niet meer is.' (validatie van het verlies)",
         isCorrect: true,
         feedback: "Perfect! Je erkent het specifieke verlies en valideert de grootte van haar verdriet. Verdriet mag er zijn, ook om een goudvis."
+      },
+      {
+        id: "b",
+        text: "'We kopen morgen een nieuwe!' (snel oplossen)",
+        isCorrect: false,
+        feedback: "Dit ontkent haar verdriet. Ze rouwt om DEZE vis. Een nieuwe vis vervangt haar band niet en zegt: 'je verdriet is onnodig'."
       },
       {
         id: "c",
@@ -693,15 +693,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Jaloezie en angst: 'Ben ik nog steeds geliefd? Is er nog plek voor mij?'",
-        isCorrect: true,
-        feedback: "Juist! Jaloezie bij een nieuw broertje/zusje maskeert existentiële angst: 'Houd je nog van mij? Word ik vervangen?'"
-      },
-      {
-        id: "c",
         text: "Verveling - hij vindt de baby niet interessant",
         isCorrect: false,
         feedback: "Dit gaat veel dieper dan verveling. 'Stuur haar terug' is een noodkreet: 'Ik ben bang mijn plek te verliezen'."
+      },
+      {
+        id: "c",
+        text: "Jaloezie en angst: 'Ben ik nog steeds geliefd? Is er nog plek voor mij?'",
+        isCorrect: true,
+        feedback: "Juist! Jaloezie bij een nieuw broertje/zusje maskeert existentiële angst: 'Houd je nog van mij? Word ik vervangen?'"
       },
     ],
     explanation: "Jaloezie bij een nieuw broertje/zusje is universeel en maskeert bestaansangst. Het kind vreest: word ik nog gezien? Ben ik nog geliefd? Is er nog plek voor mij?",
@@ -718,15 +718,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Onbenoemde angst die zich somatisch uit. De boosheid thuis is een secundaire emotie boven de angst.",
-        isCorrect: true,
-        feedback: "Excellent! Onbenoemde emoties zoeken een lichamelijke uitweg (somatisering). De buikpijn IS de angst. De boosheid beschermt de kwetsbaarheid."
-      },
-      {
-        id: "b",
         text: "Ze doet alsof om niet naar school te hoeven",
         isCorrect: false,
         feedback: "Nee. Somatische klachten bij kinderen zijn ECHT - het lichaam maakt de pijn die de emotie niet in woorden kan uitdrukken."
+      },
+      {
+        id: "b",
+        text: "Onbenoemde angst die zich somatisch uit. De boosheid thuis is een secundaire emotie boven de angst.",
+        isCorrect: true,
+        feedback: "Excellent! Onbenoemde emoties zoeken een lichamelijke uitweg (somatisering). De buikpijn IS de angst. De boosheid beschermt de kwetsbaarheid."
       },
       {
         id: "c",
@@ -815,15 +815,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Je blijft thuis tot ze stopt met huilen",
-        isCorrect: false,
-        feedback: "Dit versterkt het patroon en leert haar dat huilen jou kan vasthouden. Een grens (je gaat naar werk) kan samengaan met emotiecoaching."
-      },
-      {
-        id: "b",
         text: "'Je vindt het moeilijk als papa weggaat. Dat snap ik. Ik kom vanavond terug en dan gaan we samen spelen.' (validatie + voorspelbaarheid)",
         isCorrect: true,
         feedback: "Perfect! Je valideert haar verdriet (stap 3-4), geeft een grens (je gaat toch) EN biedt houvast (wanneer je terugkomt). Alle 5 stappen in actie."
+      },
+      {
+        id: "b",
+        text: "Je blijft thuis tot ze stopt met huilen",
+        isCorrect: false,
+        feedback: "Dit versterkt het patroon en leert haar dat huilen jou kan vasthouden. Een grens (je gaat naar werk) kan samengaan met emotiecoaching."
       },
       {
         id: "c",
@@ -846,9 +846,9 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Dit is een veelvoorkomend patroon bij vaders dat overwonnen moet worden voor effectieve emotiecoaching",
-        isCorrect: true,
-        feedback: "Juist! De 'fix-it' reflex is herkenbaar en begrijpelijk, maar blokkeert stap 2-4 van emotiecoaching. Eerst verbinden, dan pas oplossen."
+        text: "Dit komt door een tekort aan empathie en kan niet veranderd worden",
+        isCorrect: false,
+        feedback: "Het is geen empathietekort maar een aangeleerd patroon. Emotiecoaching is een vaardigheid die elke vader kan leren."
       },
       {
         id: "b",
@@ -858,9 +858,9 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
       },
       {
         id: "c",
-        text: "Dit komt door een tekort aan empathie en kan niet veranderd worden",
-        isCorrect: false,
-        feedback: "Het is geen empathietekort maar een aangeleerd patroon. Emotiecoaching is een vaardigheid die elke vader kan leren."
+        text: "Dit is een veelvoorkomend patroon bij vaders dat overwonnen moet worden voor effectieve emotiecoaching",
+        isCorrect: true,
+        feedback: "Juist! De 'fix-it' reflex is herkenbaar en begrijpelijk, maar blokkeert stap 2-4 van emotiecoaching. Eerst verbinden, dan pas oplossen."
       },
     ],
     explanation: "Veel vaders herkennen de 'fix-it' reflex: ongemak bij emoties van hun kind leidt tot snel willen oplossen of afleiden. Bewustwording is de eerste stap naar verandering.",
@@ -877,15 +877,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Je eigen woede reguleren VOORDAT je reageert op je zoon",
-        isCorrect: true,
-        feedback: "Precies! Jouw ongereguleerde woede wordt door zijn zenuwstelsel opgepikt. Hij heeft jouw kalmte nodig, niet jouw woede. Eerst zelf reguleren."
-      },
-      {
-        id: "b",
         text: "Direct vragen wie het waren en de school bellen",
         isCorrect: false,
         feedback: "Actie ondernemen kan later. Nu heeft hij een gereguleerde vader nodig die zijn pijn erkent, niet een boze vader die in actie schiet."
+      },
+      {
+        id: "b",
+        text: "Je eigen woede reguleren VOORDAT je reageert op je zoon",
+        isCorrect: true,
+        feedback: "Precies! Jouw ongereguleerde woede wordt door zijn zenuwstelsel opgepikt. Hij heeft jouw kalmte nodig, niet jouw woede. Eerst zelf reguleren."
       },
       {
         id: "c",
@@ -908,9 +908,9 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Ze heeft geleerd dat haar emoties tot ongemak of afwijzing leiden bij jou, en verbergt ze om de relatie te beschermen",
-        isCorrect: true,
-        feedback: "Juist. Kinderen die leren dat emoties ongewenst zijn (door te snel oplossen, bagatelliseren of negeren) stoppen met delen. Dit is een alarmsignaal."
+        text: "Ze is introvert en verwerkt emoties beter alleen",
+        isCorrect: false,
+        feedback: "Ook introverte kinderen hebben co-regulatie nodig. Consequent terugtrekken wijst op geleerd vermijdingsgedrag, niet op persoonlijkheidsstijl."
       },
       {
         id: "b",
@@ -920,9 +920,9 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
       },
       {
         id: "c",
-        text: "Ze is introvert en verwerkt emoties beter alleen",
-        isCorrect: false,
-        feedback: "Ook introverte kinderen hebben co-regulatie nodig. Consequent terugtrekken wijst op geleerd vermijdingsgedrag, niet op persoonlijkheidsstijl."
+        text: "Ze heeft geleerd dat haar emoties tot ongemak of afwijzing leiden bij jou, en verbergt ze om de relatie te beschermen",
+        isCorrect: true,
+        feedback: "Juist. Kinderen die leren dat emoties ongewenst zijn (door te snel oplossen, bagatelliseren of negeren) stoppen met delen. Dit is een alarmsignaal."
       },
     ],
     explanation: "Wanneer een kind stopt met het delen van emoties, is dit vaak een signaal dat het kind geleerd heeft dat emoties onveilig zijn in de relatie. Dit vraagt om reflectie op je eigen reactiepatronen.",
@@ -939,15 +939,15 @@ export const EMOTIECOACHING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Stijn naar zijn kamer sturen, Lotte troosten, later met Stijn praten",
-        isCorrect: false,
-        feedback: "Stijn wegsturen zonder validatie voelt als afwijzing. Hij heeft OOK een emotie die gezien moet worden. Beide kinderen hebben je nodig."
-      },
-      {
-        id: "b",
         text: "Eerst jezelf 3 seconden reguleren. Dan: 'Slaan mag niet' (grens). Lotte kort troosten. Stijn: 'Jij bent ook boos.' Beiden zien.",
         isCorrect: true,
         feedback: "Excellent! Stap 0: zelf reguleren. Dan: grens op gedrag, beide kinderen kort valideren. Later (fase 4) met elk kind apart in gesprek."
+      },
+      {
+        id: "b",
+        text: "Stijn naar zijn kamer sturen, Lotte troosten, later met Stijn praten",
+        isCorrect: false,
+        feedback: "Stijn wegsturen zonder validatie voelt als afwijzing. Hij heeft OOK een emotie die gezien moet worden. Beide kinderen hebben je nodig."
       },
       {
         id: "c",
@@ -1045,15 +1045,15 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Pepijn doet het expres om je te provoceren en je woede is logisch",
-        isCorrect: false,
-        feedback: "Een 8-jarige vergeet dingen - dat is normaal voor zijn ontwikkeling. De disproportionele woede zegt meer over jouw trigger dan over zijn gedrag.",
-      },
-      {
-        id: "b",
         text: "'Niet gehoord worden' is waarschijnlijk een diepe trigger die raakt aan een onvervulde behoefte - de handdoek is slechts de aanleiding, niet de oorzaak",
         isCorrect: true,
         feedback: "Correct. Als een situatie disproportionele woede oproept, is het een trigger. De handdoek staat symbool voor 'niet gerespecteerd worden' of 'niet gehoord worden' - vaak een echo uit je eigen verleden.",
+      },
+      {
+        id: "b",
+        text: "Pepijn doet het expres om je te provoceren en je woede is logisch",
+        isCorrect: false,
+        feedback: "Een 8-jarige vergeet dingen - dat is normaal voor zijn ontwikkeling. De disproportionele woede zegt meer over jouw trigger dan over zijn gedrag.",
       },
       {
         id: "c",
@@ -1076,15 +1076,15 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Omdat Roos onbeleefd is en je dat niet moet accepteren",
-        isCorrect: false,
-        feedback: "De onbeleefdheid verklaart niet de INTENSITEIT van je reactie. De steek in je maag wijst erop dat hier meer speelt dan een brutale opmerking.",
-      },
-      {
-        id: "b",
         text: "Je amygdala reageert op twee lagen tegelijk: de huidige opmerking EN de oude pijn van je eigen vader - waardoor de reactie verdubbelt",
         isCorrect: true,
         feedback: "Correct. Je amygdala herkent het patroon uit je kindertijd en activeert de oude pijn bovenop de huidige situatie. Je reageert niet alleen op Roos, maar ook op de echo van je eigen vader.",
+      },
+      {
+        id: "b",
+        text: "Omdat Roos onbeleefd is en je dat niet moet accepteren",
+        isCorrect: false,
+        feedback: "De onbeleefdheid verklaart niet de INTENSITEIT van je reactie. De steek in je maag wijst erop dat hier meer speelt dan een brutale opmerking.",
       },
       {
         id: "c",
@@ -1114,15 +1114,15 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Herkennen dat een smal window een symptoom is en systematisch je triggers in kaart brengen - welke situaties, welke lichaamsreacties, welke patronen",
-        isCorrect: true,
-        feedback: "Correct. Een smal window is een SYMPTOOM. Door je triggers systematisch te inventariseren (situatie, lichaamssignaal, intensiteit) ontdek je patronen. Dat bewustzijn is de eerste stap naar verbreding.",
-      },
-      {
-        id: "c",
         text: "Meer discipline bij jezelf toepassen - als je strenger voor jezelf bent, hou je het beter vol",
         isCorrect: false,
         feedback: "Meer discipline met een smal window is als harder trappen op een lekke band. Je moet eerst begrijpen WAAROM je window smal is, niet harder proberen.",
+      },
+      {
+        id: "c",
+        text: "Herkennen dat een smal window een symptoom is en systematisch je triggers in kaart brengen - welke situaties, welke lichaamsreacties, welke patronen",
+        isCorrect: true,
+        feedback: "Correct. Een smal window is een SYMPTOOM. Door je triggers systematisch te inventariseren (situatie, lichaamssignaal, intensiteit) ontdek je patronen. Dat bewustzijn is de eerste stap naar verbreding.",
       },
     ],
     explanation: "De window of tolerance (Dan Siegel) is de zone waarbinnen je effectief kunt reguleren. Een smal window betekent dat je snel in hyperarousal (woede, paniek) of hypoarousal (afsluiten, leegte) schiet. De eerste stap is altijd: bewustzijn van je triggers en patronen.",
@@ -1145,15 +1145,15 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Je amygdala heeft als kind geleerd: boosheid = gevaar. Nu triggert Thijs' boosheid diezelfde alarm-respons, waardoor je vanuit angst reageert in plaats van vanuit wijsheid",
-        isCorrect: true,
-        feedback: "Correct. Je brein conditioneerde als kind: boosheid uiten = gevaar (straf/stilzwijgen). Nu detecteert je amygdala Thijs' boosheid als bedreiging en activeert fight-or-flight. Je straft vanuit je eigen oude angst.",
-      },
-      {
-        id: "c",
         text: "Je moet je eigen jeugd loslaten - het verleden heeft geen invloed op het heden",
         isCorrect: false,
         feedback: "Het verleden heeft juist enorme invloed. De amygdala slaat emotionele herinneringen op zonder vervaldatum. Alleen bewustzijn van de koppeling vermindert de automatische reactie.",
+      },
+      {
+        id: "c",
+        text: "Je amygdala heeft als kind geleerd: boosheid = gevaar. Nu triggert Thijs' boosheid diezelfde alarm-respons, waardoor je vanuit angst reageert in plaats van vanuit wijsheid",
+        isCorrect: true,
+        feedback: "Correct. Je brein conditioneerde als kind: boosheid uiten = gevaar (straf/stilzwijgen). Nu detecteert je amygdala Thijs' boosheid als bedreiging en activeert fight-or-flight. Je straft vanuit je eigen oude angst.",
       },
     ],
     explanation: "Geconditioneerde trigger-responsen: je brein leerde als kind dat bepaalde emoties gevaarlijk zijn. Die conditionering blijft actief in de amygdala. Als je kind dezelfde emotie toont, reageert jouw brein alsof je zelf weer in gevaar bent. Bewustzijn doorbreekt de automatische cyclus.",
@@ -1207,9 +1207,9 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Stop - Take a breath - Observe - Proceed",
-        isCorrect: true,
-        feedback: "Correct. Stop (pauzeer), Take a breath (adem), Observe (observeer wat er in je lichaam gebeurt), Proceed (kies bewust je reactie).",
+        text: "Sit - Talk - Open up - Plan",
+        isCorrect: false,
+        feedback: "Nee. STOP staat voor: Stop, Take a breath, Observe, Proceed. Het gaat om een fysieke pauze, niet om een gesprek.",
       },
       {
         id: "b",
@@ -1219,9 +1219,9 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "c",
-        text: "Sit - Talk - Open up - Plan",
-        isCorrect: false,
-        feedback: "Nee. STOP staat voor: Stop, Take a breath, Observe, Proceed. Het gaat om een fysieke pauze, niet om een gesprek.",
+        text: "Stop - Take a breath - Observe - Proceed",
+        isCorrect: true,
+        feedback: "Correct. Stop (pauzeer), Take a breath (adem), Observe (observeer wat er in je lichaam gebeurt), Proceed (kies bewust je reactie).",
       },
     ],
     explanation: "De STOP-methode creëert een pauze tussen trigger en reactie. In die pauze kan je PFC weer online komen. Zonder pauze reageert je amygdala automatisch (fight-or-flight).",
@@ -1368,15 +1368,15 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Niets bijzonders - elk kind dat niet luistert is irritant",
-        isCorrect: false,
-        feedback: "Het gaat niet om de irritatie zelf, maar om de INTENSITEIT. Een disproportionele reactie wijst op een trigger - een onvervulde behoefte uit je eigen verleden.",
-      },
-      {
-        id: "b",
         text: "'Genegeerd worden' is waarschijnlijk een trigger die raakt aan een onvervulde behoefte uit je eigen verleden",
         isCorrect: true,
         feedback: "Correct. Als een situatie je disproportioneel raakt, is het vaak een echo van je eigen kindertijd. Misschien werd jij ook genegeerd.",
+      },
+      {
+        id: "b",
+        text: "Niets bijzonders - elk kind dat niet luistert is irritant",
+        isCorrect: false,
+        feedback: "Het gaat niet om de irritatie zelf, maar om de INTENSITEIT. Een disproportionele reactie wijst op een trigger - een onvervulde behoefte uit je eigen verleden.",
       },
       {
         id: "c",
@@ -1461,9 +1461,9 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Je hebt een amygdala-hijack ervaren - je emotionele brein heeft je rationele brein overgenomen",
-        isCorrect: true,
-        feedback: "Correct. Een amygdala-hijack: de amygdala neemt de PFC over in milliseconden. Je bent buiten je window of tolerance geschoten door een trigger.",
+        text: "Je dochter provoceerde je bewust met haar opmerking",
+        isCorrect: false,
+        feedback: "Een 11-jarige die zegt 'het boeit me niet' test grenzen, maar jouw razernij is disproportioneel. Het probleem zit in jouw trigger, niet in haar woorden.",
       },
       {
         id: "b",
@@ -1473,9 +1473,9 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "c",
-        text: "Je dochter provoceerde je bewust met haar opmerking",
-        isCorrect: false,
-        feedback: "Een 11-jarige die zegt 'het boeit me niet' test grenzen, maar jouw razernij is disproportioneel. Het probleem zit in jouw trigger, niet in haar woorden.",
+        text: "Je hebt een amygdala-hijack ervaren - je emotionele brein heeft je rationele brein overgenomen",
+        isCorrect: true,
+        feedback: "Correct. Een amygdala-hijack: de amygdala neemt de PFC over in milliseconden. Je bent buiten je window of tolerance geschoten door een trigger.",
       },
     ],
     explanation: "Een amygdala-hijack gebeurt in 12 milliseconden - sneller dan je PFC kan reageren. De trigger ('het boeit me niet') raakte waarschijnlijk aan een oud pijnpunt (niet gezien worden, onbelangrijk zijn).",
@@ -1524,15 +1524,15 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Hij moet gewoon accepteren dat huilen normaal is en zijn irritatie wegslikken",
-        isCorrect: false,
-        feedback: "Cognitief weten dat huilen normaal is, is niet genoeg. Zijn amygdala reageert op basis van zijn eigen conditionering. Hij heeft diepere verwerking nodig.",
-      },
-      {
-        id: "b",
         text: "Zijn trigger (woede bij huilen) is een geconditioneerde reactie uit zijn eigen kindertijd - zijn brein koppelde huilen aan gevaar/straf",
         isCorrect: true,
         feedback: "Correct. Zijn brein leerde als kind: huilen = gevaar (straf). Nu triggert het huilen van zijn zoon diezelfde angstrespons, die zich uit als woede.",
+      },
+      {
+        id: "b",
+        text: "Hij moet gewoon accepteren dat huilen normaal is en zijn irritatie wegslikken",
+        isCorrect: false,
+        feedback: "Cognitief weten dat huilen normaal is, is niet genoeg. Zijn amygdala reageert op basis van zijn eigen conditionering. Hij heeft diepere verwerking nodig.",
       },
       {
         id: "c",
@@ -1567,15 +1567,15 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Burnout - het verschil is dat bij stress je te veel voelt, bij burnout voel je niets meer (emotionele uitputting)",
-        isCorrect: true,
-        feedback: "Correct. Stress = hyperactivatie (te veel). Burnout = uitputting (te weinig). Automatische piloot en leegte zijn kenmerkend voor burnout, niet voor stress.",
-      },
-      {
-        id: "c",
         text: "Geen van beide - dit is normaal voor vaders met jonge kinderen",
         isCorrect: false,
         feedback: "Nee. Leegte, geen motivatie, en automatische piloot zijn niet 'normaal'. Dit zijn signalen van emotionele uitputting die aandacht nodig hebben.",
+      },
+      {
+        id: "c",
+        text: "Burnout - het verschil is dat bij stress je te veel voelt, bij burnout voel je niets meer (emotionele uitputting)",
+        isCorrect: true,
+        feedback: "Correct. Stress = hyperactivatie (te veel). Burnout = uitputting (te weinig). Automatische piloot en leegte zijn kenmerkend voor burnout, niet voor stress.",
       },
     ],
     explanation: "Stress = teveel druk maar nog energie om te reageren. Burnout = de energie is op. Bij stress ben je een overvolle beker, bij burnout een lege. De aanpak verschilt: stress = minder doen, burnout = langzaam weer opbouwen.",
@@ -1598,15 +1598,15 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Je bent enthousiast over een nieuw project op werk en hebt minder tijd voor thuis",
-        isCorrect: true,
-        feedback: "Correct. Enthousiasme over iets nieuws is GEEN burnout-signaal. Burnout kenmerkt zich door leegte en afwezigheid van motivatie, niet door enthousiasme.",
-      },
-      {
-        id: "c",
         text: "Je reageert emotioneel afgevlakt op je kinderen - je voelt geen vreugde meer als ze iets leuks doen",
         isCorrect: false,
         feedback: "Dit IS een kernkenmerk van burnout: emotionele afvlakking (depersonalisatie). Je voelt niets meer bij momenten die je vroeger blij maakten.",
+      },
+      {
+        id: "c",
+        text: "Je bent enthousiast over een nieuw project op werk en hebt minder tijd voor thuis",
+        isCorrect: true,
+        feedback: "Correct. Enthousiasme over iets nieuws is GEEN burnout-signaal. Burnout kenmerkt zich door leegte en afwezigheid van motivatie, niet door enthousiasme.",
       },
     ],
     explanation: "De 7 signalen van vader-burnout: 1) emotionele uitputting, 2) afstandelijkheid, 3) prikkelbaar zonder reden, 4) fysieke klachten, 5) schuldgevoel, 6) automatische piloot, 7) verlies van plezier in ouderschap.",
@@ -1623,15 +1623,15 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Niets bijzonders - cortisol is een normaal hormoon",
-        isCorrect: false,
-        feedback: "Cortisol is normaal bij acute stress. Maar CHRONISCH verhoogd cortisol beschadigt de hippocampus en PFC, waardoor regulatie structureel verzwakt.",
-      },
-      {
-        id: "b",
         text: "Zijn PFC functioneert structureel slechter - hij heeft minder geduld, minder empathie, en reageert sneller impulsief",
         isCorrect: true,
         feedback: "Correct. Chronisch cortisol vermindert PFC-volume en -functie. Dit betekent letterlijk minder capaciteit voor geduld, empathie en impulse control.",
+      },
+      {
+        id: "b",
+        text: "Niets bijzonders - cortisol is een normaal hormoon",
+        isCorrect: false,
+        feedback: "Cortisol is normaal bij acute stress. Maar CHRONISCH verhoogd cortisol beschadigt de hippocampus en PFC, waardoor regulatie structureel verzwakt.",
       },
       {
         id: "c",
@@ -1654,15 +1654,15 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Ja, een week rust lost burnout op",
-        isCorrect: false,
-        feedback: "Nee. Burnout herstelt niet met een weekje vrij. Het verschil met stress: stress herstelt met rust, burnout vereist structurele verandering.",
-      },
-      {
-        id: "b",
         text: "Nee. Burnout herstelt niet met een vakantie - het vereist structurele verandering in de 4 pilaren en eventueel professionele hulp",
         isCorrect: true,
         feedback: "Correct. Burnout = structurele uitputting. Een week vrij is als een pleister op een breuk. Je hebt systematische pilaar-herstel nodig en mogelijk professionele ondersteuning.",
+      },
+      {
+        id: "b",
+        text: "Ja, een week rust lost burnout op",
+        isCorrect: false,
+        feedback: "Nee. Burnout herstelt niet met een weekje vrij. Het verschil met stress: stress herstelt met rust, burnout vereist structurele verandering.",
       },
       {
         id: "c",
@@ -1722,15 +1722,15 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Zelfzorg is geen egoïsme maar een voorwaarde: een lege batterij kan een kind niet opladen",
-        isCorrect: true,
-        feedback: "Correct. Je kunt niet geven wat je niet hebt. Zelfzorg is een investering in je kinderen. Een vader met volle batterij is een betere vader.",
-      },
-      {
-        id: "c",
         text: "Hij moet de schuld negeren en gewoon doen wat hij wil",
         isCorrect: false,
         feedback: "Het schuldgevoel negeren werkt niet - het komt terug. Beter: erkennen dat zelfzorg JUIST voor je kinderen is. Reframe van egoïsme naar verantwoordelijkheid.",
+      },
+      {
+        id: "c",
+        text: "Zelfzorg is geen egoïsme maar een voorwaarde: een lege batterij kan een kind niet opladen",
+        isCorrect: true,
+        feedback: "Correct. Je kunt niet geven wat je niet hebt. Zelfzorg is een investering in je kinderen. Een vader met volle batterij is een betere vader.",
       },
     ],
     explanation: "De schuldvalkuil: vaders voelen zich schuldig over zelfzorg. Maar zelfzorg is geen luxe - het is het fundament van goede opvoeding. Een vader met herstelde pilaren is aanweziger, geduldiger en empathischer.",
@@ -1784,15 +1784,15 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Het sympathisch zenuwstelsel (fight-or-flight)",
-        isCorrect: false,
-        feedback: "Nee. Het sympathisch systeem is juist het stress-systeem. Langzame uitademing activeert het TEGENOVERGESTELDE systeem.",
-      },
-      {
-        id: "b",
         text: "De nervus vagus - het parasympathisch zenuwstelsel (rust-en-herstel)",
         isCorrect: true,
         feedback: "Correct. Langzame uitademing stimuleert de nervus vagus, die het parasympathisch zenuwstelsel activeert. Dit remt het fight-or-flight systeem en brengt je terug in je window.",
+      },
+      {
+        id: "b",
+        text: "Het sympathisch zenuwstelsel (fight-or-flight)",
+        isCorrect: false,
+        feedback: "Nee. Het sympathisch systeem is juist het stress-systeem. Langzame uitademing activeert het TEGENOVERGESTELDE systeem.",
       },
       {
         id: "c",
@@ -1846,15 +1846,15 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Koud water op je gezicht - dit activeert de duikreflex en stimuleert direct de nervus vagus",
-        isCorrect: true,
-        feedback: "Correct. De duikreflex (koud water op gezicht) is de snelste vagus-stimulatie: hartslag daalt binnen seconden. Even koud water in je gezicht voor je de deur opent.",
-      },
-      {
-        id: "b",
         text: "Een uur mediteren in stilte",
         isCorrect: false,
         feedback: "Meditatie werkt, maar duurt lang. Met 2 kinderen die op je wachten heb je iets nodig dat in seconden werkt. Koud water op je gezicht is sneller.",
+      },
+      {
+        id: "b",
+        text: "Koud water op je gezicht - dit activeert de duikreflex en stimuleert direct de nervus vagus",
+        isCorrect: true,
+        feedback: "Correct. De duikreflex (koud water op gezicht) is de snelste vagus-stimulatie: hartslag daalt binnen seconden. Even koud water in je gezicht voor je de deur opent.",
       },
       {
         id: "c",
@@ -1883,15 +1883,15 @@ export const ZELFREGULATIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Je vagale tonus is verhoogd - je zenuwstelsel herstelt sneller en je window of tolerance is breder geworden",
-        isCorrect: true,
-        feedback: "Correct. Regelmatige ademhalingsoefeningen verhogen je vagale tonus (meetbaar via HRV). Een hogere vagale tonus = sneller herstellen van stress = breder window.",
-      },
-      {
-        id: "c",
         text: "Je amygdala is kleiner geworden door de ademhaling",
         isCorrect: false,
         feedback: "Ademhaling verandert niet direct de amygdala-grootte. Wat verandert is je vagale tonus: het vermogen van je parasympathisch systeem om je sympathisch systeem te reguleren.",
+      },
+      {
+        id: "c",
+        text: "Je vagale tonus is verhoogd - je zenuwstelsel herstelt sneller en je window of tolerance is breder geworden",
+        isCorrect: true,
+        feedback: "Correct. Regelmatige ademhalingsoefeningen verhogen je vagale tonus (meetbaar via HRV). Een hogere vagale tonus = sneller herstellen van stress = breder window.",
       },
     ],
     explanation: "Vagale tonus (gemeten via Heart Rate Variability) is de 'fitness' van je zenuwstelsel. Hoge vagale tonus = beter reguleren, sneller herstellen, breder window. Dagelijkse ademhaling is training voor je zenuwstelsel.",
@@ -1984,15 +1984,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Emotionele beschikbaarheid is een biologische basisbehoefte, geen luxe",
-        isCorrect: true,
-        feedback: "Juist! Het still-face experiment toont dat responsieve aanwezigheid geen extra's is maar een basisbehoefte. Onderbreking ervan veroorzaakt direct meetbare stress (verhoogd cortisol)."
-      },
-      {
-        id: "c",
         text: "Ouders mogen nooit een neutraal gezicht trekken bij hun kind",
         isCorrect: false,
         feedback: "Te letterlijk. Het gaat niet om gezichtsuitdrukking maar om emotionele beschikbaarheid. Een rustig gezicht met responsiviteit is prima; een glimlach zonder verbinding niet."
+      },
+      {
+        id: "c",
+        text: "Emotionele beschikbaarheid is een biologische basisbehoefte, geen luxe",
+        isCorrect: true,
+        feedback: "Juist! Het still-face experiment toont dat responsieve aanwezigheid geen extra's is maar een basisbehoefte. Onderbreking ervan veroorzaakt direct meetbare stress (verhoogd cortisol)."
       },
     ],
     explanation: "Het still-face experiment (Tronick, 1978) bewijst dat emotionele beschikbaarheid een biologische basisbehoefte is. Baby's monitoren continu of hun hechtingsfiguur emotioneel bereikbaar is. Onderbreking = directe stressrespons.",
@@ -2009,15 +2009,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Guus - 4 uur is veel meer dan 45 minuten, kwantiteit wint",
-        isCorrect: false,
-        feedback: "Nee. Pepijn ervaart 4 uur 'er-maar-niet-er'. Onderzoek toont: kinderen onthouden momenten van echte verbinding, niet de klok."
-      },
-      {
-        id: "b",
         text: "Thijs - 45 minuten volledige aanwezigheid (TPN actief) bouwt meer hechting dan 4 uur mentale afwezigheid (DMN)",
         isCorrect: true,
         feedback: "Correct! Als TPN (Task-Positive Network) actief is, ontstaat echte verbinding: oxytocine, oogcontact, afstemming. DMN (autopilot) blokkeert dit, ongeacht hoeveel tijd je doorbrengt."
+      },
+      {
+        id: "b",
+        text: "Guus - 4 uur is veel meer dan 45 minuten, kwantiteit wint",
+        isCorrect: false,
+        feedback: "Nee. Pepijn ervaart 4 uur 'er-maar-niet-er'. Onderzoek toont: kinderen onthouden momenten van echte verbinding, niet de klok."
       },
       {
         id: "c",
@@ -2102,15 +2102,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Kinderen zijn overgevoelig en interpreteren alles negatief",
-        isCorrect: false,
-        feedback: "Nee. Haar detectie is juist uiterst accuraat. Neuroceptie is een evolutionair overlevingsmechanisme dat micro-signalen leest die volwassenen bewust missen."
-      },
-      {
-        id: "b",
         text: "Haar neuroceptie detecteert de mismatch tussen zijn woorden ('hmm') en zijn zenuwstelsel (afwezig). Herhaalde mismatch wordt geïnterpreteerd als 'ik ben niet belangrijk genoeg'",
         isCorrect: true,
         feedback: "Exact! Neuroceptie leest micro-expressies, spierspanning, oogbewegingen en ademhaling. Chronische mismatch (woorden zeggen 'ja', lichaam zegt 'nee') ondermijnt het gevoel van eigenwaarde."
+      },
+      {
+        id: "b",
+        text: "Kinderen zijn overgevoelig en interpreteren alles negatief",
+        isCorrect: false,
+        feedback: "Nee. Haar detectie is juist uiterst accuraat. Neuroceptie is een evolutionair overlevingsmechanisme dat micro-signalen leest die volwassenen bewust missen."
       },
       {
         id: "c",
@@ -2144,15 +2144,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Elke blik naar de telefoon is een micro-still-face moment: Stijn voelt herhaalde korte onderbrekingen van verbinding",
-        isCorrect: true,
-        feedback: "Juist! Onderzoek toont: de loutere aanwezigheid van een smartphone op tafel vermindert al de kwaliteit van gesprekken. Elke notificatie + oogbeweging = mini-onderbreking van verbinding."
-      },
-      {
-        id: "c",
         text: "Hij leert dat telefoons normaal zijn bij het eten",
         isCorrect: false,
         feedback: "Dat leert hij ook, maar het directe effect is belangrijker: hij ervaart dat hij moet concurreren met het scherm om papa's aandacht. Dit ondermijnt verbinding."
+      },
+      {
+        id: "c",
+        text: "Elke blik naar de telefoon is een micro-still-face moment: Stijn voelt herhaalde korte onderbrekingen van verbinding",
+        isCorrect: true,
+        feedback: "Juist! Onderzoek toont: de loutere aanwezigheid van een smartphone op tafel vermindert al de kwaliteit van gesprekken. Elke notificatie + oogbeweging = mini-onderbreking van verbinding."
       },
     ],
     explanation: "Brain Drain effect (Ward, 2017): de loutere aanwezigheid van een smartphone - zelfs uitgeschakeld - vermindert cognitieve capaciteit en kwaliteit van interacties. Elke notificatie versterkt dit effect.",
@@ -2169,15 +2169,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Ze is gewoon ongeduldig - 40 seconden is niet lang",
-        isCorrect: false,
-        feedback: "Nee. Het gaat niet om de 40 seconden maar om de boodschap: 'Dit bericht is nu belangrijker dan jij.' Het moment van spontaan delen is voorbij."
-      },
-      {
-        id: "b",
         text: "Het spontane moment van verbinding is verbroken door phubbing (phone snubbing). Het kind leert: 'mijn verhaal is minder belangrijk dan dat scherm'",
         isCorrect: true,
         feedback: "Correct! Phubbing = phone + snubbing. Kinderen delen spontaan vanuit een emotionele impuls. 'Wacht even' doodt die impuls. Na 40 seconden is het moment weg en het gevoel van afwijzing gebleven."
+      },
+      {
+        id: "b",
+        text: "Ze is gewoon ongeduldig - 40 seconden is niet lang",
+        isCorrect: false,
+        feedback: "Nee. Het gaat niet om de 40 seconden maar om de boodschap: 'Dit bericht is nu belangrijker dan jij.' Het moment van spontaan delen is voorbij."
       },
       {
         id: "c",
@@ -2206,15 +2206,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Wanneer het kind de schermtijd onderbreekt - de ouder reageert geïrriteerd omdat de aandacht wordt verstoord",
-        isCorrect: true,
-        feedback: "Juist! Het kind dat aandacht vraagt wordt ervaren als 'storing' van het scherm. De ouder reageert met irritatie op een normaal verbindingsverzoek. Het kind leert: aandacht vragen = straf."
-      },
-      {
-        id: "c",
         text: "Aan het einde van de dag als ze moe zijn",
         isCorrect: false,
         feedback: "Nee. Het effect is direct gekoppeld aan smartphone-gebruik: de irritatie komt specifiek wanneer het kind de schermfocus doorbreekt."
+      },
+      {
+        id: "c",
+        text: "Wanneer het kind de schermtijd onderbreekt - de ouder reageert geïrriteerd omdat de aandacht wordt verstoord",
+        isCorrect: true,
+        feedback: "Juist! Het kind dat aandacht vraagt wordt ervaren als 'storing' van het scherm. De ouder reageert met irritatie op een normaal verbindingsverzoek. Het kind leert: aandacht vragen = straf."
       },
     ],
     explanation: "Smartphone creëert een paradox: het kind dat verbinding zoekt (normale behoefte) wordt bestraft met irritatie omdat het de schermtijd 'verstoort'. Het kind leert: mijn behoefte aan aandacht is lastig.",
@@ -2237,15 +2237,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Multitasken bestaat niet - het brein doet aan task-switching. Elke switch kost 23 minuten recovery voor diepe aandacht. Vera krijgt steeds restaandacht",
-        isCorrect: true,
-        feedback: "Correct! Continuous partial attention = niemand krijgt je volle aandacht. Vera krijgt de 'restjes' tussen task-switches. Ze voelt dit als: 'Papa is er wel maar ook niet.'"
-      },
-      {
-        id: "c",
         text: "Het is prima zolang hij af en toe oogcontact maakt",
         isCorrect: false,
         feedback: "Nee. Af en toe oogcontact tijdens task-switching is niet hetzelfde als aanwezigheid. Het brein heeft 23 minuten nodig om na een switch weer diep gefocust te raken."
+      },
+      {
+        id: "c",
+        text: "Multitasken bestaat niet - het brein doet aan task-switching. Elke switch kost 23 minuten recovery voor diepe aandacht. Vera krijgt steeds restaandacht",
+        isCorrect: true,
+        feedback: "Correct! Continuous partial attention = niemand krijgt je volle aandacht. Vera krijgt de 'restjes' tussen task-switches. Ze voelt dit als: 'Papa is er wel maar ook niet.'"
       },
     ],
     explanation: "Continuous partial attention (Linda Stone): door constant te switchen tussen scherm en kind krijgt niemand echte aandacht. Elke task-switch kost 23 minuten recovery (Gloria Mark, UC Irvine). Het kind krijgt nooit volledige TPN-activatie.",
@@ -2262,15 +2262,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Hij is gewoon gewend aan zijn telefoon - dit went vanzelf",
-        isCorrect: false,
-        feedback: "Te oppervlakkig. Het gaat niet om gewoonte maar om neurochemie. Smartphone-notificaties activeren hetzelfde dopaminesysteem als gokken."
-      },
-      {
-        id: "b",
         text: "Zijn brein ervaart dopamine-onthouding. Elke notificatie was een variabele beloning (als bij een gokautomaat). Zonder telefoon mist zijn brein die dopamine-shots.",
         isCorrect: true,
         feedback: "Exact! Variable ratio reinforcement: je weet nooit wanneer de volgende 'interessante' notificatie komt. Dit is het meest verslavende beloningspatroon. Zijn onrust is letterlijk ontwenning."
+      },
+      {
+        id: "b",
+        text: "Hij is gewoon gewend aan zijn telefoon - dit went vanzelf",
+        isCorrect: false,
+        feedback: "Te oppervlakkig. Het gaat niet om gewoonte maar om neurochemie. Smartphone-notificaties activeren hetzelfde dopaminesysteem als gokken."
       },
       {
         id: "c",
@@ -2329,15 +2329,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Oma heeft gelijk - baby's hebben vooral fysieke verzorging nodig, niet mentale aanwezigheid",
-        isCorrect: false,
-        feedback: "Nee. Baby's zijn juist het MEEST gevoelig voor emotionele aanwezigheid. Hun brein ontwikkelt zich het snelst in het eerste levensjaar en responsiviteit is daarbij cruciaal."
-      },
-      {
-        id: "b",
         text: "Baby's zijn juist extreem gevoelig voor aanwezigheid: hun brein ontwikkelt 1 miljoen neurale verbindingen per seconde en responsieve interactie stuurt die ontwikkeling",
         isCorrect: true,
         feedback: "Correct! Het babybrein maakt 1 miljoen synaptische verbindingen per seconde. Responsieve aanwezigheid (serve and return) bepaalt welke verbindingen versterkt worden. Dit is de meest kritieke periode."
+      },
+      {
+        id: "b",
+        text: "Oma heeft gelijk - baby's hebben vooral fysieke verzorging nodig, niet mentale aanwezigheid",
+        isCorrect: false,
+        feedback: "Nee. Baby's zijn juist het MEEST gevoelig voor emotionele aanwezigheid. Hun brein ontwikkelt zich het snelst in het eerste levensjaar en responsiviteit is daarbij cruciaal."
       },
       {
         id: "c",
@@ -2366,15 +2366,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Elke 'kijk!' is een bid for connection: Wout bouwt zijn zelfbeeld door papa's responsieve reactie. Korte, echte reacties (2 sec oogcontact + bevestiging) zijn genoeg",
-        isCorrect: true,
-        feedback: "Juist! Peuters (2-3 jaar) hebben frequente, korte bevestiging nodig. Elke 'kijk!' = check: 'Zie je mij? Ben ik belangrijk?' 2 seconden echte aandacht per keer is voldoende."
-      },
-      {
-        id: "c",
         text: "Je moet elke keer uitgebreid reageren, anders voelt hij zich afgewezen",
         isCorrect: false,
         feedback: "Nee. Peuters hebben frequentie nodig, niet duur. 2 seconden echte aandacht (oogcontact + 'wauw!') werkt beter dan 30 seconden halfhartige aandacht."
+      },
+      {
+        id: "c",
+        text: "Elke 'kijk!' is een bid for connection: Wout bouwt zijn zelfbeeld door papa's responsieve reactie. Korte, echte reacties (2 sec oogcontact + bevestiging) zijn genoeg",
+        isCorrect: true,
+        feedback: "Juist! Peuters (2-3 jaar) hebben frequente, korte bevestiging nodig. Elke 'kijk!' = check: 'Zie je mij? Ben ik belangrijk?' 2 seconden echte aandacht per keer is voldoende."
       },
     ],
     explanation: "Peuters (2-3 jaar): hoge frequentie, korte duur. 'Kijk papa!' = bid for connection. Responsieve, korte reacties (2 sec oogcontact + bevestiging) bouwen zelfbeeld en veilige hechting.",
@@ -2391,15 +2391,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Meespelen en haar de leiding laten nemen in het fantasiespel - bij kleuters is child-led play de krachtigste vorm van aanwezigheid",
-        isCorrect: true,
-        feedback: "Correct! Kleuters (3-5 jaar) leren het meest van child-led play: het kind bepaalt het spel, de ouder volgt. Dit bouwt creativiteit, zelfvertrouwen en verbinding tegelijk."
-      },
-      {
-        id: "b",
         text: "Het spel sturen naar iets educatiefs - maak er een leermoment van",
         isCorrect: false,
         feedback: "Nee. Bij kleuters is de kracht juist dat JIJ volgt en ZIJ leidt. Sturen naar educatief = jouw agenda, niet haar behoefte. Child-led play is zelf al enorm leerzaam."
+      },
+      {
+        id: "b",
+        text: "Meespelen en haar de leiding laten nemen in het fantasiespel - bij kleuters is child-led play de krachtigste vorm van aanwezigheid",
+        isCorrect: true,
+        feedback: "Correct! Kleuters (3-5 jaar) leren het meest van child-led play: het kind bepaalt het spel, de ouder volgt. Dit bouwt creativiteit, zelfvertrouwen en verbinding tegelijk."
       },
       {
         id: "c",
@@ -2453,15 +2453,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Tieners hebben inderdaad minder aanwezigheid nodig - het hoort bij de ontwikkeling",
-        isCorrect: false,
-        feedback: "Half waar: tieners hebben minder ZICHTBARE aanwezigheid nodig, maar evenveel BESCHIKBARE aanwezigheid. Het verschil is cruciaal."
-      },
-      {
-        id: "b",
         text: "Tieners hebben paradoxale aanwezigheid nodig: beschikbaar maar niet opdringerig. Ze testen afstand maar checken constant of de veilige basis er nog is",
         isCorrect: true,
         feedback: "Exact! De tienerparadox: ze duwen je weg maar willen weten dat je er bent. Aanwezigheid bij tieners = lighthouse parenting: je staat er, je schijnt je licht, maar je loopt niet achter ze aan."
+      },
+      {
+        id: "b",
+        text: "Tieners hebben inderdaad minder aanwezigheid nodig - het hoort bij de ontwikkeling",
+        isCorrect: false,
+        feedback: "Half waar: tieners hebben minder ZICHTBARE aanwezigheid nodig, maar evenveel BESCHIKBARE aanwezigheid. Het verschil is cruciaal."
       },
       {
         id: "c",
@@ -2520,15 +2520,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "De knuffel afpakken zodat niemand hem heeft — dat is eerlijk",
-        isCorrect: false,
-        feedback: "Nee. Dit voegt een derde ontregeld zenuwstelsel toe aan de situatie. Het lost het conflict niet op en het verbreekt de verbinding met beide kinderen."
-      },
-      {
-        id: "b",
         text: "Eerst je eigen zenuwstelsel reguleren: voeten op de grond, één bewuste uitademing, dan pas reageren",
         isCorrect: true,
         feedback: "Juist! In chaos is je eigen regulatie stap één. Je kunt pas co-reguleren als jij zelf binnen je Window of Tolerance bent. Eén bewuste ademhaling is genoeg om van reactie naar respons te schakelen."
+      },
+      {
+        id: "b",
+        text: "De knuffel afpakken zodat niemand hem heeft — dat is eerlijk",
+        isCorrect: false,
+        feedback: "Nee. Dit voegt een derde ontregeld zenuwstelsel toe aan de situatie. Het lost het conflict niet op en het verbreekt de verbinding met beide kinderen."
       },
       {
         id: "c",
@@ -2551,15 +2551,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "De vader moet zijn irritatie onderdrukken en doen alsof hij kalm is",
-        isCorrect: false,
-        feedback: "Nee. Onderdrukken is niet reguleren. Kinderen voelen het verschil tussen nep-kalmte en echte kalmte. Bovendien bouwt onderdrukte irritatie op en barst later alsnog uit."
-      },
-      {
-        id: "b",
         text: "Zolang de vader binnen zijn Window of Tolerance blijft, kan hij nog bewust kiezen hoe hij reageert in plaats van automatisch te exploderen of bevriezen",
         isCorrect: true,
         feedback: "Correct! Het Window of Tolerance is de zone waarin je stress voelt maar nog kunt nadenken. Buiten die zone neem je het over: fight (schreeuwen), flight (weglopen) of freeze (dichtslan)."
+      },
+      {
+        id: "b",
+        text: "De vader moet zijn irritatie onderdrukken en doen alsof hij kalm is",
+        isCorrect: false,
+        feedback: "Nee. Onderdrukken is niet reguleren. Kinderen voelen het verschil tussen nep-kalmte en echte kalmte. Bovendien bouwt onderdrukte irritatie op en barst later alsnog uit."
       },
       {
         id: "c",
@@ -2588,15 +2588,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Jouw gereguleerde zenuwstelsel werkt als co-regulator: via spiegelneuronen en prosodie neemt het zenuwstelsel van je kind jouw kalmte over",
-        isCorrect: true,
-        feedback: "Juist! Porges' polyvagale theorie: je stem, gezichtsuitdrukking en lichaamshouding zenden veiligheidssignalen naar het zenuwstelsel van je kind. Dit heet neuroceptie — onbewuste veiligheidsdetectie."
-      },
-      {
-        id: "c",
         text: "Zacht praten toont autoriteit — kinderen respecteren een vader die niet hoeft te schreeuwen",
         isCorrect: false,
         feedback: "Nee. Het gaat niet om autoriteit of respect maar om neurobiologie. Jouw rustige stem activeert het ventrale vagale systeem van je kind, wat hen helpt uit fight-mode te komen."
+      },
+      {
+        id: "c",
+        text: "Jouw gereguleerde zenuwstelsel werkt als co-regulator: via spiegelneuronen en prosodie neemt het zenuwstelsel van je kind jouw kalmte over",
+        isCorrect: true,
+        feedback: "Juist! Porges' polyvagale theorie: je stem, gezichtsuitdrukking en lichaamshouding zenden veiligheidssignalen naar het zenuwstelsel van je kind. Dit heet neuroceptie — onbewuste veiligheidsdetectie."
       },
     ],
     explanation: "Porges' polyvagale theorie: een rustige, lage stem activeert het 'social engagement system' van het kind via de nervus vagus. Je zenuwstelsel is letterlijk besmettelijk — in beide richtingen.",
@@ -2651,15 +2651,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "De ankerzin activeert je taalcentrum (PFC), wat de amygdala-hijack remt en je terug in je Window of Tolerance brengt",
-        isCorrect: true,
-        feedback: "Juist! Taal is een PFC-functie. Door bewust een zin te formuleren, schakel je je denkbrein weer in. Dit remt de automatische stress-respons en geeft je de keuze hoe je reageert."
-      },
-      {
-        id: "c",
         text: "Het leidt je af van de chaos zodat je even niet hoeft na te denken",
         isCorrect: false,
         feedback: "Nee. Het is geen afleiding maar actieve regulatie. De ankerzin brengt je terug naar bewust handelen in plaats van automatisch reageren."
+      },
+      {
+        id: "c",
+        text: "De ankerzin activeert je taalcentrum (PFC), wat de amygdala-hijack remt en je terug in je Window of Tolerance brengt",
+        isCorrect: true,
+        feedback: "Juist! Taal is een PFC-functie. Door bewust een zin te formuleren, schakel je je denkbrein weer in. Dit remt de automatische stress-respons en geeft je de keuze hoe je reageert."
       },
     ],
     explanation: "Een ankerzin is geen mantra maar een neurobiologisch instrument: taalactivatie recruteert de PFC, wat de amygdala's automatische fight/flight-respons tempert. Dit heet cognitieve herstructurering.",
@@ -2682,15 +2682,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Bevriezen (emotioneel dichtslan, je afsluiten, niets zeggen en wegkijken)",
-        isCorrect: true,
-        feedback: "Correct. Emotionele afsluiting is het meest schadelijk omdat het kind geen enkel signaal meer krijgt. Het voelt als emotioneel verlaten worden — vergelijkbaar met het still-face experiment. Het kind leert: mijn emoties zijn zo erg dat papa verdwijnt."
-      },
-      {
-        id: "c",
         text: "Weglopen (de kamer verlaten zonder iets te zeggen)",
         isCorrect: false,
         feedback: "Schadelijk omdat het verlating communiceert, maar fysiek weglopen is duidelijker dan emotioneel dichtslan. Het kind weet tenminste wat er gebeurt. Emotionele bevriezing is verwarrender en daarom schadelijker."
+      },
+      {
+        id: "c",
+        text: "Bevriezen (emotioneel dichtslan, je afsluiten, niets zeggen en wegkijken)",
+        isCorrect: true,
+        feedback: "Correct. Emotionele afsluiting is het meest schadelijk omdat het kind geen enkel signaal meer krijgt. Het voelt als emotioneel verlaten worden — vergelijkbaar met het still-face experiment. Het kind leert: mijn emoties zijn zo erg dat papa verdwijnt."
       },
     ],
     explanation: "Van de drie stress-reacties (fight, flight, freeze) is freeze het meest schadelijk voor hechting. Tronick's onderzoek toont: emotionele onbereikbaarheid is stressvoller dan boosheid. Bij boosheid is er nog contact; bij bevriezing is het kind volledig alleen.",
@@ -2774,9 +2774,9 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
     options: [
       { 
         id: "a", 
-        text: "Thuis = phone in lader. Quality time = phone in andere kamer. Bedtime = phone beneden. Waarom: elimineer concurrentie met scherm.", 
-        isCorrect: true, 
-        feedback: "Perfect! Phone parking = fysieke afstand creëren. Smartphone bij je = DMN-trigger. Weg van je = TPN mogelijk. Simpele regel, grote impact." 
+        text: "Nooit - je moet bereikbaar blijven voor noodgevallen", 
+        isCorrect: false, 
+        feedback: "Noodgevallen zijn zeldzaam. Phone in andere kamer = nog steeds bereikbaar (je hoort het). Maar: niet bij je = geen constante DMN-activatie." 
       },
       { 
         id: "b", 
@@ -2786,9 +2786,9 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
       },
       { 
         id: "c", 
-        text: "Nooit - je moet bereikbaar blijven voor noodgevallen", 
-        isCorrect: false, 
-        feedback: "Noodgevallen zijn zeldzaam. Phone in andere kamer = nog steeds bereikbaar (je hoort het). Maar: niet bij je = geen constante DMN-activatie." 
+        text: "Thuis = phone in lader. Quality time = phone in andere kamer. Bedtime = phone beneden. Waarom: elimineer concurrentie met scherm.", 
+        isCorrect: true, 
+        feedback: "Perfect! Phone parking = fysieke afstand creëren. Smartphone bij je = DMN-trigger. Weg van je = TPN mogelijk. Simpele regel, grote impact." 
       },
     ],
     explanation: "Phone Parking: Thuis = lader, Quality time = andere kamer, Bedtime = beneden. Smartphone bij je = constant DMN-trigger + dopamine-verlangen. Fysieke afstand = vrijheid.",
@@ -2805,15 +2805,15 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
     options: [
       { 
         id: "a", 
-        text: "17 min = 100% TPN (aanwezig). 2 uur = DMN (afwezig). Kinderen onthouden momenten van verbinding, niet duur van fysieke aanwezigheid.", 
-        isCorrect: true, 
-        feedback: "Perfect! Quality > quantity. 17 min echte verbinding (TPN) > 2 uur fysieke nabijheid (DMN). Hersenen onthouden emotionele momenten, niet tijdsduur." 
-      },
-      { 
-        id: "b", 
         text: "17 min is realistischer voor drukke ouders", 
         isCorrect: false, 
         feedback: "Wel waar, maar neurologisch: TPN (aanwezigheid) creëert verbinding, DMN (afwezigheid) niet. Het gaat niet om realisme maar om kwaliteit van verbinding." 
+      },
+      { 
+        id: "b", 
+        text: "17 min = 100% TPN (aanwezig). 2 uur = DMN (afwezig). Kinderen onthouden momenten van verbinding, niet duur van fysieke aanwezigheid.", 
+        isCorrect: true, 
+        feedback: "Perfect! Quality > quantity. 17 min echte verbinding (TPN) > 2 uur fysieke nabijheid (DMN). Hersenen onthouden emotionele momenten, niet tijdsduur." 
       },
       { 
         id: "c", 
@@ -2836,9 +2836,9 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
     options: [
       { 
         id: "a", 
-        text: "Smartphone = modern still face. Kind ervaart afwezigheid, probeert aandacht, raakt gestrest. Herhaling dagelijks = chronische impact.", 
-        isCorrect: true, 
-        feedback: "Exact! Ouder op smartphone = still face herhaling. Kind detecteert afwezigheid → probeert contact → raakt gefrustreerd → leert 'ik ben minder belangrijk'. Chronisch = attachment-impact." 
+        text: "Smartphones maken gezichten strak door blauwe licht", 
+        isCorrect: false, 
+        feedback: "Nee. De link is: ouder op phone = emotioneel afwezig = still face-effect. Kind ervaart afwezigheid en dit triggert stress, net als in het experiment." 
       },
       { 
         id: "b", 
@@ -2848,9 +2848,9 @@ export const AANWEZIGHEID_TRAINING: TrainingItem[] = [
       },
       { 
         id: "c", 
-        text: "Smartphones maken gezichten strak door blauwe licht", 
-        isCorrect: false, 
-        feedback: "Nee. De link is: ouder op phone = emotioneel afwezig = still face-effect. Kind ervaart afwezigheid en dit triggert stress, net als in het experiment." 
+        text: "Smartphone = modern still face. Kind ervaart afwezigheid, probeert aandacht, raakt gestrest. Herhaling dagelijks = chronische impact.", 
+        isCorrect: true, 
+        feedback: "Exact! Ouder op smartphone = still face herhaling. Kind detecteert afwezigheid → probeert contact → raakt gefrustreerd → leert 'ik ben minder belangrijk'. Chronisch = attachment-impact." 
       },
     ],
     explanation: "Ouder op smartphone = modern still face experiment. Verschil: Still Face = 3 min, smartphone = herhaald dagelijks. Chronische afwezigheid = chronische stress = attachment-impact.",
@@ -2913,15 +2913,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Grenzen geven 3 dingen: fysieke veiligheid, structuur, en emotionele veiligheid - kinderen voelen zich veiliger MET grenzen",
-        isCorrect: true,
-        feedback: "Correct. Grenzen hebben 3 functies: fysieke veiligheid (niet op straat rennen), structuur (voorspelbaarheid), en emotionele veiligheid (iemand is in control). Kinderen zoeken deze veiligheid.",
-      },
-      {
-        id: "c",
         text: "Grenzen zijn alleen nodig voor drukke of moeilijke kinderen",
         isCorrect: false,
         feedback: "Alle kinderen hebben grenzen nodig, niet alleen 'drukke' kinderen. Grenzen zijn als een steiger: ze geven houvast tijdens de ontwikkeling.",
+      },
+      {
+        id: "c",
+        text: "Grenzen geven 3 dingen: fysieke veiligheid, structuur, en emotionele veiligheid - kinderen voelen zich veiliger MET grenzen",
+        isCorrect: true,
+        feedback: "Correct. Grenzen hebben 3 functies: fysieke veiligheid (niet op straat rennen), structuur (voorspelbaarheid), en emotionele veiligheid (iemand is in control). Kinderen zoeken deze veiligheid.",
       },
     ],
     explanation: "De 3 functies van grenzen: 1) Fysieke veiligheid (bescherming), 2) Structuur (voorspelbaarheid creëert rust), 3) Emotionele veiligheid (iemand is in control, ik hoef het niet zelf te regelen). Kinderen testen grenzen om te checken of ze er zijn.",
@@ -2944,15 +2944,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Autoritair - hoge eisen, weinig warmte en uitleg",
-        isCorrect: true,
-        feedback: "Correct. Autoritair = hoge eisen + weinig warmte + geen uitleg. Het kind gehoorzaamt uit angst, niet uit begrip. Dit leidt tot ofwel rebels gedrag ofwel overaangepastheid.",
-      },
-      {
-        id: "c",
         text: "Permissief - veel warmte, weinig grenzen",
         isCorrect: false,
         feedback: "Nee. Permissief zou zijn: 'Oké schat, doe maar wat je wilt.' Dit is het tegenovergestelde: veel controle, weinig warmte.",
+      },
+      {
+        id: "c",
+        text: "Autoritair - hoge eisen, weinig warmte en uitleg",
+        isCorrect: true,
+        feedback: "Correct. Autoritair = hoge eisen + weinig warmte + geen uitleg. Het kind gehoorzaamt uit angst, niet uit begrip. Dit leidt tot ofwel rebels gedrag ofwel overaangepastheid.",
       },
     ],
     explanation: "Baumrind's 4 stijlen: 1) Autoritatief (warm + grenzen = gouden standaard), 2) Autoritair (streng + koud), 3) Permissief (warm + geen grenzen), 4) Verwaarlozend (koud + geen grenzen). Autoritatief leidt tot de beste uitkomsten.",
@@ -3006,15 +3006,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Jouw grenzen fungeren als zijn externe PFC - jij levert de regulatie die zijn brein nog niet zelf kan",
-        isCorrect: true,
-        feedback: "Correct. Grenzen = externe PFC. Jij levert de impulscontrole, planning, en consequentie-inschatting die zijn onrijpe brein nog niet zelf kan. Geleidelijk internalisert hij dit.",
-      },
-      {
-        id: "c",
         text: "Je moet extra streng zijn zodat zijn PFC sneller groeit",
         isCorrect: false,
         feedback: "Strengheid versnelt de PFC-rijping niet. Warme, consistente grenzen (autoritatief) bieden de veiligheid waarin het brein optimaal kan ontwikkelen.",
+      },
+      {
+        id: "c",
+        text: "Jouw grenzen fungeren als zijn externe PFC - jij levert de regulatie die zijn brein nog niet zelf kan",
+        isCorrect: true,
+        feedback: "Correct. Grenzen = externe PFC. Jij levert de impulscontrole, planning, en consequentie-inschatting die zijn onrijpe brein nog niet zelf kan. Geleidelijk internalisert hij dit.",
       },
     ],
     explanation: "Grenzen als externe PFC: de PFC (impulscontrole, planning, gevolgen inschatten) rijpt pas rond 25 jaar. Tot die tijd zijn JOUW grenzen de vervanging. Geleidelijk neemt het kind dit over (internalisatie). Dit is coregulatie op gedragsniveau.",
@@ -3037,15 +3037,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "'Oké, laat maar, ik ruim het wel op.' (geen grens, alleen warmte)",
-        isCorrect: false,
-        feedback: "Dit is permissief - warmte maar geen grens. Je dochter leert: als ik weiger, doet papa het wel.",
-      },
-      {
-        id: "c",
         text: "'We ruimen om 6 uur op. Wil je beginnen met de blokken of de puzzels?' (warm + grens + keuze)",
         isCorrect: true,
         feedback: "Correct. Autoritatief: de grens staat (opruimen), maar er is warmte (samen), uitleg (wanneer), en autonomie (keuze in volgorde). Firm but fair.",
+      },
+      {
+        id: "c",
+        text: "'Oké, laat maar, ik ruim het wel op.' (geen grens, alleen warmte)",
+        isCorrect: false,
+        feedback: "Dit is permissief - warmte maar geen grens. Je dochter leert: als ik weiger, doet papa het wel.",
       },
     ],
     explanation: "Autoritatief = de gouden standaard. Het combineert: 1) Duidelijke grenzen (het MOET), 2) Warmte (ik ben er voor je), 3) Uitleg (waarom), 4) Autonomie (keuzes binnen de grens). Dit leidt tot de beste ontwikkelingsuitkomsten.",
@@ -3062,15 +3062,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Zonder grenzen is er geen straf, dus kinderen leren geen consequenties",
-        isCorrect: false,
-        feedback: "Het gaat niet om straf. Het gaat om de neurologische behoefte aan voorspelbaarheid. Zonder grenzen is de wereld onvoorspelbaar = chronische stress.",
-      },
-      {
-        id: "b",
         text: "Zonder externe PFC (grenzen) moet het onrijpe kinderbrein zelf alle beslissingen nemen, wat chronische stress en onzekerheid veroorzaakt",
         isCorrect: true,
         feedback: "Correct. Zonder grenzen draait het kind 'overuren' op een onrijpe PFC. Dit veroorzaakt chronische cortisol-verhoging, angst, en paradoxaal genoeg: meer gedragsproblemen.",
+      },
+      {
+        id: "b",
+        text: "Zonder grenzen is er geen straf, dus kinderen leren geen consequenties",
+        isCorrect: false,
+        feedback: "Het gaat niet om straf. Het gaat om de neurologische behoefte aan voorspelbaarheid. Zonder grenzen is de wereld onvoorspelbaar = chronische stress.",
       },
       {
         id: "c",
@@ -3099,15 +3099,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Je herhaalt je boodschap rustig en kort, zonder nieuwe argumenten toe te voegen: 'De TV gaat uit na dit programma.'",
-        isCorrect: true,
-        feedback: "Correct. De Gebroken Grammofoon: herhaal dezelfde korte boodschap, warm maar stellig, zonder in discussie te gaan. Elke keer dezelfde zin.",
-      },
-      {
-        id: "b",
         text: "Je legt uitgebreid uit waarom TV slecht is voor zijn ogen en brein",
         isCorrect: false,
         feedback: "Te veel uitleg tijdens een grens nodigt uit tot discussie. Een 5-jarige gaat niet zeggen: 'Oh, je hebt gelijk over mijn neurale ontwikkeling.' Kort en simpel.",
+      },
+      {
+        id: "b",
+        text: "Je herhaalt je boodschap rustig en kort, zonder nieuwe argumenten toe te voegen: 'De TV gaat uit na dit programma.'",
+        isCorrect: true,
+        feedback: "Correct. De Gebroken Grammofoon: herhaal dezelfde korte boodschap, warm maar stellig, zonder in discussie te gaan. Elke keer dezelfde zin.",
       },
       {
         id: "c",
@@ -3161,15 +3161,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Uitleg is altijd effectief - kinderen verdienen een reden",
-        isCorrect: false,
-        feedback: "Uitleg is waardevol, maar niet TIJDENS de grens-confrontatie. Op dit moment is hij in fight-modus. Uitleg werkt pas als de emotie gezakt is.",
-      },
-      {
-        id: "b",
         text: "Tijdens een grens-confrontatie is zijn emotionele brein actief - uitleg bereikt de PFC niet en wordt gebruikt als munitie voor discussie",
         isCorrect: true,
         feedback: "Correct. Tijdens de confrontatie is de PFC offline. Uitleg wordt niet verwerkt maar omgebouwd tot tegenargumenten. Grens nu, uitleg later.",
+      },
+      {
+        id: "b",
+        text: "Uitleg is altijd effectief - kinderen verdienen een reden",
+        isCorrect: false,
+        feedback: "Uitleg is waardevol, maar niet TIJDENS de grens-confrontatie. Op dit moment is hij in fight-modus. Uitleg werkt pas als de emotie gezakt is.",
       },
       {
         id: "c",
@@ -3198,15 +3198,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Dat volhouden werkt - als ze lang genoeg zeurt, geeft papa toe. Dit versterkt het zeurgedrag",
-        isCorrect: true,
-        feedback: "Correct. Intermittent reinforcement: onvoorspelbaar toegeven versterkt gedrag MEER dan altijd toegeven. Ze leert: 'Misschien werkt het deze keer.' Dit is hetzelfde principe als gokverslaving.",
-      },
-      {
-        id: "c",
         text: "Niets bijzonders - één keer toegeven maakt niet uit",
         isCorrect: false,
         feedback: "Eén keer toegeven na meerdere keer 'nee' is precies intermittent reinforcement. Het leert haar dat de grens niet vast staat als ze maar lang genoeg volhoudt.",
+      },
+      {
+        id: "c",
+        text: "Dat volhouden werkt - als ze lang genoeg zeurt, geeft papa toe. Dit versterkt het zeurgedrag",
+        isCorrect: true,
+        feedback: "Correct. Intermittent reinforcement: onvoorspelbaar toegeven versterkt gedrag MEER dan altijd toegeven. Ze leert: 'Misschien werkt het deze keer.' Dit is hetzelfde principe als gokverslaving.",
       },
     ],
     explanation: "Intermittent reinforcement is de krachtigste bekrachtiging die bestaat (zie: gokautomaten). Onvoorspelbaar toegeven na 'nee' leert het kind: er is altijd een kans. De oplossing: als je 'nee' zegt, blijf bij 'nee'.",
@@ -3254,15 +3254,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Direct uitleggen waarom de grens belangrijk was",
-        isCorrect: false,
-        feedback: "Begin niet met uitleg. Begin met verbinding. Eerst de relatie herstellen, dan pas het leermoment.",
-      },
-      {
-        id: "b",
         text: "Eerst verbinden ('Dat was lastig hè'), dan kort uitleggen ('De grens was er omdat...'), dan vooruit kijken ('Volgende keer...')",
         isCorrect: true,
         feedback: "Correct. Volgorde: 1) Verbinding (relatie herstellen), 2) Korte uitleg (leermoment), 3) Vooruit kijken (volgende keer). Verbinding VOOR instructie.",
+      },
+      {
+        id: "b",
+        text: "Direct uitleggen waarom de grens belangrijk was",
+        isCorrect: false,
+        feedback: "Begin niet met uitleg. Begin met verbinding. Eerst de relatie herstellen, dan pas het leermoment.",
       },
       {
         id: "c",
@@ -3291,15 +3291,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Je bouwt een goede band door open te zijn over je gevoelens",
-        isCorrect: false,
-        feedback: "Dit is geen openheid maar parentificatie. Je maakt je zoon verantwoordelijk voor JOUW emotionele welzijn. Hij wordt je therapeut in plaats van je kind.",
-      },
-      {
-        id: "b",
         text: "Je schendt een emotionele grens - je belast je kind met volwassen zorgen (parentificatie)",
         isCorrect: true,
         feedback: "Correct. Parentificatie: het kind wordt de emotionele verzorger van de ouder. Dit is een omgekeerde rolverdeling die het kind schaadt. Jouw relatieproblemen zijn niet zijn last.",
+      },
+      {
+        id: "b",
+        text: "Je bouwt een goede band door open te zijn over je gevoelens",
+        isCorrect: false,
+        feedback: "Dit is geen openheid maar parentificatie. Je maakt je zoon verantwoordelijk voor JOUW emotionele welzijn. Hij wordt je therapeut in plaats van je kind.",
       },
       {
         id: "c",
@@ -3322,9 +3322,9 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "'Mama en papa waren het ergens niet over eens. Dat hoort erbij. Het komt goed.' (kort, eerlijk, zonder details)",
-        isCorrect: true,
-        feedback: "Correct. Eerlijk maar leeftijdsgeschikt. Je erkent wat ze heeft gezien (ze is niet gek), geeft geruststelling (het komt goed), maar deelt geen volwassen details.",
+        text: "'Nergens over schat, er was niets aan de hand.' (ontkennen)",
+        isCorrect: false,
+        feedback: "Ontkennen verwarrt haar: ze ZAG dat je boos was. Als je zegt dat er niets is, leert ze haar eigen waarneming niet te vertrouwen.",
       },
       {
         id: "b",
@@ -3334,9 +3334,9 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
       },
       {
         id: "c",
-        text: "'Nergens over schat, er was niets aan de hand.' (ontkennen)",
-        isCorrect: false,
-        feedback: "Ontkennen verwarrt haar: ze ZAG dat je boos was. Als je zegt dat er niets is, leert ze haar eigen waarneming niet te vertrouwen.",
+        text: "'Mama en papa waren het ergens niet over eens. Dat hoort erbij. Het komt goed.' (kort, eerlijk, zonder details)",
+        isCorrect: true,
+        feedback: "Correct. Eerlijk maar leeftijdsgeschikt. Je erkent wat ze heeft gezien (ze is niet gek), geeft geruststelling (het komt goed), maar deelt geen volwassen details.",
       },
     ],
     explanation: "Emotionele grenzen bij partnerconflict: 1) Erken wat het kind heeft gezien (hun waarneming klopt), 2) Geef geruststelling (het komt goed), 3) Deel geen volwassen details. Eerlijk maar beschermd.",
@@ -3353,15 +3353,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Er is geen risico - hij is gewoon een zorgzaam kind",
-        isCorrect: false,
-        feedback: "Incidenteel helpen is prima. Maar structureel de ouderrol overnemen als je vader gestrest is = parentificatie. Hij leert: ik moet voor papa zorgen.",
-      },
-      {
-        id: "b",
         text: "Hij is aan het parentificeren - hij neemt de ouderrol over omdat hij voelt dat jij het niet aankan, ten koste van zijn eigen kindertijd",
         isCorrect: true,
         feedback: "Correct. Instrumentele parentificatie: het kind neemt praktische taken over die niet bij zijn leeftijd horen. Hij offert zijn kindertijd op om voor jou te zorgen. Dit schaadt zijn ontwikkeling.",
+      },
+      {
+        id: "b",
+        text: "Er is geen risico - hij is gewoon een zorgzaam kind",
+        isCorrect: false,
+        feedback: "Incidenteel helpen is prima. Maar structureel de ouderrol overnemen als je vader gestrest is = parentificatie. Hij leert: ik moet voor papa zorgen.",
       },
       {
         id: "c",
@@ -3421,15 +3421,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Drie lagen: emotionele parentificatie (zijn eenzaamheid delen), loyaliteitsconflict (kind tussen ouders plaatsen), en haar verantwoordelijk maken voor zijn welzijn",
-        isCorrect: true,
-        feedback: "Correct. Laag 1: parentificatie (kind draagt zijn emotie). Laag 2: loyaliteitsconflict (kind moet kiezen). Laag 3: verantwoordelijkheid verschuiven (kind 'moet' hem redden). Drie emotionele grenzen geschonden.",
-      },
-      {
-        id: "c",
         text: "Het is begrijpelijk - gescheiden vaders zijn eenzaam en kinderen moeten dat begrijpen",
         isCorrect: false,
         feedback: "Zijn eenzaamheid is reëel en begrijpelijk. Maar een 9-jarige is niet de juiste persoon om dit mee te delen. Zijn emotionele behoeften moeten door volwassenen worden opgevangen.",
+      },
+      {
+        id: "c",
+        text: "Drie lagen: emotionele parentificatie (zijn eenzaamheid delen), loyaliteitsconflict (kind tussen ouders plaatsen), en haar verantwoordelijk maken voor zijn welzijn",
+        isCorrect: true,
+        feedback: "Correct. Laag 1: parentificatie (kind draagt zijn emotie). Laag 2: loyaliteitsconflict (kind moet kiezen). Laag 3: verantwoordelijkheid verschuiven (kind 'moet' hem redden). Drie emotionele grenzen geschonden.",
       },
     ],
     explanation: "Gescheiden vaders lopen extra risico op emotionele grensoverschrijding door eenzaamheid. Cruciale regels: 1) Kind niet gebruiken als emotionele steun, 2) Kind niet in loyaliteitsconflict plaatsen, 3) Kind niet verantwoordelijk maken voor jouw welzijn.",
@@ -3446,15 +3446,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "'Maak je geen zorgen schat, er is niets.' (ontkennen)",
-        isCorrect: false,
-        feedback: "Ontkennen invalidateert haar waarneming. Ze ZIET dat je moe bent. Eerlijkheid met een grens is beter dan ontkenning.",
-      },
-      {
-        id: "b",
         text: "'Lief dat je dat zegt. Ik ben een beetje moe, maar dat is iets voor grote mensen. Papa zorgt voor zichzelf.' (eerlijk + grens + geruststelling)",
         isCorrect: true,
         feedback: "Correct. Je valideert haar zorgzaamheid, bent eerlijk over je toestand, stelt een emotionele grens (dit is van mij), en geeft geruststelling (ik kan dit aan). Alle elementen aanwezig.",
+      },
+      {
+        id: "b",
+        text: "'Maak je geen zorgen schat, er is niets.' (ontkennen)",
+        isCorrect: false,
+        feedback: "Ontkennen invalidateert haar waarneming. Ze ZIET dat je moe bent. Eerlijkheid met een grens is beter dan ontkenning.",
       },
       {
         id: "c",
@@ -3520,15 +3520,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Nee, dit is een harde grens (fysieke veiligheid). Veiligheidsgrenzen buig je NOOIT, ongeacht de context",
-        isCorrect: true,
-        feedback: "Correct. In de prioriteitenmatrix is fysieke veiligheid ALTIJD een harde grens. Geen uitzonderingen. 'Ik snap dat je het niet leuk vindt. Helm op, of we fietsen niet.'",
-      },
-      {
-        id: "c",
         text: "Misschien - als ze belooft voorzichtig te zijn",
         isCorrect: false,
         feedback: "Een 5-jarige kan 'voorzichtig' niet consistent uitvoeren. Veiligheidsgrenzen staan los van beloftes. Helm = harde grens.",
+      },
+      {
+        id: "c",
+        text: "Nee, dit is een harde grens (fysieke veiligheid). Veiligheidsgrenzen buig je NOOIT, ongeacht de context",
+        isCorrect: true,
+        feedback: "Correct. In de prioriteitenmatrix is fysieke veiligheid ALTIJD een harde grens. Geen uitzonderingen. 'Ik snap dat je het niet leuk vindt. Helm op, of we fietsen niet.'",
       },
     ],
     explanation: "De prioriteitenmatrix in actie: veiligheid = ALTIJD hard. De test is simpel: kan mijn kind ernstig gewond raken? Ja = harde grens. Nee = overweeg de context. Fietshelm, autogordel, niet met vreemden meegaan = harde grenzen.",
@@ -3607,15 +3607,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Schoenen zelf aandoen - je bent al laat en efficiëntie gaat voor",
-        isCorrect: false,
-        feedback: "Dit ondermijnt zijn autonomie-ontwikkeling. Op 3 jaar is 'zelf doen' essentieel. De oplossing zit in planning, niet in overnemen.",
-      },
-      {
-        id: "b",
         text: "Hem laten proberen maar eerder beginnen met vertrekken - autonomie faciliteren in plaats van wegnemen",
         isCorrect: true,
         feedback: "Correct. De oplossing is PREVENTIEF: eerder beginnen zodat er tijd is voor zijn autonomie. Zijn behoefte om zelf te doen is ontwikkelingsnoodzaak, niet koppigheid.",
+      },
+      {
+        id: "b",
+        text: "Schoenen zelf aandoen - je bent al laat en efficiëntie gaat voor",
+        isCorrect: false,
+        feedback: "Dit ondermijnt zijn autonomie-ontwikkeling. Op 3 jaar is 'zelf doen' essentieel. De oplossing zit in planning, niet in overnemen.",
       },
       {
         id: "c",
@@ -3644,15 +3644,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Alle regels laten vallen - hij kan er niets aan doen",
-        isCorrect: false,
-        feedback: "Geen grenzen is ook schadelijk. Hij heeft AANGEPASTE grenzen nodig, niet GEEN grenzen. Structuur is juist extra belangrijk bij ADHD.",
-      },
-      {
-        id: "c",
         text: "Grenzen aanpassen aan zijn mogelijkheden: korter stilzitten, huiswerk in blokken van 10 min, beweging tussendoor. Dezelfde waarden, andere invulling",
         isCorrect: true,
         feedback: "Correct. Flexibele grenzen = dezelfde waarden (respect, leren) maar andere invulling (10 min blokken i.p.v. 30 min). Je past de VORM aan, niet de FUNCTIE.",
+      },
+      {
+        id: "c",
+        text: "Alle regels laten vallen - hij kan er niets aan doen",
+        isCorrect: false,
+        feedback: "Geen grenzen is ook schadelijk. Hij heeft AANGEPASTE grenzen nodig, niet GEEN grenzen. Structuur is juist extra belangrijk bij ADHD.",
       },
     ],
     explanation: "Bij neurodiversiteit: de grens-WAARDE blijft (respect, veiligheid, leren), maar de grens-VORM past zich aan. Dit is het verschil tussen rigide grenzen (vorm vasthouden) en flexibele grenzen (functie vasthouden).",
@@ -3681,15 +3681,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Ze leert dat papa's grenzen niet tellen en dat ze door 'shoppen' bij mama alsnog haar zin krijgt",
-        isCorrect: true,
-        feedback: "Correct. Parent-shopping: het kind leert welke ouder de 'makkelijke' is. Dit ondermijnt jouw autoriteit en creëert verwarring over welke grenzen echt gelden.",
-      },
-      {
-        id: "c",
         text: "Ze leert dat mama aardiger is dan papa",
         isCorrect: false,
         feedback: "Het gaat niet om wie 'aardiger' is. Ze leert een strategische vaardigheid: als de ene ouder nee zegt, probeer de andere. Dit is schadelijk voor alle drie.",
+      },
+      {
+        id: "c",
+        text: "Ze leert dat papa's grenzen niet tellen en dat ze door 'shoppen' bij mama alsnog haar zin krijgt",
+        isCorrect: true,
+        feedback: "Correct. Parent-shopping: het kind leert welke ouder de 'makkelijke' is. Dit ondermijnt jouw autoriteit en creëert verwarring over welke grenzen echt gelden.",
       },
     ],
     explanation: "Parent-shopping: kinderen leren snel welke ouder bij welk onderwerp de 'zwakste' is. Inconsistentie tussen ouders ondermijnt grenzen structureel. De oplossing: united front. 'Heeft papa al geantwoord? Dan geldt dat.'",
@@ -3712,15 +3712,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Samen een bedtijd afspreken (bijv. 19:45 als compromis) en dit consistent hanteren - united front",
-        isCorrect: true,
-        feedback: "Correct. United front: bespreek het ZONDER het kind erbij, maak een gezamenlijk besluit, en handhaaf het SAMEN. Het kind ziet: mijn ouders zijn een team.",
-      },
-      {
-        id: "c",
         text: "De strijd aangaan - wie het hardst volhoudt wint",
         isCorrect: false,
         feedback: "Een machtsstrijd tussen ouders is schadelijk voor de relatie en het kind. Compromis en teamwerk zijn de sleutel.",
+      },
+      {
+        id: "c",
+        text: "Samen een bedtijd afspreken (bijv. 19:45 als compromis) en dit consistent hanteren - united front",
+        isCorrect: true,
+        feedback: "Correct. United front: bespreek het ZONDER het kind erbij, maak een gezamenlijk besluit, en handhaaf het SAMEN. Het kind ziet: mijn ouders zijn een team.",
       },
     ],
     explanation: "United front regels: 1) Bespreek meningsverschillen ZONDER kinderen erbij, 2) Maak een gezamenlijk besluit (compromis), 3) Communiceer het als team ('We hebben besloten'), 4) Steun elkaar in handhaving.",
@@ -3799,15 +3799,15 @@ export const GRENZEN_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Niets is misgegaan - je was eerlijk tegen je dochter",
-        isCorrect: false,
-        feedback: "Eerlijkheid is belangrijk, maar je hebt je partner ondermijnd EN je dochter in een loyaliteitsconflict geplaatst. Ze moet nu kiezen tussen papa en mama.",
-      },
-      {
-        id: "b",
         text: "Je hebt het united front gebroken. Reparatie: 1) Excuses aan partner, 2) Samen naar je dochter: 'Papa en mama zijn het samen eens geworden over...'",
         isCorrect: true,
         feedback: "Correct. De schade repareren: 1) Erken naar je partner dat je het front hebt gebroken, 2) Maak samen een nieuwe afspraak, 3) Ga SAMEN naar je dochter en communiceer de gezamenlijke grens.",
+      },
+      {
+        id: "b",
+        text: "Niets is misgegaan - je was eerlijk tegen je dochter",
+        isCorrect: false,
+        feedback: "Eerlijkheid is belangrijk, maar je hebt je partner ondermijnd EN je dochter in een loyaliteitsconflict geplaatst. Ze moet nu kiezen tussen papa en mama.",
       },
       {
         id: "c",
@@ -3859,8 +3859,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     question: "Bram (7) probeert zelf een ei te bakken voor het ontbijt. Het gaat langzaam en hij morst eierschaal in de pan. Je staat achter hem. Wat doe je?",
     context: "Self-Determination Theory: autonomie, competentie en verbinding zijn de drie basisbehoeften.",
     options: [
-      { id: "a", text: "Je pakt de pan over en bakt het ei snel zelf af", isCorrect: false, feedback: "Nee. Je bedoeling is goed, maar je ondermijnt zijn competentiegevoel. Hij leert: 'als het niet perfect gaat, neemt papa het over.'" },
-      { id: "b", text: "Je laat hem doorgaan en zegt: 'Ik zie dat er schaal in zit. Hoe zou je die eruit kunnen halen?'", isCorrect: true, feedback: "Correct! Je benoemt het probleem neutraal en activeert zijn probleemoplossend denken. Hij blijft eigenaar van de taak." },
+      { id: "a", text: "Je laat hem doorgaan en zegt: 'Ik zie dat er schaal in zit. Hoe zou je die eruit kunnen halen?'", isCorrect: true, feedback: "Correct! Je benoemt het probleem neutraal en activeert zijn probleemoplossend denken. Hij blijft eigenaar van de taak." },
+      { id: "b", text: "Je pakt de pan over en bakt het ei snel zelf af", isCorrect: false, feedback: "Nee. Je bedoeling is goed, maar je ondermijnt zijn competentiegevoel. Hij leert: 'als het niet perfect gaat, neemt papa het over.'" },
       { id: "c", text: "Je zegt dat hij te jong is om eieren te bakken en dat hij het volgend jaar mag proberen", isCorrect: false, feedback: "Nee. Een 7-jarige KAN een ei bakken met begeleiding. Door het uit te stellen ondermijn je zijn intrinsieke motivatie om te leren." },
     ],
     explanation: "Deci & Ryan's Self-Determination Theory: competentie is een basisbehoefte. De sleutelvraag is niet 'kan mijn kind dit perfect?' maar 'kan mijn kind dit LEREN als ik het ruimte geef?' Hulp bieden is goed; overnemen is schadelijk.",
@@ -3881,8 +3881,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     id: "au_3", skill: "Autonomie", type: "quiz", difficulty: "gevorderd", order: 3,
     question: "Stijn (9) wil zelf met de trein naar zijn opa, twee haltes verderop. Je vindt het spannend maar de route is eenvoudig. Hoe pas je scaffolding toe?",
     options: [
-      { id: "a", text: "Je zegt nee — een 9-jarige hoort niet alleen in de trein", isCorrect: false, feedback: "Nee. Dit is je eigen angst projecteren. In veel landen reizen kinderen van deze leeftijd zelfstandig. De vraag is: kun je hem erop voorbereiden?" },
-      { id: "b", text: "Je reist eerst twee keer samen mee, oefent het kaartje kopen, bespreekt wat-als scenario's, en laat hem dan alleen gaan", isCorrect: true, feedback: "Perfect scaffolding! Samen oefenen, stap voor stap steun afbouwen, en dan loslaten. Dit is de Zone van Naaste Ontwikkeling in actie." },
+      { id: "a", text: "Je reist eerst twee keer samen mee, oefent het kaartje kopen, bespreekt wat-als scenario's, en laat hem dan alleen gaan", isCorrect: true, feedback: "Perfect scaffolding! Samen oefenen, stap voor stap steun afbouwen, en dan loslaten. Dit is de Zone van Naaste Ontwikkeling in actie." },
+      { id: "b", text: "Je zegt nee — een 9-jarige hoort niet alleen in de trein", isCorrect: false, feedback: "Nee. Dit is je eigen angst projecteren. In veel landen reizen kinderen van deze leeftijd zelfstandig. De vraag is: kun je hem erop voorbereiden?" },
       { id: "c", text: "Je laat hem direct gaan — hij moet het zelf uitzoeken", isCorrect: false, feedback: "Nee. Zonder voorbereiding is dit boven zijn ZPD. Scaffolding betekent: eerst ondersteunen, dan geleidelijk loslaten." },
     ],
     explanation: "Vygotsky's scaffolding: bied precies genoeg steun om het kind naar het volgende niveau te brengen, en bouw die steun af zodra het kind het zelf kan. Te veel steun remt; te weinig steun overweldigt.",
@@ -3905,8 +3905,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     context: "SDT: autonomie, competentie en verbinding zijn de drie psychologische basisbehoeften.",
     options: [
       { id: "a", text: "Competentie — hij leert niet dat hij dingen kan", isCorrect: false, feedback: "Deels, maar het kernprobleem is anders. Hij heeft misschien best de vaardigheden, maar hij MAG ze niet inzetten." },
-      { id: "b", text: "Autonomie — hij ervaart geen invloed op zijn eigen leven", isCorrect: true, feedback: "Correct. Autonomie = het gevoel dat je keuzes kunt maken die ertoe doen. Zonder enige inspraak voelt een kind zich machteloos en afhankelijk." },
-      { id: "c", text: "Verbinding — hij voelt zich buitengesloten door het gezin", isCorrect: false, feedback: "De vader is wel betrokken, maar op een controlerende manier. Het kernprobleem is het ontbreken van keuzevrijheid, niet van relatie." },
+      { id: "b", text: "Verbinding — hij voelt zich buitengesloten door het gezin", isCorrect: false, feedback: "De vader is wel betrokken, maar op een controlerende manier. Het kernprobleem is het ontbreken van keuzevrijheid, niet van relatie." },
+      { id: "c", text: "Autonomie — hij ervaart geen invloed op zijn eigen leven", isCorrect: true, feedback: "Correct. Autonomie = het gevoel dat je keuzes kunt maken die ertoe doen. Zonder enige inspraak voelt een kind zich machteloos en afhankelijk." },
     ],
     explanation: "SDT onderscheidt drie basisbehoeften. Bij totale controle door de ouder wordt autonomie het hardst geraakt. Kinderen die nooit mogen kiezen, ontwikkelen ofwel passiviteit (geleerd hulpeloosheid) ofwel heftig verzet.",
     research: "Deci, E.L. & Ryan, R.M. (2000). Self-Determination Theory and the Facilitation of Intrinsic Motivation",
@@ -3939,8 +3939,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     id: "au_8", skill: "Autonomie", type: "quiz", difficulty: "basis", order: 8,
     question: "Lars (10) heeft een spreekbeurt over twee weken. Hij doet niets. Je wilt ingrijpen. Wat bevordert zijn autonomie het meest?",
     options: [
-      { id: "a", text: "Je maakt samen een planningsschema en helpt met de inhoud", isCorrect: false, feedback: "Het planningsschema samen maken kan nuttig zijn, maar helpen met de inhoud maakt jou mede-eigenaar. Scaffolding = helpen plannen, niet uitvoeren." },
-      { id: "b", text: "Je vraagt: 'Hoe wil je dit aanpakken? Wanneer ga je beginnen?' en laat hem de consequentie ervaren als hij niets doet", isCorrect: true, feedback: "Correct! Op 10 jaar is planning een ontwikkelingstaak. Door hem te laten nadenken over zijn aanpak en de consequentie te laten komen, bouw je eigenaarschap." },
+      { id: "a", text: "Je vraagt: 'Hoe wil je dit aanpakken? Wanneer ga je beginnen?' en laat hem de consequentie ervaren als hij niets doet", isCorrect: true, feedback: "Correct! Op 10 jaar is planning een ontwikkelingstaak. Door hem te laten nadenken over zijn aanpak en de consequentie te laten komen, bouw je eigenaarschap." },
+      { id: "b", text: "Je maakt samen een planningsschema en helpt met de inhoud", isCorrect: false, feedback: "Het planningsschema samen maken kan nuttig zijn, maar helpen met de inhoud maakt jou mede-eigenaar. Scaffolding = helpen plannen, niet uitvoeren." },
       { id: "c", text: "Je doet niets — het is zijn verantwoordelijkheid", isCorrect: false, feedback: "Helemaal niets doen mist je coachrol. Een korte vraag ('Hoe ga je dit aanpakken?') is scaffolding zonder overnemen." },
     ],
     explanation: "Op 10 jaar verschuift je rol van regisseur naar coach. Help met het PROCES (hoe pak je het aan?) niet met de INHOUD (wat zet je erin?). De natuurlijke consequentie van uitstelgedrag is de krachtigste leraar.",
@@ -3951,8 +3951,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     question: "Iris (7) wil leren koken. Ze kan al roeren en groenten wassen, maar snijden met een mes vindt je eng. Wat is scaffolding volgens Vygotsky's ZPD?",
     options: [
       { id: "a", text: "Wachten tot ze ouder is — een mes is te gevaarlijk voor een 7-jarige", isCorrect: false, feedback: "Nee. Dit houdt haar ONDER de ZPD. Met begeleiding kan een 7-jarige leren snijden met een kindveilig mes." },
-      { id: "b", text: "Haar een scherp mes geven en zeggen: 'Je kan het, gewoon proberen!'", isCorrect: false, feedback: "Nee. Dit is BOVEN de ZPD — te veel risico zonder begeleiding. Scaffolding betekent: precies genoeg steun bieden." },
-      { id: "c", text: "Beginnen met een botermesje op zacht fruit, daarna een kindveilig mes op groenten, en steeds minder begeleiden", isCorrect: true, feedback: "Perfect scaffolding! Je bouwt de vaardigheid stap voor stap op, steeds in de ZPD, en vermindert je steun naarmate ze vaardiger wordt." },
+      { id: "b", text: "Beginnen met een botermesje op zacht fruit, daarna een kindveilig mes op groenten, en steeds minder begeleiden", isCorrect: true, feedback: "Perfect scaffolding! Je bouwt de vaardigheid stap voor stap op, steeds in de ZPD, en vermindert je steun naarmate ze vaardiger wordt." },
+      { id: "c", text: "Haar een scherp mes geven en zeggen: 'Je kan het, gewoon proberen!'", isCorrect: false, feedback: "Nee. Dit is BOVEN de ZPD — te veel risico zonder begeleiding. Scaffolding betekent: precies genoeg steun bieden." },
     ],
     explanation: "De Zone van Naaste Ontwikkeling = wat een kind nog niet ZELF kan maar WEL met hulp. Scaffolding = tijdelijke ondersteuning die je afbouwt. De kunst is precies in die zone te blijven: niet te makkelijk, niet te moeilijk.",
     research: "Vygotsky, L.S. (1978). Mind in Society: The Development of Higher Psychological Processes",
@@ -3961,8 +3961,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     id: "au_10", skill: "Autonomie", type: "quiz", difficulty: "gevorderd", order: 10,
     question: "Pepijn (13) wil zelf zijn geld beheren. Hij krijgt zakgeld maar geeft het altijd binnen twee dagen uit. Je wilt blijven controleren. Wat klopt?",
     options: [
-      { id: "a", text: "Je beheert zijn geld tot hij volwassen is — hij kan er duidelijk niet mee omgaan", isCorrect: false, feedback: "Nee. Hij leert nooit omgaan met geld als hij het nooit mag beheren. Financiele autonomie moet geoefend worden." },
-      { id: "b", text: "Op 13 jaar is geldbeheer een passende ontwikkelingstaak — laat hem experimenteren met de consequentie (blut zijn) en coach hem op budget", isCorrect: true, feedback: "Correct! Op 13 jaar: laat hem blut zijn na twee dagen. Die ervaring leert meer dan jouw controle. Je rol: coach op budget, niet bewaker van de portemonnee." },
+      { id: "a", text: "Op 13 jaar is geldbeheer een passende ontwikkelingstaak — laat hem experimenteren met de consequentie (blut zijn) en coach hem op budget", isCorrect: true, feedback: "Correct! Op 13 jaar: laat hem blut zijn na twee dagen. Die ervaring leert meer dan jouw controle. Je rol: coach op budget, niet bewaker van de portemonnee." },
+      { id: "b", text: "Je beheert zijn geld tot hij volwassen is — hij kan er duidelijk niet mee omgaan", isCorrect: false, feedback: "Nee. Hij leert nooit omgaan met geld als hij het nooit mag beheren. Financiele autonomie moet geoefend worden." },
       { id: "c", text: "Stop met zakgeld geven tot hij er verantwoord mee omgaat", isCorrect: false, feedback: "Nee. Het wegnemen van de oefenkans maakt het probleem erger. Hij leert juist door het te DOEN en de consequenties te ervaren." },
     ],
     explanation: "Geldbeheer per leeftijd: 8j = klein bedrag met begeleiding, 13j = eigen budget met coaching, 16j = grotere bedragen met toenemende zelfstandigheid. Elke fase heeft passende autonomie en bijbehorende consequenties.",
@@ -3973,8 +3973,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     question: "Fenna (12) wil haar kamer helemaal zelf inrichten: posters, kleurenkeuze, indeling. Het resultaat is volgens jou lelijk. Wat is het verschil tussen beschermen en beperken?",
     options: [
       { id: "a", text: "Je zegt dat ze het mag aanpassen als het je goedkeuring krijgt", isCorrect: false, feedback: "Nee. Je maakt haar autonomie voorwaardelijk aan jouw smaak. Haar kamer is HAAR domein — een veilige oefenruimte voor eigenaarschap." },
-      { id: "b", text: "Je laat haar volledig kiezen — haar kamer is haar domein en een veilige oefenruimte voor eigen smaak", isCorrect: true, feedback: "Correct! Op 12 jaar is kamerdecoratie een perfecte autonomie-oefening. Er is geen veiligheidsrisico, dus het is beperken vermomd als betrokkenheid." },
-      { id: "c", text: "Je helpt haar met Pinterest om samen iets 'moois' te vinden", isCorrect: false, feedback: "Nee. Dit stuurt haar subtiel richting jouw smaak. Laat haar eigen smaak ontwikkelen, ook als die verschilt van de jouwe." },
+      { id: "b", text: "Je helpt haar met Pinterest om samen iets 'moois' te vinden", isCorrect: false, feedback: "Nee. Dit stuurt haar subtiel richting jouw smaak. Laat haar eigen smaak ontwikkelen, ook als die verschilt van de jouwe." },
+      { id: "c", text: "Je laat haar volledig kiezen — haar kamer is haar domein en een veilige oefenruimte voor eigen smaak", isCorrect: true, feedback: "Correct! Op 12 jaar is kamerdecoratie een perfecte autonomie-oefening. Er is geen veiligheidsrisico, dus het is beperken vermomd als betrokkenheid." },
     ],
     explanation: "Beschermen = reeel risico managen. Beperken = je eigen voorkeuren projecteren op je kind. Bij onschuldige keuzes (kleding, kamerinrichting, kapsel) is het bijna altijd beperken, niet beschermen.",
     research: "Skenazy, L. (2009). Free-Range Kids. Jossey-Bass",
@@ -3983,8 +3983,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     id: "au_12", skill: "Autonomie", type: "quiz", difficulty: "expert", order: 12,
     question: "Ruben (15) wil alleen met de trein naar een festival in een andere stad, 100 km verderop. Je kent de plek niet. Wat zegt onderzoek over autonomie op deze leeftijd?",
     options: [
-      { id: "a", text: "15 is te jong voor een festival zonder ouders — je 'nee' is terecht", isCorrect: false, feedback: "Niet per se. Op 15 jaar is toenemende zelfstandigheid een ontwikkelingsbehoefte. Een reflexmatig 'nee' is vaak angstgestuurd, niet risicogestuurd." },
-      { id: "b", text: "Op 15 jaar is zelfstandig reizen een ontwikkelingstaak — bespreek samen veiligheidsafspraken en maak een plan", isCorrect: true, feedback: "Correct! Tieners hebben autonomie nodig voor identiteitsontwikkeling. Samen plannen (bereikbaarheid, noodplan, thuiskomsttijd) is scaffolding op tienerniveau." },
+      { id: "a", text: "Op 15 jaar is zelfstandig reizen een ontwikkelingstaak — bespreek samen veiligheidsafspraken en maak een plan", isCorrect: true, feedback: "Correct! Tieners hebben autonomie nodig voor identiteitsontwikkeling. Samen plannen (bereikbaarheid, noodplan, thuiskomsttijd) is scaffolding op tienerniveau." },
+      { id: "b", text: "15 is te jong voor een festival zonder ouders — je 'nee' is terecht", isCorrect: false, feedback: "Niet per se. Op 15 jaar is toenemende zelfstandigheid een ontwikkelingsbehoefte. Een reflexmatig 'nee' is vaak angstgestuurd, niet risicogestuurd." },
       { id: "c", text: "Laat hem gaan zonder voorwaarden — op 15 moet je volledig vertrouwen geven", isCorrect: false, feedback: "Nee. Volledig loslaten zonder kader is geen autonomie maar onverschilligheid. Ook tieners hebben nog scaffolding nodig." },
     ],
     explanation: "Erikson: tieners hebben autonomie nodig voor identiteitsontwikkeling. Het doel verschuift van 'beschermen tegen de wereld' naar 'voorbereiden op de wereld'. Samen plannen = respect + veiligheid.",
@@ -3997,8 +3997,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     context: "Growth mindset vs fixed mindset: hoe je prijst bepaalt hoe je kind denkt over leren.",
     options: [
       { id: "a", text: "Geen risico — complimenten zijn altijd goed voor het zelfvertrouwen", isCorrect: false, feedback: "Nee. Complimenten op TALENT ('kunstenaar') creeren een fixed mindset. Hij gaat moeilijke tekeningen vermijden om zijn label niet te verliezen." },
-      { id: "b", text: "Hij ontwikkelt een fixed mindset en vermijdt uitdagende tekeningen uit angst het label 'kunstenaar' te verliezen", isCorrect: true, feedback: "Correct! Als je identiteit gekoppeld is aan talent en je faalt, verlies je je identiteit. Kinderen die op eigenschap worden geprezen, kiezen veilige taken." },
-      { id: "c", text: "Hij wordt overmoedig en stopt met oefenen", isCorrect: false, feedback: "Dat kan, maar het kernprobleem is dieper: hij ontwikkelt een fixed mindset waarin falen bedreigend voelt." },
+      { id: "b", text: "Hij wordt overmoedig en stopt met oefenen", isCorrect: false, feedback: "Dat kan, maar het kernprobleem is dieper: hij ontwikkelt een fixed mindset waarin falen bedreigend voelt." },
+      { id: "c", text: "Hij ontwikkelt een fixed mindset en vermijdt uitdagende tekeningen uit angst het label 'kunstenaar' te verliezen", isCorrect: true, feedback: "Correct! Als je identiteit gekoppeld is aan talent en je faalt, verlies je je identiteit. Kinderen die op eigenschap worden geprezen, kiezen veilige taken." },
     ],
     explanation: "Dweck's onderzoek: kinderen die op talent worden geprezen vermijden risico's. Kinderen die op inzet worden geprezen ('Je hebt zo lang aan die schaduw gewerkt!') zoeken juist uitdaging op.",
     research: "Dweck, C. (2006). Mindset: The New Psychology of Success",
@@ -4007,8 +4007,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     id: "au_14", skill: "Autonomie", type: "quiz", difficulty: "basis", order: 14,
     question: "Merel (5) bouwt een zandkasteel. Het stort steeds in bij de toren. Ze wil stoppen. Welke reactie bevordert een growth mindset?",
     options: [
-      { id: "a", text: "'Zal papa de toren even maken? Kijk, zo moet het.'", isCorrect: false, feedback: "Nee. Je redt haar van de frustratie en zij leert: 'als het mislukt, doet papa het.' Ze mist de kans om zelf een oplossing te vinden." },
-      { id: "b", text: "'De toren zakt steeds in! Wat denk je dat er gebeurt? Misschien met natter zand?'", isCorrect: true, feedback: "Perfect! Je normaliseert het instorten (neutraal benoemen), stelt een denkprikkel, en laat haar experimenteren. Falen wordt onderzoek, niet frustratie." },
+      { id: "a", text: "'De toren zakt steeds in! Wat denk je dat er gebeurt? Misschien met natter zand?'", isCorrect: true, feedback: "Perfect! Je normaliseert het instorten (neutraal benoemen), stelt een denkprikkel, en laat haar experimenteren. Falen wordt onderzoek, niet frustratie." },
+      { id: "b", text: "'Zal papa de toren even maken? Kijk, zo moet het.'", isCorrect: false, feedback: "Nee. Je redt haar van de frustratie en zij leert: 'als het mislukt, doet papa het.' Ze mist de kans om zelf een oplossing te vinden." },
       { id: "c", text: "'Niet opgeven hoor! Probeer het nog een keer!'", isCorrect: false, feedback: "Nee. 'Doorzetten' zonder richting is zinloos. Ze heeft een STRATEGIE nodig, niet een motivatiespreuk." },
     ],
     explanation: "Growth mindset coaching: (1) normaliseer het falen, (2) activeer nieuwsgierigheid, (3) bied een strategische hint. Het doel is niet doorzetten maar ONTDEKKEN.",
@@ -4019,8 +4019,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     question: "Wouter (10) speelt in een toneelstuk op school en vergeet halverwege zijn tekst. Na afloop huilt hij backstage. Welke reactie combineert validatie met growth mindset?",
     options: [
       { id: "a", text: "'Niet huilen, niemand heeft het gemerkt. Je deed het hartstikke goed!'", isCorrect: false, feedback: "Nee. 'Niet huilen' invalideert zijn emotie. En 'niemand merkte het' ontkent zijn ervaring — hij merkte het WEL." },
-      { id: "b", text: "'Dat voelt heel vervelend. Ik zag dat je bleef staan en iets improviseerde — hoe deed je dat op dat moment?'", isCorrect: true, feedback: "Excellent! Eerst validatie ('voelt vervelend'), dan focus op zijn REACTIE op de fout, niet op de fout zelf. Je benoemt zijn veerkracht." },
-      { id: "c", text: "'Volgende keer oefenen we je tekst vaker, dan gebeurt dit niet meer'", isCorrect: false, feedback: "Nee. Je springt over zijn emotie heen naar een oplossing en impliceert dat het niet had mogen gebeuren." },
+      { id: "b", text: "'Volgende keer oefenen we je tekst vaker, dan gebeurt dit niet meer'", isCorrect: false, feedback: "Nee. Je springt over zijn emotie heen naar een oplossing en impliceert dat het niet had mogen gebeuren." },
+      { id: "c", text: "'Dat voelt heel vervelend. Ik zag dat je bleef staan en iets improviseerde — hoe deed je dat op dat moment?'", isCorrect: true, feedback: "Excellent! Eerst validatie ('voelt vervelend'), dan focus op zijn REACTIE op de fout, niet op de fout zelf. Je benoemt zijn veerkracht." },
     ],
     explanation: "Eerst voelen, dan leren: valideer de emotie en richt de aandacht op het PROCES. 'Hoe deed je dat op dat moment?' benoemt iets specifieks dat HIJ deed en richt de blik op veerkracht.",
     research: "Dweck, C. (2006). Mindset: The New Psychology of Success",
@@ -4029,8 +4029,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     id: "au_16", skill: "Autonomie", type: "quiz", difficulty: "gevorderd", order: 16,
     question: "Lieke (8) weigert mee te doen aan de schoolzwemwedstrijd. Ze is een goede zwemster maar zegt: 'Ik wil niet als ik niet kan winnen.' Waar wijst dit gedrag op?",
     options: [
-      { id: "a", text: "Ze is een perfectionist — dat is een karaktereigenschap", isCorrect: false, feedback: "Perfectionisme bij kinderen is zelden aangeboren. Het is aangeleerd door hoe de omgeving reageert op succes en falen." },
-      { id: "b", text: "Ze heeft geleerd dat resultaat bepaalt of iets 'goed' is — falen is zo bedreigend dat ze het vermijdt", isCorrect: true, feedback: "Correct! Dit is een fixed mindset in actie: haar zelfbeeld is gekoppeld aan winnen. Falen bedreigt haar identiteit, dus ze vermijdt het risico." },
+      { id: "a", text: "Ze heeft geleerd dat resultaat bepaalt of iets 'goed' is — falen is zo bedreigend dat ze het vermijdt", isCorrect: true, feedback: "Correct! Dit is een fixed mindset in actie: haar zelfbeeld is gekoppeld aan winnen. Falen bedreigt haar identiteit, dus ze vermijdt het risico." },
+      { id: "b", text: "Ze is een perfectionist — dat is een karaktereigenschap", isCorrect: false, feedback: "Perfectionisme bij kinderen is zelden aangeboren. Het is aangeleerd door hoe de omgeving reageert op succes en falen." },
       { id: "c", text: "Ze heeft geen zin — alle kinderen hebben dat soms", isCorrect: false, feedback: "Het patroon ('alleen als ik win') wijst op iets diepers dan geen zin. Dit is faalangst vermomd als desinteresse." },
     ],
     explanation: "Faalangst ontstaat niet door te veel falen, maar door te WEINIG mogen falen. Kinderen die altijd geslaagd zijn (of gered werden van falen) ervaren falen als catastrofaal.",
@@ -4065,8 +4065,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     context: "Power struggles: een machtsstrijd waarin niemand wint.",
     options: [
       { id: "a", text: "Hem er met kracht inzetten — veiligheid is niet onderhandelbaar", isCorrect: false, feedback: "De grens (autostoel) is terecht, maar de methode (kracht) escaleert de machtsstrijd en beschadigt het vertrouwen." },
-      { id: "b", text: "'Je gaat in de autostoel. Wil je zelf klimmen of zal papa je optillen? En welk liedje zetten we aan?'", isCorrect: true, feedback: "Correct! De grens staat vast (autostoel), maar je biedt autonomie BINNEN die grens: hoe erin, en welke muziek. Dit doorbreekt de machtsstrijd." },
-      { id: "c", text: "Even wachten tot hij gekalmeerd is — dan lukt het vanzelf", isCorrect: false, feedback: "Soms werkt wachten, maar zonder keuze-aanbod kan het eindeloos duren. Keuze bieden geeft richting aan de oplossing." },
+      { id: "b", text: "Even wachten tot hij gekalmeerd is — dan lukt het vanzelf", isCorrect: false, feedback: "Soms werkt wachten, maar zonder keuze-aanbod kan het eindeloos duren. Keuze bieden geeft richting aan de oplossing." },
+      { id: "c", text: "'Je gaat in de autostoel. Wil je zelf klimmen of zal papa je optillen? En welk liedje zetten we aan?'", isCorrect: true, feedback: "Correct! De grens staat vast (autostoel), maar je biedt autonomie BINNEN die grens: hoe erin, en welke muziek. Dit doorbreekt de machtsstrijd." },
     ],
     explanation: "Keuze-illusie: het kind kiest BINNEN jouw niet-onderhandelbare grens. 'Zelf klimmen of papa tilt?' geeft een gevoel van controle terwijl het resultaat vaststaat.",
     research: "Deci, E.L. & Ryan, R.M. (2000). Self-Determination Theory and the Facilitation of Intrinsic Motivation",
@@ -4075,8 +4075,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     id: "au_20", skill: "Autonomie", type: "quiz", difficulty: "basis", order: 20,
     question: "Bente (6) weigert haar kamer op te ruimen. Je dreigt: 'Als je niet opruimt, geen televisie vanavond!' Wat doet dit met haar autonomie?",
     options: [
-      { id: "a", text: "Het werkt — ze ruimt op en leert dat er consequenties zijn", isCorrect: false, feedback: "Nee. Dit is een DREIGING met een niet-gerelateerde straf. Ze ruimt misschien op uit angst, niet uit eigenaarschap." },
-      { id: "b", text: "Je ondermijnt haar intrinsieke motivatie — ze ruimt op uit angst voor straf, niet uit verantwoordelijkheidsgevoel", isCorrect: true, feedback: "Correct! Dreigen met niet-gerelateerde straffen creëert extrinsieke motivatie. Beter: 'Wil je beginnen met de boeken of de knuffels?'" },
+      { id: "a", text: "Je ondermijnt haar intrinsieke motivatie — ze ruimt op uit angst voor straf, niet uit verantwoordelijkheidsgevoel", isCorrect: true, feedback: "Correct! Dreigen met niet-gerelateerde straffen creëert extrinsieke motivatie. Beter: 'Wil je beginnen met de boeken of de knuffels?'" },
+      { id: "b", text: "Het werkt — ze ruimt op en leert dat er consequenties zijn", isCorrect: false, feedback: "Nee. Dit is een DREIGING met een niet-gerelateerde straf. Ze ruimt misschien op uit angst, niet uit eigenaarschap." },
       { id: "c", text: "Prima zolang je de consequentie ook uitvoert", isCorrect: false, feedback: "Nee. Consistentie in dreigen is niet de oplossing. Het probleem is het dreigen zelf: het ondermijnt eigenaarschap." },
     ],
     explanation: "Dreigen creëert gehoorzaamheid uit angst, niet uit intrinsieke motivatie. Beter: bied keuzevrijheid BINNEN de grens en gebruik natuurlijke consequenties (geen opgeruimde kamer = je vindt je spullen niet terug).",
@@ -4087,8 +4087,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     question: "Sven (8) moet zijn tanden poetsen voor bedtijd maar wil eerst zijn boek uitlezen. Hij protesteert luid. Hoe geef je autonomie zonder de grens te verliezen?",
     options: [
       { id: "a", text: "'Vooruit, lees maar uit, dan poets je daarna' — je wilt geen ruzie voor bedtijd", isCorrect: false, feedback: "Nee. Dit leert hem: protesteren verschuift de grens. Morgen protesteert hij weer, en overmorgen ook." },
-      { id: "b", text: "'Je moet voor bedtijd poetsen. Wil je nu poetsen en dan nog 5 minuten lezen, of eerst het hoofdstuk afmaken en dan meteen poetsen? Jij kiest.'", isCorrect: true, feedback: "Perfect! De grens (poetsen voor bedtijd) staat vast. Hij kiest de VOLGORDE. Dit is eigenaarschap binnen een kader." },
-      { id: "c", text: "'Als je nu niet poetst, lees je morgen niet' — consequentie stellen", isCorrect: false, feedback: "Nee. Een niet-gerelateerde dreiging ondermijnt autonomie en vergiftigt het ritueel van lezen voor het slapen." },
+      { id: "b", text: "'Als je nu niet poetst, lees je morgen niet' — consequentie stellen", isCorrect: false, feedback: "Nee. Een niet-gerelateerde dreiging ondermijnt autonomie en vergiftigt het ritueel van lezen voor het slapen." },
+      { id: "c", text: "'Je moet voor bedtijd poetsen. Wil je nu poetsen en dan nog 5 minuten lezen, of eerst het hoofdstuk afmaken en dan meteen poetsen? Jij kiest.'", isCorrect: true, feedback: "Perfect! De grens (poetsen voor bedtijd) staat vast. Hij kiest de VOLGORDE. Dit is eigenaarschap binnen een kader." },
     ],
     explanation: "Autonomie onder druk: het kind kiest WANNEER en in welke VOLGORDE, maar het WAT staat vast. Dit verschil tussen eigenaarschap en gehoorzaamheid is fundamenteel voor intrinsieke motivatie.",
     research: "Koestner, R. et al. (1984). Setting Limits on Children's Behavior. Journal of Personality",
@@ -4098,8 +4098,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     question: "Yara (11) heeft afgesproken dat ze elke dag om 17:00 begint met huiswerk. Het is 17:30 en ze zit nog op haar kamer te tekenen. Jullie hebben dit samen afgesproken. Wat doe je?",
     options: [
       { id: "a", text: "Je herinnert haar eraan en gaat erbij zitten zodat ze begint", isCorrect: false, feedback: "Nee. Je hebt samen een afspraak gemaakt. Door haar eraan te herinneren en erbij te zitten ondermijn je het systeem: 'papa bewaakt mijn afspraken.'" },
-      { id: "b", text: "Je laat de natuurlijke consequentie komen — ze ervaart dat het huiswerk later op de avond stress geeft en bespreekt het achteraf", isCorrect: true, feedback: "Correct! Ze heeft eigenaarschap over de afspraak. Nu mag ze ook eigenaar zijn van de consequentie. Achteraf evalueren: 'Hoe ging het? Wil je de afspraak aanpassen?'" },
-      { id: "c", text: "Je verschuift de afspraak naar 18:00 — misschien was 17:00 te vroeg", isCorrect: false, feedback: "Nee. Eenzijdig aanpassen ondermijnt het hele systeem. Als ze de tijd wil wijzigen, bespreek het samen — maar niet als vluchtroute." },
+      { id: "b", text: "Je verschuift de afspraak naar 18:00 — misschien was 17:00 te vroeg", isCorrect: false, feedback: "Nee. Eenzijdig aanpassen ondermijnt het hele systeem. Als ze de tijd wil wijzigen, bespreek het samen — maar niet als vluchtroute." },
+      { id: "c", text: "Je laat de natuurlijke consequentie komen — ze ervaart dat het huiswerk later op de avond stress geeft en bespreekt het achteraf", isCorrect: true, feedback: "Correct! Ze heeft eigenaarschap over de afspraak. Nu mag ze ook eigenaar zijn van de consequentie. Achteraf evalueren: 'Hoe ging het? Wil je de afspraak aanpassen?'" },
     ],
     explanation: "Eigenaarschap = ook eigenaar zijn van consequenties. Maak samen afspraken, geef tools (klok, timer), en laat het kind de gevolgen ervaren. Evalueer achteraf SAMEN: werkt de afspraak nog?",
     research: "Deci, E.L. & Ryan, R.M. (2000). Self-Determination Theory and the Facilitation of Intrinsic Motivation",
@@ -4119,9 +4119,9 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     id: "au_24", skill: "Autonomie", type: "quiz", difficulty: "expert", order: 24,
     question: "Rens (7) wil absoluut niet naar de tandarts. Hij is panisch. Je vindt tandartsbezoek essentieel. Hoe combineer je een noodzakelijke grens met autonomie?",
     options: [
-      { id: "a", text: "'Je MOET naar de tandarts, punt.' Sommige dingen zijn niet onderhandelbaar", isCorrect: false, feedback: "De grens (tandarts) is terecht, maar 'punt' ondermijnt zijn autonomie en negeert zijn angst volledig." },
+      { id: "a", text: "De grens houden (tandarts is verplicht) maar autonomie bieden daarbinnen: samen een lieve tandarts zoeken, hij mag kiezen wanneer, en je neemt zijn angst serieus", isCorrect: true, feedback: "Perfect! Niet-onderhandelbaar WAT + autonomie in HOE. Erken zijn angst, bied keuzes (welke dag, mag hij muziek mee), en geef uitleg waarom het moet." },
       { id: "b", text: "Stoppen met de tandarts — als hij zo bang is, forceer je het niet", isCorrect: false, feedback: "Nee. Gezondheid is niet-onderhandelbaar. Autonomie betekent niet dat een 7-jarige medische beslissingen neemt." },
-      { id: "c", text: "De grens houden (tandarts is verplicht) maar autonomie bieden daarbinnen: samen een lieve tandarts zoeken, hij mag kiezen wanneer, en je neemt zijn angst serieus", isCorrect: true, feedback: "Perfect! Niet-onderhandelbaar WAT + autonomie in HOE. Erken zijn angst, bied keuzes (welke dag, mag hij muziek mee), en geef uitleg waarom het moet." },
+      { id: "c", text: "'Je MOET naar de tandarts, punt.' Sommige dingen zijn niet onderhandelbaar", isCorrect: false, feedback: "De grens (tandarts) is terecht, maar 'punt' ondermijnt zijn autonomie en negeert zijn angst volledig." },
     ],
     explanation: "Bij niet-onderhandelbare grenzen (gezondheid, veiligheid) blijft de grens staan. Maar je kunt altijd autonomie bieden BINNEN die grens: timing, manier, en het serieus nemen van gevoelens.",
     research: "Deci, E.L. & Ryan, R.M. (2000). Self-Determination Theory and the Facilitation of Intrinsic Motivation",
@@ -4155,8 +4155,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     question: "Julia (11) wil zelf kiezen welke middelbare school ze bezoekt. Ze heeft een voorkeur die verschilt van de jouwe. Hoe ga je hiermee om?",
     options: [
       { id: "a", text: "Jij beslist — je hebt meer levenservaring en overzicht", isCorrect: false, feedback: "Nee. Op 11 jaar is schoolkeuze een kans voor autonomie. Jouw ervaring is waardevol als INPUT, niet als BESLUIT." },
-      { id: "b", text: "Samen informatie verzamelen, open dagen bezoeken, en haar mening serieus meewegen in de uiteindelijke beslissing", isCorrect: true, feedback: "Correct! Het samen verkennen is het proces. Haar voorkeur serieus nemen is autonomie-ondersteuning. Het hoeft geen 100% haar keuze te zijn, maar wel 100% serieus genomen." },
-      { id: "c", text: "Haar volledig laten beslissen — het is haar toekomst", isCorrect: false, feedback: "Nee. Volledige vrijheid bij een complexe beslissing is overweldigend voor een 11-jarige. Samen kiezen is de middenweg." },
+      { id: "b", text: "Haar volledig laten beslissen — het is haar toekomst", isCorrect: false, feedback: "Nee. Volledige vrijheid bij een complexe beslissing is overweldigend voor een 11-jarige. Samen kiezen is de middenweg." },
+      { id: "c", text: "Samen informatie verzamelen, open dagen bezoeken, en haar mening serieus meewegen in de uiteindelijke beslissing", isCorrect: true, feedback: "Correct! Het samen verkennen is het proces. Haar voorkeur serieus nemen is autonomie-ondersteuning. Het hoeft geen 100% haar keuze te zijn, maar wel 100% serieus genomen." },
     ],
     explanation: "Bij grote beslissingen verschuift de rol van ouder: niet dictator (ik beslis), niet afzijdig (jij beslist), maar coach (we verkennen samen en ik neem je perspectief serieus). Dit bouwt beslissingsvaardigheid op.",
     research: "Deci, E.L. & Ryan, R.M. (2000). Self-Determination Theory and the Facilitation of Intrinsic Motivation",
@@ -4166,8 +4166,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     question: "Evi (13) wil met haar eigen geld een dure jas kopen die jij lelijk vindt. Ze heeft er maanden voor gespaard. Je aarzelt. Wat is het autonomie-principe?",
     options: [
       { id: "a", text: "Het is haar geld maar jij hebt vetorecht als ouder", isCorrect: false, feedback: "Nee. Vetorecht op een onschuldige aankoop ondermijnt het hele concept van 'eigen geld'. Als je haar spaargeld beheert, is het niet echt van haar." },
-      { id: "b", text: "Het is haar geld en haar keuze — ook als je het er niet mee eens bent. Je mag je mening delen maar de beslissing is aan haar", isCorrect: true, feedback: "Correct! Als het haar geld is en de aankoop is onschuldig, dan is het haar keuze. Misschien heeft ze spijt — en dat is een waardevolle les." },
-      { id: "c", text: "Samen iets uitzoeken wat jullie allebei mooi vinden", isCorrect: false, feedback: "Nee. Dit stuurt haar subtiel richting jouw smaak. Het is HAAR geld en HAAR keuze. Dat respecteren is autonomie." },
+      { id: "b", text: "Samen iets uitzoeken wat jullie allebei mooi vinden", isCorrect: false, feedback: "Nee. Dit stuurt haar subtiel richting jouw smaak. Het is HAAR geld en HAAR keuze. Dat respecteren is autonomie." },
+      { id: "c", text: "Het is haar geld en haar keuze — ook als je het er niet mee eens bent. Je mag je mening delen maar de beslissing is aan haar", isCorrect: true, feedback: "Correct! Als het haar geld is en de aankoop is onschuldig, dan is het haar keuze. Misschien heeft ze spijt — en dat is een waardevolle les." },
     ],
     explanation: "Financiele autonomie: als je je kind leert sparen en dan hun keuze overrulet, ondermijn je alles wat je hebt opgebouwd. De les van een 'slechte' aankoop is waardevoller dan jouw controle.",
     research: "Vygotsky, L.S. (1978). Mind in Society: The Development of Higher Psychological Processes",
@@ -4188,8 +4188,8 @@ export const AUTONOMIE_TRAINING: TrainingItem[] = [
     question: "Lynn (16) wil in de zomervakantie drie weken alleen door Europa reizen met een interrailpas. Ze heeft het grondig gepland. Je bent trots maar ook bang. Wat is leeftijdsgeschikte autonomie?",
     options: [
       { id: "a", text: "Te gevaarlijk — ze mag pas alleen reizen als ze 18 is", isCorrect: false, feedback: "Nee. Op 16 jaar is ze over twee jaar volwassen. Als je haar nu niet laat oefenen met zelfstandigheid, hoe bereidt ze zich dan voor?" },
-      { id: "b", text: "Haar plan serieus nemen, samen veiligheidsafspraken maken (dagelijks contact, noodgeld, verzekering), en haar laten gaan met vertrouwen", isCorrect: true, feedback: "Correct! Op 16 jaar: haar planning beloont je met je vertrouwen. Samen veiligheidsafspraken maken is scaffolding op zijn hoogste niveau — voorbereiding op volledige zelfstandigheid." },
-      { id: "c", text: "Volledige vrijheid — ze is bijna volwassen, laat haar doen wat ze wilt", isCorrect: false, feedback: "Nee. Zelfs op 16 is er een begeleidende rol: veiligheidsnet, noodplannen, bereikbaarheid. Vertrouwen met kaders, niet zonder kaders." },
+      { id: "b", text: "Volledige vrijheid — ze is bijna volwassen, laat haar doen wat ze wilt", isCorrect: false, feedback: "Nee. Zelfs op 16 is er een begeleidende rol: veiligheidsnet, noodplannen, bereikbaarheid. Vertrouwen met kaders, niet zonder kaders." },
+      { id: "c", text: "Haar plan serieus nemen, samen veiligheidsafspraken maken (dagelijks contact, noodgeld, verzekering), en haar laten gaan met vertrouwen", isCorrect: true, feedback: "Correct! Op 16 jaar: haar planning beloont je met je vertrouwen. Samen veiligheidsafspraken maken is scaffolding op zijn hoogste niveau — voorbereiding op volledige zelfstandigheid." },
     ],
     explanation: "Autonomie groeit mee met leeftijd: 6j = zelf boodschap halen, 12j = alleen naar een stad fietsen, 16j = zelfstandig reizen met afspraken. Op elke leeftijd: vertrouwen tonen + minimale maar duidelijke kaders.",
     research: "Soenens, B. & Vansteenkiste, M. (2010). A Theoretical Upgrade of the Concept of Parental Psychological Control. Developmental Review",
@@ -4203,8 +4203,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     context: "Ed Tronick's onderzoek toont: kinderen registreren elke breuk in de verbinding, ook de kleine.",
     options: [
       { id: "a", text: "Ja, kinderen zijn veerkrachtig en vergeten dit soort momenten snel", isCorrect: false, feedback: "Nee. Hij vergeet het INCIDENT misschien, maar het GEVOEL (onveiligheid, afwijzing) wordt opgeslagen in het impliciete geheugen." },
-      { id: "b", text: "Nee, hij registreert de breuk en wacht — bewust of onbewust — op herstel van jouw kant", isCorrect: true, feedback: "Correct. Zijn terugtrekking is geen 'vergeten' maar een beschermingsreactie. Hij test: is papa er nog voor mij na dit moment?" },
-      { id: "c", text: "Het hangt ervan af hoe erg je snauwd — een kleine opmerking doet geen kwaad", isCorrect: false, feedback: "Nee. Het gaat niet om de ernst maar om het HERSTEL. Zelfs kleine breuken tellen als ze onhersteld blijven." },
+      { id: "b", text: "Het hangt ervan af hoe erg je snauwd — een kleine opmerking doet geen kwaad", isCorrect: false, feedback: "Nee. Het gaat niet om de ernst maar om het HERSTEL. Zelfs kleine breuken tellen als ze onhersteld blijven." },
+      { id: "c", text: "Nee, hij registreert de breuk en wacht — bewust of onbewust — op herstel van jouw kant", isCorrect: true, feedback: "Correct. Zijn terugtrekking is geen 'vergeten' maar een beschermingsreactie. Hij test: is papa er nog voor mij na dit moment?" },
     ],
     explanation: "Tronick's onderzoek: slechts 30% van ouder-kind interacties verloopt soepel. Het verschil tussen veilige en onveilige hechting zit niet in het vermijden van breuken maar in het HERSTELLEN ervan.",
     research: "Tronick, E. (2007). The Neurobehavioral and Social-Emotional Development of Infants and Children",
@@ -4213,8 +4213,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     id: "hr_2", skill: "Herstel", type: "quiz", difficulty: "basis", order: 2,
     question: "Onderzoek toont dat 70% van ouder-kind interacties 'mismatch' is — niet soepel verloopt. Wat betekent dit voor jou als vader?",
     options: [
-      { id: "a", text: "Je bent een slechte vader als het zo vaak misgaat", isCorrect: false, feedback: "Nee! 70% mismatch is de NORM, zelfs bij de allerbeste ouders. Dit is geen falen maar biologie." },
-      { id: "b", text: "Breuken zijn normaal en onvermijdelijk — het is het HERSTEL dat het verschil maakt tussen veilige en onveilige hechting", isCorrect: true, feedback: "Correct! De rupture-repair cyclus IS de motor van veilige hechting. Kinderen leren: relaties overleven conflicten." },
+      { id: "a", text: "Breuken zijn normaal en onvermijdelijk — het is het HERSTEL dat het verschil maakt tussen veilige en onveilige hechting", isCorrect: true, feedback: "Correct! De rupture-repair cyclus IS de motor van veilige hechting. Kinderen leren: relaties overleven conflicten." },
+      { id: "b", text: "Je bent een slechte vader als het zo vaak misgaat", isCorrect: false, feedback: "Nee! 70% mismatch is de NORM, zelfs bij de allerbeste ouders. Dit is geen falen maar biologie." },
       { id: "c", text: "Je moet harder werken om die 70% te verlagen", isCorrect: false, feedback: "Nee. Investeer je energie in HERSTEL, niet in het onmogelijke doel van perfecte afstemming." },
     ],
     explanation: "De rupture-repair cyclus leert kinderen: conflicten zijn tijdelijk, relaties zijn sterker dan fouten, en mensen komen terug. Dit is de kern van veilige hechting.",
@@ -4225,8 +4225,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     question: "Wouter (5) heeft een tekening voor je gemaakt. Je was afgeleid en zei: 'Leg maar neer, ik kijk straks.' Dat 'straks' kwam nooit. Twee dagen later verscheurt hij een tekening die hij voor je maakte. Wat is het verband?",
     options: [
       { id: "a", text: "Er is geen verband — hij is gewoon boos over iets anders", isCorrect: false, feedback: "Nee. Kinderen uiten onherstelde breuken vaak indirect. Het verscheuren is een uiting van de pijn van het genegeerd worden." },
-      { id: "b", text: "De onherstelde breuk (genegeerde tekening) stapelt op — zijn gedrag is een signaal dat er herstel nodig is", isCorrect: true, feedback: "Correct. Onherstelde breuken slaan op als gevoelens van 'ik ben niet belangrijk genoeg'. Hij uit dit indirect." },
-      { id: "c", text: "Hij is teleurgesteld in zijn eigen tekening — het heeft niets met jou te maken", isCorrect: false, feedback: "Nee. De timing en het patroon wijzen op de onherstelde breuk. Hij veroordeelt zijn eigen werk omdat hij voelde dat het niet gewaardeerd werd." },
+      { id: "b", text: "Hij is teleurgesteld in zijn eigen tekening — het heeft niets met jou te maken", isCorrect: false, feedback: "Nee. De timing en het patroon wijzen op de onherstelde breuk. Hij veroordeelt zijn eigen werk omdat hij voelde dat het niet gewaardeerd werd." },
+      { id: "c", text: "De onherstelde breuk (genegeerde tekening) stapelt op — zijn gedrag is een signaal dat er herstel nodig is", isCorrect: true, feedback: "Correct. Onherstelde breuken slaan op als gevoelens van 'ik ben niet belangrijk genoeg'. Hij uit dit indirect." },
     ],
     explanation: "Onherstelde breuken stapelen op in het impliciete geheugen. Kinderen uiten ze indirect: teruggetrokkenheid, boosheid op ogenschijnlijk kleine dingen, of zelfafwijzing.",
     research: "Bowlby, J. (1988). A Secure Base: Parent-Child Attachment and Healthy Human Development",
@@ -4236,8 +4236,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     question: "Je hebt Iris (10) uitgelachen om een fout antwoord tijdens het helpen met huiswerk. Ze wordt rood en zwijgt. Het is nu een dag later. Wat is het effect als je dit niet herstelt?",
     options: [
       { id: "a", text: "Ze vergeet het — het was maar een lachje", isCorrect: false, feedback: "Nee. Uitgelachen worden door een hechtingsfiguur raakt het zelfbeeld diep. Het gevoel (schaamte) wordt opgeslagen, ook als het incident vervaagt." },
-      { id: "b", text: "Ze leert dat schaamte bij de relatie hoort — onherstelde breuken vormen haar verwachting van relaties", isCorrect: true, feedback: "Correct. Elke onherstelde breuk bouwt aan het intern werkmodel: 'in relaties word je gekwetst en dan gebeurt er niets.' Dit draagt ze mee." },
-      { id: "c", text: "Het maakt niet uit als je verder een goede vader bent", isCorrect: false, feedback: "Nee. 'Verder goed zijn' compenseert niet voor specifieke onherstelde breuken. Ze onthouden het gat, niet het gemiddelde." },
+      { id: "b", text: "Het maakt niet uit als je verder een goede vader bent", isCorrect: false, feedback: "Nee. 'Verder goed zijn' compenseert niet voor specifieke onherstelde breuken. Ze onthouden het gat, niet het gemiddelde." },
+      { id: "c", text: "Ze leert dat schaamte bij de relatie hoort — onherstelde breuken vormen haar verwachting van relaties", isCorrect: true, feedback: "Correct. Elke onherstelde breuk bouwt aan het intern werkmodel: 'in relaties word je gekwetst en dan gebeurt er niets.' Dit draagt ze mee." },
     ],
     explanation: "Onherstelde breuken vormen het intern werkmodel van relaties: 'als iemand me pijn doet, komt er geen erkenning.' Dit beinvloedt alle toekomstige relaties.",
     research: "Bowlby, J. (1988). A Secure Base: Parent-Child Attachment and Healthy Human Development",
@@ -4246,8 +4246,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     id: "hr_5", skill: "Herstel", type: "quiz", difficulty: "expert", order: 5,
     question: "Een vader zegt: 'Bij ons thuis is het altijd harmonieus. We hebben nooit conflicten met de kinderen.' Wat zegt hechtingsonderzoek over dit gezin?",
     options: [
-      { id: "a", text: "Dit is het ideaal — geen breuken = optimale hechting", isCorrect: false, feedback: "Nee. Afwezigheid van zichtbaar conflict kan betekenen dat het kind geleerd heeft dat negatieve emoties niet veilig zijn." },
-      { id: "b", text: "Dit is een waarschuwingssignaal — het kan wijzen op vermijdende hechting waarbij het kind emoties onderdrukt", isCorrect: true, feedback: "Correct. 'Nooit conflict' is alarmerend. Het kind mist de cruciale ervaring dat conflicten HERSTELD kunnen worden." },
+      { id: "a", text: "Dit is een waarschuwingssignaal — het kan wijzen op vermijdende hechting waarbij het kind emoties onderdrukt", isCorrect: true, feedback: "Correct. 'Nooit conflict' is alarmerend. Het kind mist de cruciale ervaring dat conflicten HERSTELD kunnen worden." },
+      { id: "b", text: "Dit is het ideaal — geen breuken = optimale hechting", isCorrect: false, feedback: "Nee. Afwezigheid van zichtbaar conflict kan betekenen dat het kind geleerd heeft dat negatieve emoties niet veilig zijn." },
       { id: "c", text: "Sommige gezinnen zijn nu eenmaal harmonieuzer dan andere", isCorrect: false, feedback: "Minder conflict kan, maar 'nooit' is onrealistisch en wijst op onderdrukking. Gezonde relaties HEBBEN breuken." },
     ],
     explanation: "De rupture-repair cyclus is NODIG voor veilige hechting. Een kind dat nooit conflict ervaart, leert nooit dat relaties tegen een stoot kunnen. Dat is geen harmonie maar vermijding.",
@@ -4257,8 +4257,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     id: "hr_6", skill: "Herstel", type: "quiz", difficulty: "expert", order: 6,
     question: "Je hebt Pepijn (4) ruw bij zijn arm gepakt toen hij de straat op wilde rennen. Hij schrok en huilde. Je partner zegt: 'Zeg sorry.' Je denkt: 'Maar ik beschermde hem!' Wie heeft er een punt?",
     options: [
-      { id: "a", text: "Jij — je beschermde hem en hoeft daar geen sorry voor te zeggen", isCorrect: false, feedback: "De actie (bescherming) was nodig. Maar het EFFECT (schrik, pijn) verdient erkenning. Je kunt allebei waar maken." },
-      { id: "b", text: "Allebei — de bescherming was nodig, EN de schrik verdient erkenning: 'Ik pakte je stevig omdat ik bang was dat je op de weg zou komen. Dat was eng he?'", isCorrect: true, feedback: "Correct! Je kunt de actie verantwoorden EN het effect erkennen. 'Ik moest je tegenhouden. Ik zag dat je schrok. Gaat het?' Dit is herstel zonder schuld." },
+      { id: "a", text: "Allebei — de bescherming was nodig, EN de schrik verdient erkenning: 'Ik pakte je stevig omdat ik bang was dat je op de weg zou komen. Dat was eng he?'", isCorrect: true, feedback: "Correct! Je kunt de actie verantwoorden EN het effect erkennen. 'Ik moest je tegenhouden. Ik zag dat je schrok. Gaat het?' Dit is herstel zonder schuld." },
+      { id: "b", text: "Jij — je beschermde hem en hoeft daar geen sorry voor te zeggen", isCorrect: false, feedback: "De actie (bescherming) was nodig. Maar het EFFECT (schrik, pijn) verdient erkenning. Je kunt allebei waar maken." },
       { id: "c", text: "Je partner — je had hem zachter moeten tegenhouden", isCorrect: false, feedback: "In een noodsituatie reageer je reflexmatig. De vraag is niet of je anders had moeten handelen maar of je het effect erkent." },
     ],
     explanation: "Herstel geldt ook bij noodzakelijke acties. De intentie was bescherming, maar het effect was schrik. Beide erkennen is volwassen: 'Ik moest dit doen EN ik zie dat het je liet schrikken.'",
@@ -4281,8 +4281,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     id: "hr_8", skill: "Herstel", type: "quiz", difficulty: "basis", order: 8,
     question: "Je zegt tegen Stijn (8): 'Sorry dat je je gekwetst voelt.' Is dit effectief herstel?",
     options: [
-      { id: "a", text: "Ja, je erkent zijn gevoel en zegt sorry", isCorrect: false, feedback: "Nee. 'Sorry dat JIJ je gekwetst voelt' legt de verantwoordelijkheid bij HEM. Het ontwijkt wat JIJ deed." },
-      { id: "b", text: "Nee, dit is een schijnexcuus — je neemt geen verantwoordelijkheid voor JOUW gedrag", isCorrect: true, feedback: "Correct! Echt herstel: 'Het spijt me dat IK tegen je schreeuwde.' Niet: 'sorry dat jij je rot voelt.' Het verschil is cruciaal." },
+      { id: "a", text: "Nee, dit is een schijnexcuus — je neemt geen verantwoordelijkheid voor JOUW gedrag", isCorrect: true, feedback: "Correct! Echt herstel: 'Het spijt me dat IK tegen je schreeuwde.' Niet: 'sorry dat jij je rot voelt.' Het verschil is cruciaal." },
+      { id: "b", text: "Ja, je erkent zijn gevoel en zegt sorry", isCorrect: false, feedback: "Nee. 'Sorry dat JIJ je gekwetst voelt' legt de verantwoordelijkheid bij HEM. Het ontwijkt wat JIJ deed." },
       { id: "c", text: "Het is beter dan niets zeggen", isCorrect: false, feedback: "Nauwelijks. Een schijnexcuus kan zelfs schadelijker zijn dan stilte, want het kind voelt de onoprechtheid." },
     ],
     explanation: "Verantwoordelijkheid nemen = benoemen wat JIJ deed. 'Sorry dat ik schreeuwde' vs 'sorry dat je je rot voelt.' Het eerste is herstel, het tweede is ontwijking.",
@@ -4303,8 +4303,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     id: "hr_10", skill: "Herstel", type: "quiz", difficulty: "gevorderd", order: 10,
     question: "Je hebt Lars (13) gecorrigeerd waar zijn teamgenoten bij waren na een verloren wedstrijd. Je weet dat je fout zat. Welke stap van herstel vinden de meeste vaders het moeilijkst?",
     options: [
-      { id: "a", text: "Erkennen dat er een breuk was — vaders zien het vaak niet", isCorrect: false, feedback: "Dit komt voor, maar in dit geval WEET je dat je fout zat. De erkenning is er al." },
-      { id: "b", text: "Oprechte spijt tonen — kwetsbaarheid laten zien voelt oncomfortabel voor veel vaders", isCorrect: true, feedback: "Correct! 'Het doet me pijn dat ik je zo te schande maakte' is krachtiger dan 'dat was fout'. Het eerste toont GEVOEL, het tweede is rationeel." },
+      { id: "a", text: "Oprechte spijt tonen — kwetsbaarheid laten zien voelt oncomfortabel voor veel vaders", isCorrect: true, feedback: "Correct! 'Het doet me pijn dat ik je zo te schande maakte' is krachtiger dan 'dat was fout'. Het eerste toont GEVOEL, het tweede is rationeel." },
+      { id: "b", text: "Erkennen dat er een breuk was — vaders zien het vaak niet", isCorrect: false, feedback: "Dit komt voor, maar in dit geval WEET je dat je fout zat. De erkenning is er al." },
       { id: "c", text: "Concreet gedrag veranderen — vaders vergeten de opvolging", isCorrect: false, feedback: "Opvolging is belangrijk, maar het echte struikelblok is kwetsbaarheid: oprechte emotie tonen in het herstelgesprek." },
     ],
     explanation: "Oprechte spijt (stap 3) is voor veel vaders het moeilijkst. 'Ik voel me rot over wat ik deed' is krachtiger dan 'ik had dat niet moeten doen.' Het eerste is emotie, het tweede is analyse.",
@@ -4325,8 +4325,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     id: "hr_12", skill: "Herstel", type: "quiz", difficulty: "expert", order: 12,
     question: "Je hebt de hele week 's avonds op je laptop gewerkt en je kinderen genegeerd. Het was niet een incident maar een PATROON. Hoe herstel je een patroon anders dan een enkel incident?",
     options: [
-      { id: "a", text: "Zaterdag een groot uitje plannen om het goed te maken", isCorrect: false, feedback: "Nee. Een uitje zonder het patroon te benoemen is compensatie, niet herstel. Ze onthouden het negeren, niet het uitje." },
-      { id: "b", text: "Het PATROON expliciet benoemen: 'Papa was deze week elke avond op zijn laptop. Dat was niet jullie schuld. Ik ga het anders doen: laptop dicht na 20:00.'", isCorrect: true, feedback: "Correct! Bij patronen benoem je het PATROON, neem je verantwoordelijkheid, ontkracht je zelfbeschuldiging bij het kind, en noem je een concrete verandering." },
+      { id: "a", text: "Het PATROON expliciet benoemen: 'Papa was deze week elke avond op zijn laptop. Dat was niet jullie schuld. Ik ga het anders doen: laptop dicht na 20:00.'", isCorrect: true, feedback: "Correct! Bij patronen benoem je het PATROON, neem je verantwoordelijkheid, ontkracht je zelfbeschuldiging bij het kind, en noem je een concrete verandering." },
+      { id: "b", text: "Zaterdag een groot uitje plannen om het goed te maken", isCorrect: false, feedback: "Nee. Een uitje zonder het patroon te benoemen is compensatie, niet herstel. Ze onthouden het negeren, niet het uitje." },
       { id: "c", text: "Het laten gaan — volgende week beter doen is genoeg", isCorrect: false, feedback: "Nee. Kinderen geven zichzelf de schuld van jouw afwezigheid: 'Papa wil niet bij me zijn.' Dat moet je expliciet ontkrachten." },
     ],
     explanation: "Bij patronen is het cruciaal om (1) het patroon te benoemen, niet elk incident apart, (2) expliciet te zeggen dat het NIET hun schuld is, en (3) concreet te benoemen wat je gaat veranderen.",
@@ -4337,8 +4337,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     id: "hr_13", skill: "Herstel", type: "quiz", difficulty: "basis", order: 13,
     question: "Je hebt sorry gezegd tegen Jelle (9). Hij zegt: 'Ik geloof je niet.' Je voelt je gekwetst. Wat is de volwassen reactie?",
     options: [
-      { id: "a", text: "'Ik heb toch sorry gezegd? Wat wil je nog meer?' — je voelt je oneerlijk behandeld", isCorrect: false, feedback: "Nee. Sorry zeggen geeft je geen RECHT op vergeving. Zijn wantrouwen is feedback, niet ondankbaarheid." },
-      { id: "b", text: "'Ik begrijp dat je me niet gelooft. Ik ga het laten zien door mijn gedrag.' — vergeving is zijn keuze, niet jouw recht", isCorrect: true, feedback: "Correct! Herstel is jouw verantwoordelijkheid. Vergeving is zijn proces. Als woorden niet meer genoeg zijn, moeten daden het overnemen." },
+      { id: "a", text: "'Ik begrijp dat je me niet gelooft. Ik ga het laten zien door mijn gedrag.' — vergeving is zijn keuze, niet jouw recht", isCorrect: true, feedback: "Correct! Herstel is jouw verantwoordelijkheid. Vergeving is zijn proces. Als woorden niet meer genoeg zijn, moeten daden het overnemen." },
+      { id: "b", text: "'Ik heb toch sorry gezegd? Wat wil je nog meer?' — je voelt je oneerlijk behandeld", isCorrect: false, feedback: "Nee. Sorry zeggen geeft je geen RECHT op vergeving. Zijn wantrouwen is feedback, niet ondankbaarheid." },
       { id: "c", text: "Het gesprek stoppen — hij is nog niet klaar om te vergeven", isCorrect: false, feedback: "Stoppen kan, maar zonder de boodschap 'ik ga het laten zien' laat je hem zonder hoop." },
     ],
     explanation: "Herstel en vergeving zijn twee verschillende processen. Herstel is jouw taak (onvoorwaardelijk). Vergeving is zijn keuze (op zijn tempo). Die twee door elkaar halen creert druk en onveiligheid.",
@@ -4349,8 +4349,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     question: "Je hebt net een flinke woordenwisseling gehad met Merel (11). Jullie zijn allebei nog boos. Je wilt meteen herstellen. Is dit het juiste moment?",
     options: [
       { id: "a", text: "Ja, hoe sneller je herstelt hoe beter", isCorrect: false, feedback: "Nee. Als jullie emoties nog hoog zijn, wordt je herstelpoging een nieuwe breuk. Je brein is nog in fight-modus." },
-      { id: "b", text: "Nee, timing is cruciaal — eerst moeten jullie allebei gereguleerd zijn. Het 'ochtend-erna-venster' is vaak ideaal", isCorrect: true, feedback: "Correct! Herstel werkt pas als beide breinen uit de stressreactie zijn. De ochtend erna biedt vaak een natuurlijk venster: een nieuwe dag, lagere emotie." },
-      { id: "c", text: "Het maakt niet uit wanneer je herstelt", isCorrect: false, feedback: "Timing maakt veel uit. Te snel = nieuwe breuk. Te laat = kind voelt zich vergeten. De sweet spot: wanneer beide partijen kalm zijn." },
+      { id: "b", text: "Het maakt niet uit wanneer je herstelt", isCorrect: false, feedback: "Timing maakt veel uit. Te snel = nieuwe breuk. Te laat = kind voelt zich vergeten. De sweet spot: wanneer beide partijen kalm zijn." },
+      { id: "c", text: "Nee, timing is cruciaal — eerst moeten jullie allebei gereguleerd zijn. Het 'ochtend-erna-venster' is vaak ideaal", isCorrect: true, feedback: "Correct! Herstel werkt pas als beide breinen uit de stressreactie zijn. De ochtend erna biedt vaak een natuurlijk venster: een nieuwe dag, lagere emotie." },
     ],
     explanation: "Het 'ochtend-erna-venster': de nacht geeft het brein tijd om te reguleren. De ochtend biedt een frisse start voor herstel. Te snel herstellen (tijdens de piek) escaleert; te lang wachten (dagen) communiceert onverschilligheid.",
     research: "Siegel, D. & Bryson, T. (2012). The Whole-Brain Child",
@@ -4371,8 +4371,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     question: "Fenna (4) duwt haar broertje van de glijbaan. Je zegt streng: 'Zeg sorry!' Ze mompelt 'sorry' zonder oogcontact. Is dit herstel?",
     options: [
       { id: "a", text: "Ja — ze leert dat je sorry moet zeggen als je iemand pijn doet", isCorrect: false, feedback: "Nee. Ze leert dat 'sorry' een toverwoord is dat het probleem laat verdwijnen. Geen empathie, geen begrip." },
-      { id: "b", text: "Nee — help haar eerst begrijpen wat haar broertje voelt, en laat HAAR bedenken hoe ze het goed kan maken", isCorrect: true, feedback: "Correct! 'Kijk, je broertje huilt. Hoe denk je dat hij zich voelt? Wat zou je kunnen doen om hem te helpen?' Dit bouwt empathie op in plaats van een leeg ritueel." },
-      { id: "c", text: "Het is een begin — oprechtheid komt met de jaren", isCorrect: false, feedback: "Nee. Afgedwongen sorry zonder begrip leert NIET dat oprechtheid later komt. Het leert dat het woord genoeg is." },
+      { id: "b", text: "Het is een begin — oprechtheid komt met de jaren", isCorrect: false, feedback: "Nee. Afgedwongen sorry zonder begrip leert NIET dat oprechtheid later komt. Het leert dat het woord genoeg is." },
+      { id: "c", text: "Nee — help haar eerst begrijpen wat haar broertje voelt, en laat HAAR bedenken hoe ze het goed kan maken", isCorrect: true, feedback: "Correct! 'Kijk, je broertje huilt. Hoe denk je dat hij zich voelt? Wat zou je kunnen doen om hem te helpen?' Dit bouwt empathie op in plaats van een leeg ritueel." },
     ],
     explanation: "Afgedwongen sorry is contraproductief: het leert kinderen dat een woord volstaat zonder begrip of empathie. Beter: begeleid het kind naar empathie en laat het zelf een herstelactie bedenken.",
     research: "Gottman, J. (2011). Raising An Emotionally Intelligent Child",
@@ -4392,8 +4392,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     id: "hr_18", skill: "Herstel", type: "quiz", difficulty: "expert", order: 18,
     question: "Niels (10) zegt: 'Papa, als je boos bent praat je net als opa.' Het raakt je. Hij bedoelt het niet kwaad. Wat is het herstelprincipe?",
     options: [
-      { id: "a", text: "Er is geen breuk — hij maakt een observatie", isCorrect: false, feedback: "Er is wel degelijk een breuk: jouw boze communicatie doet hem pijn, en hij koppelt het aan een patroon dat hij herkent." },
-      { id: "b", text: "Impact boven intentie: ook als je het niet expres deed, verdient het effect erkenning. Zijn observatie is een uitnodiging tot reflectie en herstel", isCorrect: true, feedback: "Correct! Hij geeft je een spiegel. Het effect van jouw boosheid op hem is reeel, ongeacht je intentie. Erkennen + reflecteren + anders doen." },
+      { id: "a", text: "Impact boven intentie: ook als je het niet expres deed, verdient het effect erkenning. Zijn observatie is een uitnodiging tot reflectie en herstel", isCorrect: true, feedback: "Correct! Hij geeft je een spiegel. Het effect van jouw boosheid op hem is reeel, ongeacht je intentie. Erkennen + reflecteren + anders doen." },
+      { id: "b", text: "Er is geen breuk — hij maakt een observatie", isCorrect: false, feedback: "Er is wel degelijk een breuk: jouw boze communicatie doet hem pijn, en hij koppelt het aan een patroon dat hij herkent." },
       { id: "c", text: "Hij moet leren dat vergelijken met opa onbeleefd is", isCorrect: false, feedback: "Nee. Zijn eerlijkheid bestraffen sluit de communicatie af. Hij deelt iets belangrijks — dat verdient een open reactie." },
     ],
     explanation: "'Impact boven intentie': je hoeft het niet expres te doen om het effect te erkennen. Herstel geldt voor bewuste EN onbewuste pijn. De moed van je kind om het te benoemen is een geschenk.",
@@ -4406,8 +4406,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     context: "Tieners hebben meer tijd en ruimte nodig voor herstel dan jongere kinderen.",
     options: [
       { id: "a", text: "Aankloppen en het gesprek forceren — je wilt het oplossen", isCorrect: false, feedback: "Nee. Forceren bij een tiener escaleert gegarandeerd. Haar 'laat me met rust' is een grens, geen uitnodiging." },
-      { id: "b", text: "'Oke, ik respecteer je ruimte. Ik ben in de keuken als je wilt praten. Vandaag, morgen, wanneer je klaar bent.' En daadwerkelijk weggaan", isCorrect: true, feedback: "Correct! Respecteer haar ruimte, toon beschikbaarheid zonder druk, en wacht. Geduld is bij tieners de sleutel." },
-      { id: "c", text: "Een berichtje sturen via WhatsApp", isCorrect: false, feedback: "Ze heeft nu ruimte nodig, niet nog een prikkel vanuit jou. Wacht tot zij het initiatief neemt, of probeer het de volgende dag." },
+      { id: "b", text: "Een berichtje sturen via WhatsApp", isCorrect: false, feedback: "Ze heeft nu ruimte nodig, niet nog een prikkel vanuit jou. Wacht tot zij het initiatief neemt, of probeer het de volgende dag." },
+      { id: "c", text: "'Oke, ik respecteer je ruimte. Ik ben in de keuken als je wilt praten. Vandaag, morgen, wanneer je klaar bent.' En daadwerkelijk weggaan", isCorrect: true, feedback: "Correct! Respecteer haar ruimte, toon beschikbaarheid zonder druk, en wacht. Geduld is bij tieners de sleutel." },
     ],
     explanation: "Tieners hebben autonomie nodig, ook in hun herstelproces. 'Ik ben er als je klaar bent' communiceert: ik geef niet op, maar ik respecteer je tempo.",
     research: "Steinberg, L. (2014). Age of Opportunity: Lessons from the New Science of Adolescence",
@@ -4416,8 +4416,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     id: "hr_20", skill: "Herstel", type: "quiz", difficulty: "basis", order: 20,
     question: "Ruben (14) praat al drie dagen niet met je na een conflict over zijn schoolresultaten. Je voelt je machteloos. Wat is indirect herstel?",
     options: [
-      { id: "a", text: "Wachten tot hij naar jou toekomt — hij moet leren conflicten op te lossen", isCorrect: false, feedback: "Nee. Herstel is JOUW verantwoordelijkheid als ouder, ongeacht zijn leeftijd. Wachten communiceert onverschilligheid." },
-      { id: "b", text: "Indirect toenadering zoeken: zijn lievelingsgerecht klaarmaken, een kort briefje op zijn kussen leggen, of aanbieden samen ergens naartoe te rijden", isCorrect: true, feedback: "Correct! Indirecte gebaren zeggen: 'de deur staat open, ik geef je niet op.' Tieners reageren beter op zij-aan-zij toenadering dan face-to-face confrontatie." },
+      { id: "a", text: "Indirect toenadering zoeken: zijn lievelingsgerecht klaarmaken, een kort briefje op zijn kussen leggen, of aanbieden samen ergens naartoe te rijden", isCorrect: true, feedback: "Correct! Indirecte gebaren zeggen: 'de deur staat open, ik geef je niet op.' Tieners reageren beter op zij-aan-zij toenadering dan face-to-face confrontatie." },
+      { id: "b", text: "Wachten tot hij naar jou toekomt — hij moet leren conflicten op te lossen", isCorrect: false, feedback: "Nee. Herstel is JOUW verantwoordelijkheid als ouder, ongeacht zijn leeftijd. Wachten communiceert onverschilligheid." },
       { id: "c", text: "Hem aanspreken: 'Dit gedrag is kinderachtig, we moeten praten'", isCorrect: false, feedback: "Nee. Dit is beschamend en escaleert. Zijn stilte is een verwerkingsmechanisme, geen manipulatie." },
     ],
     explanation: "Indirect herstel bij tieners: briefjes, lievelingseten, een autorit aanbieden. Zij-aan-zij contact (naast elkaar, niet tegenover elkaar) verlaagt de drempel voor een tiener om weer in gesprek te gaan.",
@@ -4439,8 +4439,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     question: "Je merkt dat je elke ochtend hetzelfde conflict hebt met Guus (7): hij treuzelt, jij wordt ongeduldig, je snauwd, hij huilt, jullie komen te laat. Dit is een terugkerende cyclus. Hoe doorbreek je een systeem?",
     options: [
       { id: "a", text: "Harder worden — duidelijke consequenties voor treuzelen", isCorrect: false, feedback: "Nee. Harder worden versterkt de cyclus: meer druk = meer stress = meer treuzelen. Je escaleert het patroon." },
-      { id: "b", text: "Het systeem veranderen: eerder wekken, minder haast, visueel schema. Verandering begint bij JOU, niet bij het kind", isCorrect: true, feedback: "Correct! Terugkerende cycli doorbreek je door het SYSTEEM te veranderen, niet door harder op het kind te drukken. Jouw stress is de trigger — verander de omstandigheden." },
-      { id: "c", text: "Accepteren dat ochtenden nu eenmaal chaotisch zijn met jonge kinderen", isCorrect: false, feedback: "Nee. Acceptatie van chaos is geen oplossing als het patroon dagelijks leidt tot breuken. Het systeem moet veranderen." },
+      { id: "b", text: "Accepteren dat ochtenden nu eenmaal chaotisch zijn met jonge kinderen", isCorrect: false, feedback: "Nee. Acceptatie van chaos is geen oplossing als het patroon dagelijks leidt tot breuken. Het systeem moet veranderen." },
+      { id: "c", text: "Het systeem veranderen: eerder wekken, minder haast, visueel schema. Verandering begint bij JOU, niet bij het kind", isCorrect: true, feedback: "Correct! Terugkerende cycli doorbreek je door het SYSTEEM te veranderen, niet door harder op het kind te drukken. Jouw stress is de trigger — verander de omstandigheden." },
     ],
     explanation: "Systeemherstel: als dezelfde breuk steeds terugkeert, is het probleem niet het incident maar het SYSTEEM. Verandering begint niet bij het kind maar bij de omstandigheden die de trigger creeren.",
     research: "Siegel, D. & Bryson, T. (2020). The Power of Showing Up",
@@ -4461,8 +4461,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     question: "Hidde (15) schreeuwt tijdens een ruzie: 'Jij begrijpt er niks van! Ik wou dat ik een andere vader had!' Je voelt een steek in je hart. Hoe verwerk je dit?",
     options: [
       { id: "a", text: "Hem direct confronteren met het effect van zijn woorden — hij moet leren dat dit pijn doet", isCorrect: false, feedback: "Begrijpelijk, maar in het heetst van de strijd is dit zinloos. En in het herstelgesprek staat eerst HET KIND centraal." },
-      { id: "b", text: "Eerst de relatie herstellen. Later, in een kalm moment, je grens benoemen: 'Die woorden raakten me.' Jouw pijn verwerk je met een volwassene, niet met je kind", isCorrect: true, feedback: "Correct! Eerst herstellen (jouw verantwoordelijkheid). Later je grens benoemen (niet als ruilmiddel). Jouw pijn bespreek je met je partner of een vriend, niet met je tiener." },
-      { id: "c", text: "Het negeren — tieners zeggen dit soort dingen niet serieus", isCorrect: false, feedback: "De woorden raken je WEL. Dat ontkennen helpt niet. Verwerk het, maar niet met je kind als therapeut." },
+      { id: "b", text: "Het negeren — tieners zeggen dit soort dingen niet serieus", isCorrect: false, feedback: "De woorden raken je WEL. Dat ontkennen helpt niet. Verwerk het, maar niet met je kind als therapeut." },
+      { id: "c", text: "Eerst de relatie herstellen. Later, in een kalm moment, je grens benoemen: 'Die woorden raakten me.' Jouw pijn verwerk je met een volwassene, niet met je kind", isCorrect: true, feedback: "Correct! Eerst herstellen (jouw verantwoordelijkheid). Later je grens benoemen (niet als ruilmiddel). Jouw pijn bespreek je met je partner of een vriend, niet met je tiener." },
     ],
     explanation: "Je mag gekwetst zijn door je tiener. Maar het herstelgesprek is niet het moment voor jouw pijn. Eerst herstellen, later je grens benoemen. Jouw emotionele verwerking doe je met volwassenen.",
     research: "Siegel, D. & Bryson, T. (2020). The Power of Showing Up",
@@ -4484,8 +4484,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     id: "hr_26", skill: "Herstel", type: "quiz", difficulty: "basis", order: 26,
     question: "Je hebt een zware dag op het werk gehad. Je komt thuis en merkt dat je kort lontje heeft. Je weet dat je vanavond makkelijk gaat uitvallen. Wat is preventief herstel?",
     options: [
-      { id: "a", text: "Doorbijten en hopen dat het meevalt", isCorrect: false, feedback: "Nee. 'Doorbijten' bij een al overbelast systeem leidt voorspelbaar tot breuken. Bewustzijn is de eerste stap." },
-      { id: "b", text: "Transparant zijn: 'Papa heeft een moeilijke dag gehad en is moe. Het ligt niet aan jullie. Ik heb even rust nodig en dan kom ik bij jullie.'", isCorrect: true, feedback: "Correct! Transparantie voorkomt dat kinderen jouw stemming op zichzelf betrekken. Je modelleert: emoties benoemen, verantwoordelijkheid nemen, en zelfzorg." },
+      { id: "a", text: "Transparant zijn: 'Papa heeft een moeilijke dag gehad en is moe. Het ligt niet aan jullie. Ik heb even rust nodig en dan kom ik bij jullie.'", isCorrect: true, feedback: "Correct! Transparantie voorkomt dat kinderen jouw stemming op zichzelf betrekken. Je modelleert: emoties benoemen, verantwoordelijkheid nemen, en zelfzorg." },
+      { id: "b", text: "Doorbijten en hopen dat het meevalt", isCorrect: false, feedback: "Nee. 'Doorbijten' bij een al overbelast systeem leidt voorspelbaar tot breuken. Bewustzijn is de eerste stap." },
       { id: "c", text: "Afstand nemen en de kinderen aan je partner overlaten", isCorrect: false, feedback: "Een korte pauze is prima, maar zonder uitleg voelen kinderen afwijzing. Het verschil: 'papa heeft rust nodig' vs stilletjes verdwijnen." },
     ],
     explanation: "Preventief herstel = breuken voorkomen door je eigen staat te herkennen en te communiceren. 'Papa is moe' is krachtiger dan een niet-verklaarde snauwd die later hersteld moet worden.",
@@ -4496,8 +4496,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     question: "Je hebt Pip (6) een hele week nauwelijks gezien door een projectdeadline op werk. Zaterdag wil je het goedmaken. Wat werkt het best?",
     options: [
       { id: "a", text: "Een dag naar het pretpark — iets groots om te compenseren", isCorrect: false, feedback: "Nee. Kinderen meten verbinding in DAGELIJKSE micro-momenten, niet in grote events. Een pretpark is een storting, niet een oplossing." },
-      { id: "b", text: "15 minuten 100% aanwezig: telefoon weg, op de vloer, doen wat HIJ wil, met volle aandacht", isCorrect: true, feedback: "Correct! Kwaliteit boven kwantiteit. 15 minuten echte aanwezigheid vult meer dan 3 uur half-aanwezig in een pretpark." },
-      { id: "c", text: "Uitleggen dat papa hard moest werken voor het gezin", isCorrect: false, feedback: "Nee. Een 6-jarige begrijpt geen werkeisen. Hij heeft VERBINDING nodig, geen verklaring." },
+      { id: "b", text: "Uitleggen dat papa hard moest werken voor het gezin", isCorrect: false, feedback: "Nee. Een 6-jarige begrijpt geen werkeisen. Hij heeft VERBINDING nodig, geen verklaring." },
+      { id: "c", text: "15 minuten 100% aanwezig: telefoon weg, op de vloer, doen wat HIJ wil, met volle aandacht", isCorrect: true, feedback: "Correct! Kwaliteit boven kwantiteit. 15 minuten echte aanwezigheid vult meer dan 3 uur half-aanwezig in een pretpark." },
     ],
     explanation: "Micro-momenten van echte aanwezigheid zijn de krachtigste 'stortingen' op de emotionele spaarrekening. Kort maar echt slaat meer op dan lang maar afgeleid.",
     research: "Siegel, D. (2012). The Developing Mind",
@@ -4529,8 +4529,8 @@ export const HERSTEL_TRAINING: TrainingItem[] = [
     question: "Een vader vertelt in een vadergroep: 'Ik heb mijn dochter (8) gisteren voor het eerst echt kwetsbaar gezegd dat het me spijt. Ik zei dat ik me schaande voor hoe ik reageerde. Ze keek me aan en zei: 'Bedankt papa.' Ik huilde.' Wat modelleert deze vader?",
     options: [
       { id: "a", text: "Zwakte — kinderen hoeven niet te zien dat hun vader huilt", isCorrect: false, feedback: "Nee. Dit is een verouderde opvatting. Een vader die kwetsbaarheid toont modelleert emotionele volwassenheid." },
-      { id: "b", text: "Kracht: kwetsbaarheid, verantwoordelijkheid, en dat herstel belangrijker is dan perfectie. Zijn dochter leert dat fouten hersteld mogen worden", isCorrect: true, feedback: "Correct! Hij modelleert alles wat telt: fouten erkennen is sterk, emoties tonen is moedig, en relaties zijn het waard om te herstellen. Zijn dochter draagt dit model mee naar al haar toekomstige relaties." },
-      { id: "c", text: "Dat vaders het moeilijk hebben — ze hoeft zich nu schuldig te voelen", isCorrect: false, feedback: "Nee. Ze voelt geen schuld maar verbinding. 'Bedankt papa' toont dat ze zich gezien voelt, niet belast." },
+      { id: "b", text: "Dat vaders het moeilijk hebben — ze hoeft zich nu schuldig te voelen", isCorrect: false, feedback: "Nee. Ze voelt geen schuld maar verbinding. 'Bedankt papa' toont dat ze zich gezien voelt, niet belast." },
+      { id: "c", text: "Kracht: kwetsbaarheid, verantwoordelijkheid, en dat herstel belangrijker is dan perfectie. Zijn dochter leert dat fouten hersteld mogen worden", isCorrect: true, feedback: "Correct! Hij modelleert alles wat telt: fouten erkennen is sterk, emoties tonen is moedig, en relaties zijn het waard om te herstellen. Zijn dochter draagt dit model mee naar al haar toekomstige relaties." },
     ],
     explanation: "Kwetsbaarheid als vader is geen zwakte maar de hoogste vorm van kracht. Je modelleert: fouten maken mag, verantwoordelijkheid nemen is volwassen, en relaties overleven imperfectie. Dit is de kern van herstel.",
     research: "Gottman, J. (2011). Raising An Emotionally Intelligent Child; Tronick, E. (2007). The Neurobehavioral and Social-Emotional Development of Infants and Children",
@@ -4553,15 +4553,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Er is geen verschil — je gaf toch een compliment",
-        isCorrect: false,
-        feedback: "Een compliment zonder aandacht is als een lege envelop. Het woord is er, maar de storting op de emotionele bankrekening ontbreekt. Bente voelt dat verschil haarscherp.",
-      },
-      {
-        id: "b",
         text: "Jouw reactie was een minimale storting; wat zij vraagt — volle aandacht, oogcontact — is een echte storting op de emotionele bankrekening",
         isCorrect: true,
         feedback: "Precies. Gottman's emotionele bankrekening vereist dat stortingen echt zijn: met aandacht, aanwezigheid en oogcontact. Halfslachtige reacties tellen nauwelijks mee.",
+      },
+      {
+        id: "b",
+        text: "Er is geen verschil — je gaf toch een compliment",
+        isCorrect: false,
+        feedback: "Een compliment zonder aandacht is als een lege envelop. Het woord is er, maar de storting op de emotionele bankrekening ontbreekt. Bente voelt dat verschil haarscherp.",
       },
       {
         id: "c",
@@ -4590,15 +4590,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Vijftien — elke negatieve interactie vereist vijf positieve om het saldo in balans te houden",
-        isCorrect: true,
-        feedback: "Correct. Drie correcties × vijf = vijftien positieve interacties nodig. Dit laat zien hoe snel het saldo daalt bij opeenvolgende correcties. Spreid correcties en vul tussendoor aan.",
-      },
-      {
-        id: "c",
         text: "Eén groot positief moment, zoals samen naar het park gaan, compenseert alles",
         isCorrect: false,
         feedback: "Eén grote activiteit weegt niet op tegen meerdere negatieve interacties. Het gaat om frequentie van kleine stortingen, niet om incidentele grote gebaren.",
+      },
+      {
+        id: "c",
+        text: "Vijftien — elke negatieve interactie vereist vijf positieve om het saldo in balans te houden",
+        isCorrect: true,
+        feedback: "Correct. Drie correcties × vijf = vijftien positieve interacties nodig. Dit laat zien hoe snel het saldo daalt bij opeenvolgende correcties. Spreid correcties en vul tussendoor aan.",
       },
     ],
     explanation: "Gottman's 5:1 ratio betekent dat elke negatieve interactie vijf positieve vereist. Bij drie correcties achter elkaar heb je dus vijftien stortingen nodig. Dit verklaart waarom dagen vol corrigeren de relatie zo snel uithollen — zelfs als elke correctie terecht is.",
@@ -4646,15 +4646,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Beiden even groot — het is allebei positieve aandacht",
-        isCorrect: false,
-        feedback: "Niet alle stortingen zijn gelijk. De diepte van de interactie bepaalt de waarde. Een vluchtig compliment en oprechte betrokkenheid zijn fundamenteel anders.",
-      },
-      {
-        id: "b",
         text: "Die van je partner — ze investeerde tijd, toonde specifieke interesse, en ging op zijn niveau zitten. De kwaliteit van de storting bepaalt de waarde",
         isCorrect: true,
         feedback: "Correct. Stortingen hebben verschillende waarden. Fysieke nabijheid + specifieke interesse + op ooghoogte gaan is een veel grotere storting dan een voorbijlopend compliment. Kwaliteit verslaat kwantiteit.",
+      },
+      {
+        id: "b",
+        text: "Beiden even groot — het is allebei positieve aandacht",
+        isCorrect: false,
+        feedback: "Niet alle stortingen zijn gelijk. De diepte van de interactie bepaalt de waarde. Een vluchtig compliment en oprechte betrokkenheid zijn fundamenteel anders.",
       },
       {
         id: "c",
@@ -4683,15 +4683,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "De opname (schrikken, schaamte) weegt veel zwaarder dan twee oppervlakkige stortingen. Echte reparatie vereist het benoemen van wat er gebeurde en erkenning van haar schrik",
-        isCorrect: true,
-        feedback: "Precies. Een emotionele opname door angst of schaamte is diep en vereist gerichte reparatie: 'Ik schrok en reageerde te fel. Dat was niet eerlijk. Jij schrok vast ook.' Pas daarna hebben andere stortingen weer volle waarde.",
-      },
-      {
-        id: "c",
         text: "Het ijsje werkt als cadeaustorting en compenseert de opname volledig",
         isCorrect: false,
         feedback: "Materiële compensatie raakt niet aan de emotionele kern. Roos' lichaam onthoudt de schrik; een ijsje wist dat niet uit. Ze heeft erkenning nodig, geen beloning.",
+      },
+      {
+        id: "c",
+        text: "De opname (schrikken, schaamte) weegt veel zwaarder dan twee oppervlakkige stortingen. Echte reparatie vereist het benoemen van wat er gebeurde en erkenning van haar schrik",
+        isCorrect: true,
+        feedback: "Precies. Een emotionele opname door angst of schaamte is diep en vereist gerichte reparatie: 'Ik schrok en reageerde te fel. Dat was niet eerlijk. Jij schrok vast ook.' Pas daarna hebben andere stortingen weer volle waarde.",
       },
     ],
     explanation: "Niet alle opnames zijn gelijk, en niet alle stortingen repareren even goed. Een schrikreactie activeert het stresssysteem en vereist gerichte reparatie: erkenning, excuus, en herstel van veiligheid. Materiële compensatie of afleiding omzeilt het probleem zonder het op te lossen.",
@@ -4708,15 +4708,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Guus is een lastig kind dat niet goed reageert op positieve aandacht",
-        isCorrect: false,
-        feedback: "Het gaat niet om zijn karakter. Na een week van overwegend negatieve interacties is het saldo zo laag dat losse stortingen niet meer landen. Het kind beschermt zichzelf.",
-      },
-      {
-        id: "b",
         text: "Het saldo staat zo diep in het rood dat incidentele stortingen niet meer landen — er is een structurele omslag nodig in de verhouding positief/negatief",
         isCorrect: true,
         feedback: "Correct. Bij een chronisch negatief saldo gaat het kind in 'beschermingsmodus': het vertrouwt positieve signalen niet meer. Je moet het saldo structureel opbouwen met consistente dagelijkse stortingen voordat correcties weer worden verdragen.",
+      },
+      {
+        id: "b",
+        text: "Guus is een lastig kind dat niet goed reageert op positieve aandacht",
+        isCorrect: false,
+        feedback: "Het gaat niet om zijn karakter. Na een week van overwegend negatieve interacties is het saldo zo laag dat losse stortingen niet meer landen. Het kind beschermt zichzelf.",
       },
       {
         id: "c",
@@ -4781,15 +4781,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Omdat kind-geleide interactie vraagt dat jij zijn spel serieus neemt — door zijn script te volgen toon je respect voor zijn innerlijke wereld",
-        isCorrect: true,
-        feedback: "Correct. In kind-geleide interactie is het spel van het kind heilig. Als Pepijn zegt dat jij de draak bent, dan ben jij de draak. Door zijn script te volgen zeg je: 'Jouw verbeelding doet ertoe.' Dat is een diepe storting.",
-      },
-      {
-        id: "c",
         text: "Omdat een 5-jarige nog te jong is om met veranderingen in het spel om te gaan",
         isCorrect: false,
         feedback: "Het gaat niet om zijn leeftijd of flexibiliteit. Het gaat erom dat jij zijn leiderschap in het spel respecteert — dat is de kern van kind-geleide interactie.",
+      },
+      {
+        id: "c",
+        text: "Omdat kind-geleide interactie vraagt dat jij zijn spel serieus neemt — door zijn script te volgen toon je respect voor zijn innerlijke wereld",
+        isCorrect: true,
+        feedback: "Correct. In kind-geleide interactie is het spel van het kind heilig. Als Pepijn zegt dat jij de draak bent, dan ben jij de draak. Door zijn script te volgen zeg je: 'Jouw verbeelding doet ertoe.' Dat is een diepe storting.",
       },
     ],
     explanation: "Bij kind-geleide interactie (PCIT, Eyberg) volgt de ouder het spel van het kind. Veel vaders vinden het lastig om een passieve rol te accepteren in het spel. Maar juist door het kind de regie te geven, bouw je verbinding: 'Ik neem jou serieus.'",
@@ -4806,15 +4806,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Er gebeurt weinig — het is maar fantasiespel en heeft geen diepere betekenis",
-        isCorrect: false,
-        feedback: "Fantasiespel is een van de krachtigste vormen van hersenontwikkeling. Amber oefent empathie, probleemoplossing en sociale rollen. Het is allesbehalve 'maar' spel.",
-      },
-      {
-        id: "b",
         text: "Haar prefrontale cortex en spiegelneuronen zijn actief — ze oefent empathie en zorggedrag. Jouw meespelen versterkt deze neurale paden en bouwt tegelijk verbinding",
         isCorrect: true,
         feedback: "Correct. Tijdens rollenspel zijn de prefrontale cortex (planning, perspectief nemen) en spiegelneuronen (empathie) actief. Dat jij meespeelt maakt het extra krachtig: ze oefent zorgen voor de belangrijkste persoon in haar leven.",
+      },
+      {
+        id: "b",
+        text: "Er gebeurt weinig — het is maar fantasiespel en heeft geen diepere betekenis",
+        isCorrect: false,
+        feedback: "Fantasiespel is een van de krachtigste vormen van hersenontwikkeling. Amber oefent empathie, probleemoplossing en sociale rollen. Het is allesbehalve 'maar' spel.",
       },
       {
         id: "c",
@@ -4837,15 +4837,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Er is geen probleem — je hebt hem geholpen en hij kan nu verder spelen",
-        isCorrect: false,
-        feedback: "Je loste zijn probleem op, maar miste de kans om te verbinden over zijn frustratie. Bovendien nam je zijn leerervaring weg door het voor hem te doen.",
-      },
-      {
-        id: "b",
         text: "Je ging naar 'fix-modus' in plaats van eerst te verbinden met zijn frustratie. Erkennen ('Bah, hij valt steeds om, hè?') en dan samen proberen had verbinding én leren opgeleverd",
         isCorrect: true,
         feedback: "Precies. De vaderreflex om te 'fixen' is sterk, maar mist de verbindingskans. Eerst aansluiten bij het gevoel, dan samen zoeken naar een oplossing. Zo wordt het spel een gedeelde ervaring in plaats van een les.",
+      },
+      {
+        id: "b",
+        text: "Er is geen probleem — je hebt hem geholpen en hij kan nu verder spelen",
+        isCorrect: false,
+        feedback: "Je loste zijn probleem op, maar miste de kans om te verbinden over zijn frustratie. Bovendien nam je zijn leerervaring weg door het voor hem te doen.",
       },
       {
         id: "c",
@@ -4874,15 +4874,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "De herhaling IS het doel voor haar — het geeft veiligheid, meesterschap en voorspelbaarheid. Jouw volhouden in het patroon is een krachtige verbindingsdaad",
-        isCorrect: true,
-        feedback: "Correct. Kinderen herhalen patronen niet uit gebrek aan creativiteit, maar omdat herhaling veiligheid en meesterschapsgevoel biedt. Dat jij dit volhoudt zonder ongeduld communiceert: 'Ik blijf bij je, op jouw tempo.' Dat is pure verbinding.",
-      },
-      {
-        id: "c",
         text: "Je moet het spel stoppen als het niet meer leuk is voor jou — kinderen voelen het als je doet alsof",
         isCorrect: false,
         feedback: "Kinderen voelen inderdaad onechtheid, maar de oplossing is niet stoppen. Het is je perspectief verschuiven: het doel is niet jouw plezier maar de verbinding. Probeer haar gezicht te zien bij elke herhaling — daar zit de vreugde.",
+      },
+      {
+        id: "c",
+        text: "De herhaling IS het doel voor haar — het geeft veiligheid, meesterschap en voorspelbaarheid. Jouw volhouden in het patroon is een krachtige verbindingsdaad",
+        isCorrect: true,
+        feedback: "Correct. Kinderen herhalen patronen niet uit gebrek aan creativiteit, maar omdat herhaling veiligheid en meesterschapsgevoel biedt. Dat jij dit volhoudt zonder ongeduld communiceert: 'Ik blijf bij je, op jouw tempo.' Dat is pure verbinding.",
       },
     ],
     explanation: "Herhalend spel is een van de lastigste dingen voor vaders om vol te houden. Maar voor kinderen is herhaling een fundamentele behoefte: het biedt veiligheid, voorspelbaarheid en een gevoel van controle. Een vader die geduldig meespeelt in het herhalende patroon, geeft een van de diepste vormen van acceptatie.",
@@ -4935,15 +4935,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Het is wél actief luisteren — je stelt vragen om het verhaal te begrijpen",
-        isCorrect: false,
-        feedback: "Je stelt vragen, maar de verkeerde soort op het verkeerde moment. Je gaat naar analyse terwijl ze emotionele steun nodig heeft. Ze voelt zich niet gehoord maar ondervraagd.",
-      },
-      {
-        id: "b",
         text: "Je slaat de emotie over en gaat direct naar feiten en oorzaak. Actief luisteren begint met het gevoel erkennen: 'Wat verdrietig. Dat doet pijn als je vriendin gemeen doet'",
         isCorrect: true,
         feedback: "Correct. Actief luisteren heeft een volgorde: eerst het gevoel erkennen, dan pas het verhaal verkennen. Door meteen naar feiten te springen, voelt Nienke zich niet gehoord maar verhoord.",
+      },
+      {
+        id: "b",
+        text: "Het is wél actief luisteren — je stelt vragen om het verhaal te begrijpen",
+        isCorrect: false,
+        feedback: "Je stelt vragen, maar de verkeerde soort op het verkeerde moment. Je gaat naar analyse terwijl ze emotionele steun nodig heeft. Ze voelt zich niet gehoord maar ondervraagd.",
       },
       {
         id: "c",
@@ -5028,15 +5028,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "'Waarom deed je dat?' (waarom-vraag)",
-        isCorrect: false,
-        feedback: "'Waarom' klinkt als een beschuldiging en dwingt tot rationalisatie. Een 9-jarige weet vaak niet waarom hij iets deed — de vraag creëert druk in plaats van openheid.",
-      },
-      {
-        id: "b",
         text: "'Hoe was dat voor jou? Wat voelde je op dat moment?' (hoe/wat-vraag gericht op beleving)",
         isCorrect: true,
         feedback: "Correct. Open vragen gericht op beleving ('hoe voelde dat', 'wat dacht je') openen het gesprek zonder te oordelen. Ze nodigen het kind uit om zijn innerlijke wereld te delen in plaats van zich te verdedigen.",
+      },
+      {
+        id: "b",
+        text: "'Waarom deed je dat?' (waarom-vraag)",
+        isCorrect: false,
+        feedback: "'Waarom' klinkt als een beschuldiging en dwingt tot rationalisatie. Een 9-jarige weet vaak niet waarom hij iets deed — de vraag creëert druk in plaats van openheid.",
       },
       {
         id: "c",
@@ -5090,15 +5090,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Het is wél effectief — je stelt hem gerust met de waarheid",
-        isCorrect: false,
-        feedback: "Feitelijke correctie raakt niet aan wat Teun voelt. Hij zoekt geen informatie maar erkenning. Zijn gevoel — zich minder gezien voelen — is echt, ook al klopt de conclusie niet.",
-      },
-      {
-        id: "b",
         text: "Je ontkent zijn beleving door te corrigeren. Effectiever: eerst valideren ('Het voelt niet eerlijk, hè? Je voelt je soms minder gezien?') en dan samen verkennen wat hij nodig heeft",
         isCorrect: true,
         feedback: "Correct. Teun's gevoel erkennen is niet hetzelfde als het ermee eens zijn. 'Dat is niet waar' sluit het gesprek; 'Dat voelt niet eerlijk' opent het. Pas als hij zich gehoord voelt, kun je uitleggen waarom de bedtijden anders zijn.",
+      },
+      {
+        id: "b",
+        text: "Het is wél effectief — je stelt hem gerust met de waarheid",
+        isCorrect: false,
+        feedback: "Feitelijke correctie raakt niet aan wat Teun voelt. Hij zoekt geen informatie maar erkenning. Zijn gevoel — zich minder gezien voelen — is echt, ook al klopt de conclusie niet.",
       },
       {
         id: "c",
@@ -5132,15 +5132,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Je hebt 'turn against' gereageerd op een bid for connection die vermomd was als boos gedrag. Het schoppen was een onhandige poging om zijn frustratie te delen",
-        isCorrect: true,
-        feedback: "Precies. Achter lastig gedrag zit vaak een bid for connection. Guus had hulp nodig bij zijn frustratie. Effectiever: 'Je bent boos dat je geen koekje mag. Ik snap dat. Schoppen mag niet — maar je mag wel boos zijn.' Grens EN verbinding.",
-      },
-      {
-        id: "c",
         text: "Je had hem het koekje moeten geven om het conflict te voorkomen",
         isCorrect: false,
         feedback: "Grenzen opgeven voorkomt conflict maar ondermijnt veiligheid. Het gaat niet om het koekje, maar om hoe je de grens stelt terwijl je verbonden blijft.",
+      },
+      {
+        id: "c",
+        text: "Je hebt 'turn against' gereageerd op een bid for connection die vermomd was als boos gedrag. Het schoppen was een onhandige poging om zijn frustratie te delen",
+        isCorrect: true,
+        feedback: "Precies. Achter lastig gedrag zit vaak een bid for connection. Guus had hulp nodig bij zijn frustratie. Effectiever: 'Je bent boos dat je geen koekje mag. Ik snap dat. Schoppen mag niet — maar je mag wel boos zijn.' Grens EN verbinding.",
       },
     ],
     explanation: "Gottman toont dat bids for connection niet altijd positief zijn. Boosheid, huilen en zelfs lastig gedrag kunnen verkapte bids zijn: 'Help me met wat ik voel.' De kunst is de bid te herkennen achter het gedrag en te reageren met 'turn toward': het gevoel erkennen terwijl je de grens op het gedrag houdt.",
@@ -5194,15 +5194,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Naar hem toe gaan, erkennen dat je te hard reageerde, en het gesprek heropenen: 'Ik schreeuwde en dat was niet oké. Het spijt me. Ik was gefrustreerd, maar zo had ik het niet moeten zeggen'",
-        isCorrect: true,
-        feedback: "Precies. Na een breuk in de verbinding is 'turning toward' actief herstellen: naar het kind toe gaan, je aandeel erkennen, en de relatie herstellen. Dit modelleert ook dat conflicten gerepareerd kunnen worden — een cruciale levensvaardigheid.",
-      },
-      {
-        id: "c",
         text: "De volgende dag iets leuks doen samen en er niet meer over praten",
         isCorrect: false,
         feedback: "Iets leuks doen zonder het conflict te bespreken is vermijding, geen reparatie. Het onverwerkte conflict blijft als onzichtbare opname op de emotionele bankrekening staan.",
+      },
+      {
+        id: "c",
+        text: "Naar hem toe gaan, erkennen dat je te hard reageerde, en het gesprek heropenen: 'Ik schreeuwde en dat was niet oké. Het spijt me. Ik was gefrustreerd, maar zo had ik het niet moeten zeggen'",
+        isCorrect: true,
+        feedback: "Precies. Na een breuk in de verbinding is 'turning toward' actief herstellen: naar het kind toe gaan, je aandeel erkennen, en de relatie herstellen. Dit modelleert ook dat conflicten gerepareerd kunnen worden — een cruciale levensvaardigheid.",
       },
     ],
     explanation: "Gottman's 'turning toward' na conflict betekent actief de breuk repareren. Dit vereist: 1) naar het kind toe gaan (niet wachten), 2) je eigen aandeel erkennen, 3) het gevoel van het kind valideren, 4) samen verder kijken. Dit leert het kind: relaties kunnen breken EN hersteld worden.",
@@ -5219,15 +5219,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Door het speelgoed af te pakken en te zeggen dat niemand ermee mag spelen",
-        isCorrect: false,
-        feedback: "Dit lost niets op en beschadigt het saldo met beide kinderen. Je straft zonder te verbinden en de onderliggende behoeften worden niet gezien.",
-      },
-      {
-        id: "b",
         text: "Eerst beide gevoelens erkennen ('Roos, je bent verdrietig. Thijs, jij wilt ook graag spelen') en dan samen naar een oplossing zoeken, zodat geen van beiden zich afgewezen voelt",
         isCorrect: true,
         feedback: "Correct. Verbinding in conflicten met meerdere kinderen vereist dat je beide partijen ziet en valideert. Door partij te kiezen voor de jongste, maak je een opname bij de oudste. Beide gevoelens erkennen is 'turning toward' voor allebei.",
+      },
+      {
+        id: "b",
+        text: "Door het speelgoed af te pakken en te zeggen dat niemand ermee mag spelen",
+        isCorrect: false,
+        feedback: "Dit lost niets op en beschadigt het saldo met beide kinderen. Je straft zonder te verbinden en de onderliggende behoeften worden niet gezien.",
       },
       {
         id: "c",
@@ -5256,15 +5256,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Haar aanhoudende boosheid is een herhaalde bid for connection. Je sorry was een feitelijke erkenning, maar ze heeft emotionele erkenning nodig: dat je voelt wat zij voelde op dat moment dat je er niet was",
-        isCorrect: true,
-        feedback: "Precies. 'Sorry' is cognitief, maar Amber heeft emotionele afstemming nodig. 'Turning toward' betekent hier: 'Ik stel me voor dat je daar stond, naar de tribune keek en mij niet zag. Dat moet zo teleurstellend zijn geweest.' Pas als ze voelt dat je het begrijpt, kan ze loslaten.",
-      },
-      {
-        id: "c",
         text: "Je moet het goedmaken met een extra speciaal uitje of cadeau",
         isCorrect: false,
         feedback: "Materiële compensatie omzeilt het emotionele proces. Amber wil niet iets krijgen — ze wil voelen dat je begrijpt wat het voor haar betekende.",
+      },
+      {
+        id: "c",
+        text: "Haar aanhoudende boosheid is een herhaalde bid for connection. Je sorry was een feitelijke erkenning, maar ze heeft emotionele erkenning nodig: dat je voelt wat zij voelde op dat moment dat je er niet was",
+        isCorrect: true,
+        feedback: "Precies. 'Sorry' is cognitief, maar Amber heeft emotionele afstemming nodig. 'Turning toward' betekent hier: 'Ik stel me voor dat je daar stond, naar de tribune keek en mij niet zag. Dat moet zo teleurstellend zijn geweest.' Pas als ze voelt dat je het begrijpt, kan ze loslaten.",
       },
     ],
     explanation: "Wanneer een kind herhaaldelijk boos blijft na een excuus, is het excuus waarschijnlijk te cognitief geweest. Het kind zoekt geen feitelijke erkenning ('ik weet dat je boos bent') maar emotionele resonantie ('ik voel wat jij voelde'). Dit vraagt empathische verbeelding: je verplaatsen in het moment van het kind.",
@@ -5323,15 +5323,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Het ritueel is een betrouwbare storting op de emotionele bankrekening. Herhaaldelijk afzeggen leert Fleur dat ze niet op dit moment kan rekenen, en ondermijnt de verbinding",
-        isCorrect: true,
-        feedback: "Correct. Rituelen krijgen hun kracht door betrouwbaarheid. Eenmalig missen is menselijk, maar een patroon van afzeggen doet het ritueel zijn functie verliezen als veilig ankerpunt. Bescherm de rituelen die je hebt.",
-      },
-      {
-        id: "c",
         text: "Je kunt het compenseren door een ander moment in de week samen te fietsen",
         isCorrect: false,
         feedback: "Flexibiliteit is soms nodig, maar de kracht van een ritueel zit in de vaste tijd, plek en vorm. Verschuiven verdunt de betekenis. Beter: het ritueel beschermen en een andere oplossing zoeken voor de boodschappen.",
+      },
+      {
+        id: "c",
+        text: "Het ritueel is een betrouwbare storting op de emotionele bankrekening. Herhaaldelijk afzeggen leert Fleur dat ze niet op dit moment kan rekenen, en ondermijnt de verbinding",
+        isCorrect: true,
+        feedback: "Correct. Rituelen krijgen hun kracht door betrouwbaarheid. Eenmalig missen is menselijk, maar een patroon van afzeggen doet het ritueel zijn functie verliezen als veilig ankerpunt. Bescherm de rituelen die je hebt.",
       },
     ],
     explanation: "Vader-kindrituelen zijn 'heilige momenten' die hun kracht ontlenen aan voorspelbaarheid en exclusiviteit. Het gaat niet om de activiteit (fietsen, bakker) maar om de betrouwbaarheid: 'Elke zondag is van ons.' Bescherm deze rituelen actief — ze zijn de pilaren van de verbinding.",
@@ -5354,15 +5354,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Interesse tonen in zijn passie, niet omdat dinosaurussen je boeien, maar omdat HÍJ je boeit. Via zijn interesse leer je hem kennen: 'Welke is de coolste en waarom?'",
-        isCorrect: true,
-        feedback: "Precies. Quality time via gedeelde interesses betekent niet dat je de interesse zelf moet delen — je deelt het enthousiasme van je kind. 'Vertel me alles' communiceert: 'Jij bent interessant voor mij.' Dat is de diepste vorm van verbinding.",
-      },
-      {
-        id: "c",
         text: "Een compromis sluiten: als hij naar jouw voetbalwedstrijd kijkt, kijk jij naar zijn dinosaurussen",
         isCorrect: false,
         feedback: "Een ruilhandel maakt verbinding transactioneel. Het gaat niet om eerlijk verdelen maar om onvoorwaardelijke interesse in zijn wereld. Hij is 10 — het is niet zijn taak om in jouw interesses te investeren.",
+      },
+      {
+        id: "c",
+        text: "Interesse tonen in zijn passie, niet omdat dinosaurussen je boeien, maar omdat HÍJ je boeit. Via zijn interesse leer je hem kennen: 'Welke is de coolste en waarom?'",
+        isCorrect: true,
+        feedback: "Precies. Quality time via gedeelde interesses betekent niet dat je de interesse zelf moet delen — je deelt het enthousiasme van je kind. 'Vertel me alles' communiceert: 'Jij bent interessant voor mij.' Dat is de diepste vorm van verbinding.",
       },
     ],
     explanation: "Gedeelde interesses hoeven niet wederzijds te zijn. De kracht zit erin dat de vader zich verdiept in de wereld van het kind, niet andersom. Door vragen te stellen over zijn passie, communiceert de vader: 'Jij bent het waard om te leren kennen.' Dit bouwt een relatie die ver voorbij dinosaurussen reikt.",
@@ -5379,15 +5379,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Ze heeft gewoon een kort concentratievermogen en is snel verveeld",
-        isCorrect: false,
-        feedback: "Nienke stelde zelf voor om samen te koken — motivatie was er. Ze haakte af omdat het 'samen' veranderde in een taakgerichte instructie. Ze wilde verbinding, niet een opdracht.",
-      },
-      {
-        id: "b",
         text: "Je maakte van quality time een taak door te instrueren en te verdelen. Echte quality time had betekend: samen ontdekken, samen fouten maken, haar de leiding laten nemen",
         isCorrect: true,
         feedback: "Correct. Quality time wordt vernietigd door taakgerichtheid. Het doel is niet een goed gerecht maar een gedeelde ervaring. Laat haar kiezen wat jullie maken, samen rommelen, samen lachen als het mislukt. Het proces is het product.",
+      },
+      {
+        id: "b",
+        text: "Ze heeft gewoon een kort concentratievermogen en is snel verveeld",
+        isCorrect: false,
+        feedback: "Nienke stelde zelf voor om samen te koken — motivatie was er. Ze haakte af omdat het 'samen' veranderde in een taakgerichte instructie. Ze wilde verbinding, niet een opdracht.",
       },
       {
         id: "c",
@@ -5447,15 +5447,15 @@ export const VERBINDING_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Je probeert verbinding te herstellen via vormen die bij een jonger kind pasten. Quality time met een 12-jarige vraagt om aansluiting bij haar wereld: interesse in haar muziek, haar vrienden, haar online leven — op haar voorwaarden en tempo",
-        isCorrect: true,
-        feedback: "Precies. De vader moet zijn verbindingsstrategie updaten. Een 12-jarige wil geen geprogrammeerde filmavond, maar een vader die af en toe naast haar op de bank zit, vraagt naar haar favoriete TikTokker, of mee wil luisteren naar haar muziek. Beschikbaarheid zonder druk is de sleutel.",
-      },
-      {
-        id: "c",
         text: "Je moet duidelijke regels stellen over schermtijd zodat er weer ruimte komt voor familietijd",
         isCorrect: false,
         feedback: "Regels over schermtijd kunnen nuttig zijn, maar ze creëren geen verbinding — ze creëren beschikbare tijd. Wat je met die tijd doet, bepaalt of er verbinding ontstaat. Zonder aansluiting bij haar wereld blijft geforceerde familietijd hol.",
+      },
+      {
+        id: "c",
+        text: "Je probeert verbinding te herstellen via vormen die bij een jonger kind pasten. Quality time met een 12-jarige vraagt om aansluiting bij haar wereld: interesse in haar muziek, haar vrienden, haar online leven — op haar voorwaarden en tempo",
+        isCorrect: true,
+        feedback: "Precies. De vader moet zijn verbindingsstrategie updaten. Een 12-jarige wil geen geprogrammeerde filmavond, maar een vader die af en toe naast haar op de bank zit, vraagt naar haar favoriete TikTokker, of mee wil luisteren naar haar muziek. Beschikbaarheid zonder druk is de sleutel.",
       },
     ],
     explanation: "De vader-kindrelatie moet zich in de puberteit opnieuw uitvinden. Vaders die vasthouden aan verbindingsvormen uit de kindertijd, ervaren afwijzing. De sleutel is 'volgen zonder te duwen': interesse tonen in haar wereld, beschikbaar zijn zonder te claimen, en kleine momenten van verbinding herkennen in plaats van grote te forceren.",
@@ -5513,15 +5513,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Je bent een slechte vader die zijn kind afkraakt",
-        isCorrect: false,
-        feedback: "Nee. Het feit dat je schrikt van je eigen woorden toont bewustzijn. Dit is geen slechtheid maar een onbewust patroon dat geactiveerd wordt.",
-      },
-      {
-        id: "b",
         text: "Een onbewust generatiepatroon wordt geactiveerd — je herhaalt automatisch wat je zelf hebt gehoord",
         isCorrect: true,
         feedback: "Correct! 70% van opvoedgedrag is onbewust aangeleerd. In stressmomenten vallen we terug op 'de stem van onze vader'. Bewustzijn is stap 1 naar verandering.",
+      },
+      {
+        id: "b",
+        text: "Je bent een slechte vader die zijn kind afkraakt",
+        isCorrect: false,
+        feedback: "Nee. Het feit dat je schrikt van je eigen woorden toont bewustzijn. Dit is geen slechtheid maar een onbewust patroon dat geactiveerd wordt.",
       },
       {
         id: "c",
@@ -5550,15 +5550,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Overcorrigeren: het tegenovergestelde doen, nooit grenzen stellen",
-        isCorrect: false,
-        feedback: "Overcorrigeren klinkt beter maar creëert nieuwe problemen. Een vader die nooit grenzen stelt uit angst voor zijn eigen vader, geeft zijn kind ook geen veiligheid.",
-      },
-      {
-        id: "c",
         text: "Bewust kiezen: reflecteren op wat je wilt behouden, wat je wilt veranderen, en actief een nieuwe stijl ontwikkelen",
         isCorrect: true,
         feedback: "Correct! Het derde pad: bewust kiezen. Niet blind herhalen, niet blind overcorrigeren, maar reflecteren en intentioneel kiezen welke vader je wilt zijn.",
+      },
+      {
+        id: "c",
+        text: "Overcorrigeren: het tegenovergestelde doen, nooit grenzen stellen",
+        isCorrect: false,
+        feedback: "Overcorrigeren klinkt beter maar creëert nieuwe problemen. Een vader die nooit grenzen stelt uit angst voor zijn eigen vader, geeft zijn kind ook geen veiligheid.",
       },
     ],
     explanation: "De 3 paden bij generatiepatronen: 1) Herhalen (onbewust kopiëren) 2) Overcorrigeren (tegenovergestelde doen) 3) Bewust kiezen (reflecteren en intentioneel handelen). Pad 3 vereist de meeste moed maar levert de beste resultaten.",
@@ -5581,15 +5581,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Ongeveer 70% — het meeste gedrag is onbewust aangeleerd",
-        isCorrect: true,
-        feedback: "Correct! Ongeveer 70% van opvoedgedrag is onbewust overgenomen. Dit is geen veroordeling maar een oproep tot bewustzijn. Wat je niet bewust maakt, herhaalt zich.",
-      },
-      {
-        id: "c",
         text: "100% — je kunt er niets aan veranderen",
         isCorrect: false,
         feedback: "Gelukkig niet. Hoewel de invloed groot is, kun je patronen doorbreken door bewustzijn en actieve reflectie. Neuroplasticiteit maakt verandering mogelijk.",
+      },
+      {
+        id: "c",
+        text: "Ongeveer 70% — het meeste gedrag is onbewust aangeleerd",
+        isCorrect: true,
+        feedback: "Correct! Ongeveer 70% van opvoedgedrag is onbewust overgenomen. Dit is geen veroordeling maar een oproep tot bewustzijn. Wat je niet bewust maakt, herhaalt zich.",
       },
     ],
     explanation: "De 70% is geen lot maar een startpunt. Neuroplasticiteit betekent: je brein kan nieuwe patronen aanleggen op elke leeftijd. Maar je moet eerst weten wát je herhaalt, voordat je het kunt veranderen.",
@@ -5606,15 +5606,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Jezelf verwijten dat je net als je vader bent",
-        isCorrect: false,
-        feedback: "Zelfverwijt houdt het patroon in stand. Schuldgevoel leidt tot vermijding, niet tot verandering.",
-      },
-      {
-        id: "b",
         text: "Het patroon benoemen zonder oordeel: 'Ik merk dat ik verhardde, net als mijn vader deed. Ik wil het anders doen.' En dan alsnog verbinden met je dochter",
         isCorrect: true,
         feedback: "Perfect! Bewust waarnemen zonder oordeel, het patroon herkennen, en dan een nieuwe keuze maken. Dit is het doorbreken van de cyclus in real-time.",
+      },
+      {
+        id: "b",
+        text: "Jezelf verwijten dat je net als je vader bent",
+        isCorrect: false,
+        feedback: "Zelfverwijt houdt het patroon in stand. Schuldgevoel leidt tot vermijding, niet tot verandering.",
       },
       {
         id: "c",
@@ -5668,15 +5668,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Je houdt niet genoeg van je zoon",
-        isCorrect: false,
-        feedback: "Dit gaat niet over liefde. Je houdt van hem, maar fysieke affectie is niet aangeleerd. Wat je niet hebt ervaren, voelt onnatuurlijk — maar je kunt het leren.",
-      },
-      {
-        id: "b",
         text: "Wat je niet hebt ontvangen in je eigen jeugd, voelt onnatuurlijk om te geven — maar je kunt het aanleren",
         isCorrect: true,
         feedback: "Correct! Fysieke warmte die je niet hebt ervaren voelt als 'vreemde taal'. Maar neuroplasticiteit werkt: hoe vaker je knuffelt, hoe natuurlijker het wordt. Begin klein.",
+      },
+      {
+        id: "b",
+        text: "Je houdt niet genoeg van je zoon",
+        isCorrect: false,
+        feedback: "Dit gaat niet over liefde. Je houdt van hem, maar fysieke affectie is niet aangeleerd. Wat je niet hebt ervaren, voelt onnatuurlijk — maar je kunt het leren.",
       },
       {
         id: "c",
@@ -5710,15 +5710,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "De innerlijke criticus — een beschermend deel dat je wil motiveren door je klein te maken",
-        isCorrect: true,
-        feedback: "Correct! In IFS is de criticus een 'beschermer' die je probeert te motiveren door schaamte. Paradoxaal: hoe harder de criticus, hoe slechter je functioneert als vader.",
-      },
-      {
-        id: "c",
         text: "Een rationele analyse van je ouderschapskwaliteiten",
         isCorrect: false,
         feedback: "Niets rationeels aan 'waardeloos'. Dit is een emotionele reactie, geen analyse. De criticus spreekt in absoluten ('nooit', 'altijd', 'waardeloos').",
+      },
+      {
+        id: "c",
+        text: "De innerlijke criticus — een beschermend deel dat je wil motiveren door je klein te maken",
+        isCorrect: true,
+        feedback: "Correct! In IFS is de criticus een 'beschermer' die je probeert te motiveren door schaamte. Paradoxaal: hoe harder de criticus, hoe slechter je functioneert als vader.",
       },
     ],
     explanation: "Het IFS-model (Schwartz) ziet de psyche als een systeem van 'delen'. De criticus is een beschermer die via schaamte probeert te voorkomen dat je het opnieuw fout doet. Maar schaamte verlamt — het maakt je juist een slechtere vader. Zelfcompassie werkt beter.",
@@ -5773,15 +5773,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Het gewonde kind-deel: de pijn van vroeger (gekleineerd worden) wordt opnieuw geactiveerd door zijn zoon",
-        isCorrect: true,
-        feedback: "Correct! Als je reactie groter is dan de situatie rechtvaardigt, wordt een 'exile' (gewond deel) geactiveerd. Je reageert niet op je zoon van 8, maar op de pijn van je eigen jeugd.",
-      },
-      {
-        id: "c",
         text: "Een gezonde vader-reactie op disrespect",
         isCorrect: false,
         feedback: "Een grens stellen op 'dom' is gezond. Maar een uitbarsting is disproportioneel en wijst op een oude wond die geraakt wordt.",
+      },
+      {
+        id: "c",
+        text: "Het gewonde kind-deel: de pijn van vroeger (gekleineerd worden) wordt opnieuw geactiveerd door zijn zoon",
+        isCorrect: true,
+        feedback: "Correct! Als je reactie groter is dan de situatie rechtvaardigt, wordt een 'exile' (gewond deel) geactiveerd. Je reageert niet op je zoon van 8, maar op de pijn van je eigen jeugd.",
       },
     ],
     explanation: "IFS onderscheidt 'exiles' (gewonde delen die pijn dragen) en 'protectors' (delen die de pijn proberen te voorkomen). Als je zoon 'dom' zegt, wordt het exile geactiveerd, en springt de protector (woede) in actie. De woede beschermt de oude pijn.",
@@ -5804,15 +5804,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Beide stemmen erkennen als beschermende delen met een goede intentie, en vanuit je 'Self' een derde weg kiezen",
-        isCorrect: true,
-        feedback: "Correct! In IFS is de 'Self' de kern die beide delen kan horen zonder erdoor overgenomen te worden. Vanuit Self kun je strengheid EN zachtheid integreren.",
-      },
-      {
-        id: "c",
         text: "De stemmen negeren en op je intuïtie vertrouwen",
         isCorrect: false,
         feedback: "Negeren werkt niet — onderdrukte delen worden luider. De kunst is luisteren zonder je te identificeren met één stem.",
+      },
+      {
+        id: "c",
+        text: "Beide stemmen erkennen als beschermende delen met een goede intentie, en vanuit je 'Self' een derde weg kiezen",
+        isCorrect: true,
+        feedback: "Correct! In IFS is de 'Self' de kern die beide delen kan horen zonder erdoor overgenomen te worden. Vanuit Self kun je strengheid EN zachtheid integreren.",
       },
     ],
     explanation: "Het IFS-model: de 'Self' is je kernwezen — kalm, nieuwsgierig, compassievol. Delen (criticus, beschermer, gewond kind) zijn geen vijanden maar beschermers met goede intenties. Vanuit Self kun je alle delen horen en bewust kiezen.",
@@ -5902,15 +5902,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Een identiteitsshift: zijn oude identiteit (vrije man) botst met zijn nieuwe identiteit (vader) en dat voelt als verlies",
-        isCorrect: true,
-        feedback: "Correct! Vaderschap is een identiteitscrisis (in positieve zin). Je oude zelf moet ruimte maken voor een nieuw zelf. Dit proces heet 'matrescence' voor moeders — voor vaders is het net zo reëel.",
-      },
-      {
-        id: "c",
         text: "Hij heeft een postnatale depressie en moet direct naar een psycholoog",
         isCorrect: false,
         feedback: "Postnatale depressie bij vaders bestaat en is serieus, maar identiteitsverlies alleen is niet per definitie depressie. Het is een normale transitie.",
+      },
+      {
+        id: "c",
+        text: "Een identiteitsshift: zijn oude identiteit (vrije man) botst met zijn nieuwe identiteit (vader) en dat voelt als verlies",
+        isCorrect: true,
+        feedback: "Correct! Vaderschap is een identiteitscrisis (in positieve zin). Je oude zelf moet ruimte maken voor een nieuw zelf. Dit proces heet 'matrescence' voor moeders — voor vaders is het net zo reëel.",
       },
     ],
     explanation: "De transitie naar vaderschap is een van de grootste identiteitsshifts in een mannenleven. Onderzoek toont: 1 op 10 vaders ervaart een postnatale depressie. Maar zelfs zonder depressie is de identiteitsshift ingrijpend en verdient erkenning.",
@@ -5927,15 +5927,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "De rol van verzorger en emotionele coach — vaderschap is meer dan financieel zorgen",
-        isCorrect: true,
-        feedback: "Correct! Vaderschap kent meerdere rollen: kostwinner, beschermer, maar ook verzorger, emotionele coach, en speelkameraad. Financiële zorg is belangrijk maar niet voldoende voor hechting.",
-      },
-      {
-        id: "b",
         text: "Niets — financieel zorgen is de belangrijkste vadertaak",
         isCorrect: false,
         feedback: "Financieel zorgen is waardevol maar niet genoeg. Kinderen hebben emotionele aanwezigheid nodig, niet alleen materiële zekerheid.",
+      },
+      {
+        id: "b",
+        text: "De rol van verzorger en emotionele coach — vaderschap is meer dan financieel zorgen",
+        isCorrect: true,
+        feedback: "Correct! Vaderschap kent meerdere rollen: kostwinner, beschermer, maar ook verzorger, emotionele coach, en speelkameraad. Financiële zorg is belangrijk maar niet voldoende voor hechting.",
       },
       {
         id: "c",
@@ -5958,15 +5958,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Er is geen verschil — je bent wat je doet",
-        isCorrect: false,
-        feedback: "Dit is een destructieve overtuiging. Als je alleen bent wat je doet, dan is elke slechte dag een bewijs dat je een slechte vader bent. Identiteit ≠ gedrag.",
-      },
-      {
-        id: "b",
         text: "Wie je bent (je waarden, intenties) is stabiel; wat je doet varieert per dag — een slechte dag maakt je geen slechte vader",
         isCorrect: true,
         feedback: "Correct! Je kern (liefdevol, betrokken willen zijn) verandert niet door een slechte dag. Gedrag fluctueert; identiteit is dieper. Je bent niet je slechtste momenten.",
+      },
+      {
+        id: "b",
+        text: "Er is geen verschil — je bent wat je doet",
+        isCorrect: false,
+        feedback: "Dit is een destructieve overtuiging. Als je alleen bent wat je doet, dan is elke slechte dag een bewijs dat je een slechte vader bent. Identiteit ≠ gedrag.",
       },
       {
         id: "c",
@@ -5989,15 +5989,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Kijken naar andere vaders en kopiëren wat zij doen",
-        isCorrect: false,
-        feedback: "Kopiëren leidt tot een onecht vaderschap. Wat werkt voor een andere vader werkt niet per se voor jou. Je moet je eigen waarden ontdekken.",
-      },
-      {
-        id: "b",
         text: "Jezelf afvragen: 'Wat wil ik dat mijn kind over 20 jaar over mij zegt?' en van daaruit terugwerken naar vandaag",
         isCorrect: true,
         feedback: "Correct! De 'toekomstbrief' oefening: je kind is 25 en beschrijft jou als vader. Wat wil je dat ze zegt? Dit onthult je kernwaarden als vader.",
+      },
+      {
+        id: "b",
+        text: "Kijken naar andere vaders en kopiëren wat zij doen",
+        isCorrect: false,
+        feedback: "Kopiëren leidt tot een onecht vaderschap. Wat werkt voor een andere vader werkt niet per se voor jou. Je moet je eigen waarden ontdekken.",
       },
       {
         id: "c",
@@ -6026,15 +6026,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "De aanname dat vader-zijn bepaalde activiteiten vereist (voetbal, stoeien) in plaats van verbinding — en verbinding is genderneutraal",
-        isCorrect: true,
-        feedback: "Correct! Hij verwart vaderrollen met specifieke activiteiten. Een vader die met zijn dochter tekent, kookt of praat bouwt net zoveel hechting als een vader die voetbalt met zijn zoon.",
-      },
-      {
-        id: "c",
         text: "Hij moet zich aanpassen aan meisjes-activiteiten: poppen, prinsessen",
         isCorrect: false,
         feedback: "Het gaat niet om typische 'meisjes-activiteiten' maar om verbinding. Wat jullie samen doen is minder belangrijk dan HOE jullie het doen.",
+      },
+      {
+        id: "c",
+        text: "De aanname dat vader-zijn bepaalde activiteiten vereist (voetbal, stoeien) in plaats van verbinding — en verbinding is genderneutraal",
+        isCorrect: true,
+        feedback: "Correct! Hij verwart vaderrollen met specifieke activiteiten. Een vader die met zijn dochter tekent, kookt of praat bouwt net zoveel hechting als een vader die voetbalt met zijn zoon.",
       },
     ],
     explanation: "Vader-identiteit hoeft niet genderspecifiek te zijn. De kern is verbinding, niet activiteit. Een vader die echt aanwezig is bij tekenen bouwt meer hechting dan een vader die afwezig voetbalt. Het gaat om HOE, niet WAT.",
@@ -6051,15 +6051,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Hij moet kiezen: carrière of vaderschap",
-        isCorrect: false,
-        feedback: "Het is geen of/of keuze. De vraag is: hoe integreer je beide identiteiten? Veel vaders worstelen met dit en-en in plaats van of-of.",
-      },
-      {
-        id: "b",
         text: "De identiteitsexpansie: hij hoeft niet te kiezen maar moet zijn identiteit uitbreiden om beide rollen te omvatten",
         isCorrect: true,
         feedback: "Correct! Vaderschap vereist geen amputatie van je oude identiteit maar een expansie. Je bent niet minder professional door vader te zijn — je bent meer.",
+      },
+      {
+        id: "b",
+        text: "Hij moet kiezen: carrière of vaderschap",
+        isCorrect: false,
+        feedback: "Het is geen of/of keuze. De vraag is: hoe integreer je beide identiteiten? Veel vaders worstelen met dit en-en in plaats van of-of.",
       },
       {
         id: "c",
@@ -6093,15 +6093,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Via epigenetica: extreme stress verandert genexpressie, en deze veranderingen worden doorgegeven aan volgende generaties",
-        isCorrect: true,
-        feedback: "Correct! Epigenetisch onderzoek toont: trauma verandert de 'aan/uit-schakelaars' van genen (methylering). Deze veranderingen worden doorgegeven via sperma en eicel.",
-      },
-      {
-        id: "c",
         text: "Dit is wetenschappelijk niet bewezen, het is een mythe",
         isCorrect: false,
         feedback: "Het is wel degelijk bewezen. Onderzoek bij nakomelingen van Holocaustoverlevenden en hongersnoodslachtoffers toont epigenetische veranderingen tot 3 generaties later.",
+      },
+      {
+        id: "c",
+        text: "Via epigenetica: extreme stress verandert genexpressie, en deze veranderingen worden doorgegeven aan volgende generaties",
+        isCorrect: true,
+        feedback: "Correct! Epigenetisch onderzoek toont: trauma verandert de 'aan/uit-schakelaars' van genen (methylering). Deze veranderingen worden doorgegeven via sperma en eicel.",
       },
     ],
     explanation: "Epigenetica: je DNA verandert niet, maar de 'leeswijze' van je DNA wel. Extreme stress (oorlog, honger, mishandeling) verandert methyleringspatronen. Deze worden doorgegeven. Je draagt letterlijk de stress van je voorouders mee.",
@@ -6124,15 +6124,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "De cyclus doorbreken door zijn eigen onverwerkte pijn te verwerken — hij is de 'transitiegeneratie'",
-        isCorrect: true,
-        feedback: "Correct! De transitiegeneratie: de vader die zegt 'het stopt bij mij'. Door eigen verwerking verander je niet alleen je eigen opvoeding maar ook de epigenetische overdracht aan je kinderen.",
-      },
-      {
-        id: "c",
         text: "Zijn kinderen beschermen door nooit over het verleden te praten",
         isCorrect: false,
         feedback: "Zwijgen beschermt niet. Kinderen voelen de spanning en vullen de leegte met eigen angsten. Leeftijdsgeschikte openheid is gezonder dan stilte.",
+      },
+      {
+        id: "c",
+        text: "De cyclus doorbreken door zijn eigen onverwerkte pijn te verwerken — hij is de 'transitiegeneratie'",
+        isCorrect: true,
+        feedback: "Correct! De transitiegeneratie: de vader die zegt 'het stopt bij mij'. Door eigen verwerking verander je niet alleen je eigen opvoeding maar ook de epigenetische overdracht aan je kinderen.",
       },
     ],
     explanation: "De 'transitiegeneratie' is het krachtigste concept in transgenerationeel trauma: één vader die bewust kiest om de cyclus te doorbreken. Dit vereist: 1) Het patroon herkennen 2) Eigen pijn verwerken 3) Bewust anders opvoeden.",
@@ -6149,15 +6149,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Zijn zoon is stoer, dat is goed",
-        isCorrect: false,
-        feedback: "Emoties inhouden is niet stoer maar schadelijk. Onderdrukte emoties leiden tot stress, agressie of depressie later in het leven.",
-      },
-      {
-        id: "b",
         text: "Het patroon 'mannen huilen niet' wordt onbewust doorgegeven — het kind kopieert de emotionele regels van zijn vader",
         isCorrect: true,
         feedback: "Correct! Kinderen leren emotionele regels door observatie, niet door woorden. Als papa nooit huilt, leert het kind: huilen = niet oké. Het patroon gaat door.",
+      },
+      {
+        id: "b",
+        text: "Zijn zoon is stoer, dat is goed",
+        isCorrect: false,
+        feedback: "Emoties inhouden is niet stoer maar schadelijk. Onderdrukte emoties leiden tot stress, agressie of depressie later in het leven.",
       },
       {
         id: "c",
@@ -6211,15 +6211,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Hoeveel geld het gezin heeft",
-        isCorrect: false,
-        feedback: "Sociaaleconomische status speelt een rol maar is niet de beste voorspeller. Het gaat om psychologische verwerking.",
-      },
-      {
-        id: "b",
         text: "Hoe COHERENT de ouder over zijn eigen jeugd kan vertellen — verwerkt verlies, niet de gebeurtenissen zelf",
         isCorrect: true,
         feedback: "Correct! Het Adult Attachment Interview toont: ouders die coherent over hun jeugd praten (ook als die moeilijk was) hebben vaker veilig gehechte kinderen. Verwerking > ervaring.",
+      },
+      {
+        id: "b",
+        text: "Hoeveel geld het gezin heeft",
+        isCorrect: false,
+        feedback: "Sociaaleconomische status speelt een rol maar is niet de beste voorspeller. Het gaat om psychologische verwerking.",
       },
       {
         id: "c",
@@ -6242,15 +6242,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Hij heeft gelijk — hij is er inderdaad goed uitgekomen",
-        isCorrect: false,
-        feedback: "Het feit dat hij fysieke straf normaliseert, suggereert dat de impact dieper zit dan hij beseft. 'Ik ben er goed uitgekomen' is vaak een onbewuste verdediging.",
-      },
-      {
-        id: "b",
         text: "Rationalisatie: het is psychologisch te pijnlijk om toe te geven dat je ouder je pijn deed, dus normaliseer je het",
         isCorrect: true,
         feedback: "Correct! Rationalisatie beschermt tegen de pijn van erkenning: 'Als het niet erg was, hoef ik er niet om te rouwen.' Het is een beschermingsmechanisme, geen objectieve analyse.",
+      },
+      {
+        id: "b",
+        text: "Hij heeft gelijk — hij is er inderdaad goed uitgekomen",
+        isCorrect: false,
+        feedback: "Het feit dat hij fysieke straf normaliseert, suggereert dat de impact dieper zit dan hij beseft. 'Ik ben er goed uitgekomen' is vaak een onbewuste verdediging.",
       },
       {
         id: "c",
@@ -6309,9 +6309,9 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Fixed mindset — hij ziet één terugval als bewijs dat verandering onmogelijk is",
-        isCorrect: true,
-        feedback: "Correct! Fixed mindset: 'Ik ben wie ik ben, ik kan niet veranderen.' Growth mindset zou zijn: 'Ik ben teruggevallen, maar dat hoort bij het leerproces.'",
+        text: "Gezond zelfinzicht — hij kent zijn beperkingen",
+        isCorrect: false,
+        feedback: "Eén terugval na twee weken is geen beperking maar normaal. Gedragsverandering verloopt via vallen en opstaan, niet via een rechte lijn.",
       },
       {
         id: "b",
@@ -6321,9 +6321,9 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "c",
-        text: "Gezond zelfinzicht — hij kent zijn beperkingen",
-        isCorrect: false,
-        feedback: "Eén terugval na twee weken is geen beperking maar normaal. Gedragsverandering verloopt via vallen en opstaan, niet via een rechte lijn.",
+        text: "Fixed mindset — hij ziet één terugval als bewijs dat verandering onmogelijk is",
+        isCorrect: true,
+        feedback: "Correct! Fixed mindset: 'Ik ben wie ik ben, ik kan niet veranderen.' Growth mindset zou zijn: 'Ik ben teruggevallen, maar dat hoort bij het leerproces.'",
       },
     ],
     explanation: "Dweck's growth mindset toegepast op ouderschap: fouten zijn geen bewijs van falen maar onderdeel van het leerproces. De vraag is niet 'waarom viel ik terug?' maar 'wat kan ik leren van deze terugval?'",
@@ -6377,15 +6377,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
       },
       {
         id: "b",
-        text: "Elke avond 2 minuten: 'Wat ging goed? Wat zou ik anders doen? Hoe voelde mijn kind zich vandaag?'",
-        isCorrect: true,
-        feedback: "Correct! Micro-reflectie: kort, dagelijks, concreet. 3 vragen, 2 minuten. Dit bouwt het reflexieve vermogen op zonder overweldigend te zijn.",
-      },
-      {
-        id: "c",
         text: "Alleen reflecteren na een moeilijk moment",
         isCorrect: false,
         feedback: "Reflecteren na moeilijke momenten is waardevol, maar alleen reactief. Dagelijkse reflectie bouwt het vermogen op om moeilijke momenten te VOORKOMEN.",
+      },
+      {
+        id: "c",
+        text: "Elke avond 2 minuten: 'Wat ging goed? Wat zou ik anders doen? Hoe voelde mijn kind zich vandaag?'",
+        isCorrect: true,
+        feedback: "Correct! Micro-reflectie: kort, dagelijks, concreet. 3 vragen, 2 minuten. Dit bouwt het reflexieve vermogen op zonder overweldigend te zijn.",
       },
     ],
     explanation: "Reflectie als dagelijkse praktijk: 3 vragen voor het slapengaan. 1) Wat ging goed? (positieve bekrachtiging) 2) Wat zou ik anders doen? (leren zonder oordeel) 3) Hoe voelde mijn kind zich? (empathie-training).",
@@ -6433,15 +6433,15 @@ export const REFLECTIE_TRAINING: TrainingItem[] = [
     options: [
       {
         id: "a",
-        text: "Je moet al je trauma's verwerken voordat je een goede vader kunt zijn",
-        isCorrect: false,
-        feedback: "Dit is een perfectionistische valkuil. Je hoeft niet 'klaar' te zijn om een goede vader te zijn. Bewust worden is al genoeg om de cyclus te doorbreken.",
-      },
-      {
-        id: "b",
         text: "Je hoeft niet perfect te zijn — bewustzijn is al de helft van de verandering. Elke dag dat je reflecteert, breek je een stukje van de cyclus",
         isCorrect: true,
         feedback: "Correct! Bewust vaderschap is geen eindbestemming maar een dagelijks proces. Elke keer dat je een patroon herkent en anders kiest, verander je de toekomst van je kind.",
+      },
+      {
+        id: "b",
+        text: "Je moet al je trauma's verwerken voordat je een goede vader kunt zijn",
+        isCorrect: false,
+        feedback: "Dit is een perfectionistische valkuil. Je hoeft niet 'klaar' te zijn om een goede vader te zijn. Bewust worden is al genoeg om de cyclus te doorbreken.",
       },
       {
         id: "c",

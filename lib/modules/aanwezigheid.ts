@@ -61,7 +61,7 @@ export const AANWEZIGHEID_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De Aanwezigheids-Reset",
-      instructions: "Vanavond: als je kind iets tegen je zegt, leg dan alles uit je handen. Draai je hele lichaam naar je kind. Kijk in de ogen. Luister tot het klaar is. Reageer pas daarna. Eén keer. Dat is alles.",
+      instructions: "1. Vanavond: wacht tot je kind iets tegen je zegt.\n2. Leg alles uit je handen — telefoon, afstandsbediening, alles.\n3. Draai je hele lichaam naar je kind.\n4. Maak oogcontact. Kijk echt.\n5. Luister tot je kind klaar is met praten. Reageer pas daarna.\n6. Eén keer vanavond. Dat is alles. Merk het verschil op.",
       duration: 3,
       tips: [
         "Let op het gezicht van je kind als je je volle aandacht geeft — je zult het verschil zien",
@@ -112,6 +112,14 @@ export const AANWEZIGHEID_MODULES: LearningModule[] = [
       ],
       explanation: "Je lichaam laat zien wat je mond beweert. Oogcontact en lichaamshouding zijn de taal die kinderen het best lezen.",
     },
+    {
+      question: "Je bent moe na werk en je kind wil spelen. Wat is eerlijker?",
+      options: [
+        { text: "'Ik heb vijf minuten. Die zijn helemaal voor jou.' — eerlijk en volledig aanwezig", isCorrect: true },
+        { text: "Meedoen maar ondertussen je mail checken — je bent er tenminste", isCorrect: false },
+      ],
+      explanation: "Vijf minuten volledige aandacht is waardevoller dan een uur halve aanwezigheid. Je kind voelt het verschil. Eerlijkheid over je grenzen is beter dan nep-aanwezigheid.",
+    },
   ],
 },
 {
@@ -131,7 +139,7 @@ export const AANWEZIGHEID_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Luisteren is geen wachten tot jij mag praten",
-      text: "Vaders zijn fixers. We horen een probleem en ons brein schakelt meteen naar oplossingstand. Dat is op je werk handig. Bij je kind is het een ramp.\n\nWant als Daan zegt 'Sem wil niet meer naast me zitten', dan zegt hij eigenlijk: 'Ik voel me alleen. Ik voel me afgewezen. Is er iets mis met mij?' Daar past geen oplossing op. Daar past herkenning op.\n\nEcht luisteren is niet passief. Het is actief ontvangen. Je mond houden terwijl je brein schreeuwt om een oplossing. Dat is moeilijker dan praten. Maar het is precies wat je kind nodig heeft.",
+      text: "Vaders zijn fixers. We horen een probleem en ons brein schakelt meteen naar oplossingstand. Dat is op je werk handig. Bij je kind is het een ramp.\n\nWant als Daan zegt 'Sem wil niet meer naast me zitten', dan zegt hij eigenlijk: 'Ik voel me alleen. Ik voel me afgewezen. Is er iets mis met mij?' Daar past geen oplossing op. Daar past erkenning op.\n\nEcht luisteren is niet passief. Het is actief ontvangen. Je mond houden terwijl je brein schreeuwt om een oplossing. Dat is moeilijker dan praten. Maar het is precies wat je kind nodig heeft.",
     },
     {
       type: "text" as const,
@@ -174,7 +182,7 @@ export const AANWEZIGHEID_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De Fix-Stopper",
-      instructions: "Vanavond: als je kind iets vertelt over school of vrienden, gebruik dan alleen de drie stappen. Herhaal wat je hoort. Valideer het gevoel. Stel één open vraag. Geef geen enkel advies. Kijk wat er gebeurt.",
+      instructions: "1. Vanavond: wacht tot je kind iets vertelt over school, vrienden of hun dag.\n2. Stap 1 — Herhaal: 'Dus [wat je kind zei].' Geen oordeel, geen advies.\n3. Stap 2 — Valideer: 'Dat klinkt [emotie].' Eén zin.\n4. Stap 3 — Vraag door: 'Hoe voelde dat?' of 'Wat deed je toen?' Eén open vraag.\n5. Geef geen enkel advies. Zelfs niet als je handen jeuken.\n6. Bij een tiener (12+): dezelfde drie stappen, maar geef extra ruimte voor stilte. Tieners hebben soms tien seconden nodig voor ze verder praten. Wacht.",
       duration: 5,
       tips: [
         "Je zult merken dat je handen jeuken om te fixen. Dat is normaal. Adem door en luister verder.",
@@ -224,6 +232,14 @@ export const AANWEZIGHEID_MODULES: LearningModule[] = [
         { text: "Die kinderen scoorden beter op vriendschappen, school en zelfregulatie", isCorrect: true },
       ],
       explanation: "Emotion coaching leert kinderen dat gevoelens normaal zijn en hanteerbaar. Dat geeft ze een voorsprong in sociaal, emotioneel en cognitief functioneren.",
+    },
+    {
+      question: "Je dochter (10) vertelt dat ze gepest wordt. Je wilt het direct oplossen. Wat doe je eerst?",
+      options: [
+        { text: "Herhalen wat je hoort en haar gevoel erkennen — 'Dat klinkt heel vervelend'", isCorrect: true },
+        { text: "Direct de school bellen om het op te lossen — dit is te serieus om alleen te luisteren", isCorrect: false },
+      ],
+      explanation: "Zelfs bij serieuze situaties is de eerste stap altijd: luisteren en erkennen. Je kind moet zich eerst gehoord voelen. Actie kan daarna — en is dan ook effectiever.",
     },
   ],
 },
@@ -338,6 +354,14 @@ export const AANWEZIGHEID_MODULES: LearningModule[] = [
       ],
       explanation: "Wilskracht is eindig. Omgevingsontwerp werkt beter: als de telefoon er niet is, hoef je niet te kiezen. De keuze is al gemaakt.",
     },
+    {
+      question: "Je hebt de Sacred 3 ingevoerd. Je partner vindt het overdreven. Wat is het beste argument?",
+      options: [
+        { text: "Laat je partner een week meekijken: hoe anders zijn de gesprekken aan tafel zonder telefoon?", isCorrect: true },
+        { text: "Je partner heeft gelijk — het is niet nodig om je telefoon helemaal weg te leggen", isCorrect: false },
+      ],
+      explanation: "Het verschil is merkbaar. Gezinnen die telefoonvrije momenten invoeren rapporteren meer en diepere gesprekken. Laten zien werkt beter dan overtuigen.",
+    },
   ],
 },
 {
@@ -352,12 +376,12 @@ export const AANWEZIGHEID_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Alles ontploft. Wat nu?",
-      text: "Levi (6) en Saar (4) vechten om een auto. Saar gilt. Levi duwt. In de keuken piept de oven. Je telefoon gaat. Je partner roept iets vanuit de gang.\n\nJe brein zegt: vlucht. Maar je kinderen hebben je nu het hardst nodig.",
+      text: "Levi (6) en Saar (5) vechten om een auto. Saar gilt. Levi duwt. In de keuken piept de oven. Je telefoon gaat. Je partner roept iets vanuit de gang.\n\nJe brein zegt: vlucht. Maar je kinderen hebben je nu het hardst nodig.",
     },
     {
       type: "text" as const,
       heading: "Chaos is de echte test van aanwezigheid",
-      text: "Aanwezig zijn als het rustig is, is makkelijk. Samen een boek lezen op de bank. Een puzzel maken. Dat kan iedereen.\n\nMaar aanwezig zijn als alles tegelijk schreeuwt? Dat is waar het echte vaderschap zit. Niet omdat je het chaos oplost. Maar omdat je er middenin staat en niet wegloopt.\n\nAls jij kalm blijft te midden van de storm, leren je kinderen iets cruciaals: het kan gek zijn, het kan moeilijk zijn, maar het is veilig. Papa is er. Dat gevoel van veiligheid in chaos — dat dragen ze hun hele leven mee.",
+      text: "Aanwezig zijn als het rustig is, is makkelijk. Samen een boek lezen op de bank. Een puzzel maken. Dat kan iedereen.\n\nMaar aanwezig zijn als alles tegelijk schreeuwt? Dat is waar het echte vaderschap zit. Niet omdat je de chaos oplost. Maar omdat je er middenin staat en niet wegloopt.\n\nAls jij kalm blijft te midden van de storm, leren je kinderen iets cruciaals: het kan gek zijn, het kan moeilijk zijn, maar het is veilig. Papa is er. Dat gevoel van veiligheid in chaos — dat dragen ze hun hele leven mee.",
     },
     {
       type: "text" as const,
@@ -387,8 +411,8 @@ export const AANWEZIGHEID_MODULES: LearningModule[] = [
     },
     {
       type: "example" as const,
-      situation: "Woensdagavond, 17:45. Levi (6) en Saar (4) schreeuwen allebei. Levi wil de iPad, Saar heeft hem. De aardappels staan te hard te koken. Papa staat ertussen.",
-      wrongApproach: "MEE-EXPLODEREN:\n\nPapa: 'NU IS HET GENOEG!'\nGrist de iPad uit Saar's handen.\n'NIEMAND krijgt de iPad! Naar jullie kamers!'\nSaar huilt. Levi schopt tegen de bank.\nPapa beent naar de keuken.\nMompelt: 'Ik kan dit niet.'\n\nDrie mensen in fight-mode. Nul verbinding. Nul oplossing.",
+      situation: "Woensdagavond, 17:45. Levi (6) en Saar (5) schreeuwen allebei. Levi wil de iPad, Saar heeft hem. De aardappels koken over. Papa staat ertussen.",
+      wrongApproach: "MEE-EXPLODEREN:\n\nPapa: 'NU IS HET GENOEG!'\nGrist de iPad uit Saars handen.\n'NIEMAND krijgt de iPad! Naar jullie kamers!'\nSaar huilt. Levi schopt tegen de bank.\nPapa beent naar de keuken.\nMompelt: 'Ik kan dit niet.'\n\nDrie mensen in fight-mode. Nul verbinding. Nul oplossing.",
       rightApproach: "HET ANKER ZIJN:\n\nPapa voelt de chaos. Zijn lijf spant.\nHij stopt. Voelt zijn voeten op de grond.\nAdemt uit. Lang. Bewust.\nZacht, laag: 'Ik zie dat jullie allebei de iPad willen.'\nGaat op hun hoogte zitten.\n'Saar, jij had hem. Levi, jij wilt hem. Lastig.'\nLevi: 'Ze heeft hem al een uur!'\nPapa: 'Dat voelt niet eerlijk. Laten we de timer zetten.'\n\nPapa loste het niet perfect op. Maar hij bleef. Dat is het punt.",
       explanation: "Het verschil is niet dat de tweede papa een betere oplossing had. De timer is niets bijzonders. Het verschil is dat hij bleef staan in de chaos. Dat hij zijn eigen zenuwstelsel kalmeerde voordat hij reageerde. Zijn kinderen voelden: papa kan dit aan.",
     },
@@ -400,7 +424,7 @@ export const AANWEZIGHEID_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "Het Anker Oefenen",
-      instructions: "Vanavond: als er een moment van chaos komt — ruzie, geschreeuw, gemorst eten, maakt niet uit — stop dan. Voel je voeten op de grond. Adem één keer bewust uit. Zeg je ankerzin in je hoofd. Reageer dan pas. Eén moment is genoeg.",
+      instructions: "1. Kies nu je ankerzin. Schrijf hem op: 'Ik kan dit aan.' of 'Dit gaat voorbij.' of 'Ze hebben me nu nodig.'\n2. Vanavond: als er chaos komt — ruzie, geschreeuw, gemorst eten — stop.\n3. Voel je voeten op de grond. Letterlijk. Druk ze in de vloer.\n4. Adem één keer bewust uit. Lang. Door je mond.\n5. Zeg je ankerzin in je hoofd.\n6. Reageer dan pas. Eén moment is genoeg.",
       duration: 3,
       tips: [
         "Kies nu je ankerzin. Schrijf hem op een post-it en plak hem op de koelkast.",
@@ -450,6 +474,14 @@ export const AANWEZIGHEID_MODULES: LearningModule[] = [
         { text: "Je rustige zenuwstelsel is besmettelijk — jouw kalmte helpt hun zenuwstelsel reguleren", isCorrect: true },
       ],
       explanation: "Co-regulatie werkt via spiegelneuronen. Jouw rustige stem en ontspannen lichaam vertellen het zenuwstelsel van je kind: het is veilig. Je kunt kalmeren.",
+    },
+    {
+      question: "Je ankerzin is 'ik kan dit aan.' Maar midden in de chaos geloof je het niet. Werkt het dan nog?",
+      options: [
+        { text: "Ja — de zin activeert een bewust pad in je brein, ongeacht of je het op dat moment gelooft", isCorrect: true },
+        { text: "Nee — als je het niet gelooft heeft de zin geen effect en kun je beter iets anders proberen", isCorrect: false },
+      ],
+      explanation: "Een ankerzin werkt niet op geloof maar op herhaling. Het activeert je prefrontale cortex en geeft je brein iets om mee bezig te zijn terwijl de amygdala afkoelt.",
     },
   ],
 },
@@ -508,7 +540,7 @@ export const AANWEZIGHEID_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Je toolkit",
-      text: "1. De 3-3-3 start. Drie minuten ochtend, drie minuten thuiskomst, drie minuten bedtijd. Negen minuten per dag. Dat is het. Maak het een ritueel, geen prestatie.\n\n2. De eerste-drie-minuten regel. Als je thuiskomt: de eerste drie minuten zijn voor je kind. Niet voor je tas. Niet voor de post. Niet voor je partner (die begrijpt het). Eerst je kind.\n\n3. Eén vraag per avond. Niet 'hoe was je dag?' (antwoord: goed). Wel: 'Wat was het gekste dat er vandaag gebeurde?' of 'Met wie heb je gelachen?' Specifieke vragen krijgen echte antwoorden.\n\n4. Laat het schuldgevoel los. Je bent geen slechte vader omdat je werkt. Je bent een goede vader als je de tijd die je hebt, echt gebruikt.",
+      text: "1. De 3-3-3 start. Drie minuten ochtend, drie minuten thuiskomst, drie minuten bedtijd. Negen minuten per dag. Dat is het. Maak het een ritueel, geen prestatie.\n\n2. De eerste-drie-minuten regel. Als je thuiskomt: de eerste drie minuten zijn voor je kind. Niet voor je tas. Niet voor de post. Niet voor je partner (die begrijpt het). Eerst je kind.\n\n3. Eén vraag per avond. Niet 'hoe was je dag?' (antwoord: goed). Wel: 'Wat was het gekste dat er vandaag gebeurde?' of 'Met wie heb je gelachen?' Specifieke vragen krijgen echte antwoorden. Bij een tiener (13+): 'Wat was het irritantste vandaag?' of 'Waar heb je je aan geërgerd?' Tieners openen sneller via frustratie dan via positiviteit.\n\n4. Laat het schuldgevoel los. Je bent geen slechte vader omdat je werkt. Je bent een goede vader als je de tijd die je hebt, echt gebruikt.",
     },
     {
       type: "exercise" as const,
@@ -563,6 +595,14 @@ export const AANWEZIGHEID_MODULES: LearningModule[] = [
         { text: "Kinderen houden van gekke vragen omdat het grappig is", isCorrect: false },
       ],
       explanation: "Open maar specifieke vragen activeren het geheugen en nodigen uit tot vertellen. 'Hoe was je dag?' is te breed en te makkelijk af te kappen met 'goed'.",
+    },
+    {
+      question: "Je kind slaapt al als je thuiskomt van werk. Is de 3-3-3 methode dan nutteloos?",
+      options: [
+        { text: "Nee — ga even bij het bed staan, hand op hun rug, en gebruik de ochtend voor de andere twee momenten", isCorrect: true },
+        { text: "Ja — als je kind slaapt kun je niks meer doen, focus op het weekend", isCorrect: false },
+      ],
+      explanation: "Verbinding stopt niet bij wakker zijn. Even bij het bed staan telt. En de drie minuten ochtend zijn dan extra belangrijk — die draagt je kind de hele dag mee.",
     },
   ],
 },

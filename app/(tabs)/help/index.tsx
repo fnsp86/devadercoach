@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
+  TextInput,
   ScrollView,
   Pressable,
   StyleSheet,
@@ -11,26 +12,69 @@ import { useRouter } from 'expo-router';
 import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
 import { HELP_SITUATIONS } from '@/lib/help';
-import type { HelpAgeGroup } from '@/lib/types';
+import type { HelpAgeGroup, HelpSituation } from '@/lib/types';
 import { SKILL_COLORS } from '@/lib/colors';
 import { AppIcon, InlineIcon, getSkillIcon, emojiToIcon } from '@/lib/icons';
 import type { IconName } from '@/lib/icons';
 
 const AGE_TABS: { age: HelpAgeGroup; label: string; icon: IconName }[] = [
   { age: '0-3', label: '0-3', icon: 'baby' },
-  { age: '4-7', label: '4-7', icon: 'users' },
-  { age: '8-12', label: '8-12', icon: 'users' },
-  { age: '13-18', label: '13-18', icon: 'users' },
+  { age: '4-7', label: '4-7', icon: 'bike' },
+  { age: '8-12', label: '8-12', icon: 'graduationCap' },
+  { age: '13-18', label: '13-18', icon: 'smartphone' },
 ];
+
+const SOS_IDS: Record<HelpAgeGroup, string[]> = {
+  '0-3': [
+    'peuter-driftbui-supermarkt',
+    'peuter-niet-naar-bed',
+    'peuter-bijten-slaan',
+    'peuter-nee-negeren',
+  ],
+  '4-7': [
+    'kind-driftbui-frustratie',
+    'kind-niet-luisteren',
+    'kind-broertje-ruzie',
+    'kind-agressie-slaan',
+  ],
+  '8-12': [
+    'kind-niet-luisteren-812',
+    'kind-broerzus-ruzie-812',
+    'kind-schelden-schreeuwen',
+    'kind-grenzen-negeren',
+  ],
+  '13-18': [
+    'tiener-geen-communicatie',
+    'tiener-geen-respect-regels',
+    'tiener-agressief-intimiderend',
+    'tiener-slecht-humeur-constant',
+  ],
+};
+
+function getDailySituation(ageGroup: HelpAgeGroup): HelpSituation | null {
+  const pool = HELP_SITUATIONS.filter((s) => s.ageGroup === ageGroup);
+  if (pool.length === 0) return null;
+  const today = new Date();
+  const dateStr = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+  let hash = 0;
+  for (let i = 0; i < dateStr.length; i++) {
+    hash = ((hash << 5) - hash) + dateStr.charCodeAt(i);
+    hash = hash & hash;
+  }
+  return pool[Math.abs(hash) % pool.length];
+}
 
 // Skill icons are now provided via getSkillIcon() from @/lib/icons
 
 export default function HelpPage() {
   const { colors } = useTheme();
   const router = useRouter();
-  const { profile } = useStore();
+  const { profile, helpFavorites, isHelpFavorite } = useStore();
 
   const [selectedAge, setSelectedAge] = useState<HelpAgeGroup>('4-7');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sosExpanded, setSosExpanded] = useState(false);
+  const [showFavorites, setShowFavorites] = useState(false);
 
   useEffect(() => {
     if (profile?.children && profile.children.length > 0) {
@@ -43,9 +87,24 @@ export default function HelpPage() {
     }
   }, [profile]);
 
-  const filteredSituations = HELP_SITUATIONS.filter(
-    (s) => s.ageGroup === selectedAge,
+  const dailySituation = useMemo(
+    () => getDailySituation(selectedAge),
+    [selectedAge]
   );
+
+  const filteredSituations = useMemo(() => {
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      return HELP_SITUATIONS.filter((s) =>
+        s.situatie.toLowerCase().includes(q) ||
+        s.watSpeeltInKind.toLowerCase().includes(q)
+      );
+    }
+    if (showFavorites) {
+      return HELP_SITUATIONS.filter((s) => helpFavorites.includes(s.id));
+    }
+    return HELP_SITUATIONS.filter((s) => s.ageGroup === selectedAge);
+  }, [searchQuery, showFavorites, helpFavorites, selectedAge]);
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg }]}>
@@ -67,41 +126,158 @@ export default function HelpPage() {
           </Text>
         </View>
 
+        {/* SOS Quick Access */}
+        <Pressable
+          onPress={() => setSosExpanded(!sosExpanded)}
+          style={[styles.sosButton, {
+            backgroundColor: '#EF444414',
+            borderColor: '#EF444430',
+          }]}
+        >
+          <View style={styles.sosInner}>
+            <View style={[styles.sosIconWrap, { backgroundColor: '#EF444420' }]}>
+              <InlineIcon name="zap" size={20} color="#EF4444" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={[styles.sosTitle, { color: '#EF4444' }]}>SOS – Acute Situatie</Text>
+              <Text style={[styles.sosSub, { color: colors.text3 }]}>Snelle hulp bij nood</Text>
+            </View>
+            <InlineIcon
+              name={sosExpanded ? 'chevronUp' : 'chevronDown'}
+              size={20}
+              color="#EF4444"
+            />
+          </View>
+        </Pressable>
+
+        {sosExpanded && (
+          <View style={styles.sosGrid}>
+            {SOS_IDS[selectedAge].map((id) => {
+              const sit = HELP_SITUATIONS.find((s) => s.id === id);
+              if (!sit) return null;
+              return (
+                <Pressable
+                  key={id}
+                  onPress={() => router.push(`/(tabs)/help/${id}`)}
+                  style={[styles.sosCard, {
+                    backgroundColor: colors.surface,
+                    borderColor: '#EF444425',
+                  }]}
+                >
+                  <AppIcon name={emojiToIcon(sit.icon)} size="sm" variant="compact" color="#EF4444" />
+                  <Text style={[styles.sosCardText, { color: colors.text }]} numberOfLines={2}>
+                    {sit.situatie}
+                  </Text>
+                  <InlineIcon name="arrowRight" size={14} color="#EF4444" />
+                </Pressable>
+              );
+            })}
+          </View>
+        )}
+
+        {/* Search */}
+        <View style={[styles.searchRow, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <InlineIcon name="search" size={18} color={colors.text3} />
+          <TextInput
+            style={[styles.searchInput, { color: colors.text }]}
+            placeholder="Zoek een situatie..."
+            placeholderTextColor={colors.text3}
+            value={searchQuery}
+            onChangeText={(t) => { setSearchQuery(t); if (t) setShowFavorites(false); }}
+            autoCorrect={false}
+            returnKeyType="search"
+          />
+          {searchQuery.length > 0 && (
+            <Pressable onPress={() => setSearchQuery('')}>
+              <InlineIcon name="x" size={18} color={colors.text3} />
+            </Pressable>
+          )}
+        </View>
+
+        {/* Favorites filter */}
+        <View style={styles.filterRow}>
+          <Pressable
+            onPress={() => { setShowFavorites(!showFavorites); setSearchQuery(''); }}
+            style={[styles.favChip, {
+              backgroundColor: showFavorites ? colors.amber + '18' : colors.surface,
+              borderColor: showFavorites ? colors.amber : colors.border,
+            }]}
+          >
+            <InlineIcon name="heart" size={14} color={showFavorites ? colors.amber : colors.text3} />
+            <Text style={[styles.favChipText, { color: showFavorites ? colors.amber : colors.text3 }]}>
+              Opgeslagen ({helpFavorites.length})
+            </Text>
+          </Pressable>
+        </View>
+
         {/* Age tabs */}
-        <View style={styles.ageTabsRow}>
-          {AGE_TABS.map((tab) => {
-            const isActive = selectedAge === tab.age;
-            return (
-              <Pressable
-                key={tab.age}
-                onPress={() => setSelectedAge(tab.age)}
-                style={[
-                  styles.ageTab,
-                  {
-                    backgroundColor: isActive ? colors.amber : colors.surface,
-                    borderColor: isActive ? colors.amber : colors.border,
-                  },
-                  isActive && styles.ageTabActive,
-                ]}
-              >
-                <InlineIcon name={tab.icon} size={20} color={isActive ? '#FFFFFF' : colors.text2} />
-                <Text
+        {!searchQuery.trim() && !showFavorites && (
+          <View style={styles.ageTabsRow}>
+            {AGE_TABS.map((tab) => {
+              const isActive = selectedAge === tab.age;
+              return (
+                <Pressable
+                  key={tab.age}
+                  onPress={() => setSelectedAge(tab.age)}
                   style={[
-                    styles.ageTabLabel,
-                    { color: isActive ? '#FFFFFF' : colors.text2 },
+                    styles.ageTab,
+                    {
+                      backgroundColor: isActive ? colors.amber : colors.surface,
+                      borderColor: isActive ? colors.amber : colors.border,
+                    },
+                    isActive && styles.ageTabActive,
                   ]}
                 >
-                  {tab.label} jaar
-                </Text>
-              </Pressable>
-            );
-          })}
-        </View>
+                  <InlineIcon name={tab.icon} size={20} color={isActive ? '#FFFFFF' : colors.text2} />
+                  <Text
+                    style={[
+                      styles.ageTabLabel,
+                      { color: isActive ? '#FFFFFF' : colors.text2 },
+                    ]}
+                  >
+                    {tab.label} jaar
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        )}
 
         {/* Count */}
         <Text style={[styles.countText, { color: colors.text3 }]}>
           {filteredSituations.length} situaties gevonden
+          {searchQuery.trim() ? ` voor "${searchQuery}"` : ''}
         </Text>
+
+        {/* Daily Tip */}
+        {!searchQuery.trim() && !showFavorites && dailySituation && (
+          <Pressable
+            onPress={() => router.push(`/(tabs)/help/${dailySituation.id}`)}
+            style={[styles.dailyCard, {
+              backgroundColor: colors.amber + '10',
+              borderColor: colors.amber + '30',
+            }]}
+          >
+            <View style={styles.dailyHeader}>
+              <View style={[styles.dailyBadge, { backgroundColor: colors.amber + '20' }]}>
+                <InlineIcon name="sun" size={14} color={colors.amber} />
+                <Text style={[styles.dailyBadgeText, { color: colors.amber }]}>Tip van de dag</Text>
+              </View>
+            </View>
+            <View style={styles.dailyContent}>
+              <View style={[styles.dailyIconWrap, { backgroundColor: colors.amber + '18' }]}>
+                <AppIcon name={emojiToIcon(dailySituation.icon)} size="md" variant="compact" color={colors.amber} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.dailyTitle, { color: colors.text }]} numberOfLines={2}>{dailySituation.situatie}</Text>
+                <Text style={[styles.dailyPreview, { color: colors.text3 }]} numberOfLines={2}>{dailySituation.psychologie}</Text>
+              </View>
+              <View style={[styles.dailyArrow, { backgroundColor: colors.amber + '20' }]}>
+                <InlineIcon name="arrowRight" size={16} color={colors.amber} />
+              </View>
+            </View>
+          </Pressable>
+        )}
 
         {/* Situations */}
         {filteredSituations.map((situation) => {
@@ -218,6 +394,71 @@ const styles = StyleSheet.create({
   heroTitle: { fontSize: 26, fontWeight: '800', marginBottom: 8, textAlign: 'center' },
   heroSub: { fontSize: 15, lineHeight: 22, textAlign: 'center', paddingHorizontal: 10 },
 
+  // SOS
+  sosButton: {
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+  },
+  sosInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  sosIconWrap: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sosTitle: { fontSize: 16, fontWeight: '700' },
+  sosSub: { fontSize: 13 },
+  sosGrid: { gap: 8, marginBottom: 16 },
+  sosCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    borderWidth: 1,
+    borderRadius: 14,
+    padding: 14,
+  },
+  sosCardText: { flex: 1, fontSize: 14, fontWeight: '600' },
+
+  // Search
+  searchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    marginBottom: 16,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    padding: 0,
+  },
+
+  // Favorites filter
+  filterRow: {
+    flexDirection: 'row',
+    marginBottom: 12,
+  },
+  favChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+  },
+  favChipText: { fontSize: 13, fontWeight: '600' },
+
   // Age tabs
   ageTabsRow: {
     flexDirection: 'row',
@@ -246,6 +487,46 @@ const styles = StyleSheet.create({
 
   // Count
   countText: { fontSize: 13, marginBottom: 14 },
+
+  // Daily tip
+  dailyCard: {
+    borderWidth: 1,
+    borderRadius: 18,
+    padding: 16,
+    marginBottom: 16,
+  },
+  dailyHeader: { marginBottom: 12 },
+  dailyBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    alignSelf: 'flex-start',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  dailyBadgeText: { fontSize: 12, fontWeight: '700' },
+  dailyContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  dailyIconWrap: {
+    width: 48,
+    height: 48,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dailyTitle: { fontSize: 15, fontWeight: '700', marginBottom: 4 },
+  dailyPreview: { fontSize: 13, lineHeight: 18 },
+  dailyArrow: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 
   // Cards
   card: {

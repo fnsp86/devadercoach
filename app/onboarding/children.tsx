@@ -7,6 +7,7 @@ import {
   Pressable,
   StyleSheet,
   KeyboardAvoidingView,
+  Keyboard,
   Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -186,6 +187,8 @@ export default function OnboardingChildren() {
               placeholderTextColor={colors.text3}
               keyboardType="numeric"
               maxLength={2}
+              returnKeyType="done"
+              onSubmitEditing={() => Keyboard.dismiss()}
             />
 
             {child.age.trim() && !isNaN(parseInt(child.age, 10)) && (

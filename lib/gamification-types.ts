@@ -75,15 +75,28 @@ export const BADGES: Badge[] = [
   { id: "streak_100", name: "Legende", description: "100 dagen streak", emoji: "👑", category: "streak", requirement: { type: "streak", value: 100 }, rarity: "epic" },
   { id: "streak_365", name: "Titan", description: "365 dagen streak!", emoji: "🏆", category: "streak", requirement: { type: "streak", value: 365 }, rarity: "legendary" },
   
-  // SKILL BADGES
+  // SKILL BADGES — per skill: 10 (starter) + 50 (expert)
+  { id: "aanw_10", name: "Aandachtig", description: "10 Aanwezigheid taken", emoji: "👁️", category: "skill", requirement: { type: "skill_tasks", value: 10, skill: "Aanwezigheid" }, rarity: "common" },
   { id: "aanw_50", name: "Luisteraar", description: "50 Aanwezigheid taken", emoji: "👂", category: "skill", requirement: { type: "skill_tasks", value: 50, skill: "Aanwezigheid" }, rarity: "rare" },
+  { id: "emco_10", name: "Emotie Spotter", description: "10 Emotiecoaching taken", emoji: "💗", category: "skill", requirement: { type: "skill_tasks", value: 10, skill: "Emotiecoaching" }, rarity: "common" },
   { id: "emco_50", name: "Emotie Expert", description: "50 Emotiecoaching taken", emoji: "❤️", category: "skill", requirement: { type: "skill_tasks", value: 50, skill: "Emotiecoaching" }, rarity: "rare" },
-  { id: "gren_50", name: "Grens Meester", description: "50 Grenzen taken", emoji: "🚧", category: "skill", requirement: { type: "skill_tasks", value: 50, skill: "Grenzen" }, rarity: "rare" },
+  { id: "gren_10", name: "Grensbewaker", description: "10 Grenzen taken", emoji: "🚧", category: "skill", requirement: { type: "skill_tasks", value: 10, skill: "Grenzen" }, rarity: "common" },
+  { id: "gren_50", name: "Grens Meester", description: "50 Grenzen taken", emoji: "🛡️", category: "skill", requirement: { type: "skill_tasks", value: 50, skill: "Grenzen" }, rarity: "rare" },
+  { id: "zelf_10", name: "Kalme Kracht", description: "10 Zelfregulatie taken", emoji: "🌊", category: "skill", requirement: { type: "skill_tasks", value: 10, skill: "Zelfregulatie" }, rarity: "common" },
   { id: "zelf_50", name: "Zelfmeester", description: "50 Zelfregulatie taken", emoji: "🧘", category: "skill", requirement: { type: "skill_tasks", value: 50, skill: "Zelfregulatie" }, rarity: "rare" },
+  { id: "auto_10", name: "Ruimte Maker", description: "10 Autonomie taken", emoji: "🌱", category: "skill", requirement: { type: "skill_tasks", value: 10, skill: "Autonomie" }, rarity: "common" },
   { id: "auto_50", name: "Vrijheid Gever", description: "50 Autonomie taken", emoji: "🦅", category: "skill", requirement: { type: "skill_tasks", value: 50, skill: "Autonomie" }, rarity: "rare" },
+  { id: "hers_10", name: "Brugbouwer", description: "10 Herstel taken", emoji: "🌉", category: "skill", requirement: { type: "skill_tasks", value: 10, skill: "Herstel" }, rarity: "common" },
+  { id: "hers_50", name: "Herstel Held", description: "50 Herstel taken", emoji: "🔧", category: "skill", requirement: { type: "skill_tasks", value: 50, skill: "Herstel" }, rarity: "rare" },
+  { id: "verb_10", name: "Verbinder", description: "10 Verbinding taken", emoji: "🤝", category: "skill", requirement: { type: "skill_tasks", value: 10, skill: "Verbinding" }, rarity: "common" },
+  { id: "verb_50", name: "Hartverbinder", description: "50 Verbinding taken", emoji: "🔗", category: "skill", requirement: { type: "skill_tasks", value: 50, skill: "Verbinding" }, rarity: "rare" },
+  { id: "refl_10", name: "Spiegel", description: "10 Reflectie taken", emoji: "🪞", category: "skill", requirement: { type: "skill_tasks", value: 10, skill: "Reflectie" }, rarity: "common" },
+  { id: "refl_50", name: "Denker", description: "50 Reflectie taken", emoji: "🧠", category: "skill", requirement: { type: "skill_tasks", value: 50, skill: "Reflectie" }, rarity: "rare" },
   
   // VADER BADGES
+  { id: "tasks_1", name: "Eerste Taak", description: "Je allereerste taak voltooid", emoji: "🎉", category: "vader", requirement: { type: "tasks_completed", value: 1 }, rarity: "common" },
   { id: "tasks_10", name: "Eerste Stappen", description: "10 taken voltooid", emoji: "👣", category: "vader", requirement: { type: "tasks_completed", value: 10 }, rarity: "common" },
+  { id: "tasks_25", name: "Op Weg", description: "25 taken voltooid", emoji: "🚶", category: "vader", requirement: { type: "tasks_completed", value: 25 }, rarity: "common" },
   { id: "tasks_50", name: "Gemotiveerd", description: "50 taken voltooid", emoji: "💫", category: "vader", requirement: { type: "tasks_completed", value: 50 }, rarity: "common" },
   { id: "tasks_100", name: "Super Papa", description: "100 taken voltooid", emoji: "🦸", category: "vader", requirement: { type: "tasks_completed", value: 100 }, rarity: "rare" },
   { id: "tasks_250", name: "Dedicated Dad", description: "250 taken voltooid", emoji: "💎", category: "vader", requirement: { type: "tasks_completed", value: 250 }, rarity: "epic" },
@@ -743,6 +756,21 @@ export const DAILY_BADGES: Badge[] = [
   { id: "daily_100", name: "Routinier", description: "100 daily challenges voltooid", emoji: "⚡", category: "daily", requirement: { type: "special", value: 100 }, rarity: "epic" },
 ];
 
+export const PULSE_BADGES: Badge[] = [
+  { id: "pulse_first", name: "Eerste Reflectie", description: "Eerste Vader Pulse check-in", emoji: "💭", category: "daily", requirement: { type: "special", value: 1 }, rarity: "common" },
+  { id: "pulse_7", name: "Week Bewust", description: "7 Pulse check-ins", emoji: "🧠", category: "daily", requirement: { type: "special", value: 7 }, rarity: "common" },
+  { id: "pulse_30", name: "Maand Bewust", description: "30 Pulse check-ins", emoji: "🌙", category: "daily", requirement: { type: "special", value: 30 }, rarity: "rare" },
+  { id: "pulse_100", name: "Zelfkenner", description: "100 Pulse check-ins", emoji: "🔮", category: "daily", requirement: { type: "special", value: 100 }, rarity: "epic" },
+  { id: "pulse_365", name: "Dagboek Vader", description: "365 Pulse check-ins", emoji: "📔", category: "daily", requirement: { type: "special", value: 365 }, rarity: "legendary" },
+];
+
+export const REFLECTION_NOTE_BADGES: Badge[] = [
+  { id: "note_first", name: "Eerste Notitie", description: "Je eerste reflectie-notitie geschreven", emoji: "✏️", category: "learn", requirement: { type: "special", value: 1 }, rarity: "common" },
+  { id: "note_10", name: "Schrijver", description: "10 reflectie-notities", emoji: "📝", category: "learn", requirement: { type: "special", value: 10 }, rarity: "rare" },
+  { id: "note_25", name: "Dagboekschrijver", description: "25 reflectie-notities", emoji: "📓", category: "learn", requirement: { type: "special", value: 25 }, rarity: "epic" },
+  { id: "note_50", name: "Chroniqueur", description: "50 reflectie-notities", emoji: "📖", category: "learn", requirement: { type: "special", value: 50 }, rarity: "legendary" },
+];
+
 export const EXTRA_SECRET_BADGES: Badge[] = [
   { id: "weekend_warrior", name: "Weekendstrijder", description: "Taak op zaterdag en zondag", emoji: "⚔️", category: "secret", requirement: { type: "special", value: 1 }, rarity: "rare" },
   { id: "lunchbreak", name: "Lunchpauze", description: "Taak tussen 12:00 en 13:00", emoji: "🥪", category: "secret", requirement: { type: "special", value: 1 }, rarity: "rare" },
@@ -756,6 +784,8 @@ export const ALL_BADGES: Badge[] = [
   ...QUIZ_BADGES,
   ...ARENA_BADGES,
   ...LEARN_BADGES,
+  ...PULSE_BADGES,
+  ...REFLECTION_NOTE_BADGES,
   ...COMBO_BADGES,
   ...EXPLORER_BADGES,
   ...DAILY_BADGES,

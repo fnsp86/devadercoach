@@ -61,7 +61,7 @@ export const REFLECTIE_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De Twee-Lijsten",
-      instructions: "Pak je telefoon of een papiertje. Maak twee kolommen. Links: 'Houden' — schrijf drie dingen op die je vader deed die je wilt voortzetten. Rechts: 'Stoppen' — schrijf drie dingen op die bij jou stoppen. Wees eerlijk. Niemand leest dit behalve jij.",
+      instructions: "1. Pak je telefoon of een papiertje.\n2. Maak twee kolommen: 'Houden' en 'Stoppen'.\n3. Links — Houden: schrijf drie dingen op die je vader deed die je wilt voortzetten.\n4. Rechts — Stoppen: schrijf drie dingen op die bij jou stoppen.\n5. Wees specifiek. Niet 'hij was streng' maar 'hij schreeuwde als ik iets liet vallen.'\n6. Wees eerlijk. Niemand leest dit behalve jij.",
       duration: 5,
       tips: [
         "Het mag ook iets kleins zijn — hoe hij je instopte, hoe hij reageerde op tranen, hoe hij 'sorry' zei (of niet)",
@@ -111,6 +111,14 @@ export const REFLECTIE_MODULES: LearningModule[] = [
         { text: "Als je moe, gestrest of overprikkeld bent", isCorrect: true },
       ],
       explanation: "Onder stress schakelt je brein naar automatische patronen. Juist dan komt de stem van je vader terug. Daarom is zelfzorg geen luxe — het is preventie.",
+    },
+    {
+      question: "Je wilt bewust anders opvoeden dan je vader, maar merkt dat je soms doorslaat naar het andere uiterste. Wat is het risico?",
+      options: [
+        { text: "Reactief opvoeden is nog steeds gestuurd door je vader — kies vanuit je eigen waarden, niet als reactie", isCorrect: true },
+        { text: "Het andere uiterste is altijd beter dan herhalen wat je vader deed", isCorrect: false },
+      ],
+      explanation: "Als je vader streng was en jij wordt extreem permissief, bepaalt je vader nog steeds je koers. Echt vrij kies je pas als je reageert vanuit je eigen waarden — niet als spiegel of als tegendraads.",
     },
   ],
 },
@@ -174,7 +182,7 @@ export const REFLECTIE_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "Het Verhaal Herschrijven",
-      instructions: "Denk aan een recent moment waarop je dacht 'ik ben een slechte vader' of iets vergelijkbaars. Schrijf op: 1) Wat gebeurde er feitelijk? Eén zin, geen interpretatie. 2) Welk verhaal maakte je ervan? Schrijf de hele ramp-gedachte op. 3) Wat zijn drie tegenbewijzen — momenten waarop je het wél goed deed? 4) Herschrijf het verhaal. Eerlijk, maar compleet.",
+      instructions: "1. Denk aan een recent moment waarop je dacht 'ik ben een slechte vader.'\n2. Schrijf het feit op. Eén zin, geen interpretatie. ('Ik was te laat bij het ophalen.')\n3. Schrijf het rampverhaal op dat je brein ervan maakte. Alles. ('Ik ben er nooit. Mijn kind voelt zich verwaarloosd.')\n4. Zoek drie tegenbewijzen — momenten van deze week waarop je er wél was.\n5. Herschrijf het verhaal. Eerlijk, maar compleet. ('Ik was één keer te laat. Drie andere keren was ik op tijd.')\n6. Lees het herschreven verhaal hardop voor. Merk het verschil.",
       duration: 5,
       tips: [
         "Het verschil tussen feiten en verhalen herkennen is een vaardigheid. Het wordt makkelijker met oefening",
@@ -224,6 +232,14 @@ export const REFLECTIE_MODULES: LearningModule[] = [
         { text: "De feiten checken en drie tegenbewijzen zoeken — momenten waarop het wél lukte", isCorrect: true },
       ],
       explanation: "Je brein filtert selectief: het toont alleen de moeilijke avond en mist alle keren dat het wél ging. Tegenbewijzen zoeken is geen zelfbedrog — het is het complete plaatje zien in plaats van alleen het negatieve.",
+    },
+    {
+      question: "Je hebt de feiten-check gedaan en weet dat je verhaal niet klopt. Maar het voelt nog steeds zo. Is de feiten-check dan nutteloos?",
+      options: [
+        { text: "Nee — gevoelens veranderen langzamer dan gedachten. De feiten-check plant het zaad, het gevoel volgt later", isCorrect: true },
+        { text: "Ja — als het gevoel niet verandert werkt cognitieve herstructurering niet voor jou", isCorrect: false },
+      ],
+      explanation: "Denkfouten zijn diep verankerd. De feiten-check verandert eerst je gedachten, dan je gedrag, en uiteindelijk je gevoelens. Dat kost herhaling. Het zaad is geplant — geef het tijd.",
     },
   ],
 },
@@ -287,7 +303,7 @@ export const REFLECTIE_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De Zelf-Compassie Brief",
-      instructions: "Schrijf een kort bericht aan jezelf — in je notities of op papier. Schrijf het alsof je schrijft aan je beste vriend die hetzelfde meemaakt. Vertel hem dat je ziet hoe hard hij zijn best doet. Dat het moeilijk is. Dat hij er elke dag is voor zijn kinderen. Dat dat genoeg is.",
+      instructions: "1. Open je notities of pak een papiertje.\n2. Schrijf een kort bericht aan jezelf — alsof je schrijft aan je beste vriend.\n3. Begin met: 'Hé man, ik zie dat je...'\n4. Vertel hem dat je ziet hoe hard hij zijn best doet.\n5. Vertel hem dat het moeilijk is — en dat dat normaal is.\n6. Vertel hem dat hij er elke dag is. Dat dat genoeg is.\n7. Bewaar het bericht. Lees het terug op een moeilijke avond.",
       duration: 4,
       tips: [
         "Als het moeilijk is om aardig tegen jezelf te zijn — stel je voor dat een goede vriend dit tegen jou zegt",
@@ -338,6 +354,14 @@ export const REFLECTIE_MODULES: LearningModule[] = [
       ],
       explanation: "Zelf-compassie is niet 'het geeft niet' — het is 'dit doet pijn, ik ben menselijk, en morgen probeer ik het opnieuw.' Het neemt verantwoordelijkheid zonder zelfvernietiging.",
     },
+    {
+      question: "Een vriend zegt: 'Zelfcompassie is gewoon een excuus om niet beter te worden.' Wat klopt er niet aan die stelling?",
+      options: [
+        { text: "Zelfcompassie erkent de pijn én kiest voor verandering — het is het tegenovergestelde van opgeven", isCorrect: true },
+        { text: "Hij heeft deels gelijk — te veel zelfcompassie kan leiden tot gemakzucht", isCorrect: false },
+      ],
+      explanation: "Onderzoek toont het tegenovergestelde: mensen met zelfcompassie veranderen méér, niet minder. Ze hebben meer energie voor groei omdat ze die niet verspillen aan schaamtespiralen.",
+    },
   ],
 },
 {
@@ -352,7 +376,7 @@ export const REFLECTIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Hij deed het weer.",
-      text: "Fijn (4) is onhandelbaar. Driftbuien. Niet luisteren. Alles is nee. Je denkt: wat is er met hem?\n\nMaar de echte vraag is: wat is er met jou? Want gisteren had je ruzie met je partner. En de hele week zit je vast in een project op werk dat niet opschiet. Je slaapt slecht. Je kaak staat strak.\n\nFijn voelt dat. Hij heeft er geen woorden voor. Maar zijn lijf pikt het op. En zijn gedrag schreeuwt wat jij niet uitspreekt.",
+      text: "Finn (4) is onhandelbaar. Driftbuien. Niet luisteren. Alles is nee. Je denkt: wat is er met hem?\n\nMaar de echte vraag is: wat is er met jou? Want gisteren had je ruzie met je partner. En de hele week zit je vast in een project op werk dat niet opschiet. Je slaapt slecht. Je kaak staat strak.\n\nFinn voelt dat. Hij heeft er geen woorden voor. Maar zijn lijf pikt het op. En zijn gedrag schreeuwt wat jij niet uitspreekt.",
     },
     {
       type: "text" as const,
@@ -451,6 +475,14 @@ export const REFLECTIE_MODULES: LearningModule[] = [
       ],
       explanation: "Onuitgesproken spanning is voor kinderen het moeilijkst — ze voelen dat er iets is maar niemand benoemt het. Eerlijk benoemen geeft ze houvast en ontlast ze van het gevoel dat het aan hen ligt.",
     },
+    {
+      question: "Je houdt twee weken de emotionele thermometer bij. Je stressniveau en het gedrag van je kind correleren sterk. Wat is de volgende stap?",
+      options: [
+        { text: "Focus op je eigen regulatie: als jij kalmeert, kalmeert je kind mee — begin bij jezelf", isCorrect: true },
+        { text: "Het gedrag van je kind aanpakken met duidelijke regels — correlatie betekent niet causaliteit", isCorrect: false },
+      ],
+      explanation: "De correlatie is geen toeval. Jouw zenuwstelsel is het voorbeeld waar dat van je kind op leunt. Door jezelf te reguleren — slaap, beweging, spanning benoemen — verander je de emotionele sfeer in huis.",
+    },
   ],
 },
 {
@@ -508,12 +540,12 @@ export const REFLECTIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Je toolkit",
-      text: "1. Brief aan je kind. Schrijf een kort briefje aan je kind. Niet om te geven — voor jezelf. Schrijf op waarom je dit allemaal doet. Wat je voor ze wilt. Wie je voor ze wilt zijn. Bewaar het voor een moeilijke dag.\n\n2. De drie pijlers. Na vijf modules reflectie, onthoud drie dingen: herken je patronen (module 1-2), wees mild voor jezelf (module 3), en wees aanwezig (module 4). Vandaag kiezen we de vierde pijler: blijf opdagen.\n\n3. Het ochtend-voornemen. Elke ochtend één zin: 'Vandaag hoef ik niet perfect te zijn. Vandaag ben ik er.' Meer niet.\n\n4. Het consolidatie-moment. Je hebt vijf modules doorlopen. Dat is niet niks. Kijk terug: wat heeft je geraakt? Wat neem je mee? Schrijf één ding op dat je anders gaat doen.",
+      text: "1. Brief aan je kind. Schrijf een kort briefje aan je kind. Niet om te geven — voor jezelf. Schrijf op waarom je dit allemaal doet. Wat je voor ze wilt. Wie je voor ze wilt zijn. Bewaar het voor een moeilijke dag.\n\n2. De vier pijlers. Na vijf modules reflectie, onthoud vier dingen: herken je patronen (module 1-2), wees mild voor jezelf (module 3), kijk in de spiegel (module 4), en blijf opdagen (module 5).\n\n3. Het ochtend-voornemen. Elke ochtend één zin: 'Vandaag hoef ik niet perfect te zijn. Vandaag ben ik er.' Meer niet.\n\n4. Het consolidatie-moment. Je hebt vijf modules doorlopen. Dat is niet niks. Kijk terug: wat heeft je geraakt? Wat neem je mee? Schrijf één ding op dat je anders gaat doen.",
     },
     {
       type: "exercise" as const,
       title: "De Brief Aan Je Kind",
-      instructions: "Schrijf een kort briefje aan je kind. Het hoeft niet lang — vijf zinnen is genoeg. Schrijf op waarom je een goede vader wilt zijn. Wat je ze wilt meegeven. Hoe je wilt dat ze zich voelen als ze terugdenken aan hun kindertijd. Dit briefje is voor jou. Bewaar het. Lees het terug als je twijfelt of het genoeg is.",
+      instructions: "1. Pak je telefoon of een papiertje.\n2. Begin met 'Lieve [naam van je kind]...'\n3. Schrijf op waarom je een goede vader wilt zijn.\n4. Schrijf op wat je ze wilt meegeven voor later.\n5. Schrijf op hoe je wilt dat ze zich voelen als ze terugdenken aan hun kindertijd.\n6. Vijf zinnen is genoeg. Het hoeft niet mooi te zijn — eerlijk is genoeg.\n7. Bewaar het. Lees het terug als je twijfelt of het genoeg is.",
       duration: 5,
       tips: [
         "Begin met 'Lieve [naam]...' — het wordt vanzelf echt als je hun naam schrijft",
@@ -563,6 +595,14 @@ export const REFLECTIE_MODULES: LearningModule[] = [
         { text: "Zo min mogelijk fouten maken en je best doen om perfect te zijn", isCorrect: false },
       ],
       explanation: "Winnicott liet zien dat kinderen niet foutloos ouderschap nodig hebben, maar betrouwbaar ouderschap — de zekerheid dat de ouder er is, ook na een breuk.",
+    },
+    {
+      question: "Je hebt alle vijf reflectie-modules doorlopen. Wat is het allerbelangrijkste dat je meeneemt?",
+      options: [
+        { text: "Blijf opdagen. Niet perfect, maar aanwezig. Elke dag opnieuw. Dat is goed genoeg.", isCorrect: true },
+        { text: "Ken al je patronen, triggers en valkuilen zodat je ze kunt voorkomen", isCorrect: false },
+      ],
+      explanation: "Kennis is waardevol, maar het doel is niet perfectie. Het doel is aanwezigheid. Een vader die zijn patronen kent maar zichzelf vergeeft als het misgaat, en de volgende ochtend weer opstaat — dat is wat je kind nodig heeft.",
     },
   ],
 },

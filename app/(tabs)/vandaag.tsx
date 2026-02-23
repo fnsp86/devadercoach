@@ -8,9 +8,9 @@ import {
   Modal,
   TextInput,
   Animated,
+  Keyboard,
 } from 'react-native';
 import { AppIcon, InlineIcon, getSkillIcon } from '@/lib/icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -302,6 +302,7 @@ function PulseModal({
 
   function handleSave() {
     if (selected === null) return;
+    Keyboard.dismiss();
     addPulseCheckIn({
       date: getTodayKey(),
       questionId: question.id,
@@ -318,7 +319,7 @@ function PulseModal({
   return (
     <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
       <SafeAreaView style={[pmStyles.safe, { backgroundColor: colors.bg }]}>
-        <ScrollView contentContainerStyle={pmStyles.content} keyboardShouldPersistTaps="handled">
+        <ScrollView contentContainerStyle={pmStyles.content} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag">
           {/* Header */}
           <View style={[pmStyles.header, { backgroundColor: skillColor + '18', borderColor: skillColor + '40' }]}>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
@@ -388,6 +389,8 @@ function PulseModal({
                 value={notitie}
                 onChangeText={setNotitie}
                 multiline
+                blurOnSubmit
+                returnKeyType="done"
                 maxLength={200}
               />
 
@@ -617,7 +620,6 @@ export default function WeekScreen() {
   const [pulseVisible, setPulseVisible] = useState(false);
   const [toast, setToast] = useState<ToastInfo | null>(null);
   const [gamificationEvent, setGamificationEvent] = useState<GamificationEvent | null>(null);
-  const [completedModuleIds, setCompletedModuleIds] = useState<string[]>([]);
   const [expandedReflection, setExpandedReflection] = useState<string | null>(null);
 
   const weekKey = useMemo(() => getWeekKey(), []);
@@ -641,21 +643,17 @@ export default function WeekScreen() {
     return getWeekNumber(weekKey, profile.startDate);
   }, [weekKey, profile]);
 
-  // Laad voltooide modules voor primaire skill
-  React.useEffect(() => {
-    const primarySkill = skills[0];
-    if (!primarySkill) return;
-    AsyncStorage.getItem(`vc-completed-modules-${primarySkill}`)
-      .then((stored) => {
-        if (stored) setCompletedModuleIds(JSON.parse(stored));
-      })
-      .catch(() => {});
-  }, [skills]);
+  // Verzamel alle voltooide taak-IDs (excl. reflecties en huidige week)
+  const completedTaskIds = useMemo(() => {
+    return weekTaskCompletions
+      .filter((c) => c.weekKey !== weekKey && !/^refl_\d{4}-/.test(c.taskId))
+      .map((c) => c.taskId);
+  }, [weekTaskCompletions, weekKey]);
 
-  // 7 taken: 6 interactief + 1 leermodule
+  // 7 taken per week, zonder eerder voltooide taken
   const weekTasks = useMemo(
-    () => selectMixedWeekTasks(ALL_INTERACTIVE_TASKS, ageGroups, skills, weekKey, weekNumber, completedModuleIds).tasks,
-    [ageGroups, skills, weekKey, weekNumber, completedModuleIds],
+    () => selectMixedWeekTasks(ALL_INTERACTIVE_TASKS, ageGroups, skills, weekKey, weekNumber, completedTaskIds).tasks,
+    [ageGroups, skills, weekKey, weekNumber, completedTaskIds],
   );
 
   const weekTaskIds = useMemo(() => new Set(weekTasks.map(t => t.id)), [weekTasks]);

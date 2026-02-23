@@ -9,7 +9,7 @@ import {
   ChevronUp, ChevronDown, Info, Search, Compass, Sun, Crown,
   BookMarked, X, ShoppingCart, BedDouble, UtensilsCrossed, Baby,
   Shirt, Smartphone, Gamepad2, TreePine, Dog, Car, Moon, Users,
-  Volume2, Ban, Hand, Bike, Footprints, Snowflake, type LucideIcon,
+  Volume2, Ban, Hand, Bike, Footprints, Snowflake, Mail, PenLine, type LucideIcon,
 } from 'lucide-react-native';
 
 // ─── Icon Registry ──────────────────────────────────────────────
@@ -82,6 +82,8 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   bike: Bike,
   footprints: Footprints,
   snowflake: Snowflake,
+  mail: Mail,
+  penLine: PenLine,
 };
 
 export type IconName = keyof typeof ICON_MAP;

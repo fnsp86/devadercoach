@@ -61,7 +61,7 @@ export const EMOTIECOACHING_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De Fase-Spotter",
-      instructions: "Vandaag of morgen: als je kind emotioneel wordt, stel jezelf één vraag: welke fase is dit? Opbouw, piek, of herstel? Kijk naar stem, lichaam en ademhaling. Doe niks anders — alleen observeren.",
+      instructions: "1. Vandaag of morgen: als je kind emotioneel wordt, pauzeer.\n2. Stel jezelf één vraag: welke fase is dit? Opbouw, piek, of herstel?\n3. Kijk naar drie signalen: stem (hoog of laag?), lichaam (gespannen of ontspannen?), ademhaling (snel of kalm?).\n4. Doe niks anders — alleen observeren. Merk het moment op wanneer fase 2 overgaat in fase 3.",
       duration: 3,
       tips: [
         "Merk één keer op wanneer fase 2 overgaat in fase 3 — dat moment van kalmte na de storm",
@@ -84,7 +84,7 @@ export const EMOTIECOACHING_MODULES: LearningModule[] = [
   keyTakeaways: [
     "Bij hevige emotie gaat het denkbrein offline — je kind kan niet luisteren, het is biologie",
     "Elke storm heeft drie fasen: opbouw, piek, herstel — praten werkt alleen in fase 1 en 3",
-    "Co-regulatie werkt via jouw lichaam (ademhaling, houding, stem), niet via je woorden",
+    "Jouw rust kalmeert je kind via je lichaam (ademhaling, houding, stem), niet via je woorden",
   ],
   research: "Siegel & Bryson (2011). The Whole-Brain Child; Gottman (1997). Raising an Emotionally Intelligent Child",
   quizQuestions: [
@@ -110,7 +110,15 @@ export const EMOTIECOACHING_MODULES: LearningModule[] = [
         { text: "Direct als het huilen stopt", isCorrect: false },
         { text: "Als de ademhaling rustiger wordt en het lichaam ontspant", isCorrect: true },
       ],
-      explanation: "Fase 3 is het moment: het denkbrein komt terug online. Let op ademhaling en lichaamstaal als signaal.",
+      explanation: "Fase 3 is het moment: het denkbrein komt weer online. Let op ademhaling en lichaamstaal als signaal.",
+    },
+    {
+      question: "Je kind zit in fase 1 (opbouw): stem wordt hoger, lichaam spant. Wat is de slimste actie?",
+      options: [
+        { text: "Nu bijsturen — dit is het kleine venster vóór de piek", isCorrect: true },
+        { text: "Afwachten tot de storm voorbij is en dan pas ingrijpen", isCorrect: false },
+      ],
+      explanation: "Fase 1 is het enige moment waarop je met woorden kunt bijsturen. Zodra de piek bereikt is, is het denkbrein offline en werken woorden niet meer.",
     },
   ],
 },
@@ -225,6 +233,14 @@ export const EMOTIECOACHING_MODULES: LearningModule[] = [
       ],
       explanation: "Observe: kijk naar je kind zonder direct te reageren. Wat zie je aan het lichaam, de ademhaling, de ogen? Dat vertelt je welke fase het is.",
     },
+    {
+      question: "Je kind schreeuwt al vijf minuten. Je houdt je mond en blijft rustig erbij zitten. Je partner zegt: 'Doe iets!' Wat klopt er?",
+      options: [
+        { text: "Je doet al iets — je rustige aanwezigheid IS de interventie", isCorrect: true },
+        { text: "Je partner heeft gelijk — je moet actief ingrijpen met woorden of afleiding", isCorrect: false },
+      ],
+      explanation: "Co-regulatie werkt via jouw zenuwstelsel, niet via je woorden. Rustig aanwezig zijn is geen passiviteit — het is de krachtigste interventie die je hebt.",
+    },
   ],
 },
 {
@@ -287,11 +303,11 @@ export const EMOTIECOACHING_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De Emotie-Namer",
-      instructions: "Benoem vandaag drie emoties bij je kind. Gewoon hardop. Bij blije momenten ook: 'Oh, je bent echt trots op die tekening!' Het hoeft niet alleen bij driftbuien. Oefen als het makkelijk is, zodat het werkt als het moeilijk is.",
+      instructions: "1. Kies drie momenten vandaag waarop je een emotie ziet bij je kind — blij, gefrustreerd, trots, teleurgesteld.\n2. Benoem de emotie hardop: 'Oh, je bent echt trots op die tekening!' of 'Je baalt hiervan.'\n3. Begin bij positieve emoties — dat is makkelijker en voelt natuurlijker.\n4. Let op de reactie: corrigeert je kind je? ('Ik ben niet boos, ik ben verdrietig!') Dan werkt het — ze denken na over hun gevoel.",
       duration: 5,
       tips: [
-        "Begin bij positieve emoties — dat is makkelijker en voelt natuurlijker",
-        "Als je kind je corrigeert ('Ik ben niet boos, ik ben verdrietig!') dan werkt het. Ze denken na over hun gevoel",
+        "Je hoeft de emotie niet precies goed te raden. Een verkeerde gok lokt vaak het juiste antwoord uit",
+        "Probeer het ook bij jezelf: benoem je eigen emotie hardop waar je kind bij is",
       ],
     },
     {
@@ -337,6 +353,14 @@ export const EMOTIECOACHING_MODULES: LearningModule[] = [
         { text: "Je matcht de intensiteit — stevig maar warm — en brengt het langzaam omlaag", isCorrect: true },
       ],
       explanation: "Als je fluistert terwijl je kind schreeuwt, voelen ze zich niet gehoord. Match eerst de energie, dan breng je het samen omlaag.",
+    },
+    {
+      question: "Je kind is blij en springt door de kamer na een goed cijfer. Is dit een goed moment om emotie-labelen te oefenen?",
+      options: [
+        { text: "Ja — labelen werkt bij alle emoties en is makkelijker te oefenen bij positieve gevoelens", isCorrect: true },
+        { text: "Nee — labelen is alleen nodig bij negatieve emoties zoals boosheid of verdriet", isCorrect: false },
+      ],
+      explanation: "Labelen werkt bij alle emoties. 'Wauw, je bent echt trots!' is net zo waardevol als 'je bent boos.' Oefenen bij blije momenten maakt het makkelijker bij moeilijke.",
     },
   ],
 },
@@ -400,7 +424,7 @@ export const EMOTIECOACHING_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "Het Mini-Herstelgesprek",
-      instructions: "Na het eerstvolgende emotionele moment (hoe klein ook): ga naast je kind zitten en vertel samen het verhaal in drie zinnen. 'Je was [emotie]. Je deed [actie]. Toen werd het [rustiger].' Eindig met: 'Dat was een lastig moment, maar we kwamen eruit.'",
+      instructions: "1. Wacht na het eerstvolgende emotionele moment tot je kind echt rustig is (ademhaling kalm, lichaam ontspannen).\n2. Ga naast je kind zitten — niet tegenover.\n3. Vertel samen het verhaal in drie zinnen: 'Je was [emotie]. Je deed [actie]. Toen werd het [rustiger].'\n4. Eindig met: 'Dat was een lastig moment, maar we kwamen eruit.'\n5. Bij een tiener (12+): houd het nog korter. 'Dat was pittig net. Gaat het?' Laat hen het tempo bepalen.",
       duration: 5,
       tips: [
         "Begin met kleine momenten — een herstelgesprek na een kleine frustratie is makkelijker dan na een grote driftbui",
@@ -450,6 +474,14 @@ export const EMOTIECOACHING_MODULES: LearningModule[] = [
         { text: "Zo lang als nodig om alles goed te bespreken en afspraken te maken", isCorrect: false },
       ],
       explanation: "Kort is krachtiger. Eén les per keer. Een lang gesprek voelt als een preek en je kind haakt af. Vijf minuten, drie zinnen, klaar.",
+    },
+    {
+      question: "Je probeert een herstelgesprek maar je kind zegt: 'Ik wil er niet over praten.' Wat doe je?",
+      options: [
+        { text: "'Dat is oké. Ik ben hier als je er klaar voor bent' — en later nog een keer proberen", isCorrect: true },
+        { text: "Doorzetten — het gesprek moet nu plaatsvinden anders is het venster voorbij", isCorrect: false },
+      ],
+      explanation: "Herstel werkt op het tempo van je kind, niet op dat van jou. Afdwingen maakt het erger. Door beschikbaar te blijven laat je zien: ik ga niet weg, maar ik dwing je niet.",
     },
   ],
 },
@@ -501,14 +533,14 @@ export const EMOTIECOACHING_MODULES: LearningModule[] = [
     {
       type: "example" as const,
       situation: "Je komt thuis na een stressvolle dag. Je collega was onredelijk. Je kaak is gespannen. Saar (4) rent naar je toe en vraagt: 'Papa, waarom kijk je zo boos?'",
-      wrongApproach: "ONTKENNEN:\n\nPapa: 'Niks aan de hand schat. Papa is niet boos.'\nSaar kijkt onzeker. Ze voelt dat het niet klopt.\nDe hele avond is ze aanhangerig en onrustig.\n\nZe voelt de emotie maar hoort dat die er niet is. Verwarrend. En het leert haar: emoties moet je ontkennen.",
+      wrongApproach: "ONTKENNEN:\n\nPapa: 'Niks aan de hand, schat. Papa is niet boos.'\nSaar kijkt onzeker. Ze voelt dat het niet klopt.\nDe hele avond is ze aanhangerig en onrustig.\n\nZe voelt de emotie maar hoort dat die er niet is. Verwarrend. En het leert haar: emoties moet je ontkennen.",
       rightApproach: "BENOEMEN EN VOORDOEN:\n\nPapa hurkt: 'Goeie vraag. Papa had een moeilijke dag op werk. Ik ben een beetje moe en chagrijnig. Het ligt niet aan jou.'\nSaar: 'Moet je huilen?'\nPapa glimlacht: 'Nee. Maar ik ga even rustig zitten met een glas water. Dan voel ik me zo beter.'\nSaar: 'Ik haal water voor je!'\n\nSaar leerde drie dingen: emoties mogen er zijn, je kunt ze benoemen, en er is een strategie.",
       explanation: "Papa liet zien dat emoties normaal zijn, dat je ze kunt benoemen, en dat je er iets mee kunt doen. Saar leerde in dertig seconden meer over emotionele intelligentie dan uit welk boekje dan ook.",
     },
     {
       type: "text" as const,
       heading: "Je toolkit",
-      text: "1. Gebruik ik-zinnen. 'Ik ben moe.' 'Ik baal hiervan.' Niet: 'Jij maakt me gek.' Ik-zinnen modelleren eigenaarschap over emoties.\n\n2. Deel op kindniveau. Kort. Simpel. Geen details over werk. 'Papa had een vervelend gesprek. Ik ben een beetje gefrustreerd.' Klaar.\n\n3. Benoem je strategie. 'Ik ga even rustig zitten.' 'Ik heb een rondje nodig.' Zo leert je kind dat emoties iets zijn waar je mee omgaat — niet iets dat je overkomt.\n\n4. Zeg: 'Het ligt niet aan jou.' Altijd. Kinderen betrekken alles op zichzelf. Die ene zin haalt een enorme last van hun schouders.",
+      text: "1. Gebruik ik-zinnen. 'Ik ben moe.' 'Ik baal hiervan.' Niet: 'Jij maakt me gek.' Ik-zinnen modelleren eigenaarschap over emoties.\n\n2. Deel op kindniveau. Kort. Simpel. Geen details over werk. 'Papa had een vervelend gesprek. Ik ben een beetje gefrustreerd.' Klaar.\n\n3. Benoem je strategie. 'Ik ga even rustig zitten.' 'Ik heb een rondje nodig.' Zo leert je kind dat emoties iets zijn waar je mee omgaat — niet iets dat je overkomt.\n\n4. Zeg: 'Het ligt niet aan jou.' Altijd. Kinderen betrekken alles op zichzelf. Die ene zin haalt een enorme last van hun schouders.\n\n5. Tiener-variant. Bij een puber (12+) kun je iets meer delen: 'Mijn baas was onredelijk vandaag, dat frustreert me.' Tieners waarderen eerlijkheid en voelen zich serieus genomen als je ze behandelt als gesprekspartner.",
     },
     {
       type: "exercise" as const,
@@ -563,6 +595,14 @@ export const EMOTIECOACHING_MODULES: LearningModule[] = [
         { text: "Laten zien hoe jij met je eigen emoties omgaat, zodat je kind het kan kopiëren", isCorrect: true },
       ],
       explanation: "Kinderen leren niet door uitleg maar door observatie. Als jij laat zien hoe je met boosheid, frustratie of verdriet omgaat, kopiëren ze dat via spiegelneuronen.",
+    },
+    {
+      question: "Je bent verdrietig na slecht nieuws. Je zoon (6) merkt het. Wat is de beste aanpak?",
+      options: [
+        { text: "'Papa is een beetje verdrietig vandaag. Soms heb je dat. Het gaat over.' — eerlijk, kort, op kindniveau", isCorrect: true },
+        { text: "Je tranen verbergen en zeggen dat alles goed is — kinderen moeten niet belast worden met volwassen emoties", isCorrect: false },
+      ],
+      explanation: "Kinderen zien je emoties toch. Ontkennen creëert verwarring. Op kindniveau delen — zonder details — leert je kind dat alle emoties normaal zijn, ook verdriet.",
     },
   ],
 },

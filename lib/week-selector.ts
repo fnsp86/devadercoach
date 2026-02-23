@@ -51,9 +51,19 @@ export function getWeekKey(date: Date = new Date()): string {
  * zodat elke week een unieke set taken geeft, ook na ronde 1.
  */
 export function getWeekNumber(weekKey: string, startDate: string): number {
+  // Round startDate down to the Monday of its week, so the week counter
+  // advances exactly every Monday regardless of which weekday startDate falls on.
   const start = new Date(startDate);
+  const startDay = start.getDay(); // 0=Sun, 1=Mon, ...
+  const startDiff = startDay === 0 ? -6 : 1 - startDay;
+  const startMonday = new Date(start);
+  startMonday.setDate(start.getDate() + startDiff);
+  startMonday.setHours(0, 0, 0, 0);
+
   const week = new Date(weekKey);
-  const diffMs = week.getTime() - start.getTime();
+  week.setHours(0, 0, 0, 0);
+
+  const diffMs = week.getTime() - startMonday.getTime();
   const diffWeeks = Math.floor(diffMs / (7 * 24 * 60 * 60 * 1000));
   return Math.max(1, diffWeeks + 1);
 }
@@ -159,7 +169,10 @@ export function selectWeekTasks(
 /**
  * Selecteert 7 interactieve taken per week.
  * Leermodules zitten niet meer in weektaken — die hebben een eigen tab.
- * completedModuleIds wordt nog als parameter geaccepteerd voor backwards compatibility.
+ *
+ * @param completedTaskIds - IDs van eerder voltooide taken die uitgesloten
+ *   worden. Als de pool daardoor te klein wordt (<7), worden de oudste
+ *   completions weer toegelaten (fallback).
  */
 export function selectMixedWeekTasks(
   allTasks: InteractiveTask[],
@@ -167,7 +180,7 @@ export function selectMixedWeekTasks(
   skills: Skill[],
   weekKey: string,
   weekNumber: number,
-  completedModuleIds: string[],
+  completedTaskIds: string[] = [],
 ): WeekTaskSelection {
   const rng = seededRandom(weekSeed(weekKey, weekNumber));
 
@@ -183,15 +196,24 @@ export function selectMixedWeekTasks(
     return false;
   });
 
-  // Split in primary en secondary per moeilijkheid
-  const primaryPool = ageFiltered.filter((t) => skills.includes(t.skill));
-  const secondaryPool = ageFiltered.filter((t) => !skills.includes(t.skill));
+  // Sluit voltooide taken uit, tenzij pool te klein wordt
+  const completedSet = new Set(completedTaskIds);
+  let pool = ageFiltered.filter((t) => !completedSet.has(t.id));
 
-  function byDifficulty(pool: InteractiveTask[]) {
+  // Fallback: als pool te klein is, sta alle taken weer toe
+  if (pool.length < 7) {
+    pool = ageFiltered;
+  }
+
+  // Split in primary en secondary per moeilijkheid
+  const primaryPool = pool.filter((t) => skills.includes(t.skill));
+  const secondaryPool = pool.filter((t) => !skills.includes(t.skill));
+
+  function byDifficulty(p: InteractiveTask[]) {
     return {
-      basis: shuffle(pool.filter((t) => t.difficulty === 'basis'), rng),
-      gevorderd: shuffle(pool.filter((t) => t.difficulty === 'gevorderd'), rng),
-      expert: shuffle(pool.filter((t) => t.difficulty === 'expert'), rng),
+      basis: shuffle(p.filter((t) => t.difficulty === 'basis'), rng),
+      gevorderd: shuffle(p.filter((t) => t.difficulty === 'gevorderd'), rng),
+      expert: shuffle(p.filter((t) => t.difficulty === 'expert'), rng),
     };
   }
 
@@ -224,7 +246,7 @@ export function selectMixedWeekTasks(
   const gevorderd = pick([...primary.gevorderd, ...secondary.gevorderd], [], 3, used);
   const expert = pick([...primary.expert, ...secondary.expert], [], 2, used);
 
-  const allShuffled = shuffle(ageFiltered, rng);
+  const allShuffled = shuffle(pool, rng);
   const allPicked = [...basis, ...gevorderd, ...expert];
   while (allPicked.length < 7) {
     const next = allShuffled.find((t) => !used.has(t.id));

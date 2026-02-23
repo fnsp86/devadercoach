@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
   ScrollView,
   ActivityIndicator,
+  Pressable,
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
+import { useAuth } from '@/lib/auth';
 import Card from '@/components/Card';
 import Button from '@/components/Button';
 import { AppIcon, InlineIcon, type IconName } from '@/lib/icons';
@@ -24,10 +26,18 @@ const FEATURES: { icon: IconName; text: string }[] = [
 
 export default function IndexScreen() {
   const { colors } = useTheme();
-  const { hydrated, profile, clearAll } = useStore();
+  const { hydrated, profile } = useStore();
+  const { session, loading: authLoading } = useAuth();
   const router = useRouter();
 
-  if (!hydrated) {
+  // Auto-redirect returning users who are logged in
+  useEffect(() => {
+    if (hydrated && !authLoading && profile && session) {
+      router.replace('/(tabs)/vandaag');
+    }
+  }, [hydrated, authLoading, profile, session]);
+
+  if (!hydrated || authLoading) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.bg }]}>
         <View style={styles.loadingContainer}>
@@ -38,40 +48,53 @@ export default function IndexScreen() {
     );
   }
 
-  if (profile) {
+  // While redirecting logged-in users, show spinner
+  if (profile && session) {
+    return (
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.bg }]}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={colors.amber} />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // Logged out but profile exists — welcome back
+  if (profile && !session) {
+    const initials = profile.naam ? profile.naam.slice(0, 2).toUpperCase() : '?';
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.bg }]}>
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.welcomeSection}>
-            <AppIcon name="hand" size="lg" variant="featured" color={colors.amber} bgColor={colors.amberDim} />
-            <Text style={[styles.welcomeTitle, { color: colors.text }]}>
-              Welkom terug, {profile.naam}!
+          <View style={styles.heroSection}>
+            <View style={[styles.welcomeAvatar, { backgroundColor: colors.amber }]}>
+              <Text style={styles.welcomeAvatarText}>{initials}</Text>
+            </View>
+            <Text style={[styles.appName, { color: colors.text }]}>
+              Welkom terug, {profile.naam?.split(' ')[0] || 'vader'}!
             </Text>
-            <Text style={[styles.welcomeSubtitle, { color: colors.text2 }]}>
-              Ga verder waar je gebleven was.
+            <Text style={[styles.tagline, { color: colors.text2 }]}>
+              Log in om verder te gaan waar je gebleven was
             </Text>
           </View>
 
           <View style={styles.buttonSection}>
             <Button
-              title="Ga naar de app"
-              onPress={() => router.replace('/(tabs)/vandaag')}
+              title="Inloggen"
+              onPress={() => router.push('/login')}
               variant="primary"
               size="lg"
             />
           </View>
 
-          <View style={styles.resetSection}>
-            <Button
-              title="Opnieuw beginnen"
-              onPress={clearAll}
-              variant="ghost"
-              size="sm"
-            />
-          </View>
+          <Pressable onPress={() => router.push('/register')} style={styles.loginLink}>
+            <Text style={[styles.loginText, { color: colors.text2 }]}>
+              Ander account?{' '}
+              <Text style={{ color: colors.amber, fontWeight: '700' }}>Registreren</Text>
+            </Text>
+          </Pressable>
         </ScrollView>
       </SafeAreaView>
     );
@@ -105,16 +128,19 @@ export default function IndexScreen() {
 
         <View style={styles.buttonSection}>
           <Button
-            title="Start"
+            title="Account aanmaken"
             onPress={() => router.push('/register')}
             variant="primary"
             size="lg"
           />
         </View>
 
-        <Text style={[styles.footer, { color: colors.text3 }]}>
-          Gratis - Geen account nodig
-        </Text>
+        <Pressable onPress={() => router.push('/login')} style={styles.loginLink}>
+          <Text style={[styles.loginText, { color: colors.text2 }]}>
+            Al een account?{' '}
+            <Text style={{ color: colors.amber, fontWeight: '700' }}>Inloggen</Text>
+          </Text>
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );
@@ -140,24 +166,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '500',
   },
-  // Welcome back screen
-  welcomeSection: {
-    alignItems: 'center',
-    marginTop: 80,
-    marginBottom: 40,
-    gap: 12,
-  },
-  welcomeTitle: {
-    fontSize: 26,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginTop: 4,
-  },
-  welcomeSubtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  // Hero section
   heroSection: {
     alignItems: 'center',
     marginBottom: 32,
@@ -175,7 +183,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '500',
   },
-  // Features
   featuresTitle: {
     fontSize: 18,
     fontWeight: '700',
@@ -196,19 +203,28 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     flex: 1,
   },
-  // Buttons
   buttonSection: {
     marginTop: 8,
     marginBottom: 16,
   },
-  resetSection: {
+  loginLink: {
     alignItems: 'center',
-    marginTop: 24,
+    paddingVertical: 8,
   },
-  footer: {
-    textAlign: 'center',
-    fontSize: 13,
+  loginText: {
+    fontSize: 15,
     fontWeight: '500',
-    marginTop: 8,
+  },
+  welcomeAvatar: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  welcomeAvatarText: {
+    color: '#000',
+    fontSize: 28,
+    fontWeight: '800',
   },
 });

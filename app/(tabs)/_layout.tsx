@@ -41,7 +41,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: colors.amber,
         tabBarInactiveTintColor: colors.text3,
         tabBarLabelStyle: {
-          fontSize: 10,
+          fontSize: 11,
           fontWeight: '600',
           marginTop: 2,
         },
@@ -66,39 +66,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="community"
-        options={{
-          title: 'Community',
-          tabBarIcon: ({ focused }) => (
-            <TabIcon icon="users" focused={focused} activeColor={colors.amber} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="training"
-        options={{
-          title: 'Arena',
-          tabBarIcon: ({ focused }) => (
-            <TabIcon icon="swords" focused={focused} activeColor={colors.amber} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="help"
         options={{
           title: 'Help',
           tabBarIcon: ({ focused }) => (
             <TabIcon icon="lightbulb" focused={focused} activeColor={colors.amber} />
           ),
-          href: null,
         }}
       />
       <Tabs.Screen
-        name="voortgang"
+        name="community"
         options={{
-          title: 'Voortgang',
+          title: 'Social',
           tabBarIcon: ({ focused }) => (
-            <TabIcon icon="trophy" focused={focused} activeColor={colors.amber} />
+            <TabIcon icon="users" focused={focused} activeColor={colors.amber} />
           ),
         }}
       />
@@ -111,6 +92,9 @@ export default function TabLayout() {
           ),
         }}
       />
+      {/* Hidden routes - still accessible via deep link/push */}
+      <Tabs.Screen name="training" options={{ href: null }} />
+      <Tabs.Screen name="voortgang" options={{ href: null }} />
     </Tabs>
   );
 }

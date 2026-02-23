@@ -7,12 +7,14 @@ import {
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter, useFocusEffect } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
 import { SKILL_LIST } from '@/lib/skills';
 import { getLearningModulesForSkill } from '@/lib/learning-modules';
 import { transformModuleToStages } from '@/lib/module-stages';
+import { getTrainingForSkill } from '@/lib/training-content';
 import type { Skill, LearningModule } from '@/lib/types';
 import { getSkillMasteryTier, MASTERY_TIER_INFO } from '@/lib/gamification-types';
 import { SKILL_COLORS } from '@/lib/colors';
@@ -257,7 +259,6 @@ function ExpandedSkillModules({
             ]}
           >
             <View style={expandStyles.moduleTop}>
-              {/* Number / status */}
               <View
                 style={[
                   expandStyles.numberCircle,
@@ -291,13 +292,11 @@ function ExpandedSkillModules({
                 <Text style={[expandStyles.moduleDesc, { color: colors.text3 }]} numberOfLines={1}>
                   {mod.description}
                 </Text>
-                {/* Stage progress dots */}
                 {status !== 'locked' && (
                   <StageDots moduleId={mod.id} skill={skill} color={color} />
                 )}
               </View>
 
-              {/* Status label */}
               <View style={expandStyles.statusCol}>
                 {status === 'done' && (
                   <Text style={[expandStyles.statusText, { color: '#22C55E' }]}>Voltooid</Text>
@@ -352,18 +351,205 @@ const expandStyles = StyleSheet.create({
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Arena section (embedded)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ArenaSection() {
+  const { colors } = useTheme();
+  const router = useRouter();
+  const store = useStore();
+
+  const skillData = useMemo(() => {
+    return SKILL_LIST.map((s) => {
+      const totalItems = getTrainingForSkill(s.label).length;
+      const progress = store.getTrainingProgress(s.label);
+      const completedCount = progress.completedItems.length;
+      const correctCount = progress.correctAnswers;
+      const pct = totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
+      const scorePct = progress.totalAttempts > 0
+        ? Math.round((correctCount / progress.totalAttempts) * 100)
+        : 0;
+      return {
+        ...s,
+        totalItems,
+        completedCount,
+        correctCount,
+        pct,
+        scorePct,
+        hasTraining: totalItems > 0,
+      };
+    });
+  }, [store]);
+
+  const totalCorrect = skillData.reduce((sum, s) => sum + s.correctCount, 0);
+  const totalItems = skillData.reduce((sum, s) => sum + s.totalItems, 0);
+  const totalCompleted = skillData.reduce((sum, s) => sum + s.completedCount, 0);
+  const totalPct = totalItems > 0 ? Math.round((totalCompleted / totalItems) * 100) : 0;
+
+  function handleNavigate(skill: Skill) {
+    router.push(`/(tabs)/training/${encodeURIComponent(skill)}`);
+  }
+
+  return (
+    <>
+      <LinearGradient colors={[colors.surface2, colors.bg]} style={arena.heroBanner}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <InlineIcon name="swords" size={28} color={colors.text} />
+          <Text style={[arena.heroTitle, { color: colors.text }]}>Vader Arena</Text>
+        </View>
+        <Text style={[arena.heroSub, { color: colors.text3 }]}>Test je kennis · Verdien XP</Text>
+
+        <View style={[arena.scoreCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={arena.scoreTop}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+              <InlineIcon name="barChart3" size={14} color={colors.text2} />
+              <Text style={[arena.scoreLabel, { color: colors.text2 }]}>Jouw totaalscore</Text>
+            </View>
+            <Text style={[arena.scorePct, { color: colors.amber }]}>{totalPct}%</Text>
+          </View>
+          <View style={[arena.scoreBarTrack, { backgroundColor: colors.border }]}>
+            <View style={[arena.scoreBarFill, { width: `${totalPct}%`, backgroundColor: colors.amber }]} />
+          </View>
+          <Text style={[arena.scoreDetail, { color: colors.text3 }]}>
+            {totalCompleted}/{totalItems} voltooid · {totalCorrect} goed beantwoord
+          </Text>
+        </View>
+      </LinearGradient>
+
+      <View style={arena.grid}>
+        {skillData.map((skill) => {
+          const skillColor = SKILL_COLORS[skill.label] || colors.amber;
+          const isComplete = skill.completedCount >= skill.totalItems && skill.totalItems > 0;
+          const notStarted = skill.completedCount === 0;
+
+          return (
+            <Pressable
+              key={skill.label}
+              onPress={() => handleNavigate(skill.label)}
+              disabled={!skill.hasTraining}
+              style={[
+                arena.gridCard,
+                {
+                  backgroundColor: colors.surface,
+                  borderColor: isComplete ? '#34D399' : colors.border,
+                  opacity: skill.hasTraining ? 1 : 0.5,
+                },
+              ]}
+            >
+              <View style={[arena.gridAccent, { backgroundColor: skillColor }]} />
+              <AppIcon name={getSkillIcon(skill.label)} size="md" variant="compact" color={skillColor} />
+              <Text style={[arena.gridName, { color: colors.text }]} numberOfLines={1}>
+                {skill.label}
+              </Text>
+              <View style={[arena.gridBarTrack, { backgroundColor: colors.surface2 }]}>
+                <View
+                  style={[
+                    arena.gridBarFill,
+                    { width: `${skill.pct}%`, backgroundColor: isComplete ? '#34D399' : skillColor },
+                  ]}
+                />
+              </View>
+              {notStarted ? (
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                  <Text style={[arena.gridStatus, { color: colors.text3 }]}>Start</Text>
+                  <InlineIcon name="arrowRight" size={13} color={colors.text3} />
+                </View>
+              ) : (
+                <View style={arena.gridScoreRow}>
+                  <Text style={[arena.gridScore, { color: isComplete ? '#34D399' : skillColor }]}>
+                    {skill.completedCount}/{skill.totalItems}
+                  </Text>
+                  {isComplete && skill.scorePct >= 100 && (
+                    <InlineIcon name="crown" size={14} color="#F59E0B" />
+                  )}
+                  {isComplete && skill.scorePct >= 80 && skill.scorePct < 100 && (
+                    <InlineIcon name="star" size={14} color="#F59E0B" />
+                  )}
+                </View>
+              )}
+              {!notStarted && (
+                <Text style={[arena.gridPct, { color: colors.text3 }]}>{skill.pct}%</Text>
+              )}
+            </Pressable>
+          );
+        })}
+      </View>
+
+      <View style={[arena.infoCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+          <InlineIcon name="lightbulb" size={16} color={colors.amber} />
+          <Text style={[arena.infoTitle, { color: colors.amber }]}>Hoe werkt de Arena?</Text>
+        </View>
+        <Text style={[arena.infoText, { color: colors.text2 }]}>
+          Kies een skill en beantwoord 30 scenario-vragen. Verdien XP per goed antwoord en
+          unlock badges bij 80%+ en 100% scores. Je kunt quizzen herhalen om je score te verbeteren.
+        </Text>
+      </View>
+    </>
+  );
+}
+
+const arena = StyleSheet.create({
+  heroBanner: { padding: 20, paddingTop: 16, paddingBottom: 24 },
+  heroTitle: { fontSize: 28, fontWeight: '800', marginBottom: 4 },
+  heroSub: { fontSize: 14, fontWeight: '600', marginBottom: 20 },
+  scoreCard: { borderRadius: 14, borderWidth: 1, padding: 16 },
+  scoreTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
+  scoreLabel: { fontSize: 13, fontWeight: '600' },
+  scorePct: { fontSize: 18, fontWeight: '900' },
+  scoreBarTrack: { height: 8, borderRadius: 4, overflow: 'hidden', marginBottom: 8 },
+  scoreBarFill: { height: '100%', borderRadius: 4 },
+  scoreDetail: { fontSize: 12, fontWeight: '600' },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 16, paddingTop: 16, gap: 12 },
+  gridCard: {
+    width: '47%',
+    borderRadius: 16,
+    borderWidth: 1,
+    padding: 16,
+    paddingTop: 0,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  gridAccent: { height: 4, marginHorizontal: -16, marginBottom: 14 },
+  gridName: { fontSize: 15, fontWeight: '700', marginBottom: 10 },
+  gridBarTrack: { height: 5, borderRadius: 3, overflow: 'hidden', marginBottom: 8 },
+  gridBarFill: { height: '100%', borderRadius: 3 },
+  gridScoreRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  gridScore: { fontSize: 14, fontWeight: '800' },
+  gridStatus: { fontSize: 13, fontWeight: '700' },
+  gridPct: { fontSize: 11, fontWeight: '600', marginTop: 2 },
+  infoCard: { marginHorizontal: 16, marginTop: 16, borderWidth: 1, borderRadius: 14, padding: 16 },
+  infoTitle: { fontSize: 15, fontWeight: '700', marginBottom: 8 },
+  infoText: { fontSize: 14, lineHeight: 20 },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Main screen
 // ─────────────────────────────────────────────────────────────────────────────
+
+type Section = 'modules' | 'arena';
 
 export default function LerenOverview() {
   const { colors } = useTheme();
   const router = useRouter();
   const { stageProgress } = useStore();
+  const { openSkill } = useLocalSearchParams<{ openSkill?: string }>();
 
-  // Expanded skill
+  const [section, setSection] = useState<Section>('modules');
   const [expandedSkill, setExpandedSkill] = useState<Skill | null>(null);
 
-  // Force re-render when screen gains focus (e.g., returning from module)
+  // Auto-expand skill when navigated from help situatie
+  useEffect(() => {
+    if (openSkill) {
+      setSection('modules');
+      setExpandedSkill(decodeURIComponent(openSkill) as Skill);
+    }
+  }, [openSkill]);
+
   const [, setFocusCount] = useState(0);
   useFocusEffect(
     useCallback(() => {
@@ -371,7 +557,6 @@ export default function LerenOverview() {
     }, []),
   );
 
-  // Bereken voltooide modules per skill op basis van stageProgress (single source of truth)
   const completedBySkill = useMemo(() => {
     const result: Record<string, string[]> = {};
     for (const s of SKILL_LIST) {
@@ -380,7 +565,6 @@ export default function LerenOverview() {
         .filter((mod) => {
           const progress = stageProgress[mod.id];
           if (!progress) return false;
-          // Module is voltooid als completedAt is gezet OF alle stages zijn afgerond
           if (progress.completedAt) return true;
           const stages = transformModuleToStages(mod).stages;
           return progress.completedStageIds.length >= stages.length;
@@ -390,23 +574,17 @@ export default function LerenOverview() {
     return result;
   }, [stageProgress]);
 
-  // Total stats
   const allModules = useMemo(
     () => SKILL_LIST.flatMap((s) => getLearningModulesForSkill(s.label)),
     [],
   );
   const totalDone = useMemo(
-    () =>
-      SKILL_LIST.reduce(
-        (sum, s) => sum + (completedBySkill[s.label] ?? []).length,
-        0,
-      ),
+    () => SKILL_LIST.reduce((sum, s) => sum + (completedBySkill[s.label] ?? []).length, 0),
     [completedBySkill],
   );
   const totalCount = allModules.length;
   const pct = totalCount > 0 ? Math.round((totalDone / totalCount) * 100) : 0;
 
-  // Alle skills in standaard volgorde
   const sortedSkills = SKILL_LIST;
 
   function handleNavigate(skill: Skill, moduleId: string) {
@@ -423,81 +601,104 @@ export default function LerenOverview() {
 
   return (
     <SafeAreaView style={[s.safe, { backgroundColor: colors.bg }]}>
-      <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
+      {/* ── Segmented control ─────────────────────────────────────── */}
+      <View style={[s.segmentContainer, { backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
+        <Pressable
+          onPress={() => setSection('modules')}
+          style={[s.segment, section === 'modules' && { borderBottomColor: colors.amber, borderBottomWidth: 2 }]}
+        >
+          <Text style={[s.segmentText, { color: section === 'modules' ? colors.amber : colors.text2 }]}>
+            Modules
+          </Text>
+        </Pressable>
+        <Pressable
+          onPress={() => setSection('arena')}
+          style={[s.segment, section === 'arena' && { borderBottomColor: colors.amber, borderBottomWidth: 2 }]}
+        >
+          <InlineIcon name="swords" size={14} color={section === 'arena' ? colors.amber : colors.text2} />
+          <Text style={[s.segmentText, { color: section === 'arena' ? colors.amber : colors.text2 }]}>
+            Arena
+          </Text>
+        </Pressable>
+      </View>
 
-        {/* ── Hero ─────────────────────────────────────────────────── */}
-        <View style={[s.hero, { backgroundColor: colors.surface2 }]}>
-          <View style={s.heroInner}>
-            <View style={[s.ring, { borderColor: ringColor }]}>
-              <Text style={[s.ringPct, { color: colors.text }]}>{pct}%</Text>
-              <Text style={[s.ringLabel, { color: colors.text3 }]}>voltooid</Text>
+      <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
+        {section === 'modules' ? (
+          <>
+            {/* ── Hero ─────────────────────────────────────────────── */}
+            <View style={[s.hero, { backgroundColor: colors.surface2 }]}>
+              <View style={s.heroInner}>
+                <View style={[s.ring, { borderColor: ringColor }]}>
+                  <Text style={[s.ringPct, { color: colors.text }]}>{pct}%</Text>
+                  <Text style={[s.ringLabel, { color: colors.text3 }]}>voltooid</Text>
+                </View>
+                <View style={s.heroText}>
+                  <Text style={[s.heroTitle, { color: colors.text }]}>Vader Missies</Text>
+                  <Text style={[s.heroSub, { color: colors.text2 }]}>{totalDone} van {totalCount} modules</Text>
+                  {totalDone === 0 ? (
+                    <Text style={[s.heroHint, { color: colors.amber }]}>Kies een skill en begin je eerste missie</Text>
+                  ) : (
+                    <Text style={[s.heroHint, { color: colors.amber }]}>Je bent goed op weg</Text>
+                  )}
+                </View>
+              </View>
             </View>
-            <View style={s.heroText}>
-              <Text style={[s.heroTitle, { color: colors.text }]}>Vader Missies</Text>
-              <Text style={[s.heroSub, { color: colors.text2 }]}>{totalDone} van {totalCount} modules</Text>
-              {totalDone === 0 ? (
-                <Text style={[s.heroHint, { color: colors.amber }]}>Kies een skill en begin je eerste missie</Text>
-              ) : (
-                <Text style={[s.heroHint, { color: colors.amber }]}>Je bent goed op weg</Text>
+
+            {/* ── Skill Grid ─────────────────────────────────────── */}
+            <View style={s.gridContainer}>
+              <View style={s.grid}>
+                {sortedSkills.map((skill) => {
+                  const modules = getLearningModulesForSkill(skill.label);
+                  const doneCount = (completedBySkill[skill.label] ?? []).length;
+
+                  let totalQuizPct = 0;
+                  let quizCount = 0;
+                  for (const mod of modules) {
+                    const sp = stageProgress[mod.id];
+                    if (sp?.completedAt && sp.quizTotal && sp.quizTotal > 0) {
+                      totalQuizPct += (sp.quizCorrect / sp.quizTotal) * 100;
+                      quizCount++;
+                    }
+                  }
+                  const avgQuiz = quizCount > 0 ? totalQuizPct / quizCount : 0;
+                  const masteryTier = getSkillMasteryTier(doneCount, modules.length, avgQuiz);
+
+                  return (
+                    <SkillCard
+                      key={skill.label}
+                      skill={skill.label}
+                      doneCount={doneCount}
+                      totalCount={modules.length}
+                      isExpanded={expandedSkill === skill.label}
+                      masteryTier={masteryTier}
+                      onPress={() => handleSkillPress(skill.label)}
+                    />
+                  );
+                })}
+              </View>
+
+              {expandedSkill && (
+                <View style={[s.expandedSection, { borderColor: SKILL_COLORS[expandedSkill] + '40' }]}>
+                  <View style={s.expandedHeader}>
+                    <Text style={[s.expandedTitle, { color: colors.text }]}>{expandedSkill}</Text>
+                    <Pressable onPress={() => setExpandedSkill(null)} style={s.closeBtn}>
+                      <InlineIcon name="x" size={18} color={colors.text3} />
+                    </Pressable>
+                  </View>
+                  <ExpandedSkillModules
+                    skill={expandedSkill}
+                    modules={getLearningModulesForSkill(expandedSkill)}
+                    completedIds={completedBySkill[expandedSkill] ?? []}
+                    color={SKILL_COLORS[expandedSkill] ?? '#667eea'}
+                    onNavigate={(moduleId) => handleNavigate(expandedSkill, moduleId)}
+                  />
+                </View>
               )}
             </View>
-          </View>
-        </View>
-
-        {/* ── Skill Grid ─────────────────────────────────────────── */}
-        <View style={s.gridContainer}>
-          <View style={s.grid}>
-            {sortedSkills.map((skill) => {
-              const modules = getLearningModulesForSkill(skill.label);
-              const doneCount = (completedBySkill[skill.label] ?? []).length;
-
-              // Calculate average quiz percentage for mastery tier
-              let totalQuizPct = 0;
-              let quizCount = 0;
-              for (const mod of modules) {
-                const sp = stageProgress[mod.id];
-                if (sp?.completedAt && sp.quizTotal && sp.quizTotal > 0) {
-                  totalQuizPct += (sp.quizCorrect / sp.quizTotal) * 100;
-                  quizCount++;
-                }
-              }
-              const avgQuiz = quizCount > 0 ? totalQuizPct / quizCount : 0;
-              const masteryTier = getSkillMasteryTier(doneCount, modules.length, avgQuiz);
-
-              return (
-                <SkillCard
-                  key={skill.label}
-                  skill={skill.label}
-                  doneCount={doneCount}
-                  totalCount={modules.length}
-                  isExpanded={expandedSkill === skill.label}
-                  masteryTier={masteryTier}
-                  onPress={() => handleSkillPress(skill.label)}
-                />
-              );
-            })}
-          </View>
-
-          {/* ── Expanded module list ──────────────────────────────── */}
-          {expandedSkill && (
-            <View style={[s.expandedSection, { borderColor: SKILL_COLORS[expandedSkill] + '40' }]}>
-              <View style={s.expandedHeader}>
-                <Text style={[s.expandedTitle, { color: colors.text }]}>{expandedSkill}</Text>
-                <Pressable onPress={() => setExpandedSkill(null)} style={s.closeBtn}>
-                  <InlineIcon name="x" size={18} color={colors.text3} />
-                </Pressable>
-              </View>
-              <ExpandedSkillModules
-                skill={expandedSkill}
-                modules={getLearningModulesForSkill(expandedSkill)}
-                completedIds={completedBySkill[expandedSkill] ?? []}
-                color={SKILL_COLORS[expandedSkill] ?? '#667eea'}
-                onNavigate={(moduleId) => handleNavigate(expandedSkill, moduleId)}
-              />
-            </View>
-          )}
-        </View>
-
+          </>
+        ) : (
+          <ArenaSection />
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -506,6 +707,26 @@ export default function LerenOverview() {
 const s = StyleSheet.create({
   safe: { flex: 1 },
   scroll: { paddingBottom: 60 },
+
+  // Segmented control
+  segmentContainer: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+  },
+  segment: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 12,
+    borderBottomWidth: 2,
+    borderBottomColor: 'transparent',
+  },
+  segmentText: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
 
   // Hero
   hero: {

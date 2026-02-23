@@ -61,7 +61,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De Tien-Seconden-Regel",
-      instructions: "Kies vandaag of morgen één moment waarop je kind iets probeert dat lastig is. Schoenen, rits, puzzel, wat dan ook. Stop je handen in je zakken. Tel tot tien. Stel dan maximaal één vraag: 'Wat is je plan?' of 'Wat zou je kunnen proberen?' Kijk wat er gebeurt.",
+      instructions: "1. Kies vandaag of morgen één moment waarop je kind iets probeert dat lastig is — schoenen, rits, puzzel, huiswerk.\n2. Stop je handen letterlijk in je zakken.\n3. Tel in je hoofd tot tien. Tien seconden voelen lang. Houd vol.\n4. Stel maximaal één vraag: 'Wat is je plan?' of 'Wat zou je kunnen proberen?'\n5. Kijk wat er gebeurt — en voel je eigen ongemak. Dat ongemak is het teken dat je het goed doet.",
       duration: 3,
       tips: [
         "Het voelt ongemakkelijk om te wachten. Dat is normaal. Dat ongemak is het teken dat je het goed doet.",
@@ -111,6 +111,14 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
         { text: "De taak kleiner maken: 'Kijk eens naar de kleur van dit hoekje'", isCorrect: true },
       ],
       explanation: "Een hint over de kleur maakt de taak kleiner zonder het antwoord te geven. Je kind lost het nog steeds zelf op. Dat gevoel van 'ik kan het!' bouw je niet door het voor ze te doen.",
+    },
+    {
+      question: "Je kind (5) raakt gefrustreerd en begint te huilen bij het aantrekken van haar jas. Ze is in de frustratiezone. Wat doe je?",
+      options: [
+        { text: "De taak kleiner maken: 'Zal ik de rits starten? Dan trek jij hem omhoog'", isCorrect: true },
+        { text: "Haar laten huilen — ze moet leren omgaan met frustratie", isCorrect: false },
+      ],
+      explanation: "In de frustratiezone is de taak te moeilijk voor hints alleen. Door de taak kleiner te maken breng je haar terug naar de zone van naaste ontwikkeling — waar groei zit.",
     },
   ],
 },
@@ -174,7 +182,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De Twee-Keuzes-Dag",
-      instructions: "Geef je kind vandaag bij drie momenten een keuze tussen twee opties. Ontbijt: 'Boterham of cracker?' Aankleden: 'Rood of blauw shirt?' Avond: 'Eerst tanden poetsen of eerst boek lezen?' Let op wat er gebeurt met de weerstand. Minder strijd? Sneller klaar? Beter humeur?",
+      instructions: "1. Kies drie momenten vandaag waarop je normaal een bevel geeft.\n2. Vervang elk bevel door een keuze tussen twee opties:\n   - Ontbijt: 'Boterham of cracker?'\n   - Aankleden: 'Rood of blauw shirt?'\n   - Avond: 'Eerst tanden poetsen of eerst boek lezen?'\n3. Let op wat er verandert: minder strijd? Sneller klaar? Beter humeur?\n4. Bij een tiener (12+): geef grotere keuzes. 'Huiswerk voor of na het eten?' 'Zelf koken vanavond of helpen met afwassen?'",
       duration: 5,
       tips: [
         "Houd het simpel: maximaal twee opties. Drie of meer is te veel voor jonge kinderen en leidt tot keuzestress.",
@@ -225,6 +233,14 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       ],
       explanation: "Jonge kinderen raken overweldigd door te veel opties. Twee keuzes is genoeg om autonomie te voelen zonder keuzestress te veroorzaken.",
     },
+    {
+      question: "Je tiener (13) wil zelf bepalen wanneer hij zijn huiswerk maakt. Hoe geef je autonomie binnen grenzen?",
+      options: [
+        { text: "'Het moet af voor het eten. Wanneer je het doet is aan jou.' — kader plus keuzevrijheid", isCorrect: true },
+        { text: "'Doe het nu, dan is het maar klaar.' — structuur is belangrijk op die leeftijd", isCorrect: false },
+      ],
+      explanation: "Tieners hebben nog meer behoefte aan autonomie dan kleuters. Het kader staat (voor het eten af), maar de timing is hun keuze. Dat voorkomt machtsstrijd en bouwt eigenaarschap.",
+    },
   ],
 },
 {
@@ -244,7 +260,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Falen is grondstof",
-      text: "Wij vaders willen onze kinderen beschermen tegen teleurstelling. Logisch. Maar elke keer dat je een mislukking voorkomt, voorkom je ook het leermoment dat erin zit.\n\nDaan's toren valt om. Wat gebeurt er? Misschien tranen. Misschien frustratie. Maar dan: hij kijkt. Hij denkt na. Waarom viel hij? Te hoog? Te smal onderaan? Hij bouwt opnieuw. Anders. Beter.\n\nDat is geen falen. Dat is het leerproces in actie. Zijn brein maakt verbindingen die alleen ontstaan door dingen fout te zien gaan.\n\nJouw taak is niet de val voorkomen. Jouw taak is er zijn als het valt. En dan niet te zeggen 'zie je wel' maar: 'Wat ga je anders doen?'",
+      text: "Wij vaders willen onze kinderen beschermen tegen teleurstelling. Logisch. Maar elke keer dat je een mislukking voorkomt, voorkom je ook het leermoment dat erin zit.\n\nDaans toren valt om. Wat gebeurt er? Misschien tranen. Misschien frustratie. Maar dan: hij kijkt. Hij denkt na. Waarom viel hij? Te hoog? Te smal onderaan? Hij bouwt opnieuw. Anders. Beter.\n\nDat is geen falen. Dat is het leerproces in actie. Zijn brein maakt verbindingen die alleen ontstaan door te zien dat dingen fout gaan.\n\nJouw taak is niet de val voorkomen. Jouw taak is er zijn als het valt. En dan niet te zeggen 'zie je wel' maar: 'Wat ga je anders doen?'",
     },
     {
       type: "text" as const,
@@ -276,13 +292,13 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       type: "example" as const,
       situation: "Daan (7) bouwt een hoge toren van blokken. Je ziet dat hij wiebelt en waarschijnlijk gaat vallen. Daan legt het volgende blok erop.",
       wrongApproach: "FALEN VOORKOMEN:\n\nPapa: 'Daan, niet zo hoog! Hij valt om!'\nDaan stopt. Kijkt teleurgesteld.\nPapa: 'Hier, als je hem breder maakt onderin...'\nPapa herbouwt de basis.\n\nDe toren staat. Maar het is papa's toren. En Daan heeft geleerd: ik kan het niet zonder hulp.",
-      rightApproach: "FALEN BEGELEIDEN:\n\nPapa ziet de toren wiebelen. Zegt niks. Wacht.\nDe toren valt. Daan: 'Nee!'\nPapa: 'Balen. Wat denk je dat er gebeurde?'\nDaan: 'Hij was te hoog...'\nPapa: 'Hmm. Wat zou je anders kunnen doen?'\nDaan begint opnieuw. Bredere basis dit keer.\n\nDaan heeft nu iets geleerd over constructie dat geen uitleg had kunnen geven.",
+      rightApproach: "FALEN BEGELEIDEN:\n\nPapa ziet de toren wiebelen. Zegt niks. Wacht.\nDe toren valt. Daan: 'Nee!'\nPapa: 'Balen. Wat denk je dat er gebeurde?'\nDaan: 'Hij was te hoog...'\nPapa: 'Hmm. Wat zou je anders kunnen doen?'\nDaan begint opnieuw. Bredere basis dit keer.\n\nDaan heeft nu iets geleerd over constructie dat geen uitleg hem had kunnen geven.",
       explanation: "Door de val toe te laten en daarna procesgerichte vragen te stellen, transformeerde papa een mislukking in een leermoment. Daan ontdekte zelf het probleem en de oplossing — dat beklijft veel beter dan een instructie van buitenaf.",
     },
     {
       type: "text" as const,
       heading: "Je toolkit",
-      text: "1. Eén ding per dag laten mislukken. Kies bewust één moment waarop je niet ingrijpt. De melk die morst. De tekening die mislukt. De toren die valt. Laat het gebeuren.\n\n2. Procestaal, niet uitkomsttaal. Niet: 'Wat mooi!' Wel: 'Je hebt lang doorgewerkt.' Niet: 'Slim!' Wel: 'Je hebt een slimme manier bedacht.' Focus op de inspanning, niet het resultaat.\n\n3. De magische vraag na falen. 'Wat ga je anders proberen?' Geen oordeel. Geen oplossing. Alleen een uitnodiging om na te denken.\n\n4. Normaliseer fouten. 'Papa maakt ook fouten. Vandaag nog. Weet je wat ik deed?' Laat zien dat falen bij het leven hoort.",
+      text: "1. Eén ding per dag laten mislukken. Kies bewust één moment waarop je niet ingrijpt. De melk die morst. De tekening die mislukt. De toren die valt. Laat het gebeuren.\n\n2. Procestaal, niet uitkomsttaal. Niet: 'Wat mooi!' Wel: 'Je hebt lang doorgewerkt.' Niet: 'Slim!' Wel: 'Je hebt een slimme manier bedacht.' Focus op de inspanning, niet het resultaat.\n\n3. De magische vraag na falen. 'Wat ga je anders proberen?' Geen oordeel. Geen oplossing. Alleen een uitnodiging om na te denken.\n\n4. Normaliseer fouten. 'Papa maakt ook fouten. Vandaag nog. Weet je wat ik deed?' Laat zien dat falen bij het leven hoort.\n\n5. Tiener-variant. Bij een puber (13+) worden de stakes groter: een slecht proefwerk, een mislukte auditie, een afwijzing. Dezelfde principes gelden — maar met meer ruimte. Niet: 'Volgende keer beter.' Wel: 'Balen. Wat heb je ervan geleerd?' Tieners willen serieus genomen worden, niet getroost als een kleuter.",
     },
     {
       type: "exercise" as const,
@@ -338,6 +354,14 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       ],
       explanation: "Productief falen betekent dat kinderen eerst zelf proberen voordat ze hulp krijgen. Het worstelen activeert hun brein op een manier die de oplossing beter laat beklijven.",
     },
+    {
+      question: "Je dochter (9) heeft een proefwerk slecht gemaakt. Ze is verdrietig. Wat zeg je?",
+      options: [
+        { text: "'Balen. Wat denk je dat je volgende keer anders kunt doen?' — procesgerichte vraag", isCorrect: true },
+        { text: "'Niet erg, je bent gewoon slim — volgende keer beter!' — geruststelling op talent", isCorrect: false },
+      ],
+      explanation: "Geruststelling op talent bouwt faalangst: als ik slim ben maar toch faal, is er iets erg mis. Een procesgerichte vraag normaliseert de tegenslag en richt de blik op wat ze zelf kan veranderen.",
+    },
   ],
 },
 {
@@ -362,7 +386,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Albert Bandura bewees dat self-efficacy — het geloof dat je iets kunt — de belangrijkste voorspeller is van succes. Kinderen bouwen self-efficacy op door dingen zelf te doen en te slagen. Niet doordat jij ze vertelt dat ze het kunnen, maar doordat ze het ervaren. De geleidelijke vrijlating van verantwoordelijkheid is een bewezen methode om dit stap voor stap op te bouwen.",
+      text: "Albert Bandura bewees dat self-efficacy — het geloof dat je iets kunt — de belangrijkste voorspeller is van succes. Kinderen bouwen self-efficacy op door dingen zelf te doen en te slagen. Niet doordat jij ze vertelt dat ze het kunnen, maar doordat ze het ervaren. De geleidelijke overdracht van verantwoordelijkheid is een bewezen methode om dit stap voor stap op te bouwen.",
     },
     {
       type: "diagram" as const,
@@ -451,6 +475,14 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       ],
       explanation: "Door de poging te vieren en een vraag te stellen, leer je je kind dat worsteling normaal is. Overnemen leert: ik kan het niet. Vieren leert: proberen is al waardevol.",
     },
+    {
+      question: "Je kind kan al drie weken zelf haar brood smeren, maar zegt vandaag weer 'papa doe het.' Wat is er aan de hand?",
+      options: [
+        { text: "Waarschijnlijk is ze moe of heeft ze een slechte dag — bied stap 2 aan: 'Ik help met het begin'", isCorrect: true },
+        { text: "Ze is lui geworden — je moet stevig zijn en zeggen dat ze het zelf moet doen", isCorrect: false },
+      ],
+      explanation: "Terugval is normaal. Op moeilijke dagen hebben kinderen meer steun nodig. Dat is geen achteruitgang maar menselijk. Bied een tussenstap aan en bouw morgen weer af.",
+    },
   ],
 },
 {
@@ -508,7 +540,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Je toolkit",
-      text: "1. De vertrouwenssprong. Kies één ding dat je altijd voor je kind doet. Geef het uit handen. Helemaal. Accepteer dat het rommelig, langzaam of imperfect gaat. Dat is het punt.\n\n2. De capability audit. Loop in je hoofd een gewone dag door. Bij hoeveel dingen sta je erboven terwijl je kind het eigenlijk al kan? Schrijf er drie op. Dat zijn je kandidaten.\n\n3. Leeftijdsverantwoordelijkheden. 3 jaar: bestek op tafel leggen. 5 jaar: eigen kleren uitzoeken. 7 jaar: rugzak inpakken. 9 jaar: eenvoudig ontbijt maken. Verschuif je verwachtingen mee met hun groei.\n\n4. Laat imperfectie staan. Het scheef gesmeerde brood. De verkeerd gevouwen handdoek. Laat het. Corrigeren zegt: het was niet goed genoeg. Laten staan zegt: jouw best is goed genoeg.",
+      text: "1. De vertrouwenssprong. Kies één ding dat je altijd voor je kind doet. Geef het uit handen. Helemaal. Accepteer dat het rommelig, langzaam of imperfect gaat. Dat is het punt.\n\n2. De capability audit. Loop in je hoofd een gewone dag door. Bij hoeveel dingen sta je erboven terwijl je kind het eigenlijk al kan? Schrijf er drie op. Dat zijn je kandidaten.\n\n3. Leeftijdsverantwoordelijkheden. 3 jaar: bestek op tafel leggen. 5 jaar: eigen kleren uitzoeken. 7 jaar: rugzak inpakken. 9 jaar: eenvoudig ontbijt maken. 11 jaar: eigen was draaien. 13 jaar: zelf naar afspraken fietsen. 15 jaar: eigen budget voor kleding beheren. Verschuif je verwachtingen mee met hun groei.\n\n4. Laat imperfectie staan. Het scheef gesmeerde brood. De verkeerd gevouwen handdoek. De tiener die zijn kamer 'anders' inricht. Laat het. Corrigeren zegt: het was niet goed genoeg. Laten staan zegt: jouw best is goed genoeg.",
     },
     {
       type: "exercise" as const,
@@ -563,6 +595,14 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
         { text: "Kinderen ontwikkelen minder zelfvertrouwen en meer angst", isCorrect: true },
       ],
       explanation: "Onderzoek toont dat overbescherming leidt tot minder zelfvertrouwen, meer angst en slechtere probleemoplossingsvaardigheden. Kinderen leren: ik kan het niet zonder hulp. Dat is het tegenovergestelde van autonomie.",
+    },
+    {
+      question: "Je zoon (8) wil zelf naar de bakker op de hoek lopen. Je vindt het spannend. Wat is de vertrouwenssprong?",
+      options: [
+        { text: "Samen de route oefenen, dan hem alleen laten gaan — jouw angst is niet zijn beperking", isCorrect: true },
+        { text: "Wachten tot hij tien is — acht is te jong om alleen naar buiten te gaan", isCorrect: false },
+      ],
+      explanation: "De vertrouwenskloof: jij schat het gevaar hoger in dan het is. Door samen te oefenen en dan los te laten, geef je hem een ervaring van competentie die geen woorden kunnen vervangen.",
     },
   ],
 },

@@ -12,7 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
@@ -33,9 +33,10 @@ export default function CreateStory() {
   const { colors } = useTheme();
   const { user } = useAuth();
   const router = useRouter();
+  const { prefill, prefillCategory } = useLocalSearchParams<{ prefill?: string; prefillCategory?: string }>();
 
-  const [content, setContent] = useState('');
-  const [category, setCategory] = useState<Category>('ervaring');
+  const [content, setContent] = useState(prefill ?? '');
+  const [category, setCategory] = useState<Category>((prefillCategory as Category) ?? 'ervaring');
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [posting, setPosting] = useState(false);
 

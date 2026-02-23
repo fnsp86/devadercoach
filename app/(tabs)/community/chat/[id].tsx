@@ -9,12 +9,13 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
-import { getMessages, sendMessage, supabase, type Message } from '@/lib/supabase';
+import { getMessages, sendMessage, supabase, getConversationById, getCommunityProfile, type Message, type CommunityProfile } from '@/lib/supabase';
 import { InlineIcon } from '@/lib/icons';
 
 function formatTime(dateStr: string): string {
@@ -32,6 +33,7 @@ export default function ChatScreen() {
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
+  const [otherUser, setOtherUser] = useState<CommunityProfile | null>(null);
   const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
@@ -63,6 +65,17 @@ export default function ChatScreen() {
       supabase.removeChannel(channel);
     };
   }, [conversationId]);
+
+  useEffect(() => {
+    if (!conversationId || !user) return;
+    (async () => {
+      const conv = await getConversationById(conversationId);
+      if (!conv) return;
+      const otherUserId = conv.participant1_id === user.id ? conv.participant2_id : conv.participant1_id;
+      const profile = await getCommunityProfile(otherUserId);
+      setOtherUser(profile);
+    })();
+  }, [conversationId, user]);
 
   async function loadMessages() {
     if (!conversationId) return;
@@ -130,7 +143,23 @@ export default function ChatScreen() {
         <Pressable onPress={() => router.back()}>
           <InlineIcon name="arrowLeft" size={22} color={colors.text} />
         </Pressable>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Chat</Text>
+        <Pressable
+          onPress={() => otherUser && router.push(`/(tabs)/community/profile/${otherUser.user_id}`)}
+          style={styles.headerCenter}
+        >
+          {otherUser?.avatar_url ? (
+            <Image source={{ uri: otherUser.avatar_url }} style={styles.headerAvatar} />
+          ) : otherUser ? (
+            <View style={[styles.headerAvatarPlaceholder, { backgroundColor: colors.amberDim }]}>
+              <Text style={{ color: colors.amber, fontSize: 11, fontWeight: '700' }}>
+                {otherUser.naam?.slice(0, 2).toUpperCase() || '?'}
+              </Text>
+            </View>
+          ) : null}
+          <Text style={[styles.headerTitle, { color: colors.text }]} numberOfLines={1}>
+            {otherUser?.naam ?? 'Chat'}
+          </Text>
+        </Pressable>
         <View style={{ width: 22 }} />
       </View>
 
@@ -226,4 +255,23 @@ const styles = StyleSheet.create({
   },
   emptyContainer: { alignItems: 'center', paddingTop: 40 },
   emptyText: { fontSize: 15, fontWeight: '500' },
+  headerCenter: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginLeft: 12,
+  },
+  headerAvatar: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+  },
+  headerAvatarPlaceholder: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

@@ -15,6 +15,7 @@ import type {
   PulseCheckIn,
   PulseStats,
   StageProgress,
+  ReflectionNote,
 } from './types';
 import { challenges } from './challenges';
 import { getCurrentLevel } from './training';
@@ -81,6 +82,8 @@ const KEYS = {
   UNLOCKED_BADGES: 'vc-unlocked-badges',            // string[]
   BADGE_UNLOCK_DATES: 'vc-badge-unlock-dates',      // Record<string, string>
   ARENA_STATS: 'vc-arena-stats',                    // ArenaStats
+  REFLECTION_NOTES: 'vc-reflection-notes',          // ReflectionNote[]
+  HELP_FAVORITES: 'vc-help-favorites',              // string[]
 } as const;
 
 // -- Week task completion type ----------------------------------------------
@@ -137,6 +140,17 @@ interface StoreState {
   getTodayPulse: () => PulseCheckIn | undefined;
   getPulseStats: () => PulseStats;
 
+  // Reflection notes
+  reflectionNotes: ReflectionNote[];
+  addReflectionNote: (note: ReflectionNote) => void;
+  getReflectionNotesForModule: (moduleId: string) => ReflectionNote[];
+  getReflectionNotesForSkill: (skill: string) => ReflectionNote[];
+
+  // Help favorites
+  helpFavorites: string[];
+  toggleHelpFavorite: (situationId: string) => void;
+  isHelpFavorite: (situationId: string) => boolean;
+
   saveProfile: (p: UserProfile) => void;
   saveOnboarding: (o: OnboardingState) => void;
   addCompletion: (c: {
@@ -183,6 +197,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [unlockedBadges, setUnlockedBadges] = useState<string[]>([]);
   const [badgeUnlockDates, setBadgeUnlockDates] = useState<Record<string, string>>({});
   const [arenaStats, setArenaStats] = useState<ArenaStats>(DEFAULT_ARENA_STATS);
+  const [reflectionNotes, setReflectionNotes] = useState<ReflectionNote[]>([]);
+  const [helpFavorites, setHelpFavorites] = useState<string[]>([]);
 
   // Hydrate all state from AsyncStorage on mount
   useEffect(() => {
@@ -203,6 +219,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         storedUnlockedBadges,
         storedBadgeUnlockDates,
         storedArenaStats,
+        storedReflectionNotes,
+        storedHelpFavorites,
       ] = await Promise.all([
         load<UserProfile>(KEYS.PROFILE),
         load<OnboardingState>(KEYS.ONBOARDING),
@@ -219,6 +237,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         load<string[]>(KEYS.UNLOCKED_BADGES),
         load<Record<string, string>>(KEYS.BADGE_UNLOCK_DATES),
         load<ArenaStats>(KEYS.ARENA_STATS),
+        load<ReflectionNote[]>(KEYS.REFLECTION_NOTES),
+        load<string[]>(KEYS.HELP_FAVORITES),
       ]);
 
       setProfile(storedProfile);
@@ -239,6 +259,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       setUnlockedBadges(storedUnlockedBadges || []);
       setBadgeUnlockDates(storedBadgeUnlockDates || {});
       setArenaStats(storedArenaStats || DEFAULT_ARENA_STATS);
+      setReflectionNotes(storedReflectionNotes || []);
+      if (storedHelpFavorites) setHelpFavorites(storedHelpFavorites);
       setHydrated(true);
     })();
   }, []);
@@ -471,6 +493,38 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     };
   }
 
+  // -- Reflection notes -------------------------------------------------------
+  function addReflectionNoteFn(note: ReflectionNote) {
+    setReflectionNotes((prev) => {
+      const updated = [...prev, note];
+      save(KEYS.REFLECTION_NOTES, updated);
+      return updated;
+    });
+  }
+
+  function getReflectionNotesForModuleFn(moduleId: string): ReflectionNote[] {
+    return reflectionNotes.filter((n) => n.moduleId === moduleId);
+  }
+
+  function getReflectionNotesForSkillFn(skill: string): ReflectionNote[] {
+    return reflectionNotes.filter((n) => n.skill === skill);
+  }
+
+  // -- Help favorites --------------------------------------------------------
+  function toggleHelpFavoriteFn(situationId: string) {
+    setHelpFavorites((prev) => {
+      const updated = prev.includes(situationId)
+        ? prev.filter((id) => id !== situationId)
+        : [...prev, situationId];
+      save(KEYS.HELP_FAVORITES, updated);
+      return updated;
+    });
+  }
+
+  function isHelpFavoriteFn(situationId: string): boolean {
+    return helpFavorites.includes(situationId);
+  }
+
   // -- Stage progress (Vader Missies) ----------------------------------------
   function completeStageFn(moduleId: string, stageId: string, xpEarned: number, skill: Skill, totalStages: number) {
     setStageProgress((prev) => {
@@ -595,6 +649,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setUnlockedBadges([]);
     setBadgeUnlockDates({});
     setArenaStats(DEFAULT_ARENA_STATS);
+    setReflectionNotes([]);
+    setHelpFavorites([]);
   }
 
   // Count number of unique days this week with completed tasks
@@ -652,6 +708,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     addPulseCheckIn: addPulseCheckInFn,
     getTodayPulse: getTodayPulseFn,
     getPulseStats: getPulseStatsFn,
+    reflectionNotes,
+    addReflectionNote: addReflectionNoteFn,
+    getReflectionNotesForModule: getReflectionNotesForModuleFn,
+    getReflectionNotesForSkill: getReflectionNotesForSkillFn,
+    helpFavorites,
+    toggleHelpFavorite: toggleHelpFavoriteFn,
+    isHelpFavorite: isHelpFavoriteFn,
     saveProfile: saveProfileFn,
     saveOnboarding: saveOnboardingFn,
     addCompletion: addCompletionFn,

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter, useFocusEffect } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
@@ -39,38 +39,67 @@ export default function SkillTraining() {
   const store = useStore();
   const items = useMemo(() => getTrainingForSkill(skill), [skill]);
 
-  // State
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // Initialize state from store progress so we never flash the wrong screen
+  const [currentIndex, setCurrentIndex] = useState(() => {
+    if (items.length === 0) return 0;
+    const progress = store.getTrainingProgress(skill);
+    if (progress.completedItems.length >= items.length) return 0;
+    if (progress.completedItems.length > 0) {
+      const nextIndex = items.findIndex(
+        (item) => !progress.completedItems.includes(item.id),
+      );
+      return nextIndex >= 0 ? nextIndex : 0;
+    }
+    return 0;
+  });
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [oefeningDone, setOefeningDone] = useState(false);
-  const [showCompletion, setShowCompletion] = useState(false);
-  const [sessionCorrect, setSessionCorrect] = useState(0);
-  const [sessionIncorrect, setSessionIncorrect] = useState(0);
+  const [showCompletion, setShowCompletion] = useState(() => {
+    if (items.length === 0) return false;
+    const progress = store.getTrainingProgress(skill);
+    return progress.completedItems.length >= items.length;
+  });
+  const [sessionCorrect, setSessionCorrect] = useState(() => {
+    if (items.length === 0) return 0;
+    const progress = store.getTrainingProgress(skill);
+    if (progress.completedItems.length >= items.length) return progress.correctAnswers;
+    return 0;
+  });
+  const [sessionIncorrect, setSessionIncorrect] = useState(() => {
+    if (items.length === 0) return 0;
+    const progress = store.getTrainingProgress(skill);
+    if (progress.completedItems.length >= items.length) return progress.totalAttempts - progress.correctAnswers;
+    return 0;
+  });
   const [sessionXP, setSessionXP] = useState(0);
   const [xpPopup, setXpPopup] = useState<{ xp: number; key: number } | null>(null);
   const [gamificationEvent, setGamificationEvent] = useState<GamificationEvent | null>(null);
   const [streak, setStreak] = useState(0);
 
-  // Find starting index based on store progress
-  useEffect(() => {
-    if (items.length === 0) return;
-    const progress = store.getTrainingProgress(skill);
-    if (progress.completedItems.length > 0 && progress.completedItems.length < items.length) {
-      // Find first non-completed item
-      const nextIndex = items.findIndex(
-        (item) => !progress.completedItems.includes(item.id),
-      );
-      if (nextIndex >= 0) {
-        setCurrentIndex(nextIndex);
+  // Sync completion state when screen gains focus (handles cached components)
+  useFocusEffect(
+    useCallback(() => {
+      if (items.length === 0) return;
+      const progress = store.getTrainingProgress(skill);
+      if (progress.completedItems.length >= items.length) {
+        setShowCompletion(true);
+        setSessionCorrect(progress.correctAnswers);
+        setSessionIncorrect(progress.totalAttempts - progress.correctAnswers);
+      } else if (progress.completedItems.length > 0) {
+        // Resume from where user left off
+        setShowCompletion(false);
+        const nextIndex = items.findIndex(
+          (item) => !progress.completedItems.includes(item.id),
+        );
+        if (nextIndex >= 0) setCurrentIndex(nextIndex);
+      } else {
+        // No progress — fresh start
+        setShowCompletion(false);
+        setCurrentIndex(0);
       }
-    } else if (progress.completedItems.length >= items.length) {
-      // All completed -- show completion
-      setShowCompletion(true);
-      setSessionCorrect(progress.correctAnswers);
-      setSessionIncorrect(progress.totalAttempts - progress.correctAnswers);
-    }
-  }, []); // Only on mount
+    }, [items, skill]),
+  );
 
   const currentItem: TrainingItem | undefined = items[currentIndex];
   const totalItems = items.length;
@@ -351,7 +380,7 @@ export default function SkillTraining() {
             </Pressable>
 
             <Pressable
-              onPress={() => router.back()}
+              onPress={() => router.navigate('/(tabs)/training')}
               style={[
                 styles.completionButton,
                 {

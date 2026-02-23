@@ -411,4 +411,15 @@ export interface StageProgress {
   quizTotal: number;
   startedAt?: string;
   completedAt?: string;
+  reflectionNotes?: Record<string, string>; // stageId → notitie tekst
+}
+
+export interface ReflectionNote {
+  moduleId: string;
+  moduleTitle: string;
+  skill: string;
+  stageId: string;
+  question: string;
+  note: string;
+  createdAt: string;
 }

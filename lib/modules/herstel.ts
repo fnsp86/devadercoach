@@ -56,12 +56,12 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Je toolkit",
-      text: "1. Merk de breuk op. Dat schuldgevoel? Gebruik het. Het is je signaal dat er iets te herstellen valt.\n\n2. Wacht niet te lang. Herstel binnen het uur is krachtiger dan herstel de volgende dag. Hoe eerder, hoe beter.\n\n3. Ga naar je kind toe. Fysiek. Kniel. Maak oogcontact op hun hoogte. Dat alleen al zegt: jij bent belangrijk genoeg om naar toe te komen.\n\n4. Benoem wat jij fout deed. Niet: 'sorry dat je boos werd.' Maar: 'sorry dat ik schreeuwde.' Eigenaarschap. Punt.",
+      text: "1. Merk de breuk op. Dat schuldgevoel? Gebruik het. Het is je signaal dat er iets te herstellen valt.\n\n2. Wacht niet te lang. Herstel binnen het uur is krachtiger dan herstel de volgende dag. Hoe eerder, hoe beter.\n\n3. Ga naar je kind toe. Fysiek. Kniel. Maak oogcontact op hun hoogte. Dat alleen al zegt: jij bent belangrijk genoeg om naartoe te komen.\n\n4. Benoem wat jij fout deed. Niet: 'sorry dat je boos werd.' Maar: 'sorry dat ik schreeuwde.' Eigenaarschap. Punt.",
     },
     {
       type: "exercise" as const,
       title: "Je eerste bewuste herstelmoment",
-      instructions: "Denk aan het laatste moment dat je te hard reageerde op je kind. Misschien vandaag, misschien gisteren. Ga vanavond of morgenochtend naar je kind toe. Zeg drie zinnen: 1) Wat er gebeurde ('Ik schreeuwde tegen je'). 2) Dat het niet oké was ('Dat was niet fijn voor jou'). 3) Dat het niet hun schuld was ('Jij deed niks verkeerd'). Dat is het. Geen uitleg, geen les. Drie zinnen.",
+      instructions: "1. Denk aan het laatste moment dat je te hard reageerde op je kind.\n2. Ga vanavond of morgenochtend naar je kind toe. Kniel op hun hoogte.\n3. Zeg drie zinnen:\n   - Wat er gebeurde: 'Ik schreeuwde tegen je.'\n   - Dat het niet oké was: 'Dat was niet fijn voor jou.'\n   - Dat het niet hun schuld was: 'Jij deed niks verkeerd.'\n4. Dat is het. Geen uitleg, geen les. Drie zinnen.\n5. Bij een tiener (12+): dezelfde drie zinnen, maar geef ze daarna ruimte. 'Je hoeft nu niks te zeggen.' Tieners verwerken herstel op hun eigen tempo.",
       duration: 5,
       tips: [
         "Het voelt ongemakkelijk. Dat is normaal. Ongemak is het bewijs dat je iets nieuws doet.",
@@ -86,7 +86,7 @@ export const HERSTEL_MODULES: LearningModule[] = [
     "Het verschil tussen veilige en onveilige hechting is niet perfectie maar herstel",
     "Ga altijd terug naar je kind, benoem wat jij fout deed, en herstel de verbinding",
   ],
-  research: "Tronick (2007). The Neurobehavioral and Social-Emotional Development of Infants and Children; Winnicott (1953). Transitional Objects and Transitional Phenomena",
+  research: "Tronick (2007). The Neurobehavioral and Social-Emotional Development of Infants and Children; Winnicott (1957). The Child and the Family: First Relationships",
   quizQuestions: [
     {
       question: "Onderzoek toont dat 70% van ouder-kind interacties misafstemming bevat. Wat betekent dat?",
@@ -111,6 +111,14 @@ export const HERSTEL_MODULES: LearningModule[] = [
         { text: "Een ouder die net genoeg doet om het kind te laten overleven", isCorrect: false },
       ],
       explanation: "Good enough betekent niet 'minimaal'. Het betekent: imperfect maar herstellend. Dat patroon bouwt veerkracht bij je kind.",
+    },
+    {
+      question: "Je herstelt al drie keer deze week na een uitbarsting. Je denkt: ik moet stoppen met schreeuwen in plaats van steeds herstellen. Wat klopt?",
+      options: [
+        { text: "Allebei waar — maar herstel nu is belangrijker dan perfectie later. Werk ondertussen aan je triggers", isCorrect: true },
+        { text: "Je hebt gelijk — eerst het schreeuwen stoppen, dan pas focussen op herstel", isCorrect: false },
+      ],
+      explanation: "Herstel en preventie zijn geen tegenpolen. Terwijl je werkt aan je triggers (zelfregulatie), is herstel wat je kind nu beschermt. Stop niet met herstellen omdat je vindt dat je het niet meer zou moeten verpesten.",
     },
   ],
 },
@@ -174,7 +182,7 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "Het oefenscript",
-      instructions: "Denk aan een recent moment waarop je te scherp reageerde op je kind. Schrijf nu (ja, echt schrijven — op je telefoon is prima) de vijf stappen uit alsof je ze uitspreekt: 1) Wat deed ik? 2) Wat was het effect op mijn kind? 3) Wiens schuld was het? 4) Wat doe ik volgende keer anders? 5) Stop. Geen voorwaarden. Lees het hardop voor. Zeg het morgen echt tegen je kind.",
+      instructions: "1. Denk aan een recent moment waarop je te scherp reageerde.\n2. Pak je telefoon en schrijf de vijf stappen uit:\n   - Stap 1: Wat deed ik? ('Ik riep hard tegen je.')\n   - Stap 2: Wat was het effect? ('Je schrok ervan.')\n   - Stap 3: Wiens schuld was het? ('Dat was mijn fout, niet de jouwe.')\n   - Stap 4: Wat doe ik anders? ('Volgende keer loop ik even weg om rustig te worden.')\n   - Stap 5: Stop. Geen voorwaarden. Geen 'maar'.\n3. Lees het hardop voor. Ja, echt hardop.\n4. Zeg het morgen tegen je kind.",
       duration: 5,
       tips: [
         "Het voelt overdreven om dit uit te schrijven. Doe het toch. Je brein onthoudt het beter als je het opschrijft.",
@@ -223,7 +231,15 @@ export const HERSTEL_MODULES: LearningModule[] = [
         { text: "Het maakt het eerlijk voor beide kanten", isCorrect: false },
         { text: "Het ondermijnt je hele excuus en verplaatst de schuld", isCorrect: true },
       ],
-      explanation: "Stap 5 is: vraag niks terug. Een echte sorry is eenrichtingsverkeer. Feedback op je kind's gedrag is een apart gesprek, op een ander moment.",
+      explanation: "Stap 5 is: vraag niks terug. Een echte sorry is eenrichtingsverkeer. Feedback op het gedrag van je kind is een apart gesprek, op een ander moment.",
+    },
+    {
+      question: "Je kind (9) zegt na je vijf-stappen-sorry: 'Je zegt altijd sorry maar je doet het toch weer.' Wat doe je?",
+      options: [
+        { text: "Erken het eerlijk: 'Je hebt gelijk dat het vaker gebeurt. Ik werk eraan. Maar het sorry van nu is echt.'", isCorrect: true },
+        { text: "Uitleggen dat verandering tijd kost en dat ze geduld moet hebben", isCorrect: false },
+      ],
+      explanation: "Je kind heeft een punt. Erken dat zonder je te verdedigen. Eerlijk toegeven dat je nog niet bent waar je wilt zijn, IS de vijfde stap in actie: kwetsbaarheid zonder voorwaarden.",
     },
   ],
 },
@@ -338,6 +354,14 @@ export const HERSTEL_MODULES: LearningModule[] = [
       ],
       explanation: "Wegdraaien is een signaal: nog niet klaar. Dwing het niet. Blijf beschikbaar. Herstel werkt op het tempo van je kind, niet op dat van jou.",
     },
+    {
+      question: "Je wilt 's ochtends herstellen maar je kind doet alsof er niks is gebeurd en is vrolijk. Moet je het alsnog benoemen?",
+      options: [
+        { text: "Ja, kort — 'Gisteravond was niet leuk. Sorry daarvoor.' Een kind dat doet alsof alles oké is, is dat niet altijd", isCorrect: true },
+        { text: "Nee — als je kind er overheen is, maak je het erger door het weer op te rakelen", isCorrect: false },
+      ],
+      explanation: "Kinderen doen vaak alsof alles oké is om de spanning niet terug te brengen. Een korte erkenning laat zien: ik heb het niet vergeten, en jouw gevoelens tellen. Het hoeft niet lang — drie zinnen is genoeg.",
+    },
   ],
 },
 {
@@ -400,7 +424,7 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "Jouw trigger-map",
-      instructions: "Pak je telefoon. Open je notities. Schrijf drie momenten op van de afgelopen week waarop je te heftig reageerde. Schrijf bij elk moment: 1) Hoe laat was het? 2) Hoe moe/gestrest was ik? (schaal 1-10) 3) Wat deed mijn kind? 4) Wat voelde ik in mijn lichaam vlak ervoor? Zoek het patroon. Er is er altijd een. Dat patroon is je trigger-map.",
+      instructions: "1. Pak je telefoon. Open je notities.\n2. Schrijf drie momenten op van de afgelopen week waarop je te heftig reageerde.\n3. Schrijf bij elk moment vier dingen:\n   - Hoe laat was het?\n   - Hoe moe/gestrest was ik? (schaal 1-10)\n   - Wat deed mijn kind?\n   - Wat voelde ik in mijn lichaam vlak ervoor?\n4. Zoek het patroon. Er is er altijd een.\n5. Maak een als-dan plan: 'Als ik [lichaamssignaal] voel om [tijdstip], dan [actie].'\n6. Dat patroon is je trigger-map. Die map is je wapen.",
       duration: 5,
       tips: [
         "De meeste vaders schreeuwen tussen 17:30 en 19:30. Moe, hongerig, haast. Als dat jouw tijdvak is: plan daar iets voor.",
@@ -450,6 +474,14 @@ export const HERSTEL_MODULES: LearningModule[] = [
         { text: "Een afspraak met je kind over wat zij anders moeten doen", isCorrect: false },
       ],
       explanation: "Een als-dan plan koppelt je lichaamssignaal aan een concreet alternatief gedrag. Het vervangt de automatische reactie door een bewuste route.",
+    },
+    {
+      question: "Je trigger-map toont dat je elke dag om 18:00 ontploft. Je bent dan moe en de kinderen zijn druk. Wat verander je aan de situatie?",
+      options: [
+        { text: "Plan iets om bij te tanken vóór 18:00 — een snack, vijf minuten rust, muziek in de auto", isCorrect: true },
+        { text: "Accepteren dat 18:00 nu eenmaal lastig is en focussen op beter herstellen achteraf", isCorrect: false },
+      ],
+      explanation: "Een trigger-map is pas waardevol als je er iets mee doet. Preventieve regulatie — de situatie veranderen in plaats van je reactie — is het verschil tussen een systeem en een belofte.",
     },
   ],
 },
@@ -508,7 +540,7 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Je toolkit",
-      text: "1. Het feilbaarheid-experiment. Deel deze week één eigen fout met je kind. Iets kleins. 'Ik vergat de was op te hangen.' 'Ik was ongeduldig bij de kassa.' Laat zien hoe je ermee omging.\n\n2. Normaliseer 'oeps'. Maak 'oeps' een gewoon woord in huis. Jij zegt het. Je kind zegt het. Oeps = ik maakte een fout, ik ga het fixen. Geen drama.\n\n3. Vier de poging, niet het resultaat. 'Ik zag dat je het probeerde, ook al lukte het niet.' Dat ene zinnetje bouwt meer lef dan honderd keer 'knap!'\n\n4. Laat je kind jou helpen herstellen. 'Ik weet niet goed hoe ik dit moet oplossen. Heb jij een idee?' Dat geeft ze agency én laat zien dat vragen om hulp sterk is.",
+      text: "1. Het feilbaarheid-experiment. Deel deze week één eigen fout met je kind. Iets kleins. 'Ik vergat de was op te hangen.' 'Ik was ongeduldig bij de kassa.' Laat zien hoe je ermee omging.\n\n2. Normaliseer 'oeps'. Maak 'oeps' een gewoon woord in huis. Jij zegt het. Je kind zegt het. Oeps = ik maakte een fout, ik ga het fixen. Geen drama.\n\n3. Vier de poging, niet het resultaat. 'Ik zag dat je het probeerde, ook al lukte het niet.' Dat ene zinnetje bouwt meer lef dan honderd keer 'knap!'\n\n4. Laat je kind jou helpen herstellen. 'Ik weet niet goed hoe ik dit moet oplossen. Heb jij een idee?' Dat geeft ze agency én laat zien dat vragen om hulp sterk is.\n\n5. Tiener-variant. Pubers (13+) vinden 'oeps' kinderachtig — en terecht. Gebruik hun taal: 'Ik heb het verknald vandaag op werk.' of 'Ik had dat anders moeten aanpakken.' Hoe eerlijker en volwassener je deelt, hoe meer een tiener zich opent over eigen fouten.",
     },
     {
       type: "exercise" as const,
@@ -563,6 +595,14 @@ export const HERSTEL_MODULES: LearningModule[] = [
         { text: "Omdat kinderen niet van complimenten houden", isCorrect: false },
       ],
       explanation: "Als je alleen resultaat beloont, leert je kind: alleen slagen telt. Als je de poging beloont, leert je kind: proberen is waardevol — ook als het mislukt.",
+    },
+    {
+      question: "Je deelt een eigen fout aan tafel. Je kind zegt: 'Maar papa's mogen toch geen fouten maken?' Wat zeg je?",
+      options: [
+        { text: "'Iedereen maakt fouten. Papa's ook. Het gaat erom wat je erna doet.' — normaliseren", isCorrect: true },
+        { text: "'Klopt, papa's moeten het goede voorbeeld geven. Maar soms gaat het mis.' — nuanceren", isCorrect: false },
+      ],
+      explanation: "De tweede reactie bevestigt onbewust dat fouten niet bij ouders horen. De eerste normaliseert fouten als universeel menselijk en verschuift de focus naar herstel — precies de boodschap die je kind nodig heeft.",
     },
   ],
 },

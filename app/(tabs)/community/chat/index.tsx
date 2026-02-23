@@ -95,7 +95,9 @@ export default function ChatList() {
           <InlineIcon name="arrowLeft" size={22} color={colors.text} />
         </Pressable>
         <Text style={[styles.title, { color: colors.text }]}>Berichten</Text>
-        <View style={{ width: 22 }} />
+        <Pressable onPress={() => router.push('/(tabs)/community/discover')}>
+          <InlineIcon name="search" size={22} color={colors.text} />
+        </Pressable>
       </View>
 
       {loading ? (
@@ -109,12 +111,33 @@ export default function ChatList() {
           renderItem={renderConversation}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            conversations.length > 0 ? (
+              <Pressable
+                onPress={() => router.push('/(tabs)/community/discover')}
+                style={[styles.newChatRow, { borderColor: colors.border }]}
+              >
+                <View style={[styles.newChatIcon, { backgroundColor: colors.amberDim }]}>
+                  <InlineIcon name="search" size={18} color={colors.amber} />
+                </View>
+                <Text style={[styles.newChatText, { color: colors.amber }]}>Nieuw gesprek starten</Text>
+                <InlineIcon name="arrowRight" size={16} color={colors.amber} />
+              </Pressable>
+            ) : null
+          }
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
               <InlineIcon name="messageCircle" size={40} color={colors.text3} />
               <Text style={[styles.emptyText, { color: colors.text3 }]}>
-                Nog geen gesprekken.{'\n'}Start een gesprek vanuit iemands profiel!
+                Nog geen gesprekken.
               </Text>
+              <Pressable
+                onPress={() => router.push('/(tabs)/community/discover')}
+                style={[styles.discoverBtn, { backgroundColor: colors.amber }]}
+              >
+                <InlineIcon name="search" size={16} color="#fff" />
+                <Text style={styles.discoverBtnText}>Vaders zoeken</Text>
+              </Pressable>
             </View>
           }
         />
@@ -162,4 +185,38 @@ const styles = StyleSheet.create({
   convPreview: { fontSize: 14, marginTop: 2 },
   emptyContainer: { alignItems: 'center', paddingTop: 60, gap: 12 },
   emptyText: { fontSize: 15, fontWeight: '500', textAlign: 'center', lineHeight: 22 },
+  newChatRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+  },
+  newChatIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  newChatText: {
+    flex: 1,
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  discoverBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 14,
+    marginTop: 16,
+  },
+  discoverBtnText: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '700',
+  },
 });

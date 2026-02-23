@@ -22,7 +22,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Psycholoog Roy Baumeister ontdekte dat zelfbeheersing een beperkte hulpbron is: 'ego depletion'. Na veel willsinspanning presteer je slechter op de volgende taak. Je prefrontale cortex — het remmencentrum van je brein — raakt letterlijk uitgeput. Glucose, slaap en herstel vullen de tank weer aan.",
+      text: "Psycholoog Roy Baumeister ontdekte dat zelfbeheersing een beperkte hulpbron is: 'ego depletion'. Na veel wilsinspanning presteer je slechter op de volgende taak. Je prefrontale cortex — het remmencentrum van je brein — raakt letterlijk uitgeput. Glucose, slaap en herstel vullen de tank weer aan.",
     },
     {
       type: "diagram" as const,
@@ -60,7 +60,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De 17:00 Tankcheck",
-      instructions: "Stel vandaag een alarm om 17:00. Als het afgaat, geef jezelf een score van 1-10 voor hoeveel energie je nog hebt. Schrijf het op in je telefoon. Doe dit vijf dagen achter elkaar. Na vijf dagen zie je je patroon.",
+      instructions: "1. Stel nu een alarm op je telefoon om 17:00.\n2. Als het afgaat: geef jezelf een score van 1-10 voor hoeveel energie je nog hebt.\n3. Schrijf het op in je telefoon (notities of een simpel lijstje).\n4. Doe dit vijf dagen achter elkaar.\n5. Na vijf dagen: lees je scores terug. Zie je het patroon? Welke dagen scoor je laag?\n6. Plan iets om bij te tanken op je laagste dagen.",
       duration: 3,
       tips: [
         "Onder de 4? Plan iets om bij te tanken voor je thuiskomt — vijf minuten in de auto met ogen dicht telt ook",
@@ -111,6 +111,14 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
       ],
       explanation: "Door je eigen grenzen te benoemen, leer je je kind dat emoties herkennen en reguleren normaal is. Dat is precies de vaardigheid die zij ook nodig hebben.",
     },
+    {
+      question: "Je partner neemt altijd de zware opvoedtaken 's avonds over. Is dat een goede oplossing?",
+      options: [
+        { text: "Tijdelijk prima, maar structureel moet je je eigen tank beter managen door preventieve regulatie", isCorrect: true },
+        { text: "Ja — verdelen op basis van wie de meeste energie heeft is de beste strategie", isCorrect: false },
+      ],
+      explanation: "Verdelen helpt, maar afhankelijkheid creëert nieuwe spanning. Preventieve regulatie — eten, rust, mini-reset — vult je eigen tank zodat je niet altijd hoeft uit te besteden.",
+    },
   ],
 },
 {
@@ -129,7 +137,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Het gaat nooit over de melk",
-      text: "Die woede voelt buitenproportioneel. Dat is hij ook. Want die reactie gaat niet over dit glas melk. Die gaat over alles wat daarvoor kwam.\n\nDe file vanmorgen. Die ene opmerking van je baas. Het feit dat je al drie keer hebt opgeruimd vandaag. De was die nog draait. De rekening die je vergeten bent.\n\nElke irritatie die je wegslikte, werd opgestapeld. Daan's melk was gewoon de druppel. Letterlijk.\n\nJe amygdala — het alarmcentrum in je brein — houdt een onzichtbare boekhouding bij. Elke kleine stress telt mee. Tot het alarm afgaat bij iets kleins.",
+      text: "Die woede voelt buitenproportioneel. Dat is hij ook. Want die reactie gaat niet over dit glas melk. Die gaat over alles wat daarvoor kwam.\n\nDe file vanmorgen. Die ene opmerking van je baas. Het feit dat je al drie keer hebt opgeruimd vandaag. De was die nog draait. De rekening die je vergeten bent.\n\nElke irritatie die je wegslikte, werd opgestapeld. Daans melk was gewoon de druppel. Letterlijk.\n\nJe amygdala — het alarmcentrum in je brein — houdt een onzichtbare boekhouding bij. Elke kleine stress telt mee. Tot het alarm afgaat bij iets kleins.",
     },
     {
       type: "text" as const,
@@ -172,10 +180,10 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "Het Trigger-Dagboek",
-      instructions: "Maak een notitie in je telefoon met de titel 'Triggers'. Na elke boze reactie deze week, schrijf drie dingen op: (1) Wat was de trigger? (2) Hoe groot was mijn reactie op een schaal van 1-10? (3) Wat was er eerder op de dag gebeurd? Na vijf dagen lees je alles terug en zoek je het patroon.",
+      instructions: "1. Open je telefoon. Maak een notitie met de titel 'Triggers'.\n2. Na elke boze reactie deze week, schrijf drie dingen op:\n   - Wat was de trigger?\n   - Hoe groot was mijn reactie? (schaal 1-10)\n   - Wat was er eerder op de dag gebeurd?\n3. Doe het direct na het moment — anders vergeet je de details.\n4. Na vijf dagen: lees alles terug.\n5. Zoek het patroon. Zelfde tijdstip? Zelfde type situatie? Altijd na een lange werkdag?\n6. Dat patroon is je trigger-map.",
       duration: 5,
       tips: [
-        "Doe het direct na het moment, anders vergeet je de details",
+        "Gebruik steekwoorden als je weinig tijd hebt — drie woorden zijn genoeg om het later terug te halen",
         "Oordeel niet over jezelf — je bent een onderzoeker, geen verdachte",
       ],
     },
@@ -222,6 +230,14 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
         { text: "Bewijzen verzamelen dat je een slechte vader bent", isCorrect: false },
       ],
       explanation: "Het trigger-dagboek is een onderzoekstool, geen oordeel. Door patronen te zien kun je preventief handelen: de stapel kleiner houden voor hij omvalt.",
+    },
+    {
+      question: "Je hebt net een proportiecheck gedaan en je reactie paste niet bij het moment. Wat is de volgende stap?",
+      options: [
+        { text: "Kijk wat er eerder op de dag gebeurde — de echte bron zit onder de trigger", isCorrect: true },
+        { text: "Excuses maken aan je kind en jezelf beloven beter op te letten", isCorrect: false },
+      ],
+      explanation: "Excuses zijn goed, maar zonder de echte bron te vinden verander je niks. Het trigger-dagboek helpt je de onzichtbare stapeling in kaart te brengen.",
     },
   ],
 },
@@ -284,7 +300,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De Fysiologische Zucht Oefenen",
-      instructions: "Oefen de fysiologische zucht nu drie keer. Dubbele inademing door je neus (kort-kort), dan lange uitademing door je mond. Doe dit vanavond nog een keer als je in bed ligt. En morgen: gebruik hem één keer bij een echt moment — niet per se met je kind, kan ook in het verkeer of op werk.",
+      instructions: "1. Oefen nu: dubbele inademing door je neus (kort-kort), dan lange uitademing door je mond.\n2. Doe het drie keer achter elkaar. Merk op hoe je lichaam reageert.\n3. Vanavond in bed: doe het nog drie keer. Het wordt een gewoonte.\n4. Morgen: gebruik hem één keer bij een echt moment.\n5. Het hoeft niet met je kind — in het verkeer of op werk telt ook.\n6. Dagelijks doel: één bewust moment per dag waarop je pauzeert voor je reageert.",
       duration: 3,
       tips: [
         "De uitademing is het belangrijkste — maak hem twee keer zo lang als de inademing",
@@ -328,12 +344,20 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
       explanation: "Onder stress val je terug op gewoontes. Als de zucht een automatisme is, gebruik je hem vanzelf in het moment dat je hem nodig hebt.",
     },
     {
-      question: "Viktor Frankl's inzicht 'Tussen prikkel en reactie is er ruimte' betekent:",
+      question: "Viktor Frankls inzicht 'Tussen prikkel en reactie is er ruimte' betekent:",
       options: [
         { text: "Je kunt altijd kiezen hoe je reageert — ook als de emotie groot is", isCorrect: true },
         { text: "Je moet je emoties onderdrukken en altijd rationeel blijven", isCorrect: false },
       ],
       explanation: "Het gaat niet om emoties onderdrukken. Het gaat om een moment nemen zodat jij kiest wat je doet — niet je amygdala. De emotie mag er zijn. De reactie is je keuze.",
+    },
+    {
+      question: "Je oefent de fysiologische zucht al een week in rustmomenten. Vandaag gebruik je hem in een echt stressmoment. Wat merk je waarschijnlijk?",
+      options: [
+        { text: "Hij werkt sneller dan verwacht omdat je brein het patroon al herkent als automatisme", isCorrect: true },
+        { text: "Hij werkt niet in echte stress — oefenen in rust bereidt je niet voor op het echte moment", isCorrect: false },
+      ],
+      explanation: "Onder stress val je terug op gewoontes. Door te oefenen in rust maak je er een automatisme van. Je brein schakelt dan vanzelf naar de zucht als het lichaam stress detecteert.",
     },
   ],
 },
@@ -358,7 +382,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Kristin Neff's onderzoek naar zelfcompassie toont dat vaders die zichzelf vergeven na een fout, sneller en beter herstellen. Schaamte zegt: 'Ik ben slecht.' Schuld zegt: 'Ik deed iets dat niet past bij wie ik wil zijn.' Schuld motiveert herstel. Schaamte verlamt. Het verschil bepaalt of je naar Sophie's kamer gaat of op de bank blijft liggen.",
+      text: "Kristin Neffs onderzoek naar zelfcompassie toont dat vaders die zichzelf vergeven na een fout, sneller en beter herstellen. Schaamte zegt: 'Ik ben slecht.' Schuld zegt: 'Ik deed iets dat niet past bij wie ik wil zijn.' Schuld motiveert herstel. Schaamte verlamt. Het verschil bepaalt of je naar Sophie's kamer gaat of op de bank blijft liggen.",
     },
     {
       type: "diagram" as const,
@@ -429,7 +453,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
         { text: "Naar je kind gaan, benoemen wat je deed, sorry zeggen en vertellen wat je anders gaat doen", isCorrect: true },
         { text: "Wachten tot morgen — dan is iedereen het vergeten en kun je fris beginnen", isCorrect: false },
       ],
-      explanation: "Kinderen vergeten het schreeuwen niet. Ze vergeten wel de stilte erna. Het recovery-script — hoe eerder hoe beter — leert je kind dat fouten hersteld worden.",
+      explanation: "Kinderen vergeven het schreeuwen. Wat ze niet vergeven is de stilte erna. Het recovery-script — hoe eerder hoe beter — leert je kind dat fouten hersteld worden.",
     },
     {
       question: "Wat is het verschil tussen schaamte en schuld?",
@@ -447,12 +471,20 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
       ],
       explanation: "Het script draait om verantwoordelijkheid nemen zonder excuses. 'Ik was moe' is een verklaring maar geen rechtvaardiging. En beloven dat het nooit meer gebeurt is onrealistisch — beter: zeggen wat je concreet anders gaat doen.",
     },
+    {
+      question: "Je kind zegt na je sorry: 'Het geeft niet papa.' Maar je weet dat het wél impact had. Wat doe je?",
+      options: [
+        { text: "Zeg: 'Dat is lief. Maar het was niet oké en ik ga het anders doen.' — erken de impact alsnog", isCorrect: true },
+        { text: "Accepteer het — als je kind zegt dat het oké is, hoef je niet door te gaan", isCorrect: false },
+      ],
+      explanation: "Kinderen zeggen vaak 'het geeft niet' om de spanning weg te nemen. Door de impact alsnog te erkennen leer je je kind: je gevoelens mogen er zijn, ook als ze ongemakkelijk zijn.",
+    },
   ],
 },
 {
   id: "zr_mod_5",
   skill: "Zelfregulatie" as Skill,
-  title: "Van Overleven Naar Vaderschapen",
+  title: "Van Overleven Naar Vaderschap",
   description: "Elke avond hetzelfde: autopilot aan, overleven tot bedtijd. Het kan anders. Van reactief naar bewust. Eén keuze per dag.",
   duration: "8-10 min",
   difficulty: "basis" as const,
@@ -503,7 +535,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Je toolkit",
-      text: "1. De identiteitskaart. Schrijf op een kaartje of in je telefoon: 'Ik ben een vader die bewust kiest.' Lees het elke ochtend. Identiteit stuurt gedrag.\n\n2. Eén dagelijkse intentie. Stel elke dag in de auto, voor je naar binnen gaat, één intentie. 'Vanavond kijk ik mijn kind aan als het praat.' Niet meer.\n\n3. De avond-check-in. Drie vragen voor bedtijd: Was er één bewust moment? Hoe voelde dat? Wat is mijn intentie voor morgen?\n\n4. Genoeg is genoeg. Eén bewust moment per avond is al een overwinning. Niet drie, niet vijf. Eén.",
+      text: "1. De identiteitskaart. Schrijf op een kaartje of in je telefoon: 'Ik ben een vader die bewust kiest.' Lees het elke ochtend. Identiteit stuurt gedrag.\n\n2. Eén dagelijkse intentie. Stel elke dag in de auto, voor je naar binnen gaat, één intentie. 'Vanavond kijk ik mijn kind aan als het praat.' Niet meer.\n\n3. De avond-check-in. Drie vragen voor bedtijd: Was er één bewust moment? Hoe voelde dat? Wat is mijn intentie voor morgen?\n\n4. Genoeg is genoeg. Eén bewust moment per avond is al een overwinning. Niet drie, niet vijf. Eén.\n\n5. Dagelijkse praktijk. Plak je intentie aan je stuur, je spiegel, of je voordeurbel. Maak het fysiek zichtbaar. Je brein heeft triggers nodig om uit de automatische piloot te komen. Een post-it op de voordeur met 'Eén moment echt' kan het verschil maken.",
     },
     {
       type: "exercise" as const,
@@ -558,6 +590,14 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
         { text: "Bijhouden hoeveel fouten je hebt gemaakt zodat je jezelf kunt verbeteren", isCorrect: false },
       ],
       explanation: "De check-in is geen rapport maar een moment van bewustzijn: was er een echt moment? Hoe voelde dat? Wat wil ik morgen? Het gaat om groei, niet om perfectie.",
+    },
+    {
+      question: "Je hebt drie avonden je intentie gesteld en het lukt prima. De vierde avond vergeet je het. Wat nu?",
+      options: [
+        { text: "Morgen gewoon weer oppakken — het gaat om de richting, niet om perfectie", isCorrect: true },
+        { text: "Het systeem werkt niet voor jou — probeer een andere aanpak", isCorrect: false },
+      ],
+      explanation: "Eén gemiste avond is geen bewijs dat het niet werkt. Gedragsverandering is geen rechte lijn. De kracht zit in het oppakken, niet in het nooit missen.",
     },
   ],
 },

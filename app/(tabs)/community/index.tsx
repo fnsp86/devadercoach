@@ -8,17 +8,29 @@ import {
   Image,
   StyleSheet,
   ActivityIndicator,
+  ScrollView,
+  Modal,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
-import { getStories, type Story } from '@/lib/supabase';
-import { InlineIcon } from '@/lib/icons';
+import { useStore } from '@/lib/store';
+import { getStories, getNearbyFathers, upsertCommunityProfile, type Story, type CommunityProfile } from '@/lib/supabase';
+import { InlineIcon, AppIcon } from '@/lib/icons';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 
-type FeedTab = 'all' | 'nearby';
+type CategoryFilter = 'all' | 'tip' | 'ervaring' | 'vraag' | 'overwinning';
+
+const FILTER_OPTIONS: { key: CategoryFilter; label: string; icon: string }[] = [
+  { key: 'all', label: 'Alles', icon: 'layers' },
+  { key: 'tip', label: 'Tips', icon: 'lightbulb' },
+  { key: 'ervaring', label: 'Ervaringen', icon: 'heart' },
+  { key: 'vraag', label: 'Vragen', icon: 'helpCircle' },
+  { key: 'overwinning', label: 'Wins', icon: 'trophy' },
+];
 
 const CATEGORY_LABELS: Record<string, string> = {
   tip: 'Tip',
@@ -34,6 +46,13 @@ const CATEGORY_COLORS: Record<string, string> = {
   overwinning: '#A78BFA',
 };
 
+const CATEGORY_ICONS: Record<string, string> = {
+  tip: 'lightbulb',
+  ervaring: 'heart',
+  vraag: 'helpCircle',
+  overwinning: 'trophy',
+};
+
 function timeAgo(dateStr: string): string {
   const now = Date.now();
   const then = new Date(dateStr).getTime();
@@ -45,69 +64,195 @@ function timeAgo(dateStr: string): string {
   return `${Math.floor(diff / 604800)}w`;
 }
 
-export default function CommunityFeed() {
+export default function SocialFeed() {
   const { colors } = useTheme();
-  const { user, communityProfile } = useAuth();
+  const { user, communityProfile, setCommunityProfile } = useAuth();
+  const { profile } = useStore();
   const router = useRouter();
 
-  const [tab, setTab] = useState<FeedTab>('all');
+  const [filter, setFilter] = useState<CategoryFilter>('all');
   const [stories, setStories] = useState<Story[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [nearbyFathers, setNearbyFathers] = useState<(CommunityProfile & { distance_km: number })[]>([]);
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  // Check for first visit + auto-create community profile if missing
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      // Auto-create community profile if user is logged in but profile is missing
+      if (!communityProfile) {
+        try {
+          const newProf = await upsertCommunityProfile({
+            user_id: user.id,
+            naam: profile?.naam ?? '',
+            bio: '',
+            stad: '',
+            latitude: null,
+            longitude: null,
+          });
+          setCommunityProfile(newProf);
+        } catch {
+          // Will retry next time
+        }
+      }
+      // Show welcome on first visit
+      const seen = await AsyncStorage.getItem('vc-social-welcome-seen');
+      if (!seen) {
+        setShowWelcome(true);
+      }
+    })();
+  }, [user, communityProfile]);
+
+  const dismissWelcome = useCallback(async () => {
+    setShowWelcome(false);
+    await AsyncStorage.setItem('vc-social-welcome-seen', '1');
+  }, []);
 
   const loadStories = useCallback(async () => {
     try {
-      const data = await getStories({ limit: 20 });
+      const data = await getStories({ limit: 50 });
       setStories(data);
     } catch {
-      // Silent fail — show empty state
+      // Silent fail
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [tab]);
+  }, []);
+
+  const loadNearby = useCallback(async () => {
+    if (!communityProfile?.latitude || !communityProfile?.longitude) return;
+    try {
+      const data = await getNearbyFathers(
+        communityProfile.latitude,
+        communityProfile.longitude,
+        25,
+      );
+      setNearbyFathers(data.filter((f) => f.user_id !== communityProfile.user_id).slice(0, 8));
+    } catch {
+      // Silent fail
+    }
+  }, [communityProfile]);
+
+  const filteredStories = filter === 'all'
+    ? stories
+    : stories.filter((s) => s.category === filter);
 
   useEffect(() => {
     loadStories();
-  }, [loadStories]);
+    loadNearby();
+  }, [loadStories, loadNearby]);
 
-  // Not signed in or no community profile → show setup
-  if (!user || !communityProfile) {
+  const handleRefresh = useCallback(() => {
+    setRefreshing(true);
+    loadStories();
+    loadNearby();
+  }, [loadStories, loadNearby]);
+
+  // Not signed in → show login prompt
+  if (!user) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.bg }]}>
-        <View style={styles.setupContainer}>
-          <InlineIcon name="users" size={48} color={colors.amber} />
-          <Text style={[styles.setupTitle, { color: colors.text }]}>
-            Vader Community
-          </Text>
-          <Text style={[styles.setupSubtitle, { color: colors.text2 }]}>
-            Ontmoet andere vaders in je buurt, deel verhalen en leer van elkaar.
-          </Text>
-          <View style={{ width: '100%', marginTop: 24 }}>
+        <ScrollView contentContainerStyle={styles.setupScroll} showsVerticalScrollIndicator={false}>
+          <View style={styles.setupHero}>
+            <View style={[styles.setupIconRing, { borderColor: colors.amber + '30' }]}>
+              <View style={[styles.setupIconInner, { backgroundColor: colors.amberDim }]}>
+                <AppIcon name="users" size="lg" variant="compact" color={colors.amber} iconSize={40} />
+              </View>
+            </View>
+            <Text style={[styles.setupTitle, { color: colors.text }]}>
+              Vaders onder elkaar
+            </Text>
+            <Text style={[styles.setupSubtitle, { color: colors.text2 }]}>
+              Log in om ervaringen te delen, vragen te stellen en overwinningen te vieren met andere vaders.
+            </Text>
+          </View>
+
+          <View style={{ marginTop: 32, paddingHorizontal: 20, gap: 12 }}>
             <Button
-              title="Community instellen"
-              onPress={() => router.push('/(tabs)/community/setup')}
+              title="Inloggen"
+              onPress={() => router.push('/login' as any)}
               variant="primary"
               size="lg"
             />
+            <Button
+              title="Account aanmaken"
+              onPress={() => router.push('/register' as any)}
+              variant="secondary"
+              size="lg"
+            />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  function renderNearbyBanner() {
+    if (nearbyFathers.length === 0) return null;
+    return (
+      <View style={[styles.nearbyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={styles.nearbyHeader}>
+          <View style={styles.nearbyTitleRow}>
+            <View style={[styles.nearbyIconWrap, { backgroundColor: '#667eea18' }]}>
+              <InlineIcon name="mapPin" size={14} color="#667eea" />
+            </View>
+            <Text style={[styles.nearbyTitle, { color: colors.text }]}>In de buurt</Text>
+          </View>
+          <View style={[styles.nearbyCountBadge, { backgroundColor: '#667eea18' }]}>
+            <Text style={[styles.nearbyCountText, { color: '#667eea' }]}>{nearbyFathers.length}</Text>
           </View>
         </View>
-      </SafeAreaView>
+        <Pressable onPress={() => router.push('/(tabs)/community/discover')}>
+          <Text style={styles.nearbyViewAll}>Bekijk alle →</Text>
+        </Pressable>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.nearbyScroll}>
+          {nearbyFathers.map((father) => (
+            <Pressable
+              key={father.id}
+              onPress={() => router.push(`/(tabs)/community/profile/${father.user_id}`)}
+              style={styles.nearbyItem}
+            >
+              {father.avatar_url ? (
+                <Image source={{ uri: father.avatar_url }} style={styles.nearbyAvatar} />
+              ) : (
+                <View style={[styles.nearbyAvatarPlaceholder, { backgroundColor: colors.amberDim }]}>
+                  <Text style={[styles.nearbyInitials, { color: colors.amber }]}>
+                    {father.naam?.slice(0, 2).toUpperCase() || '?'}
+                  </Text>
+                </View>
+              )}
+              <Text style={[styles.nearbyName, { color: colors.text }]} numberOfLines={1}>
+                {father.naam?.split(' ')[0] || 'Vader'}
+              </Text>
+              <Text style={[styles.nearbyDist, { color: colors.text3 }]}>
+                {father.distance_km != null
+                  ? father.distance_km < 1 ? '<1 km' : `${Math.round(father.distance_km)} km`
+                  : ''}
+              </Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+      </View>
     );
   }
 
   function renderStoryCard({ item }: { item: Story }) {
     const catColor = CATEGORY_COLORS[item.category] ?? colors.amber;
+    const catIcon = CATEGORY_ICONS[item.category] ?? 'fileText';
     return (
       <Pressable onPress={() => router.push(`/(tabs)/community/story/${item.id}`)}>
-        <Card style={{ marginBottom: 12 }}>
+        <View style={[styles.storyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           {/* Author row */}
           <View style={styles.authorRow}>
             {item.author?.avatar_url ? (
               <Image source={{ uri: item.author.avatar_url }} style={styles.avatar} />
             ) : (
               <View style={[styles.avatarPlaceholder, { backgroundColor: colors.amberDim }]}>
-                <InlineIcon name="user" size={16} color={colors.amber} />
+                <Text style={[styles.avatarInitials, { color: colors.amber }]}>
+                  {item.author?.naam?.slice(0, 2).toUpperCase() || '?'}
+                </Text>
               </View>
             )}
             <View style={{ flex: 1 }}>
@@ -118,7 +263,8 @@ export default function CommunityFeed() {
                 {item.author?.stad ? `${item.author.stad} · ` : ''}{timeAgo(item.created_at)}
               </Text>
             </View>
-            <View style={[styles.categoryBadge, { backgroundColor: catColor + '18' }]}>
+            <View style={[styles.categoryPill, { backgroundColor: catColor + '14' }]}>
+              <InlineIcon name={catIcon as any} size={12} color={catColor} />
               <Text style={[styles.categoryText, { color: catColor }]}>
                 {CATEGORY_LABELS[item.category]}
               </Text>
@@ -135,18 +281,20 @@ export default function CommunityFeed() {
             <Image source={{ uri: item.image_url }} style={styles.storyImage} />
           )}
 
-          {/* Actions */}
-          <View style={styles.actionsRow}>
+          {/* Actions bar */}
+          <View style={[styles.actionsBar, { borderTopColor: colors.border }]}>
             <View style={styles.actionItem}>
-              <InlineIcon name="heart" size={16} color={colors.text3} />
-              <Text style={[styles.actionText, { color: colors.text3 }]}>{item.likes_count}</Text>
+              <InlineIcon name="heart" size={18} color={colors.text3} />
+              <Text style={[styles.actionCount, { color: colors.text3 }]}>{item.likes_count}</Text>
             </View>
             <View style={styles.actionItem}>
-              <InlineIcon name="messageCircle" size={16} color={colors.text3} />
-              <Text style={[styles.actionText, { color: colors.text3 }]}>{item.comments_count}</Text>
+              <InlineIcon name="messageCircle" size={18} color={colors.text3} />
+              <Text style={[styles.actionCount, { color: colors.text3 }]}>{item.comments_count}</Text>
             </View>
+            <View style={{ flex: 1 }} />
+            <InlineIcon name="arrowRight" size={16} color={colors.text3} />
           </View>
-        </Card>
+        </View>
       </Pressable>
     );
   }
@@ -155,37 +303,61 @@ export default function CommunityFeed() {
     <SafeAreaView style={[styles.container, { backgroundColor: colors.bg }]}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={[styles.title, { color: colors.text }]}>Community</Text>
+        <View>
+          <Text style={[styles.headerTitle, { color: colors.text }]}>Social</Text>
+          {communityProfile?.stad && (
+            <View style={styles.locationRow}>
+              <InlineIcon name="mapPin" size={12} color={colors.text3} />
+              <Text style={[styles.locationText, { color: colors.text3 }]}>{communityProfile.stad}</Text>
+            </View>
+          )}
+        </View>
         <View style={styles.headerActions}>
           <Pressable
             onPress={() => router.push('/(tabs)/community/chat/')}
-            style={[styles.headerBtn, { backgroundColor: colors.surface }]}
+            style={[styles.headerBtn, { backgroundColor: colors.surface, borderColor: colors.border }]}
           >
             <InlineIcon name="messageCircle" size={20} color={colors.text2} />
           </Pressable>
           <Pressable
-            onPress={() => router.push('/(tabs)/community/nearby')}
-            style={[styles.headerBtn, { backgroundColor: colors.surface }]}
+            onPress={() => router.push(`/(tabs)/community/profile/${user?.id}`)}
+            style={[styles.headerBtn, { backgroundColor: colors.surface, borderColor: colors.border }]}
           >
-            <InlineIcon name="mapPin" size={20} color={colors.text2} />
+            <InlineIcon name="user" size={20} color={colors.text2} />
           </Pressable>
         </View>
       </View>
 
-      {/* Tab bar */}
-      <View style={[styles.tabBar, { borderColor: colors.border }]}>
-        {(['all', 'nearby'] as FeedTab[]).map((t) => (
-          <Pressable
-            key={t}
-            onPress={() => setTab(t)}
-            style={[styles.tab, tab === t && { borderBottomColor: colors.amber, borderBottomWidth: 2 }]}
-          >
-            <Text style={[styles.tabText, { color: tab === t ? colors.amber : colors.text3 }]}>
-              {t === 'all' ? 'Iedereen' : 'In de buurt'}
-            </Text>
-          </Pressable>
-        ))}
-      </View>
+      {/* Category filters */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.filterScroll}
+        contentContainerStyle={styles.filterContent}
+      >
+        {FILTER_OPTIONS.map((opt) => {
+          const active = filter === opt.key;
+          const chipColor = opt.key === 'all' ? colors.amber : (CATEGORY_COLORS[opt.key] ?? colors.amber);
+          return (
+            <Pressable
+              key={opt.key}
+              onPress={() => setFilter(opt.key)}
+              style={[
+                styles.filterChip,
+                {
+                  backgroundColor: active ? chipColor : colors.surface,
+                  borderColor: active ? chipColor : colors.border,
+                },
+              ]}
+            >
+              <InlineIcon name={opt.icon as any} size={14} color={active ? '#fff' : colors.text3} />
+              <Text style={[styles.filterText, { color: active ? '#fff' : colors.text2 }]}>
+                {opt.label}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </ScrollView>
 
       {loading ? (
         <View style={styles.loadingContainer}>
@@ -193,19 +365,25 @@ export default function CommunityFeed() {
         </View>
       ) : (
         <FlatList
-          data={stories}
+          data={filteredStories}
           keyExtractor={(item) => item.id}
           renderItem={renderStoryCard}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); loadStories(); }} tintColor={colors.amber} />
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor={colors.amber} />
           }
+          ListHeaderComponent={renderNearbyBanner}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <InlineIcon name="fileText" size={40} color={colors.text3} />
-              <Text style={[styles.emptyText, { color: colors.text3 }]}>
-                Nog geen verhalen. Wees de eerste!
+              <View style={[styles.emptyIconWrap, { backgroundColor: colors.amberDim }]}>
+                <AppIcon name="fileText" size="lg" variant="compact" color={colors.amber} iconSize={32} />
+              </View>
+              <Text style={[styles.emptyTitle, { color: colors.text }]}>
+                Nog geen verhalen
+              </Text>
+              <Text style={[styles.emptyDesc, { color: colors.text3 }]}>
+                Deel als eerste een tip, ervaring of vraag!
               </Text>
             </View>
           }
@@ -217,109 +395,329 @@ export default function CommunityFeed() {
         onPress={() => router.push('/(tabs)/community/story/create')}
         style={[styles.fab, { backgroundColor: colors.amber }]}
       >
-        <InlineIcon name="fileText" size={24} color="#fff" />
+        <InlineIcon name="penLine" size={20} color="#fff" />
+        <Text style={styles.fabText}>Schrijf</Text>
       </Pressable>
+
+      {/* First-visit welcome modal */}
+      <Modal visible={showWelcome} transparent animationType="fade" onRequestClose={dismissWelcome}>
+        <Pressable style={styles.welcomeOverlay} onPress={dismissWelcome}>
+          <Pressable style={[styles.welcomeCard, { backgroundColor: colors.surface }]} onPress={() => {}}>
+            <View style={[styles.welcomeAccent, { backgroundColor: colors.amber }]} />
+            <View style={styles.welcomeBody}>
+              <View style={[styles.welcomeIconWrap, { backgroundColor: colors.amberDim }]}>
+                <AppIcon name="users" size="lg" variant="compact" color={colors.amber} iconSize={36} />
+              </View>
+              <Text style={[styles.welcomeTitle, { color: colors.text }]}>
+                Welkom bij Social!
+              </Text>
+              <Text style={[styles.welcomeDesc, { color: colors.text2 }]}>
+                Hier vind je andere vaders. Deel tips, stel vragen, vier overwinningen en steun elkaar.
+              </Text>
+              <View style={styles.welcomeFeatures}>
+                {[
+                  { icon: 'penLine', text: 'Schrijf een verhaal of tip' },
+                  { icon: 'mapPin', text: 'Ontdek vaders in de buurt' },
+                  { icon: 'messageCircle', text: 'Stuur een persoonlijk bericht' },
+                ].map((item, i) => (
+                  <View key={i} style={styles.welcomeFeatureRow}>
+                    <InlineIcon name={item.icon as any} size={16} color={colors.amber} />
+                    <Text style={[styles.welcomeFeatureText, { color: colors.text }]}>{item.text}</Text>
+                  </View>
+                ))}
+              </View>
+              <Pressable onPress={dismissWelcome} style={[styles.welcomeBtn, { backgroundColor: colors.amber }]}>
+                <Text style={styles.welcomeBtnText}>Aan de slag!</Text>
+              </Pressable>
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+
+  // Header
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingTop: 12,
-    paddingBottom: 8,
+    paddingBottom: 10,
   },
-  title: { fontSize: 28, fontWeight: '800' },
+  headerTitle: { fontSize: 28, fontWeight: '800' },
+  locationRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 2 },
+  locationText: { fontSize: 13, fontWeight: '500' },
   headerActions: { flexDirection: 'row', gap: 8 },
   headerBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  // Filters
+  filterScroll: { maxHeight: 52, flexGrow: 0 },
+  filterContent: {
+    paddingHorizontal: 20,
+    gap: 8,
+    paddingBottom: 8,
+  },
+  filterChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+  },
+  filterText: { fontSize: 13, fontWeight: '600' },
+
+  // List
+  listContent: { paddingHorizontal: 16, paddingBottom: 100 },
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+
+  // Nearby card
+  nearbyCard: {
+    borderWidth: 1,
+    borderRadius: 18,
+    padding: 16,
+    marginBottom: 16,
+  },
+  nearbyHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 14,
+  },
+  nearbyTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  nearbyIconWrap: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  nearbyTitle: { fontSize: 15, fontWeight: '700' },
+  nearbyCountBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+  },
+  nearbyCountText: { fontSize: 12, fontWeight: '700' },
+  nearbyViewAll: { fontSize: 13, fontWeight: '600', color: '#667eea' },
+  nearbyScroll: { gap: 16 },
+  nearbyItem: {
+    alignItems: 'center',
+    width: 64,
+  },
+  nearbyAvatar: { width: 48, height: 48, borderRadius: 24, marginBottom: 6 },
+  nearbyAvatarPlaceholder: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 6,
+  },
+  nearbyInitials: { fontSize: 16, fontWeight: '700' },
+  nearbyName: { fontSize: 12, fontWeight: '600', textAlign: 'center' },
+  nearbyDist: { fontSize: 11, marginTop: 2 },
+
+  // Story cards
+  storyCard: {
+    borderWidth: 1,
+    borderRadius: 18,
+    marginBottom: 12,
+    overflow: 'hidden',
+  },
+  authorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    padding: 16,
+    paddingBottom: 0,
+  },
+  avatar: { width: 40, height: 40, borderRadius: 20 },
+  avatarPlaceholder: {
     width: 40,
     height: 40,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  tabBar: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    marginHorizontal: 20,
-    marginBottom: 8,
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  tabText: { fontSize: 15, fontWeight: '600' },
-  listContent: { paddingHorizontal: 20, paddingBottom: 100 },
-  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  authorRow: {
+  avatarInitials: { fontSize: 15, fontWeight: '700' },
+  authorName: { fontSize: 15, fontWeight: '700' },
+  authorMeta: { fontSize: 12, marginTop: 1 },
+  categoryPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    marginBottom: 10,
+    gap: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
   },
-  avatar: { width: 36, height: 36, borderRadius: 18 },
-  avatarPlaceholder: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  authorName: { fontSize: 14, fontWeight: '700' },
-  authorMeta: { fontSize: 12 },
-  categoryBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-  },
-  categoryText: { fontSize: 12, fontWeight: '600' },
-  storyContent: { fontSize: 15, lineHeight: 22, marginBottom: 8 },
+  categoryText: { fontSize: 12, fontWeight: '700' },
+  storyContent: { fontSize: 15, lineHeight: 22, paddingHorizontal: 16, paddingVertical: 12 },
   storyImage: {
     width: '100%',
     height: 200,
-    borderRadius: 10,
-    marginBottom: 8,
+    marginBottom: 0,
   },
-  actionsRow: {
+  actionsBar: {
     flexDirection: 'row',
-    gap: 20,
-    marginTop: 4,
+    alignItems: 'center',
+    borderTopWidth: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    gap: 16,
   },
-  actionItem: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  actionText: { fontSize: 13, fontWeight: '500' },
+  actionItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
+  actionCount: { fontSize: 14, fontWeight: '600' },
+
+  // FAB
   fab: {
     position: 'absolute',
     bottom: 24,
     right: 20,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    flexDirection: 'row' as const,
     alignItems: 'center',
-    justifyContent: 'center',
+    gap: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    borderRadius: 28,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 6,
   },
-  setupContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  fabText: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '700' as const,
+  },
+
+  // Setup / onboarding
+  setupScroll: {
+    flexGrow: 1,
+    paddingBottom: 60,
+  },
+  setupHero: {
     alignItems: 'center',
-    paddingHorizontal: 40,
+    paddingTop: 60,
+    paddingHorizontal: 32,
     gap: 12,
   },
-  setupTitle: { fontSize: 26, fontWeight: '800', textAlign: 'center', marginTop: 8 },
-  setupSubtitle: { fontSize: 16, textAlign: 'center', lineHeight: 24 },
+  setupIconRing: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  setupIconInner: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  setupTitle: { fontSize: 28, fontWeight: '800', textAlign: 'center' },
+  setupSubtitle: { fontSize: 16, textAlign: 'center', lineHeight: 24, paddingHorizontal: 10 },
+  setupFeatures: {
+    paddingHorizontal: 20,
+    marginTop: 32,
+    gap: 10,
+  },
+  setupFeatureRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+  },
+  setupFeatureIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  setupFeatureTitle: { fontSize: 15, fontWeight: '700', marginBottom: 2 },
+  setupFeatureDesc: { fontSize: 13, lineHeight: 18 },
+
+  // Empty state
   emptyContainer: {
     alignItems: 'center',
     paddingTop: 60,
+    paddingHorizontal: 20,
+    gap: 10,
+  },
+  emptyIconWrap: {
+    width: 64,
+    height: 64,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 6,
+  },
+  emptyTitle: { fontSize: 18, fontWeight: '700' },
+  emptyDesc: { fontSize: 14, lineHeight: 20, textAlign: 'center' },
+
+  // Welcome modal
+  welcomeOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  welcomeCard: {
+    width: '100%',
+    maxWidth: 340,
+    borderRadius: 24,
+    overflow: 'hidden',
+  },
+  welcomeAccent: { height: 6 },
+  welcomeBody: {
+    padding: 28,
+    alignItems: 'center',
     gap: 12,
   },
-  emptyText: { fontSize: 15, fontWeight: '500' },
+  welcomeIconWrap: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 4,
+  },
+  welcomeTitle: { fontSize: 24, fontWeight: '800', textAlign: 'center' },
+  welcomeDesc: { fontSize: 15, lineHeight: 22, textAlign: 'center' },
+  welcomeFeatures: { width: '100%', gap: 10, marginTop: 8 },
+  welcomeFeatureRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  welcomeFeatureText: { fontSize: 14, fontWeight: '600' },
+  welcomeBtn: {
+    width: '100%',
+    paddingVertical: 14,
+    borderRadius: 14,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  welcomeBtnText: { color: '#fff', fontSize: 16, fontWeight: '700' },
 });

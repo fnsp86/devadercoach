@@ -1,8 +1,6 @@
 -- VaderCoach Community Schema
 -- Run this in the Supabase SQL Editor
-
--- Enable PostGIS for location queries
-CREATE EXTENSION IF NOT EXISTS postgis;
+-- STAP 1: Kopieer ALLES en plak in SQL Editor → klik Run
 
 -- ─── Profiles ───────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS profiles (
@@ -13,28 +11,9 @@ CREATE TABLE IF NOT EXISTS profiles (
   stad TEXT NOT NULL DEFAULT '',
   latitude DOUBLE PRECISION,
   longitude DOUBLE PRECISION,
-  location GEOGRAPHY(Point, 4326),
   avatar_url TEXT,
   created_at TIMESTAMPTZ DEFAULT now() NOT NULL
 );
-
--- Auto-update location geography from lat/lng
-CREATE OR REPLACE FUNCTION update_profile_location()
-RETURNS TRIGGER AS $$
-BEGIN
-  IF NEW.latitude IS NOT NULL AND NEW.longitude IS NOT NULL THEN
-    NEW.location = ST_SetSRID(ST_MakePoint(NEW.longitude, NEW.latitude), 4326)::geography;
-  END IF;
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trigger_update_profile_location
-  BEFORE INSERT OR UPDATE ON profiles
-  FOR EACH ROW EXECUTE FUNCTION update_profile_location();
-
--- Spatial index
-CREATE INDEX IF NOT EXISTS idx_profiles_location ON profiles USING GIST(location);
 
 -- RLS
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
@@ -42,7 +21,8 @@ CREATE POLICY "Profiles are publicly readable" ON profiles FOR SELECT USING (tru
 CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = user_id);
 CREATE POLICY "Users can insert own profile" ON profiles FOR INSERT WITH CHECK (auth.uid() = user_id);
 
--- ─── Nearby search function ─────────────────────────────────────
+-- ─── Nearby search function (without PostGIS) ─────────────────
+-- Uses haversine formula in pure SQL
 CREATE OR REPLACE FUNCTION get_nearby_profiles(
   user_lat DOUBLE PRECISION,
   user_lng DOUBLE PRECISION,
@@ -65,14 +45,18 @@ BEGIN
   SELECT
     p.id, p.user_id, p.naam, p.bio, p.stad, p.latitude, p.longitude,
     p.avatar_url, p.created_at,
-    ST_Distance(p.location, ST_SetSRID(ST_MakePoint(user_lng, user_lat), 4326)::geography) / 1000.0 AS distance_km
+    (6371 * acos(
+      cos(radians(user_lat)) * cos(radians(p.latitude)) *
+      cos(radians(p.longitude) - radians(user_lng)) +
+      sin(radians(user_lat)) * sin(radians(p.latitude))
+    )) AS distance_km
   FROM profiles p
-  WHERE p.location IS NOT NULL
-    AND ST_DWithin(
-      p.location,
-      ST_SetSRID(ST_MakePoint(user_lng, user_lat), 4326)::geography,
-      radius_km * 1000
-    )
+  WHERE p.latitude IS NOT NULL AND p.longitude IS NOT NULL
+    AND (6371 * acos(
+      cos(radians(user_lat)) * cos(radians(p.latitude)) *
+      cos(radians(p.longitude) - radians(user_lng)) +
+      sin(radians(user_lat)) * sin(radians(p.latitude))
+    )) <= radius_km
   ORDER BY distance_km ASC;
 END;
 $$ LANGUAGE plpgsql;
@@ -299,6 +283,67 @@ CREATE POLICY "Users can see own blocks" ON blocks FOR SELECT USING (auth.uid() 
 CREATE POLICY "Users can create blocks" ON blocks FOR INSERT WITH CHECK (auth.uid() = user_id);
 CREATE POLICY "Users can remove own blocks" ON blocks FOR DELETE USING (auth.uid() = user_id);
 
+-- ─── Storage buckets & policies ─────────────────────────────────
+
+-- Avatars bucket (public readable)
+INSERT INTO storage.buckets (id, name, public)
+  VALUES ('avatars', 'avatars', true)
+  ON CONFLICT DO NOTHING;
+
+-- Story images bucket (public readable)
+INSERT INTO storage.buckets (id, name, public)
+  VALUES ('story-images', 'story-images', true)
+  ON CONFLICT DO NOTHING;
+
+-- Users can upload/overwrite their own avatar
+CREATE POLICY "Users can upload own avatar"
+  ON storage.objects FOR INSERT
+  WITH CHECK (
+    bucket_id = 'avatars'
+    AND auth.role() = 'authenticated'
+    AND auth.uid()::text = (storage.foldername(name))[1]
+  );
+
+CREATE POLICY "Users can update own avatar"
+  ON storage.objects FOR UPDATE
+  USING (
+    bucket_id = 'avatars'
+    AND auth.uid()::text = (storage.foldername(name))[1]
+  );
+
+-- Avatars are publicly readable
+CREATE POLICY "Avatars are publicly readable"
+  ON storage.objects FOR SELECT
+  USING (bucket_id = 'avatars');
+
+-- Users can upload story images to their own folder
+CREATE POLICY "Users can upload own story images"
+  ON storage.objects FOR INSERT
+  WITH CHECK (
+    bucket_id = 'story-images'
+    AND auth.role() = 'authenticated'
+    AND auth.uid()::text = (storage.foldername(name))[1]
+  );
+
+-- Story images are publicly readable
+CREATE POLICY "Story images are publicly readable"
+  ON storage.objects FOR SELECT
+  USING (bucket_id = 'story-images');
+
+-- ─── Account deletion ───────────────────────────────────────────
+
+CREATE OR REPLACE FUNCTION delete_own_account()
+RETURNS void AS $$
+BEGIN
+  -- Delete storage objects
+  DELETE FROM storage.objects WHERE owner = auth.uid();
+  -- Delete profile (cascades to stories, comments, etc.)
+  DELETE FROM profiles WHERE user_id = auth.uid();
+  -- Delete auth user
+  DELETE FROM auth.users WHERE id = auth.uid();
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
 -- ─── Seed: Default theme groups ─────────────────────────────────
 INSERT INTO groups (name, description, type) VALUES
   ('Nieuwe Vaders', 'Voor vaders met kinderen van 0-2 jaar', 'thema'),
@@ -306,7 +351,3 @@ INSERT INTO groups (name, description, type) VALUES
   ('Co-ouderschap', 'Tips en steun bij gescheiden opvoeden', 'thema'),
   ('Actieve Vaders', 'Sport, natuur en avontuur met je kids', 'thema')
 ON CONFLICT DO NOTHING;
-
--- ─── Storage buckets (run separately in Supabase dashboard) ─────
--- CREATE BUCKET avatars (public)
--- CREATE BUCKET story-images (public)

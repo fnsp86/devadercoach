@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
+  Keyboard,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -21,21 +22,16 @@ import { getCurrentLocation, getCurrentCity, DUTCH_CITIES } from '@/lib/location
 import { InlineIcon } from '@/lib/icons';
 import Button from '@/components/Button';
 
-type Step = 'auth' | 'profile' | 'location';
+type Step = 'profile' | 'location';
 
 export default function CommunitySetup() {
   const { colors } = useTheme();
-  const { user, signUp, signIn, setCommunityProfile } = useAuth();
+  const { user, setCommunityProfile } = useAuth();
   const { profile } = useStore();
   const router = useRouter();
 
-  const [step, setStep] = useState<Step>(user ? 'profile' : 'auth');
+  const [step, setStep] = useState<Step>('profile');
   const [loading, setLoading] = useState(false);
-
-  // Auth
-  const [password, setPassword] = useState('');
-  const [isSignIn, setIsSignIn] = useState(false);
-  const [authError, setAuthError] = useState('');
 
   // Profile
   const [bio, setBio] = useState('');
@@ -47,33 +43,7 @@ export default function CommunitySetup() {
   const [detectedCity, setDetectedCity] = useState('');
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
 
-  const email = profile?.email ?? '';
   const naam = profile?.naam ?? '';
-
-  async function handleAuth() {
-    if (!password.trim() || password.length < 6) {
-      setAuthError('Wachtwoord moet minimaal 6 tekens zijn');
-      return;
-    }
-    setLoading(true);
-    setAuthError('');
-
-    const result = isSignIn
-      ? await signIn(email, password)
-      : await signUp(email, password);
-
-    setLoading(false);
-    if (result.error) {
-      if (result.error.includes('already registered')) {
-        setIsSignIn(true);
-        setAuthError('Dit e-mailadres is al geregistreerd. Vul je wachtwoord in om in te loggen.');
-      } else {
-        setAuthError(result.error);
-      }
-    } else {
-      setStep('profile');
-    }
-  }
 
   async function handleLocationGPS() {
     setLoading(true);
@@ -89,7 +59,10 @@ export default function CommunitySetup() {
   }
 
   async function handleComplete() {
-    if (!user) return;
+    if (!user) {
+      Alert.alert('Niet ingelogd', 'Log in via het profiel scherm en probeer opnieuw.');
+      return;
+    }
     setLoading(true);
 
     const stad = locationMethod === 'gps' ? detectedCity : selectedCity;
@@ -115,6 +88,8 @@ export default function CommunitySetup() {
     ? DUTCH_CITIES.filter((c) => c.toLowerCase().includes(citySearch.toLowerCase()))
     : DUTCH_CITIES;
 
+  const progressPct = step === 'profile' ? '50%' : '100%';
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.bg }]}>
       <KeyboardAvoidingView
@@ -133,12 +108,10 @@ export default function CommunitySetup() {
           </Pressable>
 
           <Text style={[styles.title, { color: colors.text }]}>
-            {step === 'auth' ? 'Community account' : step === 'profile' ? 'Over jou' : 'Je locatie'}
+            {step === 'profile' ? 'Over jou' : 'Je locatie'}
           </Text>
           <Text style={[styles.subtitle, { color: colors.text2 }]}>
-            {step === 'auth'
-              ? 'Kies een wachtwoord om je community profiel te beveiligen.'
-              : step === 'profile'
+            {step === 'profile'
               ? 'Schrijf een korte bio zodat andere vaders je leren kennen.'
               : 'Deel je locatie om vaders in de buurt te vinden.'}
           </Text>
@@ -146,59 +119,18 @@ export default function CommunitySetup() {
           {/* Progress */}
           <View style={[styles.progressTrack, { backgroundColor: colors.surface2 }]}>
             <View
-              style={[
-                styles.progressFill,
-                {
-                  backgroundColor: colors.amber,
-                  width: step === 'auth' ? '33%' : step === 'profile' ? '66%' : '100%',
-                },
-              ]}
+              style={[styles.progressFill, { backgroundColor: colors.amber, width: progressPct }]}
             />
           </View>
-
-          {step === 'auth' && (
-            <View style={styles.formSection}>
-              <Text style={[styles.label, { color: colors.text }]}>E-mail</Text>
-              <View style={[styles.emailBox, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <Text style={[styles.emailText, { color: colors.text2 }]}>{email}</Text>
-              </View>
-
-              <Text style={[styles.label, { color: colors.text }]}>
-                {isSignIn ? 'Wachtwoord' : 'Kies een wachtwoord'}
-              </Text>
-              <TextInput
-                style={[styles.input, { backgroundColor: colors.surface, borderColor: authError ? colors.red : colors.border, color: colors.text }]}
-                placeholder="Minimaal 6 tekens"
-                placeholderTextColor={colors.text3}
-                value={password}
-                onChangeText={(t) => { setPassword(t); setAuthError(''); }}
-                secureTextEntry
-                autoCapitalize="none"
-              />
-              {authError ? <Text style={[styles.errorText, { color: colors.red }]}>{authError}</Text> : null}
-
-              <View style={{ marginTop: 24 }}>
-                <Button
-                  title={loading ? 'Even wachten...' : isSignIn ? 'Inloggen' : 'Account aanmaken'}
-                  onPress={handleAuth}
-                  variant="primary"
-                  size="lg"
-                />
-              </View>
-
-              <Pressable onPress={() => { setIsSignIn(!isSignIn); setAuthError(''); }} style={{ marginTop: 16, alignItems: 'center' }}>
-                <Text style={[styles.switchText, { color: colors.amber }]}>
-                  {isSignIn ? 'Nog geen account? Maak er een aan' : 'Al een account? Log in'}
-                </Text>
-              </Pressable>
-            </View>
-          )}
 
           {step === 'profile' && (
             <View style={styles.formSection}>
               <Text style={[styles.label, { color: colors.text }]}>Bio</Text>
               <TextInput
-                style={[styles.textArea, { backgroundColor: colors.surface, borderColor: colors.border, color: colors.text }]}
+                style={[
+                  styles.textArea,
+                  { backgroundColor: colors.surface, borderColor: colors.border, color: colors.text },
+                ]}
                 placeholder="Vader van 2, woont in Amsterdam, houdt van koken..."
                 placeholderTextColor={colors.text3}
                 value={bio}
@@ -272,12 +204,14 @@ export default function CommunitySetup() {
                     value={citySearch}
                     onChangeText={setCitySearch}
                     autoCapitalize="words"
+                    returnKeyType="done"
+                    onSubmitEditing={() => Keyboard.dismiss()}
                   />
                   <View style={styles.cityGrid}>
                     {filteredCities.slice(0, 20).map((city) => (
                       <Pressable
                         key={city}
-                        onPress={() => setSelectedCity(city)}
+                        onPress={() => { setSelectedCity(city); Keyboard.dismiss(); }}
                         style={[
                           styles.cityChip,
                           {
@@ -307,10 +241,17 @@ export default function CommunitySetup() {
               ) : null}
 
               {locationMethod && (
-                <Pressable onPress={() => { setLocationMethod(null); setDetectedCity(''); setSelectedCity(''); }} style={{ marginTop: 16, alignItems: 'center' }}>
+                <Pressable
+                  onPress={() => { setLocationMethod(null); setDetectedCity(''); setSelectedCity(''); }}
+                  style={{ marginTop: 16, alignItems: 'center' }}
+                >
                   <Text style={[styles.switchText, { color: colors.amber }]}>Andere methode kiezen</Text>
                 </Pressable>
               )}
+
+              <Pressable onPress={handleComplete} style={{ marginTop: 16, alignItems: 'center' }}>
+                <Text style={[styles.switchText, { color: colors.text3 }]}>Overslaan</Text>
+              </Pressable>
             </View>
           )}
         </ScrollView>
@@ -347,15 +288,6 @@ const styles = StyleSheet.create({
     minHeight: 100,
   },
   charCount: { fontSize: 12, textAlign: 'right', marginTop: 4 },
-  emailBox: {
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    marginBottom: 20,
-  },
-  emailText: { fontSize: 16 },
-  errorText: { fontSize: 13, fontWeight: '500', marginTop: 6 },
   switchText: { fontSize: 14, fontWeight: '600' },
   locationOptions: { gap: 12 },
   locationCard: {

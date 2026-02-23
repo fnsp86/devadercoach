@@ -61,7 +61,7 @@ export const VERBINDING_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De 10-Minuten Storting",
-      instructions: "Kies vandaag een moment voor 10 minuten onverdeelde aandacht. Telefoon weg, in een andere kamer. Laat je kind kiezen wat jullie doen. Jij volgt. Stel open vragen: 'Wat moet ik doen?' 'Hoe werkt dit?' Doe dit zeven dagen achter elkaar en kijk wat er verandert.",
+      instructions: "1. Kies vandaag een moment voor 10 minuten onverdeelde aandacht.\n2. Leg je telefoon in een andere kamer — niet op stil, echt weg.\n3. Zeg tegen je kind: 'Ik heb tien minuten. Wat wil jij doen?'\n4. Jij volgt. Stel open vragen: 'Wat moet ik doen?' 'Hoe werkt dit?'\n5. Doe dit zeven dagen achter elkaar.\n6. Bij een tiener (13+): tien minuten naast ze op de bank zonder agenda. Samen muziek luisteren. Samen scrollen. Het gaat niet om de activiteit maar om de nabijheid.",
       duration: 10,
       tips: [
         "Het gaat niet om de activiteit — het gaat om je volledige aanwezigheid. Zelfs samen stilzitten telt.",
@@ -72,7 +72,7 @@ export const VERBINDING_MODULES: LearningModule[] = [
       type: "reflection" as const,
       questions: [
         "Als je eerlijk kijkt naar de afgelopen week: hoe staat jullie saldo? Meer stortingen of meer opnames?",
-        "Wanneer was het laatste moment dat je kind je echt blij leek te zien? Wat deed je toen anders?",
+        "Wanneer was het laatste moment dat je kind echt blij leek om je te zien? Wat deed je toen anders?",
       ],
     },
     {
@@ -112,6 +112,14 @@ export const VERBINDING_MODULES: LearningModule[] = [
       ],
       explanation: "Correctie op een laag saldo voelt als aanval. Eerst kort verbinden (oogcontact, even aanraken, benoemen wat je ziet) maakt dat je boodschap aankomt.",
     },
+    {
+      question: "Je hebt vanavond drie micro-stortingen gedaan (knipoog, even door haar, 'goed gedaan'). Maar je moest ook één keer streng zijn. Is het saldo positief?",
+      options: [
+        { text: "Ja — drie positieve interacties tegen één negatieve is boven de minimale 5:1 ratio als je de micro-stortingen meetelt", isCorrect: false },
+        { text: "Waarschijnlijk niet — je hebt minimaal vijf stortingen nodig per opname om het saldo gezond te houden", isCorrect: true },
+      ],
+      explanation: "De 5:1 ratio is de ondergrens. Eén streng moment weegt zwaarder dan je denkt. Blijf micro-stortingen doen — ze kosten seconden maar bouwen buffer voor de momenten dat je moet corrigeren.",
+    },
   ],
 },
 {
@@ -125,6 +133,7 @@ export const VERBINDING_MODULES: LearningModule[] = [
   content: [
     {
       type: "text" as const,
+      heading: "Hij rent niet naar jou.",
       text: "Bas (8) rent de gang in als je thuiskomt. Maar hij rent niet naar jou. Hij rent naar de hond. 'Hé Bas.' 'Hoi.' Dat is het. Eén woord. Hij verdwijnt weer naar boven.\n\nJullie hadden een handdruk. Een geheim gebaar. Hij noemde je 'Papasaurus.' Dat was twee jaar geleden. Nu is het 'hoi.' En het voelt alsof er een muur tussen jullie staat die je niet hebt zien bouwen.",
     },
     {
@@ -173,7 +182,7 @@ export const VERBINDING_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "Bouw Jullie Geheime Handdruk",
-      instructions: "Ga vanavond naar je kind en zeg: 'Wij hebben iets nodig. Een geheime handdruk. Die alleen wij kennen.' Bedenk samen drie stappen: een vuistbump, een vingerknip, een klap, een geluid — wat jullie willen. Oefen hem vijf keer. Gebruik hem morgen bij het afscheid op school of bij het slapengaan. Doe dit een week lang bij elk afscheidsmoment.",
+      instructions: "1. Ga vanavond naar je kind.\n2. Zeg: 'Wij hebben iets nodig. Een geheime handdruk. Die alleen wij kennen.'\n3. Bedenk samen drie stappen: een vuistbump, een vingerknip, een klap, een geluid.\n4. Laat je kind het leiden — hoe gekker, hoe beter.\n5. Oefen hem vijf keer achter elkaar.\n6. Gebruik hem morgen bij het afscheid op school of bij het slapengaan.\n7. Doe dit een week lang bij elk afscheidsmoment.\n8. Bij een tiener: een geheime handdruk is misschien 'te kinderachtig.' Vervang het door een vuistbump met een eigen twist, of een code-woord via WhatsApp dat alleen jullie begrijpen.",
       duration: 5,
       tips: [
         "Laat je kind het leiden. Hoe gekker de handdruk, hoe meer het van hen voelt. Jouw taak is meegaan en onthouden.",
@@ -224,6 +233,14 @@ export const VERBINDING_MODULES: LearningModule[] = [
       ],
       explanation: "Gedeelde geheimen en rituelen bouwen een exclusieve verbinding. Elke keer dat jullie de handdruk doen of de bijnaam gebruiken, bevestigen jullie: wij hebben iets dat niemand anders heeft. Dat is de kern van gehechtheid.",
     },
+    {
+      question: "Je kind (10) wordt te oud voor stoeien, zegt hij. Hoe houd je de fysieke verbinding?",
+      options: [
+        { text: "Pas de vorm aan: schouderklop, vuistbump, samen sporten — fysiek contact hoeft niet stoeien te zijn", isCorrect: true },
+        { text: "Respecteer zijn grens en focus op verbale verbinding — fysiek contact is voor jongere kinderen", isCorrect: false },
+      ],
+      explanation: "Fysiek contact blijft belangrijk op elke leeftijd. De vorm verandert mee. Een schouderklop, samen een balletje trappen, of een vuistbump bij het afscheid maakt net zoveel oxytocine aan als stoeien.",
+    },
   ],
 },
 {
@@ -237,6 +254,7 @@ export const VERBINDING_MODULES: LearningModule[] = [
   content: [
     {
       type: "text" as const,
+      heading: "De lucht trilt.",
       text: "Zaterdagmiddag. Jesse (14) wil met vrienden naar de stad. Jij had plannen. Samen fietsen, zoals jullie altijd deden. 'Ik ga niet mee papa.' Jij voelt het: teleurstelling, irritatie, iets van afwijzing. 'We hadden dit afgesproken.' 'Nee, jíj had dit afgesproken.' De lucht trilt.\n\nDit voelt als een probleem. Maar dit is geen probleem. Dit is verbinding in de maak.",
     },
     {
@@ -302,7 +320,7 @@ export const VERBINDING_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Samenvatting",
-      text: "Conflict is geen bedreiging voor verbinding — het is een kans. Destructief conflict vernietigt, maar constructief conflict bouwt assertiviteit, respect en onderhandelingsvaardigheden. Luister voordat je oordeelt. Deel je echte reden. De-escaleer als het te heet wordt. Zoek samen naar een oplossing. Een kind dat veilig met jou kan botsen, leert de wereld aan.",
+      text: "Conflict is geen bedreiging voor verbinding — het is een kans. Destructief conflict vernietigt, maar constructief conflict bouwt assertiviteit, respect en onderhandelingsvaardigheden. Luister voordat je oordeelt. Deel je echte reden. De-escaleer als het te heet wordt. Zoek samen naar een oplossing. Een kind dat veilig met jou kan botsen, kan later de wereld aan.",
     },
   ],
   keyTakeaways: [
@@ -335,6 +353,14 @@ export const VERBINDING_MODULES: LearningModule[] = [
         { text: "Afsluiten met: 'Ik bepaal hier de regels. Einde discussie.'", isCorrect: true },
       ],
       explanation: "'Einde discussie' beëindigt het gesprek maar ook het vertrouwen. Je kind leert: mijn mening telt niet. De pauze is moediger — en leert je kind dat je midden in conflict kunt kiezen voor verbinding.",
+    },
+    {
+      question: "Je dochter (12) zegt midden in een discussie: 'Je luistert toch niet!' Wat doe je?",
+      options: [
+        { text: "Pauzeer en zeg: 'Je hebt misschien gelijk. Ik luister nu. Vertel het opnieuw.' — repair attempt", isCorrect: true },
+        { text: "Uitleggen dat je wél luistert maar het gewoon niet met haar eens bent", isCorrect: false },
+      ],
+      explanation: "Dit is een repair bid van je kind — ze geeft je de kans om te de-escaleren. Erkennen en opnieuw beginnen is geen zwakte. Het is precies het leiderschap dat Gottman beschrijft als de sleutel tot sterke relaties.",
     },
   ],
 },
@@ -398,7 +424,7 @@ export const VERBINDING_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "Het 20-Minuten Experiment",
-      instructions: "Vanavond of morgen: leg je telefoon in een andere kamer. Zeg tegen je kind: 'Ik heb twintig minuten. Wat wil jij doen?' En dan volg je. Geen sturing. Geen verbetering. Stel vragen. Beschrijf wat je ziet. Volg hun leiding. Timer mag — als die maar niet op je telefoon staat.",
+      instructions: "1. Leg je telefoon in een andere kamer. Niet op stil — echt weg.\n2. Zeg tegen je kind: 'Ik heb twintig minuten. Wat wil jij doen?'\n3. Volg hun leiding. Geen sturing. Geen verbetering.\n4. Stel vragen: 'Wat moet ik doen?' 'Wat gebeurt er dan?'\n5. Beschrijf wat je ziet in plaats van te beoordelen: 'Je hebt de blokken op kleur gesorteerd' in plaats van 'mooi!'\n6. Timer mag — als die maar niet op je telefoon staat.\n7. Bij een oudere kind (10+): spelen verandert van vorm. Samen een game spelen, samen koken, samen klussen. De kern blijft: zij kiezen, jij volgt.",
       duration: 20,
       tips: [
         "Het voelt misschien saai. Dat is normaal — je brein is gewend aan constante stimulatie. Houd vol. Na tien minuten verandert er iets.",
@@ -448,6 +474,14 @@ export const VERBINDING_MODULES: LearningModule[] = [
         { text: "Nee, je brein blijft checken — telefoon hoort in een andere kamer", isCorrect: true },
       ],
       explanation: "Onderzoek toont aan dat alleen al de aanwezigheid van een telefoon je aandacht vermindert, zelfs als hij uit staat. In een andere kamer is de enige echte oplossing.",
+    },
+    {
+      question: "Tijdens kindgestuurd spel maakt je kind (4) 'verkeerde' regels. De auto vliegt en de pop is de baas van het ziekenhuis. Wat doe je?",
+      options: [
+        { text: "Meegaan — in kindgestuurd spel zijn er geen verkeerde regels. Hun verbeelding is de wet", isCorrect: true },
+        { text: "Zachtjes corrigeren: 'Auto's kunnen niet vliegen hè?' — het is ook een leermoment", isCorrect: false },
+      ],
+      explanation: "Kindgestuurd spel is geen les maar verbinding. Corrigeren onderbreekt hun flow en zegt: jouw wereld klopt niet. Meegaan zegt: jouw verbeelding is de moeite waard. Dat is de hele kern.",
     },
   ],
 },
@@ -499,7 +533,7 @@ export const VERBINDING_MODULES: LearningModule[] = [
     {
       type: "example" as const,
       situation: "Het is doordeweeks, avond. Lucas (9) zit op de bank. Papa komt naast hem zitten. Er is geen plan.",
-      wrongApproach: "HET MUST WORDEN BIJZONDER:\n\nPapa: 'Zullen we dit weekend naar het pretpark?'\nLucas: 'Ja!'\nWeekend komt. Het regent. Lange rij. Lucas is moe. Ruzie over friet.\nMaandag op school: 'Hoe was je weekend?' Lucas: 'Gewoon.'\n\nDe grote plannen worden vage herinneringen. Het was leuk. Maar niet van jullie.",
+      wrongApproach: "HET MOET BIJZONDER ZIJN:\n\nPapa: 'Zullen we dit weekend naar het pretpark?'\nLucas: 'Ja!'\nWeekend komt. Het regent. Lange rij. Lucas is moe. Ruzie over friet.\nMaandag op school: 'Hoe was je weekend?' Lucas: 'Gewoon.'\n\nDe grote plannen worden vage herinneringen. Het was leuk. Maar niet van jullie.",
       rightApproach: "HET MAG GEWOON ZIJN:\n\nPapa gaat naast Lucas zitten. 'Vertel. Top en flop van vandaag.'\nLucas: 'Top: drie keer gescoord bij gym. Flop: ruzie met Jesse.'\nPapa: 'Mijn top: deze chips. Mijn flop: een saaie vergadering.'\nLucas lacht.\n\nDit doen ze elke avond. Vijf minuten. Het is van hen. Lucas vertelt het later aan zijn eigen kinderen.",
       explanation: "Het pretpark kost honderd euro en wordt vergeten. De top-en-flop kost niks en wordt een herinnering. Het verschil: herhaling en emotionele verbinding. Rituelen worden herinneringen niet door hoe bijzonder ze zijn, maar door hoe vaak ze terugkomen.",
     },
@@ -511,11 +545,11 @@ export const VERBINDING_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "Het Eerste Ritueel",
-      instructions: "Kies vanavond één micro-ritueel en doe het. Suggesties: top-en-flop bij het eten, een speciaal geheim handgebaar als jullie afscheid nemen, twee minuten samen naar buiten kijken voor bedtijd. Het maakt niet uit wat. Het maakt uit dat je het morgen weer doet. En overmorgen. Doe het zeven dagen achter elkaar.",
+      instructions: "1. Kies vanavond één micro-ritueel. Suggesties:\n   - Top-en-flop bij het eten\n   - Een speciaal geheim handgebaar bij afscheid\n   - Twee minuten samen naar buiten kijken voor bedtijd\n   - Bij een tiener: samen een kop thee om 21:00\n2. Doe het vanavond.\n3. Doe het morgen weer. En overmorgen.\n4. Houd vol: zeven dagen achter elkaar.\n5. Vertel je kind niet dat het een ritueel is. Doe het gewoon. Ze merken het vanzelf als het er een keer niet is.",
       duration: 5,
       tips: [
         "Houd het simpel genoeg om vol te houden als je moe bent. Dat is de test: als je het ook om 21:30 op een donderdag kunt doen, is het goed.",
-        "Vertel je kind niet dat het een ritueel is. Doe het gewoon. Ze merken het vanzelf als het er een keer niet is.",
+        "Als je kind meedoet zonder vragen te stellen, is het al aan het landen. Vertrouw het proces.",
       ],
     },
     {
@@ -561,6 +595,14 @@ export const VERBINDING_MODULES: LearningModule[] = [
         { text: "Voorspelbaarheid en identiteit: 'dit is van ons'", isCorrect: true },
       ],
       explanation: "Rituelen gaan niet over structuur of planning. Ze bouwen twee dingen: het gevoel van veiligheid ('dit verandert niet') en het gevoel van erbij horen ('dit is wie wij zijn').",
+    },
+    {
+      question: "Jullie doen al twee maanden top-en-flop bij het eten. Nu zegt je kind: 'Dat is saai.' Wat doe je?",
+      options: [
+        { text: "Varieer de vorm maar houd het ritueel: 'Oké, wat als we het anders doen — roos en doorn?'", isCorrect: true },
+        { text: "Stoppen — als je kind het saai vindt heeft het geen zin meer", isCorrect: false },
+      ],
+      explanation: "Rituelen mogen evolueren — de kern (samen delen aan tafel) blijft. 'Saai' is vaak een test, geen afwijzing. Door de vorm aan te passen maar het ritueel te beschermen, laat je zien: dit is van ons, dit verandert niet.",
     },
   ],
 },

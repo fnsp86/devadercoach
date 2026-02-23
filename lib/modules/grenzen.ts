@@ -13,7 +13,7 @@ export const GRENZEN_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Het is weer zover.",
-      text: "Het is 20:15. Eva (4) staat voor de tiende keer naast je bed. Ze wil water. Een knuffel. Nog een verhaaltje. Jij wilt alleen maar op de bank zitten. Maar diep vanbinnen weet je: dit gaat niet over water.",
+      text: "Het is 20:15. Eva (4) staat voor de tiende keer naast je bed. Ze wil water. Een knuffel. Nog een verhaaltje. Jij wilt alleen maar op de bank zitten. Maar diep van binnen weet je: dit gaat niet over water.",
     },
     {
       type: "text" as const,
@@ -23,7 +23,7 @@ export const GRENZEN_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Diana Baumrind ontdekte dat kinderen het best gedijen bij 'autoritatief' opvoeden: warm én stevig. Niet streng (autoritair) en niet alles laten gaan (permissief). Kinderen met duidelijke, warme grenzen hebben meer zelfvertrouwen, betere sociale vaardigheden en minder angst. De containment theory bevestigt: kinderen voelen zich veilig als ze weten waar de rand is.",
+      text: "Diana Baumrind ontdekte dat kinderen het best gedijen bij 'autoritatief' opvoeden: warm én stevig. Niet streng (autoritair) en niet alles laten gaan (permissief). Kinderen met duidelijke, warme grenzen hebben meer zelfvertrouwen, betere sociale vaardigheden en minder angst. De containment-theorie bevestigt: kinderen voelen zich veilig als ze weten waar de rand is.",
     },
     {
       type: "diagram" as const,
@@ -61,11 +61,11 @@ export const GRENZEN_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De Drie-Grenzen Check",
-      instructions: "Pak je telefoon. Schrijf drie grenzen op die je morgen wilt handhaven. Eén rond bedtijd, één rond eten, één rond schermtijd. Schrijf bij elke grens één zin die je gaat zeggen. Kort. Helder. Oefen ze hardop.",
+      instructions: "1. Pak je telefoon of een papiertje.\n2. Schrijf drie grenzen op die je morgen wilt handhaven:\n   - Eén rond bedtijd\n   - Eén rond eten\n   - Eén rond schermtijd\n3. Schrijf bij elke grens één zin die je gaat zeggen. Kort. Helder.\n4. Oefen ze hardop — ja, echt hardop. Drie keer elk.\n5. Vertel je partner welke drie grenzen je hebt gekozen.",
       duration: 4,
       tips: [
         "Gebruik dezelfde woorden elke keer. Herhaling is kracht.",
-        "Vertel je partner welke drie grenzen je hebt gekozen zodat jullie op één lijn zitten.",
+        "Begin met grenzen waarvan je zeker weet dat je ze kunt vasthouden — succes motiveert.",
       ],
     },
     {
@@ -86,7 +86,7 @@ export const GRENZEN_MODULES: LearningModule[] = [
     "Autoritatief opvoeden (warm én stevig) geeft kinderen meer zelfvertrouwen en minder angst",
     "Protest op een grens betekent niet dat je fout zit — het betekent dat je kind de grens heeft gevonden",
   ],
-  research: "Baumrind (1991). Parenting Styles; Winnicott (1965). Containment Theory; Siegel & Bryson (2014). No-Drama Discipline",
+  research: "Baumrind (1991). Parenting Styles; Bion (1962). Containment Theory; Siegel & Bryson (2014). No-Drama Discipline",
   quizQuestions: [
     {
       question: "Eva (4) staat voor de vijfde keer naast je bed. Wat 'vraagt' ze eigenlijk?",
@@ -94,7 +94,7 @@ export const GRENZEN_MODULES: LearningModule[] = [
         { text: "Ze test of de grens er nog is — dat voelt veilig", isCorrect: true },
         { text: "Ze probeert de baas te zijn en controle te krijgen", isCorrect: false },
       ],
-      explanation: "Kinderen testen grenzen niet om macht uit te oefenen. Ze zoeken veiligheid: 'Is de rand er nog? Zijn de regels betrouwbaar?' Dat is een basisneed, geen machtsspel.",
+      explanation: "Kinderen testen grenzen niet om macht uit te oefenen. Ze zoeken veiligheid: 'Is de rand er nog? Zijn de regels betrouwbaar?' Dat is een basisbehoefte, geen machtsspel.",
     },
     {
       question: "Wat is het verschil tussen autoritair en autoritatief opvoeden?",
@@ -111,6 +111,14 @@ export const GRENZEN_MODULES: LearningModule[] = [
         { text: "Protest is normaal — je kind heeft de grens gevonden en leert ermee omgaan", isCorrect: true },
       ],
       explanation: "Protest hoort erbij. Je kind leert omgaan met frustratie en teleurstelling. Als je bij elk protest de grens verschuift, leert je kind: harder duwen = grens verdwijnt.",
+    },
+    {
+      question: "Eva (4) huilt als je haar terugbrengt naar bed. Je twijfelt of de grens te streng is. Wat klopt?",
+      options: [
+        { text: "Huilen is normaal — het is haar manier om de grens te verwerken, niet een signaal dat je fout zit", isCorrect: true },
+        { text: "Als je kind huilt bij een grens, is de grens waarschijnlijk te streng en moet je bijstellen", isCorrect: false },
+      ],
+      explanation: "Protest hoort bij het leerproces. Je kind leert omgaan met frustratie en teleurstelling. Dat is ongemakkelijk maar waardevol. Als je bij elk huiltje de grens verschuift, leert je kind: harder huilen = grens verdwijnt.",
     },
   ],
 },
@@ -169,7 +177,7 @@ export const GRENZEN_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Je toolkit",
-      text: "1. De kapotte grammofoon. Kind blijft vragen? Herhaal dezelfde zin. Zelfde woorden, zelfde rustige toon. 'We eten zo. Na het eten.' Geen nieuwe argumenten. Geen discussie.\n\n2. Valideer-dan-houd. Altijd in die volgorde. Eerst: 'Ik snap het.' Dan: 'Maar dit is de regel.' Nooit andersom.\n\n3. Let op je lichaam. Je woorden zeggen 'rustig' maar je kaak staat strak en je stem is hoog? Je kind leest je lijf, niet je woorden. Ontspan je schouders. Lage stem. Dat is het signaal.",
+      text: "1. De kapotte grammofoon. Kind blijft vragen? Herhaal dezelfde zin. Zelfde woorden, zelfde rustige toon. 'We eten zo. Na het eten.' Geen nieuwe argumenten. Geen discussie.\n\n2. Valideer-dan-houd. Altijd in die volgorde. Eerst: 'Ik snap het.' Dan: 'Maar dit is de regel.' Nooit andersom.\n\n3. Let op je lichaam. Je woorden zeggen 'rustig' maar je kaak staat strak en je stem is hoog? Je kind leest je lijf, niet je woorden. Ontspan je schouders. Lage stem. Dat is het signaal.\n\n4. Tiener-variant. Bij een puber werkt de kapotte grammofoon anders. Tieners hebben uitleg nodig — niet eindeloos, maar eerlijk. 'Ik begrijp dat je tot elf uur wilt. Mijn zorg is veiligheid. Laten we een oplossing zoeken.' Valideren + eerlijke reden + samen zoeken werkt beter dan herhalen.",
     },
     {
       type: "exercise" as const,
@@ -225,6 +233,14 @@ export const GRENZEN_MODULES: LearningModule[] = [
       ],
       explanation: "Kinderen zijn experts in non-verbale communicatie. Als je lichaam spanning uitstraalt, voelt je kind dreiging — ook al zijn je woorden rustig.",
     },
+    {
+      question: "Je zegt 'nee' met een warme toon, maar je kind schreeuwt: 'Je bent een gemene papa!' Wat doe je?",
+      options: [
+        { text: "Benoem het gevoel zonder de grens te verschuiven: 'Je bent boos. Dat snap ik. De regel blijft.'", isCorrect: true },
+        { text: "Leg nogmaals rustig uit waarom het niet mag — als je kind het begrijpt stopt het protest", isCorrect: false },
+      ],
+      explanation: "Meer uitleg voegt meer input toe aan een overbelast systeem. Kort benoemen en de grens herhalen — dezelfde woorden, dezelfde toon — werkt beter dan een nieuwe uitleg.",
+    },
   ],
 },
 {
@@ -249,7 +265,7 @@ export const GRENZEN_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Deci en Ryan's zelfdeterminatietheorie laat zien: mensen (ook kinderen) leren het best vanuit intrinsieke motivatie — niet vanuit angst voor straf. Extrinsieke controle (beloning/straf) ondermijnt het eigen verantwoordelijkheidsgevoel. Kinderen die leren via natuurlijke consequenties ontwikkelen beter inzicht in oorzaak en gevolg. Ze doen het goede omdat ze het snappen — niet omdat ze bang zijn.",
+      text: "Deci en Ryans zelfdeterminatietheorie laat zien: mensen (ook kinderen) leren het best vanuit intrinsieke motivatie — niet vanuit angst voor straf. Extrinsieke controle (beloning/straf) ondermijnt het eigen verantwoordelijkheidsgevoel. Kinderen die leren via natuurlijke consequenties ontwikkelen beter inzicht in oorzaak en gevolg. Ze doen het goede omdat ze het snappen — niet omdat ze bang zijn.",
     },
     {
       type: "diagram" as const,
@@ -338,6 +354,14 @@ export const GRENZEN_MODULES: LearningModule[] = [
       ],
       explanation: "Herstel is geen afgedwongen sorry. Het is je kind de ruimte geven om zelf na te denken over de impact en een oplossing te bedenken. Dat leert empathie en verantwoordelijkheid.",
     },
+    {
+      question: "Finn (6) slaat opnieuw zijn broertje, ondanks eerdere gesprekken over consequenties. Wat moet je anders doen?",
+      options: [
+        { text: "Kijk naar het patroon: wanneer slaat hij? Moe, hongerig, overprikkeld? Voorkom de trigger", isCorrect: true },
+        { text: "De consequentie zwaarder maken — als het huidige gevolg niet werkt, moet het ernstiger", isCorrect: false },
+      ],
+      explanation: "Herhaald gedrag wijst op een onvervulde behoefte of een trigger, niet op te milde consequenties. Zwaardere straffen leren angst, niet gedragsverandering. Zoek het patroon.",
+    },
   ],
 },
 {
@@ -400,10 +424,10 @@ export const GRENZEN_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De Grenzen-Sorter",
-      instructions: "Pak een papiertje. Maak drie kolommen: Rood, Geel, Groen. Schrijf in elke kolom minstens drie grenzen die in jouw gezin spelen. Kijk naar de groene kolom: kun je daar morgen iets laten gaan? Kijk naar de rode kolom: zijn die helder voor je kind?",
+      instructions: "1. Pak een papiertje. Maak drie kolommen: Rood, Geel, Groen.\n2. Schrijf in elke kolom minstens drie grenzen die in jouw gezin spelen.\n3. Kijk naar de groene kolom: kun je daar morgen iets laten gaan?\n4. Kijk naar de rode kolom: zijn die helder voor je kind? Kent je kind ze?\n5. Bespreek de lijst met je partner — zijn jullie het eens over wat rood, geel en groen is?\n6. Tip: pas de lijst aan per leeftijd. Een 14-jarige heeft andere groene grenzen dan een 5-jarige.",
       duration: 5,
       tips: [
-        "Bespreek je lijst met je partner — zijn jullie het eens over wat rood, geel en groen is?",
+        "Als je twijfelt of iets rood of geel is, kies dan rood. Je kunt later altijd nog versoepelen.",
         "Hang de rode regels op de koelkast. Kort. 'In dit huis slaan we niet. Gordel altijd om.'",
       ],
     },
@@ -450,6 +474,14 @@ export const GRENZEN_MODULES: LearningModule[] = [
         { text: "Kleding, eten en hoeveel verhaaltjes voor het slapen", isCorrect: false },
       ],
       explanation: "Rood is voor veiligheid: niet onderhandelbaar, geen uitzonderingen. Kleding en verhaaltjes zijn geel of groen — belangrijk, maar er is ruimte voor flexibiliteit.",
+    },
+    {
+      question: "Je partner vindt dat Noah (7) echt niet in zijn pyjama naar de winkel mag. Jullie zijn het oneens. Wat doe je?",
+      options: [
+        { text: "Bespreek samen of dit rood, geel of groen is — partner-alignment is belangrijker dan gelijk hebben", isCorrect: true },
+        { text: "Jouw mening doorzetten — je hebt de grenzen-sorter gedaan en weet dat dit groen is", isCorrect: false },
+      ],
+      explanation: "Kinderen vinden gaten tussen ouders. Partner-alignment verdubbelt de consistentie. Bespreek het samen en kom tot één lijn — dat is belangrijker dan wie gelijk heeft.",
     },
   ],
 },
@@ -513,11 +545,11 @@ export const GRENZEN_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "Het Koelkast-Contract",
-      instructions: "Schrijf vanavond drie gezinsregels op een vel papier. Kort. Helder. 'Snoep na het eten.' 'Schermen uit om 19:00.' 'We slaan niet.' Hang het op de koelkast. Bespreek het morgenochtend met je kind. Vraag: 'Ken jij onze afspraken?'",
+      instructions: "1. Schrijf vanavond drie gezinsregels op een vel papier. Kort. Helder.\n   - Bijvoorbeeld: 'Snoep na het eten.' 'Schermen uit om 19:00.' 'We slaan niet.'\n2. Hang het op de koelkast of een zichtbare plek.\n3. Bespreek het morgenochtend met je kind.\n4. Vraag: 'Ken jij onze afspraken?' Laat ze de regels herhalen.\n5. Laat je kind de regels tekenen of versieren — dan voelen ze als iets van het hele gezin.\n6. Bij een tiener: maak de afspraken samen. 'Welke drie regels vinden wij belangrijk?' Gedeeld eigenaarschap werkt beter dan opgelegde regels.",
       duration: 5,
       tips: [
-        "Laat je kind de regels tekenen of versieren — dan voelen ze als iets van het hele gezin",
-        "Begin met maximaal drie regels. Te veel regels op papier werkt net zo min als te veel regels in je hoofd",
+        "Herzie de regels elke paar weken. Wat werkt, wat niet? Pas aan waar nodig.",
+        "Begin met maximaal drie regels. Te veel regels op papier werkt net zo min als te veel regels in je hoofd.",
       ],
     },
     {
@@ -563,6 +595,14 @@ export const GRENZEN_MODULES: LearningModule[] = [
         { text: "Het maakt niet uit — kinderen snappen dat ouders verschillende regels hebben", isCorrect: false },
       ],
       explanation: "Kinderen zijn experts in het 'shoppen' tussen ouders. Als papa nee zegt en mama ja, leert je kind: vraag het aan de ander. Dat ondermijnt beide grenzen.",
+    },
+    {
+      question: "Je kind (5) kent de koelkast-afspraken maar test ze toch elke dag. Is het systeem mislukt?",
+      options: [
+        { text: "Nee — testen is normaal. Het systeem werkt juist omdat je nu moeiteloos kunt verwijzen naar de afspraak", isCorrect: true },
+        { text: "Ja — als je kind de regels nog steeds test werken de afspraken niet goed genoeg", isCorrect: false },
+      ],
+      explanation: "Grenzen testen is hoe kinderen bevestigen dat de regels er nog zijn. Het systeem maakt het testen hanteerbaar: je hoeft niet na te denken, alleen te verwijzen. Dat is precies het punt.",
     },
   ],
 },

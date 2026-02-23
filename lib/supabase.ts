@@ -1,12 +1,38 @@
 import { createClient } from '@supabase/supabase-js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
+import { File as ExpoFile } from 'expo-file-system';
 import { Platform } from 'react-native';
 
-// Secure storage adapter for auth tokens
-const ExpoSecureStoreAdapter = {
-  getItem: (key: string) => SecureStore.getItemAsync(key),
-  setItem: (key: string, value: string) => SecureStore.setItemAsync(key, value),
-  removeItem: (key: string) => SecureStore.deleteItemAsync(key),
+// AsyncStorage adapter — SecureStore has a 2048-byte limit which breaks
+// Supabase session storage (JWT + refresh token easily exceeds this).
+// We keep SecureStore import for one-time migration of existing sessions.
+const MIGRATED_KEY = 'vc-secure-store-migrated';
+
+const AsyncStorageAdapter = {
+  getItem: async (key: string) => {
+    const value = await AsyncStorage.getItem(key);
+    if (value) return value;
+
+    // One-time migration: check SecureStore for legacy session data
+    if (Platform.OS !== 'web') {
+      try {
+        const migrated = await AsyncStorage.getItem(MIGRATED_KEY);
+        if (!migrated) {
+          const legacyValue = await SecureStore.getItemAsync(key);
+          if (legacyValue) {
+            await AsyncStorage.setItem(key, legacyValue);
+            await SecureStore.deleteItemAsync(key).catch(() => {});
+            await AsyncStorage.setItem(MIGRATED_KEY, '1');
+            return legacyValue;
+          }
+        }
+      } catch {}
+    }
+    return null;
+  },
+  setItem: (key: string, value: string) => AsyncStorage.setItem(key, value),
+  removeItem: (key: string) => AsyncStorage.removeItem(key),
 };
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL ?? '';
@@ -14,7 +40,7 @@ const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: Platform.OS !== 'web' ? ExpoSecureStoreAdapter : undefined,
+    storage: Platform.OS !== 'web' ? AsyncStorageAdapter : undefined,
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: false,
@@ -225,6 +251,16 @@ export async function getConversations(userId: string) {
   return (data ?? []) as Conversation[];
 }
 
+export async function getConversationById(conversationId: string) {
+  const { data, error } = await supabase
+    .from('conversations')
+    .select('*')
+    .eq('id', conversationId)
+    .single();
+  if (error) return null;
+  return data as Conversation;
+}
+
 export async function getOrCreateConversation(userId: string, otherUserId: string) {
   // Check existing
   const { data: existing } = await supabase
@@ -341,23 +377,51 @@ export async function getBlockedUsers(userId: string) {
   return (data ?? []).map((d: any) => d.blocked_user_id as string);
 }
 
+// ─── Account deletion ──────────────────────────────────────────
+
+export async function deleteOwnAccount() {
+  const { error } = await supabase.rpc('delete_own_account');
+  if (error) throw error;
+}
+
+export async function sendAccountDeletionEmail(email: string, name: string) {
+  try {
+    console.log('[deletion-email] Invoking edge function for:', email);
+    console.log('[deletion-email] Supabase URL:', supabaseUrl);
+    const { data, error } = await supabase.functions.invoke('send-deletion-email', {
+      body: { email, name },
+    });
+    console.log('[deletion-email] Response data:', JSON.stringify(data));
+    console.log('[deletion-email] Response error:', JSON.stringify(error));
+    if (error) {
+      console.error('[deletion-email] Error:', error.message, error);
+    } else {
+      console.log('[deletion-email] Success:', data);
+    }
+  } catch (e: any) {
+    console.error('[deletion-email] Exception:', e?.message || e);
+  }
+}
+
 // ─── Storage helpers ────────────────────────────────────────────
 
 export async function uploadAvatar(userId: string, uri: string) {
   const ext = uri.split('.').pop() ?? 'jpg';
   const path = `${userId}/avatar.${ext}`;
 
-  const response = await fetch(uri);
-  const blob = await response.blob();
+  // Use expo-file-system File class (implements Blob) for reliable RN uploads
+  const file = new ExpoFile(uri);
+  const arrayBuffer = await file.arrayBuffer();
 
-  const { error } = await supabase.storage.from('avatars').upload(path, blob, {
+  const { error } = await supabase.storage.from('avatars').upload(path, arrayBuffer, {
     upsert: true,
     contentType: `image/${ext}`,
   });
   if (error) throw error;
 
   const { data } = supabase.storage.from('avatars').getPublicUrl(path);
-  return data.publicUrl;
+  console.log('[avatar] public url:', data.publicUrl);
+  return data.publicUrl + '?t=' + Date.now();
 }
 
 export async function uploadStoryImage(userId: string, uri: string) {

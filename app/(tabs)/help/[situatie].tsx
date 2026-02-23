@@ -9,8 +9,9 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTheme } from '@/lib/theme';
+import { useStore } from '@/lib/store';
 import { HELP_SITUATIONS } from '@/lib/help';
-import type { Skill } from '@/lib/types';
+import type { Skill, HelpSituation } from '@/lib/types';
 import { SKILL_COLORS } from '@/lib/colors';
 import { AppIcon, InlineIcon, emojiToIcon } from '@/lib/icons';
 
@@ -25,6 +26,20 @@ export default function HelpDetailPage() {
   const col = situation
     ? SKILL_COLORS[situation.skillLink] || colors.amber
     : colors.amber;
+
+  const { isHelpFavorite, toggleHelpFavorite } = useStore();
+  const isFavorite = situation ? isHelpFavorite(situation.id) : false;
+
+  const relatedSituations = situation
+    ? HELP_SITUATIONS
+        .filter((s) => s.id !== situation.id)
+        .sort((a, b) => {
+          const aScore = (a.skillLink === situation.skillLink ? 2 : 0) + (a.ageGroup === situation.ageGroup ? 1 : 0);
+          const bScore = (b.skillLink === situation.skillLink ? 2 : 0) + (b.ageGroup === situation.ageGroup ? 1 : 0);
+          return bScore - aScore;
+        })
+        .slice(0, 3)
+    : [];
 
   if (!situation) {
     return (
@@ -53,13 +68,24 @@ export default function HelpDetailPage() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Back button */}
-        <Pressable onPress={() => router.back()} style={styles.backButton}>
-          <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
-            <InlineIcon name="arrowLeft" size={16} color={colors.amber} />
-            <Text style={[styles.backText, { color: colors.amber }]}>Terug</Text>
-          </View>
-        </Pressable>
+        {/* Top bar with back + bookmark */}
+        <View style={styles.topBar}>
+          <Pressable onPress={() => router.back()} style={styles.backButton}>
+            <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
+              <InlineIcon name="arrowLeft" size={16} color={colors.amber} />
+              <Text style={[styles.backText, { color: colors.amber }]}>Terug</Text>
+            </View>
+          </Pressable>
+          {situation && (
+            <Pressable onPress={() => toggleHelpFavorite(situation.id)} style={styles.bookmarkBtn}>
+              <InlineIcon
+                name="heart"
+                size={22}
+                color={isFavorite ? '#EF4444' : colors.text3}
+              />
+            </Pressable>
+          )}
+        </View>
 
         {/* Hero Header */}
         <View style={styles.heroHeader}>
@@ -169,7 +195,7 @@ export default function HelpDetailPage() {
         <Pressable
           onPress={() =>
             router.push(
-              `/(tabs)/leren/${encodeURIComponent(situation.skillLink)}`,
+              `/(tabs)/leren?openSkill=${encodeURIComponent(situation.skillLink)}`,
             )
           }
           style={[styles.ctaButton, { backgroundColor: col }]}
@@ -183,6 +209,60 @@ export default function HelpDetailPage() {
             </View>
           </View>
         </Pressable>
+
+        {/* Share with community */}
+        <Pressable
+          onPress={() => {
+            const prefillText = `Hoe gaan jullie om met: "${situation.situatie}"?\n\nIk las net de tips in de app en vroeg me af hoe andere vaders dit aanpakken.`;
+            router.push(
+              `/(tabs)/community/story/create?prefill=${encodeURIComponent(prefillText)}&prefillCategory=vraag`
+            );
+          }}
+          style={[styles.shareBtn, {
+            backgroundColor: colors.surface,
+            borderColor: colors.border,
+          }]}
+        >
+          <InlineIcon name="users" size={20} color={colors.amber} />
+          <View style={styles.shareTextWrap}>
+            <Text style={[styles.shareTitle, { color: colors.text }]}>Bespreek in community</Text>
+            <Text style={[styles.shareSub, { color: colors.text3 }]}>Vraag andere vaders hoe zij dit doen</Text>
+          </View>
+          <InlineIcon name="arrowRight" size={16} color={colors.text3} />
+        </Pressable>
+
+        {/* Related situations */}
+        {relatedSituations.length > 0 && (
+          <View style={styles.relatedSection}>
+            <Text style={[styles.relatedTitle, { color: colors.text }]}>Vergelijkbare situaties</Text>
+            {relatedSituations.map((rel) => {
+              const relColor = SKILL_COLORS[rel.skillLink] || colors.amber;
+              return (
+                <Pressable
+                  key={rel.id}
+                  onPress={() => router.push(`/(tabs)/help/${rel.id}`)}
+                  style={[styles.relatedCard, {
+                    backgroundColor: colors.surface,
+                    borderColor: colors.border,
+                  }]}
+                >
+                  <View style={[styles.relatedIconWrap, { backgroundColor: relColor + '14' }]}>
+                    <AppIcon name={emojiToIcon(rel.icon)} size="sm" variant="compact" color={relColor} />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={[styles.relatedCardTitle, { color: colors.text }]} numberOfLines={1}>
+                      {rel.situatie}
+                    </Text>
+                    <Text style={[styles.relatedCardSub, { color: colors.text3 }]}>
+                      {rel.ageGroup} jaar · {rel.skillLink}
+                    </Text>
+                  </View>
+                  <InlineIcon name="arrowRight" size={16} color={colors.text3} />
+                </Pressable>
+              );
+            })}
+          </View>
+        )}
 
         {/* Back */}
         <Pressable
@@ -205,8 +285,19 @@ const styles = StyleSheet.create({
   safe: { flex: 1 },
   scroll: { flex: 1 },
   scrollContent: { padding: 20, paddingBottom: 40 },
-  backButton: { marginBottom: 16, paddingVertical: 4, alignSelf: 'flex-start' },
+  backButton: { paddingVertical: 4, alignSelf: 'flex-start' },
   backText: { fontSize: 16, fontWeight: '600' },
+
+  // Top bar
+  topBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  bookmarkBtn: {
+    padding: 8,
+  },
 
   // Hero
   heroHeader: { alignItems: 'center', marginBottom: 28 },
@@ -310,6 +401,42 @@ const styles = StyleSheet.create({
   ctaTextWrap: { flex: 1 },
   ctaTitle: { color: '#fff', fontSize: 16, fontWeight: '700', marginBottom: 2 },
   ctaSub: { color: 'rgba(255,255,255,0.75)', fontSize: 13, fontWeight: '500' },
+
+  // Share with community
+  shareBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 20,
+  },
+  shareTextWrap: { flex: 1 },
+  shareTitle: { fontSize: 15, fontWeight: '600', marginBottom: 2 },
+  shareSub: { fontSize: 13 },
+
+  // Related situations
+  relatedSection: { marginBottom: 16 },
+  relatedTitle: { fontSize: 17, fontWeight: '700', marginBottom: 12 },
+  relatedCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    borderWidth: 1,
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 8,
+  },
+  relatedIconWrap: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  relatedCardTitle: { fontSize: 14, fontWeight: '600' },
+  relatedCardSub: { fontSize: 12, marginTop: 2 },
 
   // Back bar
   backBar: {
