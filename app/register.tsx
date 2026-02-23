@@ -18,7 +18,7 @@ import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
 import { useAuth } from '@/lib/auth';
 import { upsertCommunityProfile } from '@/lib/supabase';
-import { getCurrentLocation, getCurrentCity, DUTCH_CITIES } from '@/lib/location';
+import { getCurrentLocation, getCurrentCity, DUTCH_CITIES, CITY_COORDS } from '@/lib/location';
 import { SKILL_LIST, ALL_SKILLS } from '@/lib/skills';
 import { SKILL_COLORS } from '@/lib/colors';
 import Button from '@/components/Button';
@@ -215,14 +215,22 @@ export default function RegisterScreen() {
 
     // Always create community profile so Social tab doesn't require re-setup
     if (user) {
+      // Use CITY_COORDS for manual city selection so user appears in nearby searches
+      let lat = coords?.lat ?? null;
+      let lng = coords?.lng ?? null;
+      if (!lat && !lng && selectedCity && CITY_COORDS[selectedCity]) {
+        lat = CITY_COORDS[selectedCity].lat;
+        lng = CITY_COORDS[selectedCity].lng;
+      }
+
       try {
         const communityProf = await upsertCommunityProfile({
           user_id: user.id,
           naam: naam.trim(),
           bio: bio.trim(),
           stad: selectedCity,
-          latitude: coords?.lat ?? null,
-          longitude: coords?.lng ?? null,
+          latitude: lat,
+          longitude: lng,
         });
         setCommunityProfile(communityProf);
       } catch {
@@ -368,8 +376,14 @@ export default function RegisterScreen() {
               <Text style={{ color: colors.text, fontWeight: '700' }}>{email}</Text>
             </Text>
             <Text style={[s.confirmHint, { color: colors.text3 }]}>
-              Klik op de link in de mail, kom dan terug en druk op de knop hieronder.
+              Klik op de link in de mail om je e-mail te bevestigen.{'\n'}
+              Kom daarna terug naar de app en druk op de knop hieronder.
             </Text>
+            <View style={[s.errorBox, { backgroundColor: colors.amberDim, borderColor: colors.amber + '40', marginTop: 8 }]}>
+              <Text style={[{ color: colors.text2, fontSize: 13, lineHeight: 18 }]}>
+                Tip: Als Safari de link niet kan openen of een foutpagina toont, is je e-mail toch bevestigd. Kom gewoon terug en druk op "Ik heb bevestigd".
+              </Text>
+            </View>
           </View>
 
           {errors.general ? (

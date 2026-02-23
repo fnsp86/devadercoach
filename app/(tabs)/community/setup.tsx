@@ -18,7 +18,7 @@ import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
 import { useStore } from '@/lib/store';
 import { upsertCommunityProfile } from '@/lib/supabase';
-import { getCurrentLocation, getCurrentCity, DUTCH_CITIES } from '@/lib/location';
+import { getCurrentLocation, getCurrentCity, DUTCH_CITIES, CITY_COORDS } from '@/lib/location';
 import { InlineIcon } from '@/lib/icons';
 import Button from '@/components/Button';
 
@@ -26,15 +26,15 @@ type Step = 'profile' | 'location';
 
 export default function CommunitySetup() {
   const { colors } = useTheme();
-  const { user, setCommunityProfile } = useAuth();
+  const { user, communityProfile, setCommunityProfile } = useAuth();
   const { profile } = useStore();
   const router = useRouter();
 
   const [step, setStep] = useState<Step>('profile');
   const [loading, setLoading] = useState(false);
 
-  // Profile
-  const [bio, setBio] = useState('');
+  // Profile — pre-fill from existing community profile
+  const [bio, setBio] = useState(communityProfile?.bio ?? '');
 
   // Location
   const [locationMethod, setLocationMethod] = useState<'gps' | 'manual' | null>(null);
@@ -43,7 +43,7 @@ export default function CommunitySetup() {
   const [detectedCity, setDetectedCity] = useState('');
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
 
-  const naam = profile?.naam ?? '';
+  const naam = communityProfile?.naam ?? profile?.naam ?? '';
 
   async function handleLocationGPS() {
     setLoading(true);
@@ -67,14 +67,22 @@ export default function CommunitySetup() {
 
     const stad = locationMethod === 'gps' ? detectedCity : selectedCity;
 
+    // Use CITY_COORDS for manual city selection so user appears in nearby searches
+    let lat = coords?.lat ?? null;
+    let lng = coords?.lng ?? null;
+    if (!lat && !lng && stad && CITY_COORDS[stad]) {
+      lat = CITY_COORDS[stad].lat;
+      lng = CITY_COORDS[stad].lng;
+    }
+
     try {
       const newProfile = await upsertCommunityProfile({
         user_id: user.id,
         naam,
         bio: bio.trim(),
         stad,
-        latitude: coords?.lat ?? null,
-        longitude: coords?.lng ?? null,
+        latitude: lat,
+        longitude: lng,
       });
       setCommunityProfile(newProfile);
       router.back();

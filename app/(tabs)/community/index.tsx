@@ -345,13 +345,13 @@ export default function SocialFeed() {
               style={[
                 styles.filterChip,
                 {
-                  backgroundColor: active ? chipColor : colors.surface,
-                  borderColor: active ? chipColor : colors.border,
+                  backgroundColor: active ? chipColor : colors.surface2,
+                  borderColor: active ? chipColor : colors.text3,
                 },
               ]}
             >
-              <InlineIcon name={opt.icon as any} size={14} color={active ? '#fff' : colors.text3} />
-              <Text style={[styles.filterText, { color: active ? '#fff' : colors.text2 }]}>
+              <InlineIcon name={opt.icon as any} size={15} color={active ? '#fff' : colors.text2} />
+              <Text style={[styles.filterText, { color: active ? '#fff' : colors.text }]}>
                 {opt.label}
               </Text>
             </Pressable>

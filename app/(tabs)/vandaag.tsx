@@ -147,8 +147,8 @@ function TaskCard({
         },
       ]}
     >
-      {/* Pills row */}
-      <Pressable onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); setExpanded((e) => !e); }} style={tcStyles.topRow}>
+      {/* Pills row — expandable header */}
+      <Pressable onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); setExpanded((e) => !e); }} style={[tcStyles.topRow, { backgroundColor: expanded ? skillColor + '08' : 'transparent', borderRadius: 10, marginHorizontal: -8, paddingHorizontal: 8 }]}>
         <View style={tcStyles.pills}>
           <View style={[tcStyles.pill, { backgroundColor: skillColor + '22' }]}>
             <Text style={[tcStyles.pillText, { color: skillColor }]}>{task.skill}</Text>
@@ -160,7 +160,9 @@ function TaskCard({
           </View>
           <Text style={[tcStyles.xpText, { color: colors.text3 }]}>+{xp} XP</Text>
         </View>
-        <InlineIcon name={expanded ? 'chevronUp' : 'chevronDown'} size={16} color={colors.text3} />
+        <View style={[tcStyles.chevronWrap, { backgroundColor: colors.surface2 }]}>
+          <InlineIcon name={expanded ? 'chevronUp' : 'chevronDown'} size={16} color={colors.text2} />
+        </View>
       </Pressable>
 
       <View style={tcStyles.titleRow}>
@@ -252,7 +254,8 @@ function TaskCard({
 
 const tcStyles = StyleSheet.create({
   card: { borderRadius: 16, padding: 16, marginBottom: 12 },
-  topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, minHeight: 44, paddingVertical: 4 },
+  topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, minHeight: 48, paddingVertical: 6 },
+  chevronWrap: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   pills: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
   pill: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 },
   pillText: { fontSize: 11, fontWeight: '700' },
