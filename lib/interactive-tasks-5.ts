@@ -227,7 +227,7 @@ export const INTERACTIVE_TASKS_5: InteractiveTask[] = [
     ageGroups: ["3-5"],
     difficulty: "gevorderd",
     points: 15,
-    psychologie: "Een mini-bodyscan activates interoceptief bewustzijn en pauzeert automatisch gedrag. 30 seconden is genoeg om een ander perspectief te activeren.",
+    psychologie: "Een mini-bodyscan activeert interoceptief bewustzijn en pauzeert automatisch gedrag. 30 seconden is genoeg om een ander perspectief te activeren.",
     skillTip: "Je hoeft dit niet perfect te doen. Zelfs een halve bodyscan werkt beter dan geen pauze.",
     vermijd: "Wachten tot je 'echt toe bent' aan een pauze. Dan is het al te laat.",
     leerdoel: "Je leert vroegtijdig signalen van overbelasting te herkennen en erop te reageren.",
