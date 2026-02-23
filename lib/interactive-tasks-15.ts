@@ -317,7 +317,7 @@ export const INTERACTIVE_TASKS_15: InteractiveTask[] = [
     ageGroups: ['6-9'],
     difficulty: 'basis',
     points: 10,
-    psychologie: 'Aanwezig zijn in zijn dagelijkse wereld vergroot de begrip van zijn ervaringen en toont dat vader echt geïnteresseerd is in waar hij de meeste tijd doorbrengt.',
+    psychologie: 'Aanwezig zijn in zijn dagelijkse wereld vergroot het begrip van zijn ervaringen en toont dat vader echt geïnteresseerd is in waar hij de meeste tijd doorbrengt.',
     skillTip: 'Stel concrete vragen: "Waar zit jij? Wie zit naast je? Wat doe je het liefst hier?" Zijn wereld leren kennen.',
     vermijd: 'Vermijd dit als controle of beoordeling. Het is nieuwsgierigheid en interesse in zijn leven.',
     leerdoel: 'Je vergroot je kennis van zijn dagelijkse wereld als verbindingsbasis.',
@@ -639,7 +639,7 @@ export const INTERACTIVE_TASKS_15: InteractiveTask[] = [
     psychologie: 'Geplande tijd voor tieners communiceert dat ze een prioriteit zijn, niet een tussendoortje. Tieners die vader zien als actief investeerder, zijn meer bereid om te verbinden.',
     skillTip: 'Laat hem de activiteit volledig bepalen. Geen suggesties – zijn keuze, zijn dag.',
     vermijd: 'Vermijd afzeggen tenzij absoluut onvermijdelijk. En als het toch moet: herplannen dezelfde week.',
-    leerdoel: 'Je maakt verbinding met je tiener een gepland, serieuze gezinsinvestering.',
+    leerdoel: 'Je maakt verbinding met je tiener tot een geplande, serieuze gezinsinvestering.',
     bron: 'Steinberg, L. (2011). Adolescence.',
   },
   {
