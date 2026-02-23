@@ -135,7 +135,7 @@ export const INTERACTIVE_TASKS_4: InteractiveTask[] = [
     ageGroups: ["0-2"],
     difficulty: "gevorderd",
     points: 15,
-    psychologie: "Getolereerde frustratie (binnen veilige grenzen) bouwt frustatietolerantie op. Door te benoemen in plaats van meteen te helpen, valideer je de inspanning.",
+    psychologie: "Getolereerde frustratie (binnen veilige grenzen) bouwt frustratietolerantie op. Door te benoemen in plaats van meteen te helpen, valideer je de inspanning.",
     skillTip: "Tien seconden voelt lang. Tel in je hoofd mee als het helpt.",
     vermijd: "Te lang wachten totdat de frustratie overgaat in paniek — lees de signalen van je baby.",
     leerdoel: "Je leert het verschil tussen frustratie begeleiden en frustratie wegnemen.",

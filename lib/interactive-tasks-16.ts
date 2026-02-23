@@ -12,7 +12,7 @@ export const INTERACTIVE_TASKS_16: InteractiveTask[] = [
     description: 'Denk na over één moment met je baby vandaag dat je bijblijft. Wat voelde je daarbij?',
     instructions: [
       'Pak een rustig moment als je baby slaapt.',
-      'Denk terug aan één interactie – een glimlach, een huilbui, een voedsmoment.',
+      'Denk terug aan één interactie – een glimlach, een huilbui, een voedingsmoment.',
       'Vraag jezelf: wat voelde ik precies op dat moment?',
       'Schrijf het in één zin op of spreek het hardop uit.',
     ],
@@ -88,7 +88,7 @@ export const INTERACTIVE_TASKS_16: InteractiveTask[] = [
       'Schrijf dat op als een korte brief aan je jonge zelf.',
       'Lees het door en vraag: doe ik dit nu voor mijn eigen kind?',
     ],
-    reflection: 'Verbinding met je eigen kindhood helpt je bewuster en empathischer te zijn als vader.',
+    reflection: 'Verbinding met je eigen kindertijd helpt je bewuster en empathischer te zijn als vader.',
     scienceNote: 'Reflectie op eigen gehechtheid voorspelt kwaliteit van ouderschap (Fonagy et al., 1991).',
     durationMin: 15,
   },
@@ -247,7 +247,7 @@ export const INTERACTIVE_TASKS_16: InteractiveTask[] = [
     title: 'Wat doet fantasiespel met mij?',
     description: 'Reflecteer op hoe jij je voelt als je kind je uitnodigt mee te spelen in fantasiespel.',
     instructions: [
-      'Denk aan de laatste keer dat je kind je uitnodigde om te spelen (superman zijn, thee drinken, raken huis bouwen).',
+      'Denk aan de laatste keer dat je kind je uitnodigde om te spelen (superman zijn, thee drinken, een hut bouwen).',
       'Wat voelde je? Genoot je of voelde je weerstand?',
       'Speelde je mee? Waarom wel of niet?',
       'Wat denk je dat fantasiespel betekent voor jouw kind?',

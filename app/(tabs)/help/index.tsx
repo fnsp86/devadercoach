@@ -6,7 +6,14 @@ import {
   ScrollView,
   Pressable,
   StyleSheet,
+  LayoutAnimation,
+  Platform,
+  UIManager,
 } from 'react-native';
+
+if (Platform.OS === 'android') {
+  UIManager.setLayoutAnimationEnabledExperimental?.(true);
+}
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@/lib/theme';
@@ -128,7 +135,7 @@ export default function HelpPage() {
 
         {/* SOS Quick Access */}
         <Pressable
-          onPress={() => setSosExpanded(!sosExpanded)}
+          onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); setSosExpanded(!sosExpanded); }}
           style={[styles.sosButton, {
             backgroundColor: '#EF444414',
             borderColor: '#EF444430',

@@ -5,7 +5,14 @@ import {
   SectionList,
   StyleSheet,
   Pressable,
+  LayoutAnimation,
+  Platform,
+  UIManager,
 } from 'react-native';
+
+if (Platform.OS === 'android') {
+  UIManager.setLayoutAnimationEnabledExperimental?.(true);
+}
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@/lib/theme';
@@ -89,7 +96,7 @@ function ModuleCard({ item, expanded, onToggle }: {
             <Text style={[st.cardDate, { color: colors.text3 }]}>{formatDate(item.completedAt)}</Text>
           </View>
         </View>
-        <InlineIcon name={expanded ? 'chevronUp' : 'chevronDown'} size={14} color={colors.text3} />
+        <InlineIcon name={expanded ? 'chevronUp' : 'chevronDown'} size={16} color={colors.text3} />
       </Pressable>
 
       {/* Expanded content */}
@@ -157,7 +164,7 @@ function WeeklyCard({ item, expanded, onToggle }: {
             <Text style={[st.cardDate, { color: colors.text3 }]}>{formatDate(item.completedAt)}</Text>
           </View>
         </View>
-        <InlineIcon name={expanded ? 'chevronUp' : 'chevronDown'} size={14} color={colors.text3} />
+        <InlineIcon name={expanded ? 'chevronUp' : 'chevronDown'} size={16} color={colors.text3} />
       </Pressable>
 
       {/* Expanded content */}
@@ -195,6 +202,7 @@ export default function ReflectiesScreen() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   function toggle(key: string) {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpandedId((prev) => (prev === key ? null : key));
   }
 
@@ -484,7 +492,8 @@ const st = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    padding: 14,
+    padding: 16,
+    minHeight: 56,
   },
   cardIcon: {
     width: 36,

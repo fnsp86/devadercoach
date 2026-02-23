@@ -140,7 +140,7 @@ export const INTERACTIVE_TASKS_18: InteractiveTask[] = [
     ageGroup: '3-5',
     difficulty: 'gevorderd',
     xpReward: 15,
-    title: 'Het hersteigesprek met handpop',
+    title: 'Het herstelgesprek met handpop',
     description: 'Gebruik een knuffel of handpop om via spel een conflict te bespreken en te herstellen.',
     instructions: [
       'Pak een knuffel of pop die je kind leuk vindt.',
@@ -434,7 +434,7 @@ export const INTERACTIVE_TASKS_18: InteractiveTask[] = [
     ageGroup: '13-16',
     difficulty: 'gevorderd',
     xpReward: 15,
-    title: 'Grenzen herstellen zonder machtstrijd',
+    title: 'Grenzen herstellen zonder machtsstrijd',
     description: 'Leer hoe je na een conflict opnieuw grenzen kunt stellen zonder in een machtsstrijd te vervallen.',
     instructions: [
       'Wacht tot de emoties gezakt zijn en nodig je tiener uit voor een gesprek.',
@@ -456,7 +456,7 @@ export const INTERACTIVE_TASKS_18: InteractiveTask[] = [
     description: 'Voer een uitgebreid, eerlijk gesprek over een terugkerend conflictpatroon tussen jou en je tiener.',
     instructions: [
       'Plan bewust een moment (niet spontaan) en zeg: "Ik wil met je praten over iets dat ik merk in hoe wij met elkaar omgaan."',
-      'Beschrijf het patroon dat je ziet zonder te beschuldigen: "Ik merk dat we vaak botsen over [onderwerp] en dan allebei dichklappen."',
+      'Beschrijf het patroon dat je ziet zonder te beschuldigen: "Ik merk dat we vaak botsen over [onderwerp] en dan allebei dichtklappen."',
       'Deel jouw aandeel eerlijk: "Ik denk dat ik [gedrag] doe omdat ik [gevoel/angst] heb."',
       'Vraag je tiener hetzelfde te doen en werk samen aan één concrete verandering die jullie allebei willen proberen.',
     ],

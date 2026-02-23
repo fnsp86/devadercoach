@@ -157,7 +157,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
     title: 'Emotiedagboek bijhouden',
     description: 'Houd drie dagen een kort emotiedagboek bij over je gevoelens als nieuwe vader.',
     instructions: [
-      'Schrijf elke avond drie dingen op: de mooiste moment, het moeilijkste moment, en je overheersende gevoel van de dag.',
+      'Schrijf elke avond drie dingen op: het mooiste moment, het moeilijkste moment, en je overheersende gevoel van de dag.',
       'Wees eerlijk — ook gevoelens als verveling, spijt of overweldiging mogen er zijn.',
       'Lees na drie dagen terug. Zie je patronen? Welke situaties roepen welke emoties op?',
       'Deel (als je wilt) één observatie met je partner of een vertrouwenspersoon.',
@@ -588,7 +588,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Wees eerlijk en kwetsbaar: "Ik schaamde me daar echt voor. Ik dacht dat ik de enige was."',
       'Verbind het aan nu: "Als jij je ooit zo voelt, wil ik dat je weet dat het normaal is en dat je het mij mag vertellen."',
     ],
-    reflection: 'Hoe reageerde je kind op je eerlijkheid? Merkte je dat kwetsbaarheid dichterheid creëert in plaats van afstand?',
+    reflection: 'Hoe reageerde je kind op je eerlijkheid? Merkte je dat kwetsbaarheid nabijheid creëert in plaats van afstand?',
     scienceNote: 'Habermas & Bluck (2000) tonen aan dat het delen van persoonlijke verhalen de identiteitsontwikkeling van pre-adolescenten ondersteunt en de ouder-kindrelatie versterkt.',
     durationMin: 10,
   },

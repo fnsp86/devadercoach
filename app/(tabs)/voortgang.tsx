@@ -34,7 +34,7 @@ const RARITY_COLORS: Record<string, string> = {
 };
 
 const RARITY_LABELS: Record<string, string> = {
-  common: 'Gewoon',
+  common: 'Basis',
   rare: 'Zeldzaam',
   epic: 'Episch',
   legendary: 'Legendarisch',

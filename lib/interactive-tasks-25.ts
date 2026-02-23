@@ -827,7 +827,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
       'Vraag je tiener: "Herken jij dat gevoel? Hoe ga jij daarmee om?"',
     ],
     reflection: 'Hoe reageerde je tiener op jouw kwetsbaarheid? Opende het een deur naar dieper contact?',
-    scienceNote: 'Ouderlijke zelfopenbaring die leeftijdsgeschikt is, bevordert intimitiet en emotionele openheid in de ouder-adolescentrelatie (Baumrind, 1991; Steinberg, 2001).',
+    scienceNote: 'Ouderlijke zelfopenbaring die leeftijdsgeschikt is, bevordert intimiteit en emotionele openheid in de ouder-adolescentrelatie (Baumrind, 1991; Steinberg, 2001).',
     durationMin: 10,
   },
   {

@@ -5,7 +5,14 @@ import {
   ScrollView,
   Pressable,
   StyleSheet,
+  LayoutAnimation,
+  Platform,
+  UIManager,
 } from 'react-native';
+
+if (Platform.OS === 'android') {
+  UIManager.setLayoutAnimationEnabledExperimental?.(true);
+}
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter, useFocusEffect, useLocalSearchParams } from 'expo-router';
@@ -594,6 +601,7 @@ export default function LerenOverview() {
   }
 
   function handleSkillPress(skill: Skill) {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpandedSkill(expandedSkill === skill ? null : skill);
   }
 

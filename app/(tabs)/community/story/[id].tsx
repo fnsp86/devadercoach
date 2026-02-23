@@ -21,6 +21,8 @@ import {
   toggleStoryLike,
   getStoryComments,
   addStoryComment,
+  deleteStory,
+  deleteStoryComment,
   reportContent,
   type Story,
   type StoryComment,
@@ -138,6 +140,45 @@ export default function StoryDetail() {
     ]);
   }
 
+  const isOwner = user?.id === story?.author_id;
+
+  async function handleDeleteStory() {
+    if (!story) return;
+    Alert.alert('Verwijderen', 'Weet je zeker dat je dit verhaal wilt verwijderen?', [
+      { text: 'Annuleer', style: 'cancel' },
+      {
+        text: 'Verwijderen',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await deleteStory(story.id);
+            router.replace('/(tabs)/community');
+          } catch {
+            Alert.alert('Fout', 'Kon verhaal niet verwijderen.');
+          }
+        },
+      },
+    ]);
+  }
+
+  async function handleDeleteComment(commentId: string) {
+    Alert.alert('Verwijderen', 'Weet je zeker dat je deze reactie wilt verwijderen?', [
+      { text: 'Annuleer', style: 'cancel' },
+      {
+        text: 'Verwijderen',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await deleteStoryComment(commentId);
+            setComments((prev) => prev.filter((c) => c.id !== commentId));
+          } catch {
+            Alert.alert('Fout', 'Kon reactie niet verwijderen.');
+          }
+        },
+      },
+    ]);
+  }
+
   if (loading) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.bg }]}>
@@ -168,9 +209,18 @@ export default function StoryDetail() {
             <InlineIcon name="arrowLeft" size={22} color={colors.text} />
           </Pressable>
           <Text style={[styles.headerTitle, { color: colors.text }]}>Verhaal</Text>
-          <Pressable onPress={handleReport}>
-            <InlineIcon name="alertTriangle" size={20} color={colors.text3} />
-          </Pressable>
+          <View style={{ flexDirection: 'row', gap: 12 }}>
+            {isOwner && (
+              <Pressable onPress={handleDeleteStory}>
+                <InlineIcon name="trash" size={20} color={colors.red} />
+              </Pressable>
+            )}
+            {!isOwner && (
+              <Pressable onPress={handleReport}>
+                <InlineIcon name="alertTriangle" size={20} color={colors.text3} />
+              </Pressable>
+            )}
+          </View>
         </View>
 
         <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
@@ -227,7 +277,14 @@ export default function StoryDetail() {
             <View key={comment.id} style={[styles.commentCard, { borderColor: colors.border }]}>
               <View style={styles.commentHeader}>
                 <Text style={[styles.commentAuthor, { color: colors.text }]}>{comment.author?.naam ?? 'Vader'}</Text>
-                <Text style={[styles.commentTime, { color: colors.text3 }]}>{timeAgo(comment.created_at)}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                  <Text style={[styles.commentTime, { color: colors.text3 }]}>{timeAgo(comment.created_at)}</Text>
+                  {comment.author_id === user?.id && (
+                    <Pressable onPress={() => handleDeleteComment(comment.id)} hitSlop={8}>
+                      <InlineIcon name="trash" size={14} color={colors.text3} />
+                    </Pressable>
+                  )}
+                </View>
               </View>
               <Text style={[styles.commentContent, { color: colors.text2 }]}>{comment.content}</Text>
             </View>

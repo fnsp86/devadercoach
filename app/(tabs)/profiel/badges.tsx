@@ -32,7 +32,7 @@ const BADGE_CATEGORIES = [
 ] as const;
 
 const RARITY_LABELS: Record<string, string> = {
-  common: 'Gewoon',
+  common: 'Basis',
   rare: 'Zeldzaam',
   epic: 'Episch',
   legendary: 'Legendarisch',

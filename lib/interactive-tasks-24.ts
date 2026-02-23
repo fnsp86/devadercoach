@@ -33,7 +33,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     instructions: [
       'Herken de signalen dat je baby moe wordt: wrijven in de ogen, wegkijken, onrustig worden.',
       'Benoem de emotie zacht: "Je bent moe, het was een drukke dag voor jou."',
-      'Begin het slapritueel op een vaste manier: dim het licht, zing een liedje of wieg zachtjes.',
+      'Begin het slaapritueel op een vaste manier: dim het licht, zing een liedje of wieg zachtjes.',
       'Als je baby huilt, blijf kalm aanwezig en herhaal je troostende woorden op een rustige toon.',
     ],
     reflection: 'Kon je rustig blijven toen je baby huilde? Wat hielp jou om kalm te blijven?',
@@ -52,7 +52,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
       'Leg je baby op de verschoontafel en neem één diepe ademhaling voordat je begint.',
       'Merk op hoe jij je op dit moment voelt: gehaast, ontspannen, geïrriteerd?',
       'Verschoon rustig en maak er een speels contactmoment van met gekke geluidjes of gezichtjes.',
-      'Sluit af met een korte buikknuffel en benoem: "Zo, lekker schoon, klaar voor de volgende avontuur."',
+      'Sluit af met een korte buikknuffel en benoem: "Zo, lekker schoon, klaar voor het volgende avontuur."',
     ],
     reflection: 'Hoe vaak verschoon je op de automatische piloot? Wat veranderde er toen je bewust ademhaalde?',
     scienceNote: 'Mindful parenting — bewust aanwezig zijn bij routinehandelingen — vermindert ouderlijke stress en verhoogt sensitieve responsiviteit (Duncan, Coatsworth & Greenberg, 2009, Clinical Child and Family Psychology Review).',
@@ -785,7 +785,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     title: 'Time-in voor jezelf',
     description: 'Neem bewust een time-in als een gesprek met je tiener dreigt te escaleren.',
     instructions: [
-      'Herken je eigen escaalatiesignalen: snellere hartslag, luidere stem, de neiging om te dreigen.',
+      'Herken je eigen escalatiesignalen: snellere hartslag, luidere stem, de neiging om te dreigen.',
       'Zeg eerlijk: "Ik merk dat ik gefrustreerd raak. Ik wil dit gesprek goed voeren, dus ik neem even vijf minuten."',
       'Doe iets om te kalmeren: koud water, lopen, ademhalen.',
       'Kom terug en hervat het gesprek vanuit een rustigere plek: "Oké, ik ben er weer. Laten we opnieuw beginnen."',

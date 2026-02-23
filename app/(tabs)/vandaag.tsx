@@ -9,7 +9,14 @@ import {
   TextInput,
   Animated,
   Keyboard,
+  LayoutAnimation,
+  Platform,
+  UIManager,
 } from 'react-native';
+
+if (Platform.OS === 'android') {
+  UIManager.setLayoutAnimationEnabledExperimental?.(true);
+}
 import { AppIcon, InlineIcon, getSkillIcon } from '@/lib/icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -141,7 +148,7 @@ function TaskCard({
       ]}
     >
       {/* Pills row */}
-      <Pressable onPress={() => setExpanded((e) => !e)} style={tcStyles.topRow}>
+      <Pressable onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); setExpanded((e) => !e); }} style={tcStyles.topRow}>
         <View style={tcStyles.pills}>
           <View style={[tcStyles.pill, { backgroundColor: skillColor + '22' }]}>
             <Text style={[tcStyles.pillText, { color: skillColor }]}>{task.skill}</Text>
@@ -153,7 +160,7 @@ function TaskCard({
           </View>
           <Text style={[tcStyles.xpText, { color: colors.text3 }]}>+{xp} XP</Text>
         </View>
-        <InlineIcon name={expanded ? 'chevronUp' : 'chevronDown'} size={11} color={colors.text3} />
+        <InlineIcon name={expanded ? 'chevronUp' : 'chevronDown'} size={16} color={colors.text3} />
       </Pressable>
 
       <View style={tcStyles.titleRow}>
@@ -245,7 +252,7 @@ function TaskCard({
 
 const tcStyles = StyleSheet.create({
   card: { borderRadius: 16, padding: 16, marginBottom: 12 },
-  topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
+  topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, minHeight: 44, paddingVertical: 4 },
   pills: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
   pill: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 },
   pillText: { fontSize: 11, fontWeight: '700' },
@@ -878,7 +885,7 @@ export default function WeekScreen() {
                 return (
                   <View key={r.id}>
                     <Pressable
-                      onPress={() => setExpandedReflection(isExpanded ? null : r.id)}
+                      onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); setExpandedReflection(isExpanded ? null : r.id); }}
                       style={s.bonusRow}
                     >
                       <View style={s.bonusCheckWrap}>
@@ -898,7 +905,7 @@ export default function WeekScreen() {
                       >
                         {r.question}
                       </Text>
-                      <InlineIcon name={isExpanded ? 'chevronUp' : 'chevronDown'} size={12} color={done ? colors.text3 : '#A78BFA'} />
+                      <InlineIcon name={isExpanded ? 'chevronUp' : 'chevronDown'} size={16} color={done ? colors.text3 : '#A78BFA'} />
                     </Pressable>
                     {isExpanded && (
                       <View style={[s.reflExpanded, { backgroundColor: colors.surface2 }]}>
@@ -1130,7 +1137,7 @@ const s = StyleSheet.create({
   bonusTitle: { fontSize: 15, fontWeight: '700' as const, flex: 1 },
   bonusXpBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 },
   bonusXpBadgeText: { color: '#A78BFA', fontSize: 12, fontWeight: '700' as const },
-  bonusRow: { flexDirection: 'row' as const, alignItems: 'center' as const, paddingVertical: 8, gap: 8 },
+  bonusRow: { flexDirection: 'row' as const, alignItems: 'center' as const, paddingVertical: 12, gap: 10, minHeight: 48 },
   bonusCheckWrap: { width: 24, alignItems: 'center' as const, justifyContent: 'center' as const },
   bonusCheck: { fontSize: 16 },
   bonusRowTitle: { fontSize: 14, flex: 1 },

@@ -515,7 +515,7 @@ export const INTERACTIVE_TASKS_22: InteractiveTask[] = [
       'Schrijf op: herken ik deze boodschappen in hoe ik op de prestaties van mijn kind reageer?',
       'Formuleer één ding dat je bewust anders wilt doen dan je ouders deden rondom school.',
     ],
-    reflection: 'We ouderen onbewust vanuit onze eigen schoolervaringen. Bewustwording doorbreekt de automatische piloot.',
+    reflection: 'We opvoeden onbewust vanuit onze eigen schoolervaringen. Bewustwording doorbreekt de automatische piloot.',
     scienceNote: 'Intergenerationele overdracht van opvoedpatronen kan doorbroken worden door reflectieve verwerking van eigen jeugdervaringen (Fraiberg et al., 1975; Fonagy et al., 2002).',
     durationMin: 15,
   },
@@ -701,7 +701,7 @@ export const INTERACTIVE_TASKS_22: InteractiveTask[] = [
       'Deel jouw perspectief pas als laatste en benadruk: "Er is niet één goed antwoord, maar erover nadenken maakt je wijzer."',
     ],
     reflection: 'Moreel redeneren leer je niet door regels op te leggen, maar door samen te denken over lastige keuzes.',
-    scienceNote: 'Kohlbergs theorie van morele ontwikkeling toont dat het bespreken van morele dilemma\'s de overgang naar hogere morele rederneringsstadia bevordert (Kohlberg, 1984).',
+    scienceNote: 'Kohlbergs theorie van morele ontwikkeling toont dat het bespreken van morele dilemma\'s de overgang naar hogere morele redeneringsstadia bevordert (Kohlberg, 1984).',
     durationMin: 10,
   },
   {

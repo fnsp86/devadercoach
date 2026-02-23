@@ -239,6 +239,16 @@ export async function addStoryComment(comment: {
   return data as StoryComment;
 }
 
+export async function deleteStory(storyId: string) {
+  const { error } = await supabase.from('stories').delete().eq('id', storyId);
+  if (error) throw error;
+}
+
+export async function deleteStoryComment(commentId: string) {
+  const { error } = await supabase.from('story_comments').delete().eq('id', commentId);
+  if (error) throw error;
+}
+
 // ─── Chat queries ───────────────────────────────────────────────
 
 export async function getConversations(userId: string) {

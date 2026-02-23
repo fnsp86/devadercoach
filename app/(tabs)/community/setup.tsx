@@ -145,7 +145,7 @@ export default function CommunitySetup() {
               <View style={{ marginTop: 24 }}>
                 <Button
                   title="Volgende"
-                  onPress={() => setStep('location')}
+                  onPress={() => { Keyboard.dismiss(); setTimeout(() => setStep('location'), 50); }}
                   variant="primary"
                   size="lg"
                 />

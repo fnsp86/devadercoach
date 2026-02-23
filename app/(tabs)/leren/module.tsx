@@ -9,7 +9,14 @@ import {
   TextInput,
   Dimensions,
   Linking,
+  LayoutAnimation,
+  Platform,
+  UIManager,
 } from 'react-native';
+
+if (Platform.OS === 'android') {
+  UIManager.setLayoutAnimationEnabledExperimental?.(true);
+}
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
@@ -240,6 +247,7 @@ function InsightCardsStage({
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set([0]));
 
   const toggleCard = (index: number) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpandedCards((prev) => {
       const next = new Set(prev);
       if (next.has(index)) next.delete(index);
@@ -295,7 +303,7 @@ function InsightCardsStage({
                 <Text style={[insightStyles.title, { color: colors.text, flex: 1 }]}>{card.title}</Text>
                 {isCollapsible && (
                   <View style={[insightStyles.chevronBg, { backgroundColor: isExpanded ? skillColor + '12' : colors.surface2 }]}>
-                    <InlineIcon name={isExpanded ? 'chevronUp' : 'chevronDown'} size={14} color={isExpanded ? skillColor : colors.text3} />
+                    <InlineIcon name={isExpanded ? 'chevronUp' : 'chevronDown'} size={16} color={isExpanded ? skillColor : colors.text3} />
                   </View>
                 )}
               </View>
@@ -959,7 +967,7 @@ function MissionStage({
       {/* Tips */}
       {missionTips && missionTips.length > 0 && (
         <View>
-          <Pressable onPress={() => setShowTips(!showTips)} style={missionStyles.tipsToggle}>
+          <Pressable onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); setShowTips(!showTips); }} style={missionStyles.tipsToggle}>
             <Text style={[missionStyles.tipsToggleText, { color: skillColor }]}>
               {showTips ? 'Verberg tips' : 'Bekijk tips'} ({missionTips.length})
             </Text>
@@ -1096,7 +1104,7 @@ function ReflectionStage({
 
         {allQuestions && allQuestions.length > 1 && (
           <View>
-            <Pressable onPress={() => setShowMore(!showMore)} style={reflectStyles.moreToggle}>
+            <Pressable onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); setShowMore(!showMore); }} style={reflectStyles.moreToggle}>
               <Text style={[reflectStyles.moreToggleText, { color: skillColor }]}>
                 {showMore ? 'Verberg extra vragen' : 'Meer reflectievragen'}
               </Text>

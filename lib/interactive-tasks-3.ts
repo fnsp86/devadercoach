@@ -899,7 +899,7 @@ export const INTERACTIVE_TASKS_3: InteractiveTask[] = [
     ageGroups: ["0-2"],
     difficulty: "expert",
     points: 25,
-    psychologie: "Consistente rituelen bieden voorspelbaarheid en veiligheid. Een vast slapritueel versterkt de hechting omdat het kind leert: papa is betrouwbaar, elke dag hetzelfde.",
+    psychologie: "Consistente rituelen bieden voorspelbaarheid en veiligheid. Een vast slaapritueel versterkt de hechting omdat het kind leert: papa is betrouwbaar, elke dag hetzelfde.",
     skillTip: "Houd het ritueel simpel genoeg om het ook vol te houden als je moe bent.",
     vermijd: "Het ritueel te vaak veranderen — de kracht zit in de herhaling.",
     leerdoel: "Je leert om consistente rituelen te bouwen die de basis vormen van veilige hechting.",

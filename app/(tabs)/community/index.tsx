@@ -463,22 +463,22 @@ const styles = StyleSheet.create({
   },
 
   // Filters
-  filterScroll: { maxHeight: 52, flexGrow: 0 },
+  filterScroll: { maxHeight: 56, flexGrow: 0 },
   filterContent: {
     paddingHorizontal: 20,
     gap: 8,
-    paddingBottom: 8,
+    paddingVertical: 8,
   },
   filterChip: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderRadius: 20,
-    paddingHorizontal: 14,
-    paddingVertical: 7,
+    paddingHorizontal: 16,
+    paddingVertical: 9,
   },
-  filterText: { fontSize: 13, fontWeight: '600' },
+  filterText: { fontSize: 14, fontWeight: '700' },
 
   // List
   listContent: { paddingHorizontal: 16, paddingBottom: 100 },

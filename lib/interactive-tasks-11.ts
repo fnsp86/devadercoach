@@ -422,7 +422,7 @@ export const INTERACTIVE_TASKS_11: InteractiveTask[] = [
     ageGroups: ['6-9'],
     difficulty: 'gevorderd',
     points: 15,
-    psychologie: 'Emotie-dagboeken vergoten emotioneel zelfbewustzijn. Kinderen die hun gevoelens bijhouden, leren patronen herkennen en krijgen meer controle over hun emotionele leven.',
+    psychologie: 'Emotie-dagboeken vergroten emotioneel zelfbewustzijn. Kinderen die hun gevoelens bijhouden, leren patronen herkennen en krijgen meer controle over hun emotionele leven.',
     skillTip: 'Gebruik één woord per dag – dat is genoeg. Het doel is het patroon zien, niet het schrijven.',
     vermijd: 'Vermijd een dagboek afdwingen. Als hij het niet wil, is dat oké. Laat het vrijwillig zijn.',
     leerdoel: 'Je introduceert zelfobservatie als emotionele vaardigheid.',
@@ -562,7 +562,7 @@ export const INTERACTIVE_TASKS_11: InteractiveTask[] = [
     psychologie: 'Faalangst neemt toe in de pre-puberteit door sociale vergelijking. Het normaliseren en herkaderen als "signaal dat het je iets waard is" vermindert de angstspiraal.',
     skillTip: 'Vertel een eigen moment van faalangst. Maak het reëel en persoonlijk.',
     vermijd: 'Vermijd zeggen "gewoon niet bang zijn" of "falen is leren". Dat minimaliseert de echte angst.',
-    leerdoel: 'Je normaliseert faalangst en herkaadert het als betrokkenheidsignaal.',
+    leerdoel: 'Je normaliseert faalangst en herkadert het als betrokkenheidssignaal.',
     bron: 'Dweck, C. (2006). Mindset: The New Psychology of Success.',
   },
   {
