@@ -68,7 +68,9 @@ function ExpandableSection({
               {label}
             </Text>
           </View>
-          <InlineIcon name={open ? 'chevronUp' : 'chevronDown'} size={12} color={textColor} />
+          <View style={styles.chevronCircle}>
+            <InlineIcon name={open ? 'chevronUp' : 'chevronDown'} size={14} color={textColor} />
+          </View>
         </View>
         {open && (
           <Text style={[styles.expandableContent, { color: textColor }]}>
@@ -218,9 +220,9 @@ export default function InteractiveTaskCard({
 
           {/* Chevron */}
           <Animated.View
-            style={[styles.chevron, { transform: [{ rotate: chevronSpin }] }]}
+            style={[styles.chevronCircleLg, { backgroundColor: c.surface2, transform: [{ rotate: chevronSpin }] }]}
           >
-            <InlineIcon name="chevronDown" size={14} color={c.text3} />
+            <InlineIcon name="chevronDown" size={16} color={c.text2} />
           </Animated.View>
         </View>
 
@@ -363,9 +365,19 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '600',
   },
-  chevron: {
-    marginTop: 4,
-    paddingLeft: 4,
+  chevronCircleLg: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  chevronCircle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   expandedContent: {
     marginTop: 16,

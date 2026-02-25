@@ -1,5 +1,5 @@
 // Selecteert dagelijks 4-5 interactieve taken op basis van kinderen + skills + doelen
-import type { InteractiveTask, AgeGroup, Skill, AppDoel } from './types';
+import type { InteractiveTask, AgeGroup, Skill, AppDoel, ThemeTag } from './types';
 
 /**
  * Mapping van doelen naar gerelateerde skills.
@@ -81,6 +81,7 @@ export function selectDailyTasks(
   skills: Skill[],
   dateStr: string, // YYYY-MM-DD
   count: number = 5,
+  activeThemes: ThemeTag[] = [],
 ): InteractiveTask[] {
   const rng = seededRandom(dateSeed(dateStr));
 
@@ -91,17 +92,35 @@ export function selectDailyTasks(
 
   if (ageFiltered.length === 0) return [];
 
+  // ── Theme boost: reserveer 1 slot voor themed taak ──
+  const themedPicked: InteractiveTask[] = [];
+  const themedUsed = new Set<string>();
+
+  if (activeThemes.length > 0) {
+    const themedPool = shuffle(
+      ageFiltered.filter((t) => t.themes?.some((tag) => activeThemes.includes(tag))),
+      rng,
+    );
+    if (themedPool.length > 0) {
+      themedPicked.push(themedPool[0]);
+      themedUsed.add(themedPool[0].id);
+    }
+  }
+
+  const normalTarget = count - themedPicked.length;
+  const normalPool = ageFiltered.filter((t) => !themedUsed.has(t.id));
+
   // Prioriteer geselecteerde skills, maar mix ook andere erin
-  const primaryTasks = ageFiltered.filter((t) => skills.includes(t.skill));
-  const secondaryTasks = ageFiltered.filter((t) => !skills.includes(t.skill));
+  const primaryTasks = normalPool.filter((t) => skills.includes(t.skill));
+  const secondaryTasks = normalPool.filter((t) => !skills.includes(t.skill));
 
   // Shuffle both pools
   const shuffledPrimary = shuffle(primaryTasks, rng);
   const shuffledSecondary = shuffle(secondaryTasks, rng);
 
-  // Selecteer: 3-4 uit primaire skills, 1-2 uit andere
-  const primaryCount = Math.min(Math.ceil(count * 0.7), shuffledPrimary.length);
-  const secondaryCount = Math.min(count - primaryCount, shuffledSecondary.length);
+  // Selecteer: 70% uit primaire skills, 30% uit andere
+  const primaryCount = Math.min(Math.ceil(normalTarget * 0.7), shuffledPrimary.length);
+  const secondaryCount = Math.min(normalTarget - primaryCount, shuffledSecondary.length);
 
   const selected: InteractiveTask[] = [];
   const usedSkills = new Set<string>();
@@ -109,7 +128,6 @@ export function selectDailyTasks(
   // Voeg primaire taken toe met skill-variatie
   for (const task of shuffledPrimary) {
     if (selected.length >= primaryCount) break;
-    // Probeer variatie in skills
     if (usedSkills.size < skills.length && usedSkills.has(task.skill)) continue;
     selected.push(task);
     usedSkills.add(task.skill);
@@ -129,18 +147,19 @@ export function selectDailyTasks(
   }
 
   // Als we nog niet genoeg hebben, vul aan
-  const remaining = shuffle(ageFiltered, rng);
+  const remaining = shuffle(normalPool, rng);
   for (const task of remaining) {
-    if (selected.length >= count) break;
+    if (selected.length >= normalTarget) break;
     if (selected.includes(task)) continue;
     selected.push(task);
   }
 
-  // Mix de volgorde: basis eerst, dan gevorderd, dan expert
+  // Combineer themed + normal, sorteer op moeilijkheid
+  const finalTasks = [...themedPicked, ...selected].slice(0, count);
   const difficultyOrder = { basis: 0, gevorderd: 1, expert: 2 };
-  selected.sort((a, b) => difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]);
+  finalTasks.sort((a, b) => difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]);
 
-  return selected.slice(0, count);
+  return finalTasks;
 }
 
 /**

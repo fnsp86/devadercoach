@@ -46,7 +46,7 @@ function timeAgo(dateStr: string): string {
 
 export default function StoryDetail() {
   const { colors } = useTheme();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
 
@@ -210,12 +210,12 @@ export default function StoryDetail() {
           </Pressable>
           <Text style={[styles.headerTitle, { color: colors.text }]}>Verhaal</Text>
           <View style={{ flexDirection: 'row', gap: 12 }}>
-            {isOwner && (
+            {(isOwner || isAdmin) && (
               <Pressable onPress={handleDeleteStory}>
                 <InlineIcon name="trash" size={20} color={colors.red} />
               </Pressable>
             )}
-            {!isOwner && (
+            {!isOwner && !isAdmin && (
               <Pressable onPress={handleReport}>
                 <InlineIcon name="alertTriangle" size={20} color={colors.text3} />
               </Pressable>
@@ -252,10 +252,6 @@ export default function StoryDetail() {
           {/* Content */}
           <Text style={[styles.content, { color: colors.text }]}>{story.content}</Text>
 
-          {story.image_url && (
-            <Image source={{ uri: story.image_url }} style={styles.storyImage} />
-          )}
-
           {/* Like button */}
           <View style={[styles.actionsRow, { borderColor: colors.border }]}>
             <Pressable onPress={handleLike} style={styles.actionBtn}>
@@ -279,7 +275,7 @@ export default function StoryDetail() {
                 <Text style={[styles.commentAuthor, { color: colors.text }]}>{comment.author?.naam ?? 'Vader'}</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                   <Text style={[styles.commentTime, { color: colors.text3 }]}>{timeAgo(comment.created_at)}</Text>
-                  {comment.author_id === user?.id && (
+                  {(comment.author_id === user?.id || isAdmin) && (
                     <Pressable onPress={() => handleDeleteComment(comment.id)} hitSlop={8}>
                       <InlineIcon name="trash" size={14} color={colors.text3} />
                     </Pressable>
@@ -342,7 +338,6 @@ const styles = StyleSheet.create({
   },
   categoryText: { fontSize: 13, fontWeight: '600' },
   content: { fontSize: 16, lineHeight: 26, marginBottom: 12 },
-  storyImage: { width: '100%', height: 220, borderRadius: 12, marginBottom: 12 },
   actionsRow: {
     flexDirection: 'row',
     gap: 24,

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type {
   OnboardingState,
@@ -16,11 +16,32 @@ import type {
   PulseStats,
   StageProgress,
   ReflectionNote,
+  TaskOutcome,
+  JournalEntry,
 } from './types';
 import { challenges } from './challenges';
 import { getCurrentLevel } from './training';
 import type { ArenaStats } from './badge-checker';
 import { DEFAULT_ARENA_STATS } from './badge-checker';
+import { useAuth } from './auth';
+
+// -- Per-user backup (used by logout/delete handlers) ----------------------
+export async function saveStoreForUser(userId: string) {
+  try {
+    const allKeys = await AsyncStorage.getAllKeys();
+    const vcKeys = (allKeys as string[]).filter(
+      (k) => k.startsWith('vc-') && !k.startsWith('vc-userdata-') && k !== 'vc-current-user-id',
+    );
+    const pairs = await AsyncStorage.multiGet(vcKeys);
+    const blob: Record<string, string> = {};
+    pairs.forEach(([key, value]) => {
+      if (value) blob[key] = value;
+    });
+    await AsyncStorage.setItem(`vc-userdata-${userId}`, JSON.stringify(blob));
+  } catch (e) {
+    console.error('[store] saveStoreForUser error:', e);
+  }
+}
 
 // -- AsyncStorage helpers ---------------------------------------------------
 async function load<T>(key: string): Promise<T | null> {
@@ -84,6 +105,11 @@ const KEYS = {
   ARENA_STATS: 'vc-arena-stats',                    // ArenaStats
   REFLECTION_NOTES: 'vc-reflection-notes',          // ReflectionNote[]
   HELP_FAVORITES: 'vc-help-favorites',              // string[]
+  HELP_HISTORY: 'vc-help-history',                  // string[] (laatste 10 bekeken)
+  HELP_FEEDBACK: 'vc-help-feedback',                // Record<string, 'up' | 'down'>
+  TASK_OUTCOMES: 'vc-task-outcomes',                // TaskOutcome[]
+  WEEKLY_RECAPS_SEEN: 'vc-weekly-recaps-seen',     // string[] (weekKeys)
+  JOURNAL_ENTRIES: 'vc-journal-entries',            // JournalEntry[]
 } as const;
 
 // -- Week task completion type ----------------------------------------------
@@ -146,10 +172,32 @@ interface StoreState {
   getReflectionNotesForModule: (moduleId: string) => ReflectionNote[];
   getReflectionNotesForSkill: (skill: string) => ReflectionNote[];
 
+  // Task outcomes ("Hoe ging het?")
+  taskOutcomes: TaskOutcome[];
+  addTaskOutcome: (outcome: TaskOutcome) => void;
+  getTaskOutcome: (taskId: string, weekKey: string) => TaskOutcome | undefined;
+  getOutcomesForWeek: (weekKey: string) => TaskOutcome[];
+
+  // Journal (Vader Dagboek)
+  journalEntries: JournalEntry[];
+  addJournalEntry: (entry: JournalEntry) => void;
+  getJournalEntriesForDate: (date: string) => JournalEntry[];
+
+  // Weekly recaps seen
+  weeklyRecapsSeen: string[];
+  markRecapSeen: (weekKey: string) => void;
+  isRecapSeen: (weekKey: string) => boolean;
+
   // Help favorites
   helpFavorites: string[];
   toggleHelpFavorite: (situationId: string) => void;
   isHelpFavorite: (situationId: string) => boolean;
+
+  // Help history & feedback
+  helpHistory: string[];
+  addHelpHistory: (situationId: string) => void;
+  helpFeedback: Record<string, 'up' | 'down'>;
+  setHelpFeedback: (situationId: string, feedback: 'up' | 'down') => void;
 
   saveProfile: (p: UserProfile) => void;
   saveOnboarding: (o: OnboardingState) => void;
@@ -170,7 +218,9 @@ interface StoreState {
   markTrainingItemComplete: (skill: Skill, itemId: string, isCorrect?: boolean) => void;
   resetTraining: (skill: Skill) => void;
 
-  clearAll: () => void;
+  saveForUser: (userId: string) => Promise<void>;
+  restoreUserData: (userId: string) => Promise<{ hasProfile: boolean }>;
+  clearAll: () => Promise<void>;
 }
 
 const StoreContext = createContext<StoreState | null>(null);
@@ -199,71 +249,318 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [arenaStats, setArenaStats] = useState<ArenaStats>(DEFAULT_ARENA_STATS);
   const [reflectionNotes, setReflectionNotes] = useState<ReflectionNote[]>([]);
   const [helpFavorites, setHelpFavorites] = useState<string[]>([]);
+  const [helpHistory, setHelpHistory] = useState<string[]>([]);
+  const [helpFeedback, setHelpFeedback] = useState<Record<string, 'up' | 'down'>>({});
+  const [taskOutcomes, setTaskOutcomes] = useState<TaskOutcome[]>([]);
+  const [weeklyRecapsSeen, setWeeklyRecapsSeen] = useState<string[]>([]);
+  const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
+
+  // -- Per-user data isolation ------------------------------------------------
+  const { user, loading: authLoading } = useAuth();
+  const lastRestoredUserRef = useRef<string | null | undefined>(undefined);
+
+  // Reusable: read all data from generic AsyncStorage keys into state
+  async function hydrateFromStorage() {
+    const [
+      storedProfile,
+      storedOnboarding,
+      storedCompletions,
+      storedTasks,
+      storedWeekPlan,
+      storedSkillXP,
+      storedScenarioCompletions,
+      storedTrainingProgress,
+      storedWeekTaskCompletions,
+      storedPulseCheckIns,
+      storedStageProgress,
+      storedComboState,
+      storedUnlockedBadges,
+      storedBadgeUnlockDates,
+      storedArenaStats,
+      storedReflectionNotes,
+      storedHelpFavorites,
+      storedHelpHistory,
+      storedHelpFeedback,
+      storedTaskOutcomes,
+      storedWeeklyRecapsSeen,
+      storedJournalEntries,
+    ] = await Promise.all([
+      load<UserProfile>(KEYS.PROFILE),
+      load<OnboardingState>(KEYS.ONBOARDING),
+      load<Completion[]>(KEYS.COMPLETIONS),
+      load<TaskCompletion[]>(KEYS.TASKS),
+      load<WeekPlan>(KEYS.WEEK_PLAN),
+      load<Record<Skill, SkillProgress>>(KEYS.SKILL_XP),
+      load<ScenarioCompletion[]>(KEYS.SCENARIO_COMPLETIONS),
+      load<Record<Skill, TrainingProgress>>(KEYS.TRAINING_PROGRESS),
+      load<WeekTaskCompletion[]>(KEYS.WEEK_TASK_COMPLETIONS),
+      load<PulseCheckIn[]>(KEYS.PULSE_CHECKINS),
+      load<Record<string, StageProgress>>(KEYS.STAGE_PROGRESS),
+      load<{ consecutiveDays: number; lastActiveDate: string }>(KEYS.COMBO_STATE),
+      load<string[]>(KEYS.UNLOCKED_BADGES),
+      load<Record<string, string>>(KEYS.BADGE_UNLOCK_DATES),
+      load<ArenaStats>(KEYS.ARENA_STATS),
+      load<ReflectionNote[]>(KEYS.REFLECTION_NOTES),
+      load<string[]>(KEYS.HELP_FAVORITES),
+      load<string[]>(KEYS.HELP_HISTORY),
+      load<Record<string, 'up' | 'down'>>(KEYS.HELP_FEEDBACK),
+      load<TaskOutcome[]>(KEYS.TASK_OUTCOMES),
+      load<string[]>(KEYS.WEEKLY_RECAPS_SEEN),
+      load<JournalEntry[]>(KEYS.JOURNAL_ENTRIES),
+    ]);
+
+    setProfile(storedProfile);
+    setOnboarding(storedOnboarding);
+    setCompletions(storedCompletions || []);
+    setTaskCompletions(storedTasks || []);
+    setWeekPlan(storedWeekPlan);
+    setSkillXP(storedSkillXP || ({} as Record<Skill, SkillProgress>));
+    setScenarioCompletions(storedScenarioCompletions || []);
+    setTrainingProgress(storedTrainingProgress || ({} as Record<Skill, TrainingProgress>));
+    setWeekTaskCompletions(storedWeekTaskCompletions || []);
+    setPulseCheckIns(storedPulseCheckIns || []);
+    setStageProgress(storedStageProgress || {});
+    if (storedComboState) {
+      setConsecutiveActiveDays(storedComboState.consecutiveDays);
+      setLastActiveDate(storedComboState.lastActiveDate);
+    } else {
+      setConsecutiveActiveDays(0);
+      setLastActiveDate('');
+    }
+    setUnlockedBadges(storedUnlockedBadges || []);
+    setBadgeUnlockDates(storedBadgeUnlockDates || {});
+    setArenaStats(storedArenaStats || DEFAULT_ARENA_STATS);
+    setReflectionNotes(storedReflectionNotes || []);
+    setHelpFavorites(storedHelpFavorites || []);
+    setHelpHistory(storedHelpHistory || []);
+    setHelpFeedback(storedHelpFeedback || {});
+    setTaskOutcomes(storedTaskOutcomes || []);
+    setWeeklyRecapsSeen(storedWeeklyRecapsSeen || []);
+    setJournalEntries(storedJournalEntries || []);
+  }
 
   // Hydrate all state from AsyncStorage on mount
   useEffect(() => {
-    (async () => {
-      const [
-        storedProfile,
-        storedOnboarding,
-        storedCompletions,
-        storedTasks,
-        storedWeekPlan,
-        storedSkillXP,
-        storedScenarioCompletions,
-        storedTrainingProgress,
-        storedWeekTaskCompletions,
-        storedPulseCheckIns,
-        storedStageProgress,
-        storedComboState,
-        storedUnlockedBadges,
-        storedBadgeUnlockDates,
-        storedArenaStats,
-        storedReflectionNotes,
-        storedHelpFavorites,
-      ] = await Promise.all([
-        load<UserProfile>(KEYS.PROFILE),
-        load<OnboardingState>(KEYS.ONBOARDING),
-        load<Completion[]>(KEYS.COMPLETIONS),
-        load<TaskCompletion[]>(KEYS.TASKS),
-        load<WeekPlan>(KEYS.WEEK_PLAN),
-        load<Record<Skill, SkillProgress>>(KEYS.SKILL_XP),
-        load<ScenarioCompletion[]>(KEYS.SCENARIO_COMPLETIONS),
-        load<Record<Skill, TrainingProgress>>(KEYS.TRAINING_PROGRESS),
-        load<WeekTaskCompletion[]>(KEYS.WEEK_TASK_COMPLETIONS),
-        load<PulseCheckIn[]>(KEYS.PULSE_CHECKINS),
-        load<Record<string, StageProgress>>(KEYS.STAGE_PROGRESS),
-        load<{ consecutiveDays: number; lastActiveDate: string }>(KEYS.COMBO_STATE),
-        load<string[]>(KEYS.UNLOCKED_BADGES),
-        load<Record<string, string>>(KEYS.BADGE_UNLOCK_DATES),
-        load<ArenaStats>(KEYS.ARENA_STATS),
-        load<ReflectionNote[]>(KEYS.REFLECTION_NOTES),
-        load<string[]>(KEYS.HELP_FAVORITES),
-      ]);
-
-      setProfile(storedProfile);
-      setOnboarding(storedOnboarding);
-      setCompletions(storedCompletions || []);
-      setTaskCompletions(storedTasks || []);
-      setWeekPlan(storedWeekPlan);
-      setSkillXP(storedSkillXP || ({} as Record<Skill, SkillProgress>));
-      setScenarioCompletions(storedScenarioCompletions || []);
-      setTrainingProgress(storedTrainingProgress || ({} as Record<Skill, TrainingProgress>));
-      setWeekTaskCompletions(storedWeekTaskCompletions || []);
-      setPulseCheckIns(storedPulseCheckIns || []);
-      setStageProgress(storedStageProgress || {});
-      if (storedComboState) {
-        setConsecutiveActiveDays(storedComboState.consecutiveDays);
-        setLastActiveDate(storedComboState.lastActiveDate);
-      }
-      setUnlockedBadges(storedUnlockedBadges || []);
-      setBadgeUnlockDates(storedBadgeUnlockDates || {});
-      setArenaStats(storedArenaStats || DEFAULT_ARENA_STATS);
-      setReflectionNotes(storedReflectionNotes || []);
-      if (storedHelpFavorites) setHelpFavorites(storedHelpFavorites);
-      setHydrated(true);
-    })();
+    hydrateFromStorage().then(() => setHydrated(true));
   }, []);
+
+  // Save current in-memory state as backup for given user
+  async function saveForUserFn(userId: string): Promise<void> {
+    try {
+      const blob: Record<string, string> = {};
+
+      // Serialize all store state directly from memory (not from AsyncStorage)
+      if (profile) blob[KEYS.PROFILE] = JSON.stringify(profile);
+      if (onboarding) blob[KEYS.ONBOARDING] = JSON.stringify(onboarding);
+      if (completions.length > 0) blob[KEYS.COMPLETIONS] = JSON.stringify(completions);
+      if (taskCompletions.length > 0) blob[KEYS.TASKS] = JSON.stringify(taskCompletions);
+      if (weekPlan) blob[KEYS.WEEK_PLAN] = JSON.stringify(weekPlan);
+      if (Object.keys(skillXP).length > 0) blob[KEYS.SKILL_XP] = JSON.stringify(skillXP);
+      if (scenarioCompletions.length > 0) blob[KEYS.SCENARIO_COMPLETIONS] = JSON.stringify(scenarioCompletions);
+      if (Object.keys(trainingProgress).length > 0) blob[KEYS.TRAINING_PROGRESS] = JSON.stringify(trainingProgress);
+      if (weekTaskCompletions.length > 0) blob[KEYS.WEEK_TASK_COMPLETIONS] = JSON.stringify(weekTaskCompletions);
+      if (pulseCheckIns.length > 0) blob[KEYS.PULSE_CHECKINS] = JSON.stringify(pulseCheckIns);
+      if (Object.keys(stageProgress).length > 0) blob[KEYS.STAGE_PROGRESS] = JSON.stringify(stageProgress);
+      if (consecutiveActiveDays > 0 || lastActiveDate) {
+        blob[KEYS.COMBO_STATE] = JSON.stringify({ consecutiveDays: consecutiveActiveDays, lastActiveDate });
+      }
+      if (unlockedBadges.length > 0) blob[KEYS.UNLOCKED_BADGES] = JSON.stringify(unlockedBadges);
+      if (Object.keys(badgeUnlockDates).length > 0) blob[KEYS.BADGE_UNLOCK_DATES] = JSON.stringify(badgeUnlockDates);
+      blob[KEYS.ARENA_STATS] = JSON.stringify(arenaStats);
+      if (reflectionNotes.length > 0) blob[KEYS.REFLECTION_NOTES] = JSON.stringify(reflectionNotes);
+      if (helpFavorites.length > 0) blob[KEYS.HELP_FAVORITES] = JSON.stringify(helpFavorites);
+      if (helpHistory.length > 0) blob[KEYS.HELP_HISTORY] = JSON.stringify(helpHistory);
+      if (Object.keys(helpFeedback).length > 0) blob[KEYS.HELP_FEEDBACK] = JSON.stringify(helpFeedback);
+      if (taskOutcomes.length > 0) blob[KEYS.TASK_OUTCOMES] = JSON.stringify(taskOutcomes);
+      if (weeklyRecapsSeen.length > 0) blob[KEYS.WEEKLY_RECAPS_SEEN] = JSON.stringify(weeklyRecapsSeen);
+      if (journalEntries.length > 0) blob[KEYS.JOURNAL_ENTRIES] = JSON.stringify(journalEntries);
+
+      // Also grab non-store keys from AsyncStorage (gamification, notifications, etc.)
+      const allAsyncKeys = await AsyncStorage.getAllKeys();
+      const storeKeySet = new Set(Object.values(KEYS) as string[]);
+      const extraKeys = (allAsyncKeys as string[]).filter(
+        (k) => k.startsWith('vc-') && !k.startsWith('vc-userdata-') &&
+          k !== 'vc-current-user-id' && !storeKeySet.has(k),
+      );
+      if (extraKeys.length > 0) {
+        const extraPairs = await AsyncStorage.multiGet(extraKeys);
+        extraPairs.forEach(([key, value]) => {
+          if (value) blob[key] = value;
+        });
+      }
+
+      console.log('[store] saveForUser', userId, '→', Object.keys(blob).length, 'keys, has profile:', !!blob[KEYS.PROFILE]);
+      await AsyncStorage.setItem(`vc-userdata-${userId}`, JSON.stringify(blob));
+    } catch (e) {
+      console.error('[store] saveForUser error:', e);
+    }
+  }
+
+  // Explicit user-data restore: called from login handler BEFORE navigating.
+  // This ensures data swap is complete before the UI changes.
+  async function restoreUserDataFn(userId: string): Promise<{ hasProfile: boolean }> {
+    // Set ref IMMEDIATELY to prevent the fallback useEffect from racing us.
+    // Without this, the effect can start its own swap while we're mid-await.
+    lastRestoredUserRef.current = userId;
+
+    const marker = await AsyncStorage.getItem('vc-current-user-id');
+    console.log('[store] restoreUserData:', userId.slice(0, 8), 'marker:', marker?.slice(0, 8) ?? 'null');
+
+    if (marker === userId) {
+      // Data already belongs to this user — no swap needed
+      console.log('[store] restoreUserData: marker matches');
+      const profileData = await load<UserProfile>(KEYS.PROFILE);
+      return { hasProfile: !!profileData };
+    }
+
+    if (!marker) {
+      // No marker — check if there's a backup for this user (e.g., after local data reset)
+      console.log('[store] restoreUserData: no marker, checking backup');
+      await AsyncStorage.setItem('vc-current-user-id', userId);
+      const raw = await AsyncStorage.getItem(`vc-userdata-${userId}`);
+      if (raw) {
+        const blob: Record<string, string> = JSON.parse(raw);
+        const entries = Object.entries(blob);
+        console.log('[store] restoreUserData: found backup with', entries.length, 'keys');
+        if (entries.length > 0) {
+          await AsyncStorage.multiSet(entries);
+        }
+        await hydrateFromStorage();
+      }
+      const profileData = await load<UserProfile>(KEYS.PROFILE);
+      return { hasProfile: !!profileData };
+    }
+
+    // marker !== userId — different user! Save old, restore new.
+    console.log('[store] restoreUserData: swapping from', marker.slice(0, 8), 'to', userId.slice(0, 8));
+
+    // 1. Save current in-memory state for the old user
+    await saveForUserFn(marker);
+
+    // 2. Clear regular keys (keep backups + marker)
+    const allKeys = await AsyncStorage.getAllKeys();
+    const toClear = (allKeys as string[]).filter(
+      (k) =>
+        k.startsWith('vc-') &&
+        !k.startsWith('vc-userdata-') &&
+        k !== 'vc-current-user-id' &&
+        k !== 'vc-secure-store-migrated',
+    );
+    if (toClear.length > 0) {
+      await AsyncStorage.multiRemove(toClear);
+    }
+
+    // 3. Restore backup for new user
+    const raw = await AsyncStorage.getItem(`vc-userdata-${userId}`);
+    const blob: Record<string, string> = raw ? JSON.parse(raw) : {};
+    const entries = Object.entries(blob);
+    console.log('[store] restoreUserData: restored', entries.length, 'keys');
+    if (entries.length > 0) {
+      await AsyncStorage.multiSet(entries);
+    }
+
+    // 4. Update marker + re-hydrate
+    await AsyncStorage.setItem('vc-current-user-id', userId);
+    await hydrateFromStorage();
+
+    const profileData = await load<UserProfile>(KEYS.PROFILE);
+    return { hasProfile: !!profileData };
+  }
+
+  // Per-user data isolation: fallback for app startup when a session already exists.
+  // Login-time swaps are handled explicitly by restoreUserData above.
+  useEffect(() => {
+    if (!hydrated || authLoading) return;
+
+    const uid = user?.id ?? null;
+
+    // Skip if already handled this user (or null)
+    if (lastRestoredUserRef.current === uid) return;
+    lastRestoredUserRef.current = uid;
+
+    if (!uid) return; // Logged out, nothing to do
+
+    (async () => {
+      try {
+        const marker = await AsyncStorage.getItem('vc-current-user-id');
+        console.log('[store] restore: uid=', uid.slice(0, 8), 'marker=', marker?.slice(0, 8) ?? 'null');
+
+        if (marker === uid) {
+          console.log('[store] restore: marker matches, data is correct');
+          return;
+        }
+
+        if (!marker) {
+          // No marker — check if there's a backup (e.g., after local data reset)
+          console.log('[store] restore: no marker, checking backup for user');
+          await AsyncStorage.setItem('vc-current-user-id', uid);
+          const raw = await AsyncStorage.getItem(`vc-userdata-${uid}`);
+          if (raw) {
+            const blob: Record<string, string> = JSON.parse(raw);
+            const entries = Object.entries(blob);
+            console.log('[store] restore: found backup with', entries.length, 'keys');
+            if (entries.length > 0) {
+              await AsyncStorage.multiSet(entries);
+            }
+            await hydrateFromStorage();
+          }
+          return;
+        }
+
+        // marker !== uid → Different user! Save old user's data, restore new user's.
+        console.log('[store] restore: different user, swapping data');
+
+        // 1. Save current data as backup for the old user (safety net)
+        const existingBackup = await AsyncStorage.getItem(`vc-userdata-${marker}`);
+        if (!existingBackup) {
+          // No backup from logout handler → save from AsyncStorage as fallback
+          const allKeys = await AsyncStorage.getAllKeys();
+          const vcKeys = (allKeys as string[]).filter(
+            (k) => k.startsWith('vc-') && !k.startsWith('vc-userdata-') &&
+              k !== 'vc-current-user-id' && k !== 'vc-secure-store-migrated',
+          );
+          if (vcKeys.length > 0) {
+            const pairs = await AsyncStorage.multiGet(vcKeys);
+            const blob: Record<string, string> = {};
+            pairs.forEach(([key, value]) => { if (value) blob[key] = value; });
+            if (Object.keys(blob).length > 0) {
+              await AsyncStorage.setItem(`vc-userdata-${marker}`, JSON.stringify(blob));
+              console.log('[store] restore: saved', Object.keys(blob).length, 'keys for old user (fallback)');
+            }
+          }
+        }
+
+        // 2. Clear current data
+        const allKeys = await AsyncStorage.getAllKeys();
+        const toClear = (allKeys as string[]).filter(
+          (k) =>
+            k.startsWith('vc-') &&
+            !k.startsWith('vc-userdata-') &&
+            k !== 'vc-secure-store-migrated' &&
+            k !== 'vc-current-user-id',
+        );
+        if (toClear.length > 0) {
+          await AsyncStorage.multiRemove(toClear);
+        }
+
+        // 3. Restore backup for new user
+        const raw = await AsyncStorage.getItem(`vc-userdata-${uid}`);
+        const blob: Record<string, string> = raw ? JSON.parse(raw) : {};
+        const entries = Object.entries(blob);
+        console.log('[store] restore: backup for new user has', entries.length, 'keys');
+
+        if (entries.length > 0) {
+          await AsyncStorage.multiSet(entries);
+        }
+
+        // 4. Update marker and re-hydrate
+        await AsyncStorage.setItem('vc-current-user-id', uid);
+        await hydrateFromStorage();
+      } catch (e) {
+        console.error('[store] restore for user error:', e);
+      }
+    })();
+  }, [hydrated, authLoading, user?.id]);
 
   function saveProfileFn(p: UserProfile) {
     setProfile(p);
@@ -525,6 +822,102 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     return helpFavorites.includes(situationId);
   }
 
+  // -- Help history & feedback ------------------------------------------------
+  function addHelpHistoryFn(situationId: string) {
+    setHelpHistory((prev) => {
+      const filtered = prev.filter((id) => id !== situationId);
+      const updated = [situationId, ...filtered].slice(0, 10);
+      save(KEYS.HELP_HISTORY, updated);
+      return updated;
+    });
+  }
+
+  function setHelpFeedbackFn(situationId: string, feedback: 'up' | 'down') {
+    setHelpFeedback((prev) => {
+      const updated = { ...prev, [situationId]: feedback };
+      save(KEYS.HELP_FEEDBACK, updated);
+      return updated;
+    });
+  }
+
+  // -- Task outcomes ("Hoe ging het?") ----------------------------------------
+  function addTaskOutcomeFn(outcome: TaskOutcome) {
+    setTaskOutcomes((prev) => {
+      const isNew = !prev.some(
+        (o) => o.taskId === outcome.taskId && o.weekKey === outcome.weekKey,
+      );
+      // Vervang bestaande outcome voor dezelfde taak+week
+      const filtered = prev.filter(
+        (o) => !(o.taskId === outcome.taskId && o.weekKey === outcome.weekKey),
+      );
+      const updated = [...filtered, outcome];
+      save(KEYS.TASK_OUTCOMES, updated);
+
+      // +2 XP voor eerlijkheid (alleen bij eerste keer)
+      if (isNew && outcome.skill) {
+        setSkillXP((prevXP) => {
+          const current = prevXP[outcome.skill!] || { xp: 0, level: 1, lastUpdated: '' };
+          const newXP = current.xp + 2;
+          const newLevel = getCurrentLevel(newXP);
+          const updatedXP = {
+            ...prevXP,
+            [outcome.skill!]: { xp: newXP, level: newLevel, lastUpdated: new Date().toISOString() },
+          };
+          save(KEYS.SKILL_XP, updatedXP);
+          return updatedXP;
+        });
+      }
+
+      return updated;
+    });
+  }
+
+  function getTaskOutcomeFn(taskId: string, weekKey: string): TaskOutcome | undefined {
+    return taskOutcomes.find((o) => o.taskId === taskId && o.weekKey === weekKey);
+  }
+
+  function getOutcomesForWeekFn(weekKey: string): TaskOutcome[] {
+    return taskOutcomes.filter((o) => o.weekKey === weekKey);
+  }
+
+  // -- Weekly recap seen tracking ----------------------------------------
+  function markRecapSeenFn(weekKey: string) {
+    setWeeklyRecapsSeen((prev) => {
+      if (prev.includes(weekKey)) return prev;
+      const updated = [...prev, weekKey];
+      save(KEYS.WEEKLY_RECAPS_SEEN, updated);
+      return updated;
+    });
+  }
+
+  function isRecapSeenFn(weekKey: string): boolean {
+    return weeklyRecapsSeen.includes(weekKey);
+  }
+
+  // -- Journal (Vader Dagboek) ----------------------------------------
+  function addJournalEntryFn(entry: JournalEntry) {
+    setJournalEntries((prev) => {
+      const updated = [...prev, entry];
+      save(KEYS.JOURNAL_ENTRIES, updated);
+      // +5 XP voor dagboek entry
+      if (entry.skill) {
+        setSkillXP((prevXP) => {
+          const current = prevXP[entry.skill!] || { xp: 0, level: 1, lastUpdated: '' };
+          const newXP = current.xp + 5;
+          const newLevel = getCurrentLevel(newXP);
+          const updatedXP = { ...prevXP, [entry.skill!]: { xp: newXP, level: newLevel, lastUpdated: new Date().toISOString() } };
+          save(KEYS.SKILL_XP, updatedXP);
+          return updatedXP;
+        });
+      }
+      return updated;
+    });
+  }
+
+  function getJournalEntriesForDateFn(date: string): JournalEntry[] {
+    return journalEntries.filter((e) => e.date === date);
+  }
+
   // -- Stage progress (Vader Missies) ----------------------------------------
   function completeStageFn(moduleId: string, stageId: string, xpEarned: number, skill: Skill, totalStages: number) {
     setStageProgress((prev) => {
@@ -623,16 +1016,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     });
   }
 
-  function clearAllFn() {
-    Object.values(KEYS).forEach(remove);
-    // Also clear keys managed outside the store
-    remove('vc-gamification');
-    remove('vc-notifications');
-    // Clear per-skill learning module completion keys
-    const skills = ['Aanwezigheid', 'Emotiecoaching', 'Zelfregulatie', 'Grenzen', 'Autonomie', 'Herstel', 'Verbinding', 'Reflectie'];
-    skills.forEach((s) => remove(`vc-completed-modules-${s}`));
-    remove(KEYS.STAGE_PROGRESS);
-    remove(KEYS.COMBO_STATE);
+  async function clearAllFn(): Promise<void> {
+    // Reset in-memory state immediately
     setProfile(null);
     setOnboarding(null);
     setCompletions([]);
@@ -651,6 +1036,22 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setArenaStats(DEFAULT_ARENA_STATS);
     setReflectionNotes([]);
     setHelpFavorites([]);
+    setHelpHistory([]);
+    setHelpFeedback({});
+    setTaskOutcomes([]);
+    setWeeklyRecapsSeen([]);
+    setJournalEntries([]);
+
+    // Await all AsyncStorage removals (prevents race with restore effect)
+    const skills = ['Aanwezigheid', 'Emotiecoaching', 'Zelfregulatie', 'Grenzen', 'Autonomie', 'Herstel', 'Verbinding', 'Reflectie'];
+    const keysToRemove = [
+      ...Object.values(KEYS),
+      'vc-gamification',
+      'vc-notifications',
+      'vc-week-tasks-cache',
+      ...skills.map((s) => `vc-completed-modules-${s}`),
+    ];
+    await AsyncStorage.multiRemove(keysToRemove).catch(() => {});
   }
 
   // Count number of unique days this week with completed tasks
@@ -715,6 +1116,20 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     helpFavorites,
     toggleHelpFavorite: toggleHelpFavoriteFn,
     isHelpFavorite: isHelpFavoriteFn,
+    helpHistory,
+    addHelpHistory: addHelpHistoryFn,
+    helpFeedback,
+    setHelpFeedback: setHelpFeedbackFn,
+    taskOutcomes,
+    addTaskOutcome: addTaskOutcomeFn,
+    getTaskOutcome: getTaskOutcomeFn,
+    getOutcomesForWeek: getOutcomesForWeekFn,
+    journalEntries,
+    addJournalEntry: addJournalEntryFn,
+    getJournalEntriesForDate: getJournalEntriesForDateFn,
+    weeklyRecapsSeen,
+    markRecapSeen: markRecapSeenFn,
+    isRecapSeen: isRecapSeenFn,
     saveProfile: saveProfileFn,
     saveOnboarding: saveOnboardingFn,
     addCompletion: addCompletionFn,
@@ -727,6 +1142,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     getTrainingProgress: getTrainingProgressFn,
     markTrainingItemComplete: markTrainingItemCompleteFn,
     resetTraining: resetTrainingFn,
+    saveForUser: saveForUserFn,
+    restoreUserData: restoreUserDataFn,
     clearAll: clearAllFn,
   };
 

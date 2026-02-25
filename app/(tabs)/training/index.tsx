@@ -13,7 +13,8 @@ import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
 import { SKILL_LIST } from '@/lib/skills';
 import { getTrainingForSkill } from '@/lib/training-content';
-import type { Skill } from '@/lib/types';
+import type { Skill, ThemeTag } from '@/lib/types';
+import { resolveActiveThemes } from '@/lib/theme-resolver';
 import { SKILL_COLORS } from '@/lib/colors';
 import { AppIcon, InlineIcon, getSkillIcon } from '@/lib/icons';
 
@@ -22,10 +23,16 @@ export default function TrainingOverview() {
   const router = useRouter();
   const store = useStore();
 
+  const activeThemes = useMemo(() => {
+    const profile = store.profile;
+    if (!profile) return [] as ThemeTag[];
+    return resolveActiveThemes(profile);
+  }, [store.profile]);
+
   // Pre-compute training data per skill
   const skillData = useMemo(() => {
     return SKILL_LIST.map((s) => {
-      const totalItems = getTrainingForSkill(s.label).length;
+      const totalItems = getTrainingForSkill(s.label, activeThemes).length;
       const progress = store.getTrainingProgress(s.label);
       const completedCount = progress.completedItems.length;
       const correctCount = progress.correctAnswers;

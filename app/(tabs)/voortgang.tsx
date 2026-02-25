@@ -24,6 +24,7 @@ import { ALL_INTERACTIVE_TASKS } from '@/lib/interactive-tasks';
 import Card from '@/components/Card';
 import Header from '@/components/Header';
 import ProgressBar from '@/components/ProgressBar';
+import { getTopRecommendedSkills } from '@/lib/skill-recommender';
 
 // ── Constants ───────────────────────────────────────────────────
 const RARITY_COLORS: Record<string, string> = {
@@ -124,7 +125,7 @@ function QuickStat({
 // ── Component ────────────────────────────────────────────────────
 export default function VoortgangScreen() {
   const { colors } = useTheme();
-  const { weekTaskCompletions, pulseCheckIns, hydrated, unlockedBadges, badgeUnlockDates } = useStore();
+  const { weekTaskCompletions, pulseCheckIns, hydrated, unlockedBadges, badgeUnlockDates, taskOutcomes, profile, stageProgress } = useStore();
 
   // ── Animations ────────────────────────────────────────────────
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -207,6 +208,12 @@ export default function VoortgangScreen() {
     }
     if (streak > longestStreak) longestStreak = streak;
 
+    // Outcome stats
+    const outcomeGelukt = taskOutcomes.filter((o) => o.outcome === 'Gelukt').length;
+    const outcomeDeels = taskOutcomes.filter((o) => o.outcome === 'Deels').length;
+    const outcomeNiet = taskOutcomes.filter((o) => o.outcome === 'Niet').length;
+    const outcomeTotal = taskOutcomes.length;
+
     return {
       totalXP,
       totalTasksCompleted,
@@ -214,8 +221,12 @@ export default function VoortgangScreen() {
       currentStreak,
       longestStreak,
       completedWeeks,
+      outcomeGelukt,
+      outcomeDeels,
+      outcomeNiet,
+      outcomeTotal,
     };
-  }, [weekTaskCompletions, pulseCheckIns]);
+  }, [weekTaskCompletions, pulseCheckIns, taskOutcomes]);
 
   const levelData = useMemo(() => getLevelFromXP(stats.totalXP), [stats.totalXP]);
   const xpProgress = useMemo(() => getProgressToNextLevel(stats.totalXP) / 100, [stats.totalXP]);
@@ -224,6 +235,15 @@ export default function VoortgangScreen() {
   const nextLevelData = XP_LEVELS.find((l) => l.level === levelData.level + 1);
 
   const weekActivity = useMemo(() => getWeekActivityFromPulse(pulseCheckIns), [pulseCheckIns]);
+
+  // ── Skill aanbevelingen ────────────────────────────────────────
+  const recommendations = useMemo(() => getTopRecommendedSkills({
+    doelen: profile?.doelen,
+    taskOutcomes,
+    weekTaskCompletions,
+    pulseCheckIns,
+    stageProgress,
+  }, 2), [profile?.doelen, taskOutcomes, weekTaskCompletions, pulseCheckIns, stageProgress]);
 
   const unlockedBadgeSet = new Set(unlockedBadges);
   const unlockedCount = unlockedBadges.length;
@@ -446,6 +466,72 @@ export default function VoortgangScreen() {
               labelColor={colors.text3}
             />
           </View>
+
+          {/* ── OUTCOME STATS ──────────────────────────────────── */}
+          {stats.outcomeTotal > 0 && (
+            <Card style={{ marginBottom: 20 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+                <InlineIcon name="checkCircle" size={18} color={colors.text} />
+                <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 0 }]}>
+                  Hoe ging het?
+                </Text>
+              </View>
+              <View style={styles.outcomeRow}>
+                <View style={[styles.outcomeItem, { backgroundColor: '#22C55E18' }]}>
+                  <Text style={[styles.outcomeValue, { color: '#22C55E' }]}>{stats.outcomeGelukt}</Text>
+                  <Text style={[styles.outcomeLabel, { color: colors.text3 }]}>Gelukt</Text>
+                </View>
+                <View style={[styles.outcomeItem, { backgroundColor: '#FBBF2418' }]}>
+                  <Text style={[styles.outcomeValue, { color: '#FBBF24' }]}>{stats.outcomeDeels}</Text>
+                  <Text style={[styles.outcomeLabel, { color: colors.text3 }]}>Deels</Text>
+                </View>
+                <View style={[styles.outcomeItem, { backgroundColor: '#EF444418' }]}>
+                  <Text style={[styles.outcomeValue, { color: '#EF4444' }]}>{stats.outcomeNiet}</Text>
+                  <Text style={[styles.outcomeLabel, { color: colors.text3 }]}>Niet</Text>
+                </View>
+              </View>
+              {stats.outcomeGelukt > 0 && (
+                <View style={[styles.outcomeBar, { backgroundColor: colors.surface2 }]}>
+                  <View style={[styles.outcomeBarFill, { width: `${(stats.outcomeGelukt / stats.outcomeTotal) * 100}%`, backgroundColor: '#22C55E' }]} />
+                  <View style={[styles.outcomeBarFill, { width: `${(stats.outcomeDeels / stats.outcomeTotal) * 100}%`, backgroundColor: '#FBBF24' }]} />
+                  <View style={[styles.outcomeBarFill, { width: `${(stats.outcomeNiet / stats.outcomeTotal) * 100}%`, backgroundColor: '#EF4444' }]} />
+                </View>
+              )}
+              <Text style={[styles.outcomeFooter, { color: colors.text3 }]}>
+                {Math.round((stats.outcomeGelukt / stats.outcomeTotal) * 100)}% succesvol · eerlijkheid = groei
+              </Text>
+            </Card>
+          )}
+
+          {/* ── AANBEVOLEN VOOR JOU ────────────────────────────── */}
+          {recommendations.length > 0 && recommendations[0].score > 0 && (
+            <Card style={{ marginBottom: 20 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+                <InlineIcon name="target" size={18} color={colors.text} />
+                <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 0 }]}>
+                  Aanbevolen voor jou
+                </Text>
+              </View>
+              <View style={styles.recRow}>
+                {recommendations.map((rec) => {
+                  const colorKey = themeSkillColors[rec.skill];
+                  const mainColor = colorKey
+                    ? (colors as Record<string, string>)[colorKey.main] ?? colors.blue
+                    : colors.blue;
+                  const dimColor = colorKey
+                    ? (colors as Record<string, string>)[colorKey.dim] ?? colors.blueDim
+                    : colors.blueDim;
+                  return (
+                    <View key={rec.skill} style={[styles.recCard, { backgroundColor: dimColor }]}>
+                      <InlineIcon name={getSkillIcon(rec.skill)} size={22} color={mainColor} />
+                      <Text style={[styles.recSkill, { color: mainColor }]}>{rec.skill}</Text>
+                      <Text style={[styles.recReason, { color: colors.text2 }]}>{rec.reason}</Text>
+                    </View>
+                  );
+                })}
+              </View>
+            </Card>
+          )}
 
           {/* ── MILESTONE JOURNEY ─────────────────────────────── */}
           <Card style={{ marginBottom: 20 }}>
@@ -961,6 +1047,18 @@ const styles = StyleSheet.create({
   badgeDate: { fontSize: 10, fontWeight: '500', marginTop: 4 },
   rarityLabel: { fontSize: 10, fontWeight: '700', marginTop: 4, textTransform: 'uppercase', letterSpacing: 0.5 },
 
+  // Recommendations
+  recRow: { flexDirection: 'row', gap: 10 },
+  recCard: {
+    flex: 1,
+    borderRadius: 14,
+    padding: 14,
+    alignItems: 'center',
+    gap: 6,
+  },
+  recSkill: { fontSize: 14, fontWeight: '800' },
+  recReason: { fontSize: 12, fontWeight: '500', textAlign: 'center' },
+
   // Level list
   levelList: { gap: 4 },
   levelRow: {
@@ -978,4 +1076,13 @@ const styles = StyleSheet.create({
   levelRowTitle: { fontSize: 14 },
   levelRowXP: { fontSize: 11, fontWeight: '500', marginTop: 2 },
   levelRowProgress: { width: 80, marginLeft: 8 },
+
+  // Outcome stats
+  outcomeRow: { flexDirection: 'row', gap: 10, marginBottom: 12 },
+  outcomeItem: { flex: 1, borderRadius: 12, paddingVertical: 12, alignItems: 'center' },
+  outcomeValue: { fontSize: 24, fontWeight: '900' },
+  outcomeLabel: { fontSize: 11, fontWeight: '600', marginTop: 2 },
+  outcomeBar: { height: 8, borderRadius: 4, overflow: 'hidden', flexDirection: 'row', marginBottom: 8 },
+  outcomeBarFill: { height: 8 },
+  outcomeFooter: { fontSize: 12, fontStyle: 'italic', textAlign: 'center' },
 });

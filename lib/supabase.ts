@@ -59,6 +59,7 @@ export interface CommunityProfile {
   longitude: number | null;
   avatar_url: string | null;
   created_at: string;
+  is_admin: boolean;
 }
 
 export interface Story {
@@ -162,6 +163,7 @@ export async function searchFathersByCity(city: string) {
 export async function getStories(opts: {
   cursor?: string;
   limit?: number;
+  category?: 'tip' | 'ervaring' | 'vraag' | 'overwinning';
   nearLat?: number;
   nearLng?: number;
   radiusKm?: number;
@@ -173,6 +175,10 @@ export async function getStories(opts: {
     .order('created_at', { ascending: false })
     .limit(limit);
 
+  if (opts.category) {
+    query = query.eq('category', opts.category);
+  }
+
   if (opts.cursor) {
     query = query.lt('created_at', opts.cursor);
   }
@@ -180,6 +186,16 @@ export async function getStories(opts: {
   const { data, error } = await query;
   if (error) throw error;
   return (data ?? []) as Story[];
+}
+
+export async function getUserLikedStoryIds(userId: string, storyIds: string[]): Promise<string[]> {
+  if (storyIds.length === 0) return [];
+  const { data } = await supabase
+    .from('story_likes')
+    .select('story_id')
+    .eq('user_id', userId)
+    .in('story_id', storyIds);
+  return (data ?? []).map((d: any) => d.story_id);
 }
 
 export async function createStory(story: {
@@ -391,6 +407,34 @@ export async function getBlockedUsers(userId: string) {
 
 export async function deleteOwnAccount() {
   const { error } = await supabase.rpc('delete_own_account');
+  if (error) throw error;
+}
+
+// ─── Admin / Moderation ────────────────────────────────────────
+
+export interface Report {
+  id: string;
+  reporter_id: string;
+  reported_user_id: string;
+  content_type: 'story' | 'comment' | 'message' | 'profile';
+  content_id: string;
+  reason: string;
+  status: 'open' | 'resolved' | 'dismissed';
+  created_at: string;
+}
+
+export async function getReports(status = 'open') {
+  const { data, error } = await supabase
+    .from('reports')
+    .select('*')
+    .eq('status', status)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as Report[];
+}
+
+export async function updateReportStatus(reportId: string, status: 'resolved' | 'dismissed') {
+  const { error } = await supabase.from('reports').update({ status }).eq('id', reportId);
   if (error) throw error;
 }
 

@@ -2,6 +2,22 @@ export type AgeGroup = "0-2" | "3-5" | "6-9" | "10-12" | "13-16";
 
 export type HelpAgeGroup = "0-3" | "4-7" | "8-12" | "13-18";
 
+// ── Thema-tags voor bonuskind & lastig gedrag ────────────────
+export type ThemeTag =
+  | "bonuskind"
+  | "samengesteld_gezin"
+  | "co-ouderschap"
+  | "adhd"
+  | "gedragsproblemen"
+  | "hooggevoelig"
+  | "prikkelverwerking";
+
+export type ChildRelatie = "eigen_kind" | "bonuskind";
+
+export type ChildAandachtspunt = "adhd" | "gedragsproblemen" | "hooggevoelig" | "prikkelverwerking";
+
+export type GezinsSituatie = "standaard" | "samengesteld_gezin" | "co-ouderschap" | "alleenstaand";
+
 export interface HelpSituation {
   id: string;
   ageGroup: HelpAgeGroup;
@@ -14,6 +30,7 @@ export interface HelpSituation {
   voorbeeldzin: string;
   valkuil: string;
   skillLink: Skill;
+  themes?: ThemeTag[];
 }
 
 export type Skill =
@@ -47,7 +64,9 @@ export interface Child {
   id: string;
   name: string;
   age: number;
-  ageGroup: string; // "0-2", "3-5", "6-8", "9-12", "13+"
+  ageGroup: string; // "0-2", "3-5", "6-9", "10-12", "13-16"
+  relatie?: ChildRelatie;                // default "eigen_kind"
+  aandachtspunten?: ChildAandachtspunt[]; // optioneel
 }
 
 export interface DailyTaskCompletion {
@@ -64,10 +83,11 @@ export interface UserProfile {
   doel: AppDoel; // Legacy: primary goal
   doelen?: AppDoel[]; // NIEUW: meerdere doelen
   startDate: string; // ISO date YYYY-MM-DD
-  children?: Child[]; // NIEUW
-  totalPoints?: number; // NIEUW
-  currentStreak?: number; // NIEUW
-  longestStreak?: number; // NIEUW
+  children?: Child[];
+  gezinssituatie?: GezinsSituatie;
+  totalPoints?: number;
+  currentStreak?: number;
+  longestStreak?: number;
 }
 
 export interface Challenge {
@@ -81,6 +101,7 @@ export interface Challenge {
   steps: string[];
   say: string;
   avoid: string;
+  themes?: ThemeTag[];
 }
 
 export interface Completion {
@@ -126,6 +147,7 @@ export interface TrainingItem {
   
   // Meta
   research?: string; // Bron (Gottman, Siegel, etc)
+  themes?: ThemeTag[];
 }
 
 export interface TrainingProgress {
@@ -194,6 +216,7 @@ export interface LearningModule {
   keyTakeaways: string[];
   research?: string;
   quizQuestions?: ModuleQuizQuestion[];
+  themes?: ThemeTag[];
 }
 
 export interface LearningModuleProgress {
@@ -260,11 +283,32 @@ export interface InteractiveTask {
   leerdoel?: string;
   bron?: string;
   moduleRef?: string;
+  themes?: ThemeTag[];
 }
 
 export interface TaskCompletion {
   taskId: string;
   dateISO: string;
+}
+
+export interface TaskOutcome {
+  taskId: string;
+  weekKey: string;
+  outcome: CompletionStatus; // "Gelukt" | "Deels" | "Niet"
+  skill?: Skill;
+  note?: string;
+  createdAt: string;
+}
+
+export type JournalMood = 'goed' | 'oké' | 'moeilijk';
+
+export interface JournalEntry {
+  id: string;
+  date: string;         // YYYY-MM-DD
+  text: string;
+  mood?: JournalMood;
+  skill?: Skill;
+  createdAt: string;    // ISO timestamp
 }
 
 // ── Training & Learning ───────────────────────────────────────
@@ -297,6 +341,7 @@ export interface Scenario {
   situation: string;
   prompt: string;
   options: ScenarioOption[];
+  themes?: ThemeTag[];
 }
 
 export interface ScenarioCompletion {
@@ -315,6 +360,7 @@ export interface PulseQuestion {
   antwoorden: [string, string, string, string]; // Altijd 4 opties
   inzicht: string;  // Micro-leermoment na het antwoorden
   bron: string;     // Wetenschappelijke bron (kort)
+  themes?: ThemeTag[];
 }
 
 export interface PulseCheckIn {

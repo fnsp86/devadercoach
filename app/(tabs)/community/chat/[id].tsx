@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,13 +10,19 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
-import { getMessages, sendMessage, supabase, getConversationById, getCommunityProfile, type Message, type CommunityProfile } from '@/lib/supabase';
+import {
+  getMessages, sendMessage, supabase, getConversationById,
+  getCommunityProfile, blockUser, reportContent,
+  type Message, type CommunityProfile,
+} from '@/lib/supabase';
 import { InlineIcon } from '@/lib/icons';
+import * as Haptics from 'expo-haptics';
 
 function formatTime(dateStr: string): string {
   const d = new Date(dateStr);
@@ -35,12 +41,24 @@ export default function ChatScreen() {
   const [sending, setSending] = useState(false);
   const [otherUser, setOtherUser] = useState<CommunityProfile | null>(null);
   const flatListRef = useRef<FlatList>(null);
+  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const loadMessages = useCallback(async () => {
+    if (!conversationId) return;
+    try {
+      const data = await getMessages(conversationId);
+      setMessages(data);
+    } catch {
+      // Silent
+    }
+  }, [conversationId]);
 
   useEffect(() => {
     if (!conversationId) return;
-    loadMessages();
+    setLoading(true);
+    loadMessages().finally(() => setLoading(false));
 
-    // Realtime subscription
+    // Realtime subscription with fallback polling
     const channel = supabase
       .channel(`messages:${conversationId}`)
       .on(
@@ -59,12 +77,32 @@ export default function ChatScreen() {
           });
         },
       )
-      .subscribe();
+      .subscribe((status) => {
+        if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+          // Realtime failed — ensure polling is running
+          if (!pollingRef.current) {
+            pollingRef.current = setInterval(loadMessages, 5000);
+          }
+        } else if (status === 'SUBSCRIBED') {
+          // Realtime working — stop polling
+          if (pollingRef.current) {
+            clearInterval(pollingRef.current);
+            pollingRef.current = null;
+          }
+        }
+      });
+
+    // Start polling as safety net — Realtime may silently fail
+    pollingRef.current = setInterval(loadMessages, 5000);
 
     return () => {
       supabase.removeChannel(channel);
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current);
+        pollingRef.current = null;
+      }
     };
-  }, [conversationId]);
+  }, [conversationId, loadMessages]);
 
   useEffect(() => {
     if (!conversationId || !user) return;
@@ -77,23 +115,12 @@ export default function ChatScreen() {
     })();
   }, [conversationId, user]);
 
-  async function loadMessages() {
-    if (!conversationId) return;
-    setLoading(true);
-    try {
-      const data = await getMessages(conversationId);
-      setMessages(data);
-    } catch {
-      // Silent
-    }
-    setLoading(false);
-  }
-
   async function handleSend() {
     if (!text.trim() || !user || !conversationId) return;
     const content = text.trim();
     setText('');
     setSending(true);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     try {
       const msg = await sendMessage({
@@ -110,6 +137,77 @@ export default function ChatScreen() {
       setText(content);
     }
     setSending(false);
+  }
+
+  function handleMenuPress() {
+    if (!otherUser || !user) return;
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
+    Alert.alert(otherUser.naam, undefined, [
+      {
+        text: 'Bekijk profiel',
+        onPress: () => router.push(`/(tabs)/community/profile/${otherUser.user_id}`),
+      },
+      {
+        text: 'Blokkeer gebruiker',
+        style: 'destructive',
+        onPress: () => {
+          Alert.alert(
+            'Blokkeer gebruiker',
+            `Weet je zeker dat je ${otherUser.naam} wilt blokkeren? Je ontvangt geen berichten meer van deze persoon.`,
+            [
+              { text: 'Annuleer', style: 'cancel' },
+              {
+                text: 'Blokkeer',
+                style: 'destructive',
+                onPress: async () => {
+                  try {
+                    await blockUser(user.id, otherUser.user_id);
+                    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                    Alert.alert('Geblokkeerd', `${otherUser.naam} is geblokkeerd.`);
+                    router.back();
+                  } catch {
+                    Alert.alert('Fout', 'Kon gebruiker niet blokkeren. Probeer het opnieuw.');
+                  }
+                },
+              },
+            ],
+          );
+        },
+      },
+      {
+        text: 'Meld misbruik',
+        onPress: () => {
+          Alert.alert(
+            'Meld misbruik',
+            'Wil je dit gesprek melden wegens ongepast gedrag?',
+            [
+              { text: 'Annuleer', style: 'cancel' },
+              {
+                text: 'Meld',
+                style: 'destructive',
+                onPress: async () => {
+                  try {
+                    await reportContent({
+                      reporter_id: user.id,
+                      reported_user_id: otherUser.user_id,
+                      content_type: 'message',
+                      content_id: conversationId!,
+                      reason: 'Gemeld door gebruiker via chat',
+                    });
+                    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                    Alert.alert('Gemeld', 'Bedankt voor je melding. We bekijken dit zo snel mogelijk.');
+                  } catch {
+                    Alert.alert('Fout', 'Kon melding niet versturen. Probeer het opnieuw.');
+                  }
+                },
+              },
+            ],
+          );
+        },
+      },
+      { text: 'Annuleer', style: 'cancel' },
+    ]);
   }
 
   function renderMessage({ item }: { item: Message }) {
@@ -140,7 +238,7 @@ export default function ChatScreen() {
     <SafeAreaView style={[styles.container, { backgroundColor: colors.bg }]}>
       {/* Header */}
       <View style={[styles.header, { borderColor: colors.border }]}>
-        <Pressable onPress={() => router.back()}>
+        <Pressable onPress={() => router.back()} hitSlop={8}>
           <InlineIcon name="arrowLeft" size={22} color={colors.text} />
         </Pressable>
         <Pressable
@@ -156,11 +254,20 @@ export default function ChatScreen() {
               </Text>
             </View>
           ) : null}
-          <Text style={[styles.headerTitle, { color: colors.text }]} numberOfLines={1}>
-            {otherUser?.naam ?? 'Chat'}
-          </Text>
+          <View>
+            <Text style={[styles.headerTitle, { color: colors.text }]} numberOfLines={1}>
+              {otherUser?.naam ?? 'Chat'}
+            </Text>
+            {otherUser?.stad ? (
+              <Text style={[styles.headerSubtitle, { color: colors.text3 }]} numberOfLines={1}>
+                {otherUser.stad}
+              </Text>
+            ) : null}
+          </View>
         </Pressable>
-        <View style={{ width: 22 }} />
+        <Pressable onPress={handleMenuPress} hitSlop={8} style={styles.menuBtn}>
+          <InlineIcon name="moreVertical" size={20} color={colors.text2} />
+        </Pressable>
       </View>
 
       <KeyboardAvoidingView
@@ -218,12 +325,33 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
+    gap: 4,
   },
-  headerTitle: { fontSize: 17, fontWeight: '700' },
+  headerCenter: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginLeft: 8,
+  },
+  headerAvatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+  },
+  headerAvatarPlaceholder: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerTitle: { fontSize: 16, fontWeight: '700' },
+  headerSubtitle: { fontSize: 12, fontWeight: '500', marginTop: 1 },
+  menuBtn: { padding: 4 },
   loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   listContent: { paddingHorizontal: 16, paddingVertical: 12 },
   messageBubble: { marginBottom: 6, maxWidth: '80%' },
@@ -255,23 +383,4 @@ const styles = StyleSheet.create({
   },
   emptyContainer: { alignItems: 'center', paddingTop: 40 },
   emptyText: { fontSize: 15, fontWeight: '500' },
-  headerCenter: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginLeft: 12,
-  },
-  headerAvatar: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-  },
-  headerAvatarPlaceholder: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 });

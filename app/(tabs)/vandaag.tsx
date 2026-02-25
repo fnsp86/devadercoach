@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef, useCallback } from 'react';
+import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -22,20 +22,31 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
 import { ALL_INTERACTIVE_TASKS } from '@/lib/interactive-tasks';
 import { selectMixedWeekTasks, getWeekKey, getWeekNumber, ageToGroup } from '@/lib/week-selector';
 import { PULSE_QUESTIONS } from '@/lib/pulse-questions';
+import { BONUSKIND_PULSE_QUESTIONS } from '@/lib/themed-content-bonuskind';
+import { GEDRAG_PULSE_QUESTIONS } from '@/lib/themed-content-gedrag';
+import type { ThemeTag, CompletionStatus } from '@/lib/types';
 import { getLevelFromXP, getComboMultiplier } from '@/lib/gamification-types';
 import { getWijsheidVanDeDag } from '@/lib/vader-wijsheid';
 import { checkAndUnlockBadges } from '@/lib/badge-checker';
 import GamificationPopup from '@/components/GamificationPopup';
 import type { GamificationEvent } from '@/components/GamificationPopup';
 import { ALL_SKILLS } from '@/lib/skills';
+import { doelenToSkills } from '@/lib/task-selector';
 import { getWeeklyReflections } from '@/lib/week-selector';
 import type { WeeklyReflection } from '@/lib/week-selector';
 import type { InteractiveTask, Skill } from '@/lib/types';
+import { resolveActiveThemes } from '@/lib/theme-resolver';
+import WeeklyRecapModal from '@/components/WeeklyRecapModal';
+import JournalEntryModal from '@/components/JournalEntryModal';
+import { getModuleForTask } from '@/lib/task-module-map';
+import { getTopRecommendedSkills } from '@/lib/skill-recommender';
+import { SKILLS } from '@/lib/skills';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
@@ -77,10 +88,22 @@ const SKILL_COLOR: Record<Skill, string> = {
   Reflectie: '#C084FC',
 };
 
-function getDailyPulseQuestion(skills: Skill[]) {
+function getDailyPulseQuestion(skills: Skill[], activeThemes: ThemeTag[] = []) {
   const now = new Date();
   const start = new Date(now.getFullYear(), 0, 0);
   const dayOfYear = Math.floor((now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+
+  // Elke 3e dag een themed pulse-vraag als themes actief zijn
+  if (activeThemes.length > 0 && dayOfYear % 3 === 0) {
+    const themedPool = [
+      ...BONUSKIND_PULSE_QUESTIONS,
+      ...GEDRAG_PULSE_QUESTIONS,
+    ].filter((q) => q.themes?.some((t) => activeThemes.includes(t)));
+    if (themedPool.length > 0) {
+      return themedPool[dayOfYear % themedPool.length];
+    }
+  }
+
   const relevant = PULSE_QUESTIONS.filter((q) => skills.includes(q.skill));
   const pool = relevant.length > 0 ? relevant : PULSE_QUESTIONS;
   return pool[dayOfYear % pool.length];
@@ -122,13 +145,19 @@ const pbStyles = StyleSheet.create({
 function TaskCard({
   task,
   done,
+  outcome,
   onComplete,
   onUndo,
+  relatedModule,
+  onModulePress,
 }: {
   task: InteractiveTask;
   done: boolean;
+  outcome?: CompletionStatus;
   onComplete: () => void;
   onUndo: () => void;
+  relatedModule?: { title: string; id: string; skill: Skill } | null;
+  onModulePress?: (moduleId: string, skill: Skill) => void;
 }) {
   const { colors } = useTheme();
   const [expanded, setExpanded] = useState(false);
@@ -232,6 +261,31 @@ function TaskCard({
               )}
             </View>
           )}
+          {relatedModule && onModulePress && (
+            <Pressable
+              onPress={() => onModulePress(relatedModule.id, relatedModule.skill)}
+              style={[tcStyles.moduleLink, { backgroundColor: skillColor + '10', borderColor: skillColor + '30' }]}
+            >
+              <InlineIcon name="bookOpen" size={14} color={skillColor} />
+              <Text style={[tcStyles.moduleLinkText, { color: skillColor }]} numberOfLines={1}>
+                {relatedModule.title}
+              </Text>
+              <InlineIcon name="arrowRight" size={12} color={skillColor} />
+            </Pressable>
+          )}
+        </View>
+      )}
+
+      {/* Outcome indicator */}
+      {done && outcome && (
+        <View style={[tcStyles.outcomeBadge, {
+          backgroundColor: outcome === 'Gelukt' ? '#22C55E18' : outcome === 'Deels' ? '#FBBF2418' : '#EF444418',
+        }]}>
+          <Text style={[tcStyles.outcomeText, {
+            color: outcome === 'Gelukt' ? '#22C55E' : outcome === 'Deels' ? '#FBBF24' : '#EF4444',
+          }]}>
+            {outcome === 'Gelukt' ? '✓ Gelukt' : outcome === 'Deels' ? '~ Deels gelukt' : '✕ Niet gelukt'}
+          </Text>
         </View>
       )}
 
@@ -278,6 +332,18 @@ const tcStyles = StyleSheet.create({
   doneBtnText: { color: '#fff', fontSize: 15, fontWeight: '700' },
   undoBtn: { borderRadius: 12, paddingVertical: 12, alignItems: 'center', marginTop: 4, borderWidth: 1 },
   undoText: { fontSize: 14, fontWeight: '600' },
+  outcomeBadge: { alignSelf: 'flex-start' as const, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8, marginTop: 4, marginBottom: 4 },
+  outcomeText: { fontSize: 13, fontWeight: '700' },
+  moduleLink: {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    gap: 8,
+    marginTop: 12,
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  moduleLinkText: { fontSize: 13, fontWeight: '600' as const, flex: 1 },
 });
 
 
@@ -289,10 +355,12 @@ function PulseModal({
   visible,
   onClose,
   skills,
+  activeThemes = [],
 }: {
   visible: boolean;
   onClose: () => void;
   skills: Skill[];
+  activeThemes?: ThemeTag[];
 }) {
   const { colors } = useTheme();
   const { addPulseCheckIn } = useStore();
@@ -300,7 +368,7 @@ function PulseModal({
   const [showInsight, setShowInsight] = useState(false);
   const [notitie, setNotitie] = useState('');
 
-  const question = useMemo(() => getDailyPulseQuestion(skills), [skills]);
+  const question = useMemo(() => getDailyPulseQuestion(skills, activeThemes), [skills, activeThemes]);
   const skillColor = SKILL_COLOR[question.skill] ?? '#667eea';
 
   function handleAnswer(i: number) {
@@ -448,6 +516,180 @@ const pmStyles = StyleSheet.create({
   insightBron: { fontSize: 12, fontStyle: 'italic', marginBottom: 16 },
   notitieLabel: { fontSize: 13, fontWeight: '600', marginBottom: 6 },
   notitieInput: {
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 12,
+    fontSize: 14,
+    minHeight: 60,
+    marginBottom: 16,
+  },
+  saveBtn: { borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
+  saveTxt: { color: '#fff', fontSize: 15, fontWeight: '700' },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// OutcomeModal ("Hoe ging het?")
+// ─────────────────────────────────────────────────────────────────────────────
+
+const OUTCOME_OPTIONS: { value: CompletionStatus; label: string; emoji: string; color: string; sub: string }[] = [
+  { value: 'Gelukt', label: 'Gelukt', emoji: '✓', color: '#22C55E', sub: 'Ik heb het gedaan zoals beschreven' },
+  { value: 'Deels', label: 'Deels gelukt', emoji: '~', color: '#FBBF24', sub: 'Ik heb een poging gedaan' },
+  { value: 'Niet', label: 'Niet gelukt', emoji: '✕', color: '#EF4444', sub: 'Kwam er niet van of het lukte niet' },
+];
+
+function OutcomeModal({
+  visible,
+  task,
+  onSave,
+  onClose,
+}: {
+  visible: boolean;
+  task: InteractiveTask | null;
+  onSave: (outcome: CompletionStatus, note?: string) => void;
+  onClose: () => void;
+}) {
+  const { colors } = useTheme();
+  const [selected, setSelected] = useState<CompletionStatus | null>(null);
+  const [note, setNote] = useState('');
+
+  // Reset bij nieuwe taak
+  useEffect(() => {
+    if (visible) {
+      setSelected(null);
+      setNote('');
+    }
+  }, [visible]);
+
+  function handleSave() {
+    if (!selected) return;
+    Keyboard.dismiss();
+    onSave(selected, note.trim() || undefined);
+  }
+
+  if (!task) return null;
+
+  const skillColor = SKILL_COLOR[task.skill] ?? '#667eea';
+
+  return (
+    <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
+      <SafeAreaView style={[omStyles.safe, { backgroundColor: colors.bg }]}>
+        <ScrollView contentContainerStyle={omStyles.content} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag">
+          {/* Header */}
+          <View style={[omStyles.header, { backgroundColor: skillColor + '18', borderColor: skillColor + '40' }]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <InlineIcon name="checkCircle" size={14} color={skillColor} />
+              <Text style={[omStyles.headerLabel, { color: skillColor }]}>Hoe ging het?</Text>
+            </View>
+            <Pressable onPress={onClose} style={omStyles.closeBtn}>
+              <InlineIcon name="x" size={18} color={colors.text3} />
+            </Pressable>
+          </View>
+
+          <Text style={[omStyles.taskTitle, { color: colors.text }]}>{task.title}</Text>
+          <Text style={[omStyles.question, { color: colors.text2 }]}>
+            Hoe is deze oefening gegaan?
+          </Text>
+          <Text style={[omStyles.honesty, { color: colors.text3 }]}>
+            Eerlijkheid levert +2 XP op — ongeacht het resultaat
+          </Text>
+
+          {/* Opties */}
+          <View style={omStyles.options}>
+            {OUTCOME_OPTIONS.map((opt) => {
+              const isSelected = selected === opt.value;
+              return (
+                <Pressable
+                  key={opt.value}
+                  onPress={() => { setSelected(opt.value); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
+                  style={[
+                    omStyles.option,
+                    {
+                      backgroundColor: isSelected ? opt.color + '18' : colors.surface,
+                      borderColor: isSelected ? opt.color : colors.border,
+                      borderWidth: isSelected ? 2 : 1,
+                    },
+                  ]}
+                >
+                  <View style={[omStyles.optionIcon, { backgroundColor: opt.color + '22' }]}>
+                    <Text style={[omStyles.optionEmoji, { color: opt.color }]}>{opt.emoji}</Text>
+                  </View>
+                  <View style={omStyles.optionTextWrap}>
+                    <Text style={[omStyles.optionLabel, { color: isSelected ? opt.color : colors.text }]}>
+                      {opt.label}
+                    </Text>
+                    <Text style={[omStyles.optionSub, { color: colors.text3 }]}>{opt.sub}</Text>
+                  </View>
+                </Pressable>
+              );
+            })}
+          </View>
+
+          {/* Notitie */}
+          {selected && (
+            <View style={omStyles.noteSection}>
+              <Text style={[omStyles.noteLabel, { color: colors.text2 }]}>Optioneel: kort notitie</Text>
+              <TextInput
+                style={[omStyles.noteInput, { backgroundColor: colors.surface, borderColor: colors.border, color: colors.text }]}
+                placeholder="Wat ging goed? Wat was lastig?"
+                placeholderTextColor={colors.text3}
+                value={note}
+                onChangeText={setNote}
+                multiline
+                blurOnSubmit
+                returnKeyType="done"
+                maxLength={200}
+              />
+              <Pressable onPress={handleSave} style={[omStyles.saveBtn, { backgroundColor: skillColor }]}>
+                <Text style={omStyles.saveTxt}>Opslaan</Text>
+              </Pressable>
+            </View>
+          )}
+        </ScrollView>
+      </SafeAreaView>
+    </Modal>
+  );
+}
+
+const omStyles = StyleSheet.create({
+  safe: { flex: 1 },
+  content: { padding: 20, paddingBottom: 60 },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    marginBottom: 24,
+  },
+  headerLabel: { fontSize: 14, fontWeight: '700' },
+  closeBtn: { padding: 4 },
+  taskTitle: { fontSize: 20, fontWeight: '700', marginBottom: 8 },
+  question: { fontSize: 16, lineHeight: 22, marginBottom: 4 },
+  honesty: { fontSize: 13, fontStyle: 'italic', marginBottom: 20 },
+  options: { gap: 10, marginBottom: 20 },
+  option: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 14,
+    padding: 14,
+    gap: 12,
+  },
+  optionIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  optionEmoji: { fontSize: 18, fontWeight: '800' },
+  optionTextWrap: { flex: 1 },
+  optionLabel: { fontSize: 16, fontWeight: '700' },
+  optionSub: { fontSize: 13, marginTop: 2 },
+  noteSection: { marginTop: 4 },
+  noteLabel: { fontSize: 13, fontWeight: '600', marginBottom: 6 },
+  noteInput: {
     borderWidth: 1,
     borderRadius: 10,
     padding: 12,
@@ -625,9 +867,20 @@ export default function WeekScreen() {
     consecutiveActiveDays,
     recordActiveDay,
     weekTaskCompletions,
+    addTaskOutcome,
+    getTaskOutcome,
+    isRecapSeen,
+    taskOutcomes,
+    pulseCheckIns,
+    stageProgress,
   } = store;
 
   const [pulseVisible, setPulseVisible] = useState(false);
+  const [recapVisible, setRecapVisible] = useState(false);
+  const [recapWeekKey, setRecapWeekKey] = useState('');
+  const [journalVisible, setJournalVisible] = useState(false);
+  const [outcomeVisible, setOutcomeVisible] = useState(false);
+  const [outcomeTask, setOutcomeTask] = useState<InteractiveTask | null>(null);
   const [toast, setToast] = useState<ToastInfo | null>(null);
   const [gamificationEvent, setGamificationEvent] = useState<GamificationEvent | null>(null);
   const [expandedReflection, setExpandedReflection] = useState<string | null>(null);
@@ -647,6 +900,30 @@ export default function WeekScreen() {
     return ['6-9' as const];
   }, [profile]);
 
+  // Actieve thema's (bonuskind, ADHD, etc.)
+  const activeThemes = useMemo(() => {
+    if (!profile) return [];
+    return resolveActiveThemes(profile);
+  }, [profile]);
+
+  // Skills afgeleid van doelen — voor taak-boosting
+  const doelSkills = useMemo(() => {
+    if (!profile?.doelen || profile.doelen.length === 0) return [];
+    return doelenToSkills(profile.doelen);
+  }, [profile?.doelen]);
+
+  // Skill aanbeveling — subtiele tip in hero area
+  const topRec = useMemo(() => {
+    const recs = getTopRecommendedSkills({
+      doelen: profile?.doelen,
+      taskOutcomes,
+      weekTaskCompletions,
+      pulseCheckIns,
+      stageProgress,
+    }, 1);
+    return recs.length > 0 && recs[0].score > 0 ? recs[0] : null;
+  }, [profile?.doelen, taskOutcomes, weekTaskCompletions, pulseCheckIns, stageProgress]);
+
   // Weeknummer voor progressie
   const weekNumber = useMemo(() => {
     if (!profile?.startDate) return 1;
@@ -660,11 +937,76 @@ export default function WeekScreen() {
       .map((c) => c.taskId);
   }, [weekTaskCompletions, weekKey]);
 
-  // 7 taken per week, zonder eerder voltooide taken
-  const weekTasks = useMemo(
-    () => selectMixedWeekTasks(ALL_INTERACTIVE_TASKS, ageGroups, skills, weekKey, weekNumber, completedTaskIds).tasks,
-    [ageGroups, skills, weekKey, weekNumber, completedTaskIds],
-  );
+  // 7 taken per week — gecached per weekKey zodat ze niet mid-week wijzigen
+  // bij profielwijzigingen (bijv. gedragsproblemen toevoegen).
+  // Nieuwe themes gaan pas in bij de volgende weekselectie.
+  const WEEK_TASKS_CACHE_KEY = 'vc-week-tasks-cache';
+  const [weekTasks, setWeekTasks] = useState<typeof ALL_INTERACTIVE_TASKS>([]);
+  const weekTasksInitialized = useRef(false);
+
+  useEffect(() => {
+    if (!profile) return; // wacht op hydration
+
+    (async () => {
+      try {
+        const raw = await AsyncStorage.getItem(WEEK_TASKS_CACHE_KEY);
+        if (raw) {
+          const cached: { weekKey: string; taskIds: string[] } = JSON.parse(raw);
+          if (cached.weekKey === weekKey && cached.taskIds.length > 0) {
+            // Zelfde week — gebruik gecachede taken
+            const taskMap = new Map(ALL_INTERACTIVE_TASKS.map((t) => [t.id, t]));
+            const restored = cached.taskIds.map((id) => taskMap.get(id)).filter(Boolean) as typeof ALL_INTERACTIVE_TASKS;
+            if (restored.length > 0) {
+              setWeekTasks(restored);
+              weekTasksInitialized.current = true;
+              return;
+            }
+          }
+        }
+      } catch {}
+
+      // Geen cache of nieuwe week — bereken en sla op
+      const computed = selectMixedWeekTasks(
+        ALL_INTERACTIVE_TASKS, ageGroups, skills, weekKey, weekNumber, completedTaskIds, activeThemes, doelSkills, topRec?.skill,
+      ).tasks;
+      setWeekTasks(computed);
+      weekTasksInitialized.current = true;
+      AsyncStorage.setItem(
+        WEEK_TASKS_CACHE_KEY,
+        JSON.stringify({ weekKey, taskIds: computed.map((t) => t.id) }),
+      ).catch(() => {});
+    })();
+  }, [weekKey, profile]); // Bij nieuwe week, eerste hydration, of account switch (profile ref verandert)
+
+  // ── Weekly Recap auto-trigger ──
+  // Op zondag: recap voor huidige week. Op maandag: recap voor vorige week.
+  useEffect(() => {
+    if (!profile) return;
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0=Sun
+    let targetWeek: string | null = null;
+
+    if (dayOfWeek === 0) {
+      // Zondag — recap huidige week
+      targetWeek = weekKey;
+    } else if (dayOfWeek === 1) {
+      // Maandag — recap vorige week
+      const prevMonday = new Date(today);
+      prevMonday.setDate(prevMonday.getDate() - 7);
+      const y = prevMonday.getFullYear();
+      const m = String(prevMonday.getMonth() + 1).padStart(2, '0');
+      const d = String(prevMonday.getDate()).padStart(2, '0');
+      targetWeek = `${y}-${m}-${d}`;
+    }
+
+    if (targetWeek && !isRecapSeen(targetWeek)) {
+      const hasCompletions = weekTaskCompletions.some((c) => c.weekKey === targetWeek);
+      if (hasCompletions) {
+        setRecapWeekKey(targetWeek);
+        setRecapVisible(true);
+      }
+    }
+  }, [profile, weekKey]);
 
   const weekTaskIds = useMemo(() => new Set(weekTasks.map(t => t.id)), [weekTasks]);
   const doneTasks = getWeekTasksDone(weekKey).filter(c => weekTaskIds.has(c.taskId));
@@ -708,18 +1050,39 @@ export default function WeekScreen() {
     }, 1000);
   }, [combo.multiplier, completeWeekTask, weekKey, recordActiveDay, store]);
 
-  const handleComplete = useCallback(async (task: InteractiveTask) => {
+  // Toon OutcomeModal in plaats van direct afronden
+  const handleComplete = useCallback((task: InteractiveTask) => {
+    setOutcomeTask(task);
+    setOutcomeVisible(true);
+  }, []);
+
+  // Wordt aangeroepen vanuit OutcomeModal na keuze
+  const handleOutcomeSave = useCallback((outcome: CompletionStatus, note?: string) => {
+    const task = outcomeTask;
+    if (!task) return;
+
+    setOutcomeVisible(false);
+    setOutcomeTask(null);
+
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     recordActiveDay();
     const baseXp = (task as any).points ?? (task as any).xpReward ?? 10;
     const xp = Math.round(baseXp * combo.multiplier);
 
+    // Sla outcome op
+    addTaskOutcome({
+      taskId: task.id,
+      weekKey,
+      outcome,
+      skill: task.skill,
+      note,
+      createdAt: new Date().toISOString(),
+    });
+
     // Compute XP before and after to detect level-up
-    // Filter against current weekTaskIds to prevent stale completions from inflating counts
     const completionsBefore = getWeekTasksDone(weekKey).filter(c => weekTaskIds.has(c.taskId));
     const xpBefore = completionsBefore.reduce((s, c) => s + c.points, 0);
 
-    // Count completed weeks before this action
     const tasksPerWeekBefore: Record<string, number> = {};
     completionsBefore.forEach((c) => {
       tasksPerWeekBefore[c.weekKey] = (tasksPerWeekBefore[c.weekKey] || 0) + 1;
@@ -733,12 +1096,13 @@ export default function WeekScreen() {
     const newDoneCount = completionsBefore.length + 1;
     const skillColor = SKILL_COLOR[task.skill] ?? '#667eea';
 
-    // Show toast with varied celebration messages
+    // Toast met outcome feedback
+    const outcomeEmoji = outcome === 'Gelukt' ? 'Goed bezig!' : outcome === 'Deels' ? 'Sterk!' : 'Eerlijk!';
     if (newDoneCount >= 7) {
       setToast({ title: 'Week voltooid!', sub: `Weekbonus verdiend · Geweldig gedaan!`, color: '#D97706', icon: 'trophy', xp: 50 });
     } else {
       const celebration = TASK_CELEBRATIONS[newDoneCount % TASK_CELEBRATIONS.length];
-      setToast({ title: celebration.title, sub: `${celebration.sub} · nog ${7 - newDoneCount} te gaan`, color: skillColor, icon: celebration.icon, xp });
+      setToast({ title: outcomeEmoji, sub: `${celebration.sub} · nog ${7 - newDoneCount} te gaan`, color: skillColor, icon: celebration.icon, xp });
     }
 
     // Detect level-up or badge unlock after a short delay
@@ -753,13 +1117,12 @@ export default function WeekScreen() {
         return;
       }
 
-      // Check for newly unlocked badges (centralized)
       const newBadges = checkAndUnlockBadges(store, { source: 'task' });
       if (newBadges.length > 0) {
         setGamificationEvent({ type: 'badge', badge: newBadges[0] });
       }
     }, 1000);
-  }, [completeWeekTask, weekKey, getWeekTasksDone, weekTaskIds]);
+  }, [outcomeTask, completeWeekTask, addTaskOutcome, weekKey, getWeekTasksDone, weekTaskIds, combo.multiplier, recordActiveDay, store]);
 
   return (
     <SafeAreaView style={[s.safe, { backgroundColor: colors.bg }]}>
@@ -798,6 +1161,16 @@ export default function WeekScreen() {
           )}
 
           <WeekProgressBar done={doneCount} total={7} color={colors.amber} />
+
+          {topRec && (
+            <View style={[s.skillTip, { backgroundColor: SKILL_COLOR[topRec.skill] + '12' }]}>
+              <InlineIcon name={getSkillIcon(topRec.skill)} size={14} color={SKILL_COLOR[topRec.skill]} />
+              <Text style={[s.skillTipText, { color: colors.text2 }]}>
+                <Text style={{ fontWeight: '700', color: SKILL_COLOR[topRec.skill] }}>{topRec.skill}</Text>
+                {' · '}{SKILLS[topRec.skill].microTip}
+              </Text>
+            </View>
+          )}
 
           <View style={s.heroBottom}>
             <Text style={[s.heroBottomText, { color: colors.text3 }]}>
@@ -862,15 +1235,21 @@ export default function WeekScreen() {
             Kies vrij – doe ze wanneer het uitkomt
           </Text>
 
-          {weekTasks.map((task) => (
+          {weekTasks.map((task) => {
+            const mod = getModuleForTask(task, activeThemes);
+            return (
               <TaskCard
                 key={task.id}
                 task={task}
                 done={isWeekTaskDone(task.id, weekKey)}
+                outcome={getTaskOutcome(task.id, weekKey)?.outcome}
                 onComplete={() => handleComplete(task)}
                 onUndo={() => undoWeekTask(task.id, weekKey)}
+                relatedModule={mod ? { title: mod.title, id: mod.id, skill: mod.skill } : null}
+                onModulePress={(moduleId, skill) => router.push(`/(tabs)/leren/module?skill=${skill}&moduleId=${moduleId}` as any)}
               />
-          ))}
+            );
+          })}
 
           {/* Reflectie van de week */}
           {weeklyReflections.length > 0 && (
@@ -908,7 +1287,9 @@ export default function WeekScreen() {
                       >
                         {r.question}
                       </Text>
-                      <InlineIcon name={isExpanded ? 'chevronUp' : 'chevronDown'} size={16} color={done ? colors.text3 : '#A78BFA'} />
+                      <View style={[s.chevronWrap, { backgroundColor: done ? colors.surface2 : '#A78BFA15' }]}>
+                        <InlineIcon name={isExpanded ? 'chevronUp' : 'chevronDown'} size={16} color={done ? colors.text3 : '#A78BFA'} />
+                      </View>
                     </Pressable>
                     {isExpanded && (
                       <View style={[s.reflExpanded, { backgroundColor: colors.surface2 }]}>
@@ -968,6 +1349,21 @@ export default function WeekScreen() {
           </View>
         )}
 
+        {/* ── Win van de dag ─────────────────────────────────────────── */}
+        <Pressable
+          onPress={() => setJournalVisible(true)}
+          style={[s.journalCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
+        >
+          <View style={[s.journalIcon, { backgroundColor: colors.amberDim }]}>
+            <InlineIcon name="fileText" size={18} color={colors.amber} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={[s.journalTitle, { color: colors.text }]}>Win van de dag</Text>
+            <Text style={[s.journalSub, { color: colors.text3 }]}>Schrijf op wat goed ging · +5 XP</Text>
+          </View>
+          <InlineIcon name="chevronRight" size={16} color={colors.text3} />
+        </Pressable>
+
         {/* ── Info ────────────────────────────────────────────────────── */}
         <View style={[s.infoCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 8 }}>
@@ -984,9 +1380,23 @@ export default function WeekScreen() {
 
       </ScrollView>
 
-      <PulseModal visible={pulseVisible} onClose={() => setPulseVisible(false)} skills={skills} />
+      <PulseModal visible={pulseVisible} onClose={() => setPulseVisible(false)} skills={skills} activeThemes={activeThemes} />
+      <OutcomeModal
+        visible={outcomeVisible}
+        task={outcomeTask}
+        onSave={handleOutcomeSave}
+        onClose={() => { setOutcomeVisible(false); setOutcomeTask(null); }}
+      />
       <CelebrationToast toast={toast} onHide={() => setToast(null)} />
       <GamificationPopup event={gamificationEvent} onDismiss={() => setGamificationEvent(null)} />
+      <JournalEntryModal visible={journalVisible} onClose={() => setJournalVisible(false)} />
+      {recapWeekKey !== '' && (
+        <WeeklyRecapModal
+          visible={recapVisible}
+          weekKey={recapWeekKey}
+          onClose={() => setRecapVisible(false)}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -1031,6 +1441,18 @@ const s = StyleSheet.create({
   },
   heroBottomText: { fontSize: 12, fontWeight: '600' },
   heroBonus: { fontSize: 12, fontWeight: '700' },
+
+  // Skill tip
+  skillTip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 10,
+  },
+  skillTipText: { fontSize: 12, fontWeight: '500', flex: 1, lineHeight: 17 },
 
   // Wijsheid card
   wijsheidCard: {
@@ -1113,6 +1535,26 @@ const s = StyleSheet.create({
   learnBannerArrow: { fontSize: 20, fontWeight: '800' },
 
   // Info card
+  journalCard: {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    gap: 12,
+    marginHorizontal: 16,
+    marginBottom: 16,
+    padding: 14,
+    borderRadius: 14,
+    borderWidth: 1,
+  },
+  journalIcon: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+  },
+  journalTitle: { fontSize: 15, fontWeight: '700' as const },
+  journalSub: { fontSize: 12, fontWeight: '500' as const, marginTop: 2 },
+
   infoCard: {
     marginHorizontal: 16,
     marginTop: 4,
@@ -1155,4 +1597,5 @@ const s = StyleSheet.create({
   reflSource: { fontSize: 12, fontStyle: 'italic' as const },
   reflDoneBtn: { borderRadius: 10, paddingVertical: 10, alignItems: 'center' as const },
   reflDoneBtnText: { color: '#fff', fontSize: 14, fontWeight: '700' as const },
+  chevronWrap: { width: 32, height: 32, borderRadius: 16, alignItems: 'center' as const, justifyContent: 'center' as const },
 });

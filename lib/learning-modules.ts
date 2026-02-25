@@ -10,6 +10,8 @@ export {
   HERSTEL_MODULES,
   VERBINDING_MODULES,
   REFLECTIE_MODULES,
+  BONUSKIND_MODULES,
+  LASTIG_GEDRAG_MODULES,
   getLearningModulesForSkill,
   getAllModulesCount,
 } from "./modules";

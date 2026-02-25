@@ -22,8 +22,9 @@ import { SKILL_LIST } from '@/lib/skills';
 import { getLearningModulesForSkill } from '@/lib/learning-modules';
 import { transformModuleToStages } from '@/lib/module-stages';
 import { getTrainingForSkill } from '@/lib/training-content';
-import type { Skill, LearningModule } from '@/lib/types';
+import type { Skill, LearningModule, ThemeTag } from '@/lib/types';
 import { getSkillMasteryTier, MASTERY_TIER_INFO } from '@/lib/gamification-types';
+import { resolveActiveThemes } from '@/lib/theme-resolver';
 import { SKILL_COLORS } from '@/lib/colors';
 import { AppIcon, InlineIcon, getSkillIcon } from '@/lib/icons';
 
@@ -138,6 +139,7 @@ function SkillCard({
   totalCount,
   isExpanded,
   masteryTier,
+  hasThemed,
   onPress,
 }: {
   skill: Skill;
@@ -145,6 +147,7 @@ function SkillCard({
   totalCount: number;
   isExpanded: boolean;
   masteryTier: 'none' | 'bronze' | 'silver' | 'gold';
+  hasThemed?: boolean;
   onPress: () => void;
 }) {
   const { colors } = useTheme();
@@ -169,6 +172,11 @@ function SkillCard({
         {skill}
       </Text>
       <MiniProgressRing done={doneCount} total={totalCount} color={color} size={36} />
+      {hasThemed && (
+        <View style={[gridStyles.themedDot, { backgroundColor: '#8B5CF6' }]}>
+          <Text style={gridStyles.themedDotText}>+1</Text>
+        </View>
+      )}
       {masteryTier !== 'none' ? (
         <View style={[gridStyles.doneBadge, { backgroundColor: tierInfo.color + '20' }]}>
           <InlineIcon name="trophy" size={12} color={tierInfo.color} />
@@ -192,6 +200,15 @@ const gridStyles = StyleSheet.create({
     position: 'relative',
   },
   skillName: { fontSize: 13, fontWeight: '700', textAlign: 'center' },
+  themedDot: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    borderRadius: 8,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+  },
+  themedDotText: { color: '#fff', fontSize: 10, fontWeight: '800' },
   doneBadge: {
     position: 'absolute',
     top: 8,
@@ -293,9 +310,18 @@ function ExpandedSkillModules({
               </View>
 
               <View style={expandStyles.moduleInfo}>
-                <Text style={[expandStyles.moduleTitle, { color: status === 'locked' ? colors.text3 : colors.text }]} numberOfLines={1}>
-                  {mod.title}
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <Text style={[expandStyles.moduleTitle, { color: status === 'locked' ? colors.text3 : colors.text, flex: 1 }]} numberOfLines={1}>
+                    {mod.title}
+                  </Text>
+                  {mod.themes && mod.themes.length > 0 && (
+                    <View style={[expandStyles.themeBadge, { backgroundColor: '#8B5CF6' + '20', borderColor: '#8B5CF6' + '40' }]}>
+                      <Text style={[expandStyles.themeBadgeText, { color: '#8B5CF6' }]}>
+                        {mod.themes.includes('bonuskind') || mod.themes.includes('samengesteld_gezin') ? 'Bonuskind' : 'Extra zorg'}
+                      </Text>
+                    </View>
+                  )}
+                </View>
                 <Text style={[expandStyles.moduleDesc, { color: colors.text3 }]} numberOfLines={1}>
                   {mod.description}
                 </Text>
@@ -351,6 +377,13 @@ const expandStyles = StyleSheet.create({
   moduleInfo: { flex: 1 },
   moduleTitle: { fontSize: 14, fontWeight: '700', lineHeight: 19 },
   moduleDesc: { fontSize: 12, marginTop: 2 },
+  themeBadge: {
+    borderWidth: 1,
+    borderRadius: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+  },
+  themeBadgeText: { fontSize: 10, fontWeight: '700' },
   statusCol: { alignItems: 'flex-end' },
   statusText: { fontSize: 12, fontWeight: '700' },
   nextBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
@@ -366,9 +399,15 @@ function ArenaSection() {
   const router = useRouter();
   const store = useStore();
 
+  const activeThemes = useMemo(() => {
+    const profile = store.profile;
+    if (!profile) return [] as ThemeTag[];
+    return resolveActiveThemes(profile);
+  }, [store.profile]);
+
   const skillData = useMemo(() => {
     return SKILL_LIST.map((s) => {
-      const totalItems = getTrainingForSkill(s.label).length;
+      const totalItems = getTrainingForSkill(s.label, activeThemes).length;
       const progress = store.getTrainingProgress(s.label);
       const completedCount = progress.completedItems.length;
       const correctCount = progress.correctAnswers;
@@ -543,8 +582,15 @@ type Section = 'modules' | 'arena';
 export default function LerenOverview() {
   const { colors } = useTheme();
   const router = useRouter();
-  const { stageProgress } = useStore();
+  const store = useStore();
+  const { stageProgress } = store;
   const { openSkill } = useLocalSearchParams<{ openSkill?: string }>();
+
+  const activeThemes = useMemo(() => {
+    const profile = store.profile;
+    if (!profile) return [] as ThemeTag[];
+    return resolveActiveThemes(profile);
+  }, [store.profile]);
 
   const [section, setSection] = useState<Section>('modules');
   const [expandedSkill, setExpandedSkill] = useState<Skill | null>(null);
@@ -567,7 +613,7 @@ export default function LerenOverview() {
   const completedBySkill = useMemo(() => {
     const result: Record<string, string[]> = {};
     for (const s of SKILL_LIST) {
-      const mods = getLearningModulesForSkill(s.label);
+      const mods = getLearningModulesForSkill(s.label, activeThemes);
       result[s.label] = mods
         .filter((mod) => {
           const progress = stageProgress[mod.id];
@@ -579,11 +625,11 @@ export default function LerenOverview() {
         .map((mod) => mod.id);
     }
     return result;
-  }, [stageProgress]);
+  }, [stageProgress, activeThemes]);
 
   const allModules = useMemo(
-    () => SKILL_LIST.flatMap((s) => getLearningModulesForSkill(s.label)),
-    [],
+    () => SKILL_LIST.flatMap((s) => getLearningModulesForSkill(s.label, activeThemes)),
+    [activeThemes],
   );
   const totalDone = useMemo(
     () => SKILL_LIST.reduce((sum, s) => sum + (completedBySkill[s.label] ?? []).length, 0),
@@ -656,8 +702,9 @@ export default function LerenOverview() {
             <View style={s.gridContainer}>
               <View style={s.grid}>
                 {sortedSkills.map((skill) => {
-                  const modules = getLearningModulesForSkill(skill.label);
+                  const modules = getLearningModulesForSkill(skill.label, activeThemes);
                   const doneCount = (completedBySkill[skill.label] ?? []).length;
+                  const hasThemed = modules.some((m) => m.themes && m.themes.length > 0);
 
                   let totalQuizPct = 0;
                   let quizCount = 0;
@@ -679,6 +726,7 @@ export default function LerenOverview() {
                       totalCount={modules.length}
                       isExpanded={expandedSkill === skill.label}
                       masteryTier={masteryTier}
+                      hasThemed={hasThemed}
                       onPress={() => handleSkillPress(skill.label)}
                     />
                   );
@@ -695,7 +743,7 @@ export default function LerenOverview() {
                   </View>
                   <ExpandedSkillModules
                     skill={expandedSkill}
-                    modules={getLearningModulesForSkill(expandedSkill)}
+                    modules={getLearningModulesForSkill(expandedSkill, activeThemes)}
                     completedIds={completedBySkill[expandedSkill] ?? []}
                     color={SKILL_COLORS[expandedSkill] ?? '#667eea'}
                     onNavigate={(moduleId) => handleNavigate(expandedSkill, moduleId)}

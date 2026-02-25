@@ -5,7 +5,6 @@ import {
   TextInput,
   ScrollView,
   Pressable,
-  Image,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -13,11 +12,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import * as ImagePicker from 'expo-image-picker';
 import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
-import { createStory, uploadStoryImage, type Story } from '@/lib/supabase';
-import { InlineIcon } from '@/lib/icons';
+import { createStory, type Story } from '@/lib/supabase';
 import Button from '@/components/Button';
 
 type Category = Story['category'];
@@ -37,36 +34,17 @@ export default function CreateStory() {
 
   const [content, setContent] = useState(prefill ?? '');
   const [category, setCategory] = useState<Category>((prefillCategory as Category) ?? 'ervaring');
-  const [imageUri, setImageUri] = useState<string | null>(null);
   const [posting, setPosting] = useState(false);
-
-  async function pickImage() {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.7,
-    });
-    if (!result.canceled && result.assets[0]) {
-      setImageUri(result.assets[0].uri);
-    }
-  }
 
   async function handlePost() {
     if (!content.trim() || !user) return;
     setPosting(true);
 
     try {
-      let image_url: string | undefined;
-      if (imageUri) {
-        image_url = await uploadStoryImage(user.id, imageUri);
-      }
-
       await createStory({
         author_id: user.id,
         content: content.trim(),
         category,
-        image_url,
       });
       // If we came from another tab (e.g. help page with prefill),
       // navigate to community feed so the tab doesn't keep showing create
@@ -144,24 +122,6 @@ export default function CreateStory() {
             textAlignVertical="top"
           />
           <Text style={[styles.charCount, { color: colors.text3 }]}>{content.length}/1000</Text>
-
-          {/* Image */}
-          {imageUri ? (
-            <View style={styles.imagePreviewContainer}>
-              <Image source={{ uri: imageUri }} style={styles.imagePreview} />
-              <Pressable onPress={() => setImageUri(null)} style={[styles.removeImageBtn, { backgroundColor: colors.redDim }]}>
-                <InlineIcon name="x" size={16} color={colors.red} />
-              </Pressable>
-            </View>
-          ) : (
-            <Pressable
-              onPress={pickImage}
-              style={[styles.addImageBtn, { borderColor: colors.border, backgroundColor: colors.surface }]}
-            >
-              <InlineIcon name="mapPin" size={20} color={colors.text3} />
-              <Text style={[styles.addImageText, { color: colors.text3 }]}>Foto toevoegen</Text>
-            </Pressable>
-          )}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -195,27 +155,4 @@ const styles = StyleSheet.create({
     minHeight: 150,
   },
   charCount: { fontSize: 12, textAlign: 'right', marginTop: 4, marginBottom: 16 },
-  imagePreviewContainer: { position: 'relative', marginTop: 8 },
-  imagePreview: { width: '100%', height: 200, borderRadius: 12 },
-  removeImageBtn: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  addImageBtn: {
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderRadius: 12,
-    paddingVertical: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 8,
-  },
-  addImageText: { fontSize: 15, fontWeight: '500' },
 });

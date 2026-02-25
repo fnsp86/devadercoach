@@ -25,7 +25,8 @@ import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
 import { getLearningModulesForSkill } from '@/lib/learning-modules';
 import { transformModuleToStages } from '@/lib/module-stages';
-import type { Skill, Stage, ModuleStages, InsightCard, ScenarioChoice, QuizQuestion } from '@/lib/types';
+import type { Skill, Stage, ModuleStages, InsightCard, ScenarioChoice, QuizQuestion, ThemeTag } from '@/lib/types';
+import { resolveActiveThemes } from '@/lib/theme-resolver';
 import SkillCompletionPopup from '@/components/SkillCompletionPopup';
 import { SKILLS } from '@/lib/skills';
 import { SKILL_MASTERY_BONUS_XP, checkModuleMilestone } from '@/lib/gamification-types';
@@ -34,6 +35,7 @@ import type { GamificationEvent } from '@/components/GamificationPopup';
 import GamificationPopup from '@/components/GamificationPopup';
 import { SKILL_COLORS } from '@/lib/colors';
 import { AppIcon, InlineIcon, getSkillIcon } from '@/lib/icons';
+import { getTasksForModule } from '@/lib/task-module-map';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -385,9 +387,9 @@ const insightStyles = StyleSheet.create({
   titleRow: { flexDirection: 'row' as const, alignItems: 'center' as const, gap: 10, marginBottom: 14 },
   title: { fontSize: 18, fontWeight: '800', lineHeight: 24 },
   chevronBg: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1250,6 +1252,23 @@ function ModuleCompletionScreen({
           </View>
         )}
 
+        {/* Probeer deze taken */}
+        {(() => {
+          const suggestedTasks = getTasksForModule(moduleStages.moduleId, moduleStages.skill);
+          if (suggestedTasks.length === 0) return null;
+          return (
+            <View style={[completeStyles.takeawaysCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <Text style={[completeStyles.takeawaysTitle, { color: colors.text }]}>Probeer deze taken</Text>
+              {suggestedTasks.map((t) => (
+                <View key={t.id} style={completeStyles.takeawayRow}>
+                  <View style={[completeStyles.takeawayDot, { backgroundColor: skillColor }]} />
+                  <Text style={[completeStyles.takeawayText, { color: colors.text2 }]} numberOfLines={2}>{t.title}</Text>
+                </View>
+              ))}
+            </View>
+          );
+        })()}
+
         {/* Buttons */}
         <View style={completeStyles.buttons}>
           {onNextModule && (
@@ -1405,14 +1424,20 @@ export default function ModulePlayer() {
   const skill = decodeURIComponent(rawSkill || '') as Skill;
   const skillColor = SKILL_COLORS[skill] || '#F59E0B';
 
+  const activeThemes = useMemo(() => {
+    const profile = store.profile;
+    if (!profile) return [] as ThemeTag[];
+    return resolveActiveThemes(profile);
+  }, [store.profile]);
+
   // Transform module into stages
   const moduleStages = useMemo(() => {
     if (!skill || !moduleId) return null;
-    const mods = getLearningModulesForSkill(skill);
+    const mods = getLearningModulesForSkill(skill, activeThemes);
     const found = mods.find((m) => m.id === moduleId);
     if (!found) return null;
     return transformModuleToStages(found);
-  }, [skill, moduleId]);
+  }, [skill, moduleId, activeThemes]);
 
   // Stage navigation state
   const [stageIndex, setStageIndex] = useState(0);
@@ -1529,7 +1554,7 @@ export default function ModulePlayer() {
       }
 
       // Check if all modules of this skill are now complete
-      const allMods = getLearningModulesForSkill(skill);
+      const allMods = getLearningModulesForSkill(skill, activeThemes);
       if (completed.length >= allMods.length) {
         awardBonusXP(SKILL_MASTERY_BONUS_XP, skill);
         setTimeout(() => setShowSkillCompletion(true), 1200);
@@ -1564,10 +1589,10 @@ export default function ModulePlayer() {
   // Next module
   const nextModule = useMemo(() => {
     if (!skill || !moduleId) return null;
-    const mods = getLearningModulesForSkill(skill);
+    const mods = getLearningModulesForSkill(skill, activeThemes);
     const idx = mods.findIndex((m) => m.id === moduleId);
     return mods[idx + 1] ?? null;
-  }, [skill, moduleId]);
+  }, [skill, moduleId, activeThemes]);
 
   function handleNextModule() {
     if (!nextModule) return;
@@ -1598,7 +1623,7 @@ export default function ModulePlayer() {
 
   // ── Completion screen ──────────────────────────────────────────────────────
   if (showCompletion) {
-    const allModuleTitles = getLearningModulesForSkill(skill).map((m) => m.title);
+    const allModuleTitles = getLearningModulesForSkill(skill, activeThemes).map((m) => m.title);
     const totalSkillXP = allModuleTitles.length * 30; // ~30 XP per module average
     const skillEmoji = SKILLS[skill]?.emoji || '';
 

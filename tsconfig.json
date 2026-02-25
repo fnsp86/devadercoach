@@ -7,5 +7,5 @@
       "@/*": ["./*"]
     }
   },
-  "exclude": ["lib/store-extensions.ts", "lib/store-update.ts"]
+  "exclude": ["lib/store-extensions.ts", "lib/store-update.ts", "supabase/**/*"]
 }

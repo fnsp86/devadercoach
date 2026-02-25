@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,9 @@ import { useLocalSearchParams, useRouter, useFocusEffect } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '@/lib/theme';
 import { getLearningModulesForSkill } from '@/lib/learning-modules';
-import type { LearningModule, Skill } from '@/lib/types';
+import type { LearningModule, Skill, ThemeTag } from '@/lib/types';
+import { useStore } from '@/lib/store';
+import { resolveActiveThemes } from '@/lib/theme-resolver';
 import ProgressBar from '@/components/ProgressBar';
 import { SKILL_COLORS } from '@/lib/colors';
 import { AppIcon, InlineIcon } from '@/lib/icons';
@@ -30,6 +32,12 @@ export default function SkillLearningModules() {
   const skill = decodeURIComponent(rawSkill || '') as Skill;
   const skillColor = SKILL_COLORS[skill] || colors.amber;
 
+  const { profile } = useStore();
+  const activeThemes = useMemo(() => {
+    if (!profile) return [] as ThemeTag[];
+    return resolveActiveThemes(profile);
+  }, [profile]);
+
   const [completedModules, setCompletedModules] = useState<string[]>([]);
   const [modules, setModules] = useState<LearningModule[]>([]);
 
@@ -37,9 +45,9 @@ export default function SkillLearningModules() {
 
   // Load modules on mount
   useEffect(() => {
-    const mods = getLearningModulesForSkill(skill);
+    const mods = getLearningModulesForSkill(skill, activeThemes);
     setModules(mods);
-  }, [skill]);
+  }, [skill, activeThemes]);
 
   // Reload completion state whenever this screen comes into focus
   // (e.g. after returning from the module reader)

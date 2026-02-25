@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -24,17 +24,35 @@ import { SKILL_COLORS } from '@/lib/colors';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 import { InlineIcon, AppIcon, getSkillIcon, type IconName } from '@/lib/icons';
-import type { Child, UserProfile } from '@/lib/types';
+import type { Child, UserProfile, ChildRelatie, ChildAandachtspunt, GezinsSituatie, AppDoel } from '@/lib/types';
 
-type Step = 'account' | 'confirm_email' | 'kinderen' | 'community' | 'welkom';
+type Step = 'account' | 'confirm_email' | 'kinderen' | 'doelen' | 'community' | 'welkom';
 
 const STEP_PROGRESS: Record<Step, number> = {
-  account: 20,
-  confirm_email: 40,
-  kinderen: 60,
-  community: 80,
+  account: 17,
+  confirm_email: 33,
+  kinderen: 50,
+  doelen: 67,
+  community: 83,
   welkom: 100,
 };
+
+const ALL_DOELEN: AppDoel[] = [
+  'Rustiger reageren',
+  'Meer verbinding',
+  'Betere grenzen stellen',
+  'Mijn kind beter begrijpen',
+  'Minder schreeuwen',
+  'Meer geduld hebben',
+  'Beter luisteren',
+  'Herstellen na een ruzie',
+  'Mijn kind zelfstandiger maken',
+  'Bewuster opvoeden',
+  'Mijn eigen patronen doorbreken',
+  'Emoties beter begeleiden',
+  'Consequenter zijn',
+  'Meer quality time',
+];
 
 const EXPECT_ITEMS: { icon: IconName; text: string }[] = [
   { icon: 'calendarDays', text: '7 weektaken op jouw niveau' },
@@ -56,11 +74,20 @@ interface ChildForm {
   id: string;
   name: string;
   age: string;
+  relatie: ChildRelatie;
+  aandachtspunten: ChildAandachtspunt[];
 }
 
 function createEmptyChild(): ChildForm {
-  return { id: Date.now().toString() + Math.random().toString(36).substring(2, 6), name: '', age: '' };
+  return { id: Date.now().toString() + Math.random().toString(36).substring(2, 6), name: '', age: '', relatie: 'eigen_kind', aandachtspunten: [] };
 }
+
+const AANDACHTSPUNT_OPTIONS: { value: ChildAandachtspunt; label: string; tip: string }[] = [
+  { value: 'adhd', label: 'ADHD / druk gedrag', tip: 'We passen je taken aan met extra tips voor druk of impulsief gedrag.' },
+  { value: 'gedragsproblemen', label: 'Gedragsproblemen', tip: 'Je krijgt taken die helpen bij moeilijk of uitdagend gedrag.' },
+  { value: 'hooggevoelig', label: 'Hooggevoelig', tip: 'We houden rekening met de gevoeligheid van je kind.' },
+  { value: 'prikkelverwerking', label: 'Prikkelgevoelig', tip: 'Je krijgt taken gericht op prikkelverwerking en rust.' },
+];
 
 const AGE_ICONS: Record<string, IconName> = {
   '0-2': 'baby',
@@ -73,7 +100,7 @@ const AGE_ICONS: Record<string, IconName> = {
 export default function RegisterScreen() {
   const { colors } = useTheme();
   const { saveProfile, saveOnboarding } = useStore();
-  const { user, signUp, signIn, setCommunityProfile } = useAuth();
+  const { user, signUp, verifySignUpOtp, setCommunityProfile } = useAuth();
   const router = useRouter();
 
   const [step, setStep] = useState<Step>('account');
@@ -86,8 +113,14 @@ export default function RegisterScreen() {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Step 2: confirm email OTP
+  const [otpCode, setOtpCode] = useState('');
+
   // Step 3: kinderen
   const [children, setChildren] = useState<ChildForm[]>([createEmptyChild()]);
+
+  // Step 3.5: doelen
+  const [selectedDoelen, setSelectedDoelen] = useState<AppDoel[]>([]);
 
   // Step 4: community profiel
   const [bio, setBio] = useState('');
@@ -132,30 +165,74 @@ export default function RegisterScreen() {
     }
   }
 
+  // ── Resend cooldown ──────────────────────────────────────────────
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const cooldownRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    if (resendCooldown <= 0) {
+      if (cooldownRef.current) clearInterval(cooldownRef.current);
+      return;
+    }
+    cooldownRef.current = setInterval(() => {
+      setResendCooldown((prev) => {
+        if (prev <= 1) {
+          if (cooldownRef.current) clearInterval(cooldownRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => { if (cooldownRef.current) clearInterval(cooldownRef.current); };
+  }, [resendCooldown > 0]);
+
   // ── Email confirm step ────────────────────────────────────────────
-  async function handleConfirmRetry() {
+  async function handleVerifySignUpOtp() {
+    if (otpCode.trim().length < 8) {
+      setErrors({ general: 'Voer de 8-cijferige code in uit je e-mail' });
+      return;
+    }
     setLoading(true);
     setErrors({});
-    const result = await signIn(email.trim(), password);
+    const result = await verifySignUpOtp(email.trim(), otpCode.trim());
     setLoading(false);
     if (result.error) {
-      setErrors({ general: 'E-mail nog niet bevestigd. Controleer je inbox (en spam-map) en klik op de link.' });
+      setErrors({ general: 'Ongeldige code. Controleer je e-mail en probeer opnieuw.' });
     } else {
       setStep('kinderen');
     }
   }
 
   async function handleResendEmail() {
+    if (resendCooldown > 0) return;
     setLoading(true);
     await signUp(email.trim(), password);
     setLoading(false);
+    setResendCooldown(60);
     Alert.alert('Verstuurd', 'We hebben een nieuwe bevestigingsmail gestuurd.');
   }
+
+  // Step 4: gezinssituatie
+  const [gezinssituatie, setGezinssituatie] = useState<GezinsSituatie>('standaard');
 
   // ── Kinderen step ─────────────────────────────────────────────────
   function updateChild(id: string, field: 'name' | 'age', value: string) {
     setChildren((prev) => prev.map((c) => (c.id === id ? { ...c, [field]: value } : c)));
     if (errors.children) setErrors({});
+  }
+
+  function toggleChildRelatie(id: string) {
+    setChildren((prev) => prev.map((c) =>
+      c.id === id ? { ...c, relatie: c.relatie === 'eigen_kind' ? 'bonuskind' : 'eigen_kind' } : c
+    ));
+  }
+
+  function toggleAandachtspunt(id: string, ap: ChildAandachtspunt) {
+    setChildren((prev) => prev.map((c) => {
+      if (c.id !== id) return c;
+      const has = c.aandachtspunten.includes(ap);
+      return { ...c, aandachtspunten: has ? c.aandachtspunten.filter((a) => a !== ap) : [...c.aandachtspunten, ap] };
+    }));
   }
 
   function validateChildren(): boolean {
@@ -196,18 +273,33 @@ export default function RegisterScreen() {
       .filter((c) => c.name.trim() && c.age.trim() && !isNaN(parseInt(c.age, 10)))
       .map((c) => {
         const age = parseInt(c.age, 10);
-        return { id: c.id, name: c.name.trim(), age, ageGroup: getAgeGroup(age) };
+        return {
+          id: c.id,
+          name: c.name.trim(),
+          age,
+          ageGroup: getAgeGroup(age),
+          relatie: c.relatie,
+          aandachtspunten: c.aandachtspunten.length > 0 ? c.aandachtspunten : undefined,
+        };
       });
 
     const primaryAgeGroup = (validChildren[0]?.ageGroup ?? '6-9') as UserProfile['ageGroup'];
+
+    // Automatisch gezinssituatie afleiden als er bonuskinderen zijn
+    const hasBonuskind = validChildren.some((c) => c.relatie === 'bonuskind');
+    const resolvedGezin: GezinsSituatie = gezinssituatie !== 'standaard'
+      ? gezinssituatie
+      : hasBonuskind ? 'samengesteld_gezin' : 'standaard';
 
     const localProfile: UserProfile = {
       naam: naam.trim(),
       email: email.trim(),
       ageGroup: primaryAgeGroup,
-      doel: 'Gewoon een betere vader zijn',
+      doel: selectedDoelen[0] ?? 'Gewoon een betere vader zijn',
+      doelen: selectedDoelen.length > 0 ? selectedDoelen : undefined,
       startDate: new Date().toISOString().split('T')[0],
       children: validChildren,
+      gezinssituatie: resolvedGezin !== 'standaard' ? resolvedGezin : undefined,
     };
 
     saveProfile(localProfile);
@@ -259,7 +351,7 @@ export default function RegisterScreen() {
         <KeyboardAvoidingView style={s.flex} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <ScrollView contentContainerStyle={s.scroll} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
             <View style={s.header}>
-              <Text style={[s.stepLabel, { color: colors.text3 }]}>Stap 1 van 5</Text>
+              <Text style={[s.stepLabel, { color: colors.text3 }]}>Stap 1 van 6</Text>
               <Text style={[s.title, { color: colors.text }]}>Account aanmaken</Text>
               <Text style={[s.subtitle, { color: colors.text2 }]}>We personaliseren de app voor jou.</Text>
             </View>
@@ -360,52 +452,81 @@ export default function RegisterScreen() {
   if (step === 'confirm_email') {
     return (
       <SafeAreaView style={[s.safe, { backgroundColor: colors.bg }]}>
-        <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
-          <View style={s.header}>
-            <Text style={[s.stepLabel, { color: colors.text3 }]}>Stap 2 van 5</Text>
-            <Text style={[s.title, { color: colors.text }]}>Bevestig je e-mail</Text>
-          </View>
-          <ProgBar />
-
-          <View style={s.confirmCenter}>
-            <View style={[s.mailIcon, { backgroundColor: colors.amberDim }]}>
-              <InlineIcon name="mail" size={40} color={colors.amber} />
+        <KeyboardAvoidingView style={s.flex} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <ScrollView contentContainerStyle={s.scroll} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+            <View style={s.header}>
+              <Text style={[s.stepLabel, { color: colors.text3 }]}>Stap 2 van 6</Text>
+              <Text style={[s.title, { color: colors.text }]}>Bevestig je e-mail</Text>
             </View>
-            <Text style={[s.confirmText, { color: colors.text2 }]}>
-              We hebben een bevestigingsmail gestuurd naar{'\n'}
-              <Text style={{ color: colors.text, fontWeight: '700' }}>{email}</Text>
-            </Text>
-            <Text style={[s.confirmHint, { color: colors.text3 }]}>
-              Klik op de link in de mail om je e-mail te bevestigen.{'\n'}
-              Kom daarna terug naar de app en druk op de knop hieronder.
-            </Text>
-            <View style={[s.errorBox, { backgroundColor: colors.amberDim, borderColor: colors.amber + '40', marginTop: 8 }]}>
-              <Text style={[{ color: colors.text2, fontSize: 13, lineHeight: 18 }]}>
-                Tip: Als Safari de link niet kan openen of een foutpagina toont, is je e-mail toch bevestigd. Kom gewoon terug en druk op "Ik heb bevestigd".
+            <ProgBar />
+
+            <View style={s.confirmCenter}>
+              <View style={[s.mailIcon, { backgroundColor: colors.amberDim }]}>
+                <InlineIcon name="mail" size={40} color={colors.amber} />
+              </View>
+              <Text style={[s.confirmText, { color: colors.text2 }]}>
+                We hebben een 8-cijferige code gestuurd naar{'\n'}
+                <Text style={{ color: colors.text, fontWeight: '700' }}>{email}</Text>
+              </Text>
+              <Text style={[s.confirmHint, { color: colors.text3 }]}>
+                Voer de code uit je e-mail hieronder in om je account te bevestigen.
               </Text>
             </View>
-          </View>
 
-          {errors.general ? (
-            <View style={[s.errorBox, { backgroundColor: colors.redDim, borderColor: colors.red, marginBottom: 16 }]}>
-              <Text style={[s.error, { color: colors.red }]}>{errors.general}</Text>
+            <View style={s.form}>
+              <Text style={[s.label, { color: colors.text }]}>Bevestigingscode</Text>
+              <TextInput
+                style={[
+                  s.input,
+                  s.otpInput,
+                  {
+                    backgroundColor: colors.surface,
+                    borderColor: errors.general ? colors.red : colors.border,
+                    color: colors.text,
+                  },
+                ]}
+                placeholder="00000000"
+                placeholderTextColor={colors.text3}
+                value={otpCode}
+                onChangeText={(t) => { setOtpCode(t.replace(/[^0-9]/g, '').slice(0, 8)); setErrors({}); }}
+                keyboardType="number-pad"
+                maxLength={8}
+                autoFocus
+              />
+
+              {errors.general ? (
+                <View style={[s.errorBox, { backgroundColor: colors.redDim, borderColor: colors.red, marginTop: 8 }]}>
+                  <Text style={[s.error, { color: colors.red }]}>{errors.general}</Text>
+                </View>
+              ) : null}
+
+              <View style={{ marginTop: 24 }}>
+                <Button
+                  title={loading ? 'Controleren...' : 'Code verifiëren →'}
+                  onPress={handleVerifySignUpOtp}
+                  variant="primary"
+                  size="lg"
+                  disabled={loading || otpCode.length < 8}
+                />
+              </View>
+
+              <Pressable onPress={handleResendEmail} disabled={resendCooldown > 0} style={[s.linkRow, { marginTop: 16, opacity: resendCooldown > 0 ? 0.5 : 1 }]}>
+                <Text style={[s.linkText, { color: colors.text3 }]}>
+                  Geen code ontvangen?{' '}
+                  <Text style={{ color: colors.amber, fontWeight: '700' }}>
+                    {resendCooldown > 0 ? `Opnieuw versturen (${resendCooldown}s)` : 'Opnieuw versturen'}
+                  </Text>
+                </Text>
+              </Pressable>
+
+              <Pressable onPress={() => { setStep('account'); setErrors({}); setOtpCode(''); }} style={[s.linkRow, { marginTop: 12 }]}>
+                <Text style={[s.linkText, { color: colors.text3 }]}>
+                  ← Terug naar registratie
+                </Text>
+              </Pressable>
             </View>
-          ) : null}
-
-          <Button
-            title={loading ? 'Controleren...' : 'Ik heb bevestigd →'}
-            onPress={handleConfirmRetry}
-            variant="primary"
-            size="lg"
-          />
-
-          <Pressable onPress={handleResendEmail} style={[s.linkRow, { marginTop: 16 }]}>
-            <Text style={[s.linkText, { color: colors.text3 }]}>
-              Geen mail ontvangen?{' '}
-              <Text style={{ color: colors.amber, fontWeight: '700' }}>Opnieuw versturen</Text>
-            </Text>
-          </Pressable>
-        </ScrollView>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }
@@ -419,7 +540,7 @@ export default function RegisterScreen() {
         <KeyboardAvoidingView style={s.flex} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <ScrollView contentContainerStyle={s.scroll} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
             <View style={s.header}>
-              <Text style={[s.stepLabel, { color: colors.text3 }]}>Stap 3 van 5</Text>
+              <Text style={[s.stepLabel, { color: colors.text3 }]}>Stap 3 van 6</Text>
               <Text style={[s.title, { color: colors.text }]}>Je kinderen</Text>
               <Text style={[s.subtitle, { color: colors.text2 }]}>We stemmen de taken af op hun leeftijd.</Text>
             </View>
@@ -467,6 +588,53 @@ export default function RegisterScreen() {
                         <Text style={[s.ageTagText, { color: colors.amber }]}>{ageGroup} jaar</Text>
                       </View>
                     )}
+
+                    {/* Relatie toggle */}
+                    <Text style={[s.label, { color: colors.text3, fontSize: 13, marginTop: 12 }]}>Relatie (optioneel)</Text>
+                    <View style={s.relatieRow}>
+                      {(['eigen_kind', 'bonuskind'] as const).map((rel) => (
+                        <Pressable
+                          key={rel}
+                          onPress={() => toggleChildRelatie(child.id)}
+                          style={[s.relatiePill, {
+                            backgroundColor: child.relatie === rel ? colors.amberDim : colors.surface2,
+                            borderColor: child.relatie === rel ? colors.amber + '40' : colors.border,
+                          }]}
+                        >
+                          <InlineIcon name={rel === 'eigen_kind' ? 'heart' : 'users'} size={14} color={child.relatie === rel ? colors.amber : colors.text3} />
+                          <Text style={[s.relatiePillText, { color: child.relatie === rel ? colors.amber : colors.text3 }]}>
+                            {rel === 'eigen_kind' ? 'Mijn kind' : 'Bonuskind'}
+                          </Text>
+                        </Pressable>
+                      ))}
+                    </View>
+
+                    {/* Aandachtspunten */}
+                    <Text style={[s.label, { color: colors.text3, fontSize: 13, marginTop: 12 }]}>Extra aandachtspunten (optioneel)</Text>
+                    <View style={s.aandachtspuntenGrid}>
+                      {AANDACHTSPUNT_OPTIONS.map((opt) => {
+                        const selected = child.aandachtspunten.includes(opt.value);
+                        return (
+                          <Pressable
+                            key={opt.value}
+                            onPress={() => toggleAandachtspunt(child.id, opt.value)}
+                            style={[s.aandachtspuntPill, {
+                              backgroundColor: selected ? colors.amberDim : colors.surface2,
+                              borderColor: selected ? colors.amber + '40' : colors.border,
+                            }]}
+                          >
+                            <Text style={[s.aandachtspuntText, { color: selected ? colors.amber : colors.text3 }]}>
+                              {opt.label}
+                            </Text>
+                          </Pressable>
+                        );
+                      })}
+                    </View>
+                    {child.aandachtspunten.length > 0 && (
+                      <Text style={[s.aandachtspuntTip, { color: colors.text3, backgroundColor: colors.amberDim }]}>
+                        {AANDACHTSPUNT_OPTIONS.find((o) => o.value === child.aandachtspunten[0])?.tip}
+                      </Text>
+                    )}
                   </View>
                 );
               })}
@@ -487,7 +655,7 @@ export default function RegisterScreen() {
                 <View style={{ flex: 2 }}>
                   <Button
                     title="Volgende →"
-                    onPress={() => { if (validateChildren()) setStep('community'); }}
+                    onPress={() => { if (validateChildren()) setStep('doelen'); }}
                     variant="primary"
                     size="lg"
                   />
@@ -501,7 +669,86 @@ export default function RegisterScreen() {
   }
 
   // ═══════════════════════════════════════════════════════════════════
-  // STEP 4: Community profiel (optioneel)
+  // STEP 4: Doelen
+  // ═══════════════════════════════════════════════════════════════════
+  if (step === 'doelen') {
+    function toggleDoel(doel: AppDoel) {
+      setSelectedDoelen((prev) => {
+        if (prev.includes(doel)) return prev.filter((d) => d !== doel);
+        if (prev.length >= 3) return prev; // Max 3
+        return [...prev, doel];
+      });
+    }
+
+    return (
+      <SafeAreaView style={[s.safe, { backgroundColor: colors.bg }]}>
+        <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
+          <View style={s.header}>
+            <Text style={[s.stepLabel, { color: colors.text3 }]}>Stap 4 van 6</Text>
+            <Text style={[s.title, { color: colors.text }]}>Jouw doelen</Text>
+            <Text style={[s.subtitle, { color: colors.text2 }]}>
+              Kies 3 doelen. We stemmen je taken hierop af.
+            </Text>
+          </View>
+          <ProgBar />
+
+          <View style={s.doelenGrid}>
+            {ALL_DOELEN.map((doel) => {
+              const isSelected = selectedDoelen.includes(doel);
+              const isDisabled = !isSelected && selectedDoelen.length >= 3;
+              return (
+                <Pressable
+                  key={doel}
+                  onPress={() => toggleDoel(doel)}
+                  disabled={isDisabled}
+                  style={[
+                    s.doelPill,
+                    {
+                      backgroundColor: isSelected ? colors.amberDim : colors.surface,
+                      borderColor: isSelected ? colors.amber : colors.border,
+                      opacity: isDisabled ? 0.4 : 1,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      s.doelPillText,
+                      { color: isSelected ? colors.amber : colors.text },
+                    ]}
+                  >
+                    {doel}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
+
+          <Text style={[s.doelCount, { color: selectedDoelen.length >= 3 ? colors.green : colors.text3 }]}>
+            {selectedDoelen.length}/3 gekozen
+          </Text>
+
+          <View style={s.buttonRow}>
+            <View style={{ flex: 1 }}>
+              <Button title="← Terug" onPress={() => setStep('kinderen')} variant="secondary" size="md" />
+            </View>
+            <View style={{ flex: 2 }}>
+              <Button
+                title="Volgende →"
+                onPress={() => setStep('community')}
+                variant="primary"
+                size="lg"
+                disabled={selectedDoelen.length < 3}
+              />
+            </View>
+          </View>
+
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // STEP 5: Community profiel (optioneel)
   // ═══════════════════════════════════════════════════════════════════
   if (step === 'community') {
     const displayCity = locationMethod === 'gps' ? (detectedCity || 'Locatie gevonden') : selectedCity;
@@ -511,7 +758,7 @@ export default function RegisterScreen() {
         <KeyboardAvoidingView style={s.flex} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <ScrollView contentContainerStyle={s.scroll} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
             <View style={s.header}>
-              <Text style={[s.stepLabel, { color: colors.text3 }]}>Stap 4 van 5</Text>
+              <Text style={[s.stepLabel, { color: colors.text3 }]}>Stap 5 van 6</Text>
               <Text style={[s.title, { color: colors.text }]}>Social profiel</Text>
               <Text style={[s.subtitle, { color: colors.text2 }]}>Optioneel — sla over als je wilt.</Text>
             </View>
@@ -598,7 +845,7 @@ export default function RegisterScreen() {
 
               <View style={s.buttonRow}>
                 <View style={{ flex: 1 }}>
-                  <Button title="← Terug" onPress={() => setStep('kinderen')} variant="secondary" size="md" />
+                  <Button title="← Terug" onPress={() => setStep('doelen')} variant="secondary" size="md" />
                 </View>
                 <View style={{ flex: 2 }}>
                   <Button title="Volgende →" onPress={() => setStep('welkom')} variant="primary" size="lg" />
@@ -622,7 +869,7 @@ export default function RegisterScreen() {
     <SafeAreaView style={[s.safe, { backgroundColor: colors.bg }]}>
       <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
         <View style={s.header}>
-          <Text style={[s.stepLabel, { color: colors.text3 }]}>Stap 5 van 5</Text>
+          <Text style={[s.stepLabel, { color: colors.text3 }]}>Stap 6 van 6</Text>
           <Text style={[s.title, { color: colors.text }]}>Welkom, {naam}!</Text>
           <Text style={[s.subtitle, { color: colors.text2 }]}>Je bent klaar om te beginnen.</Text>
         </View>
@@ -709,6 +956,12 @@ const s = StyleSheet.create({
     textAlignVertical: 'top',
   },
   charCount: { fontSize: 12, textAlign: 'right', marginTop: 4 },
+  otpInput: {
+    fontSize: 24,
+    fontWeight: '700',
+    letterSpacing: 6,
+    textAlign: 'center',
+  },
   error: { fontSize: 13, fontWeight: '500', marginTop: 4 },
   errorBox: { borderWidth: 1, borderRadius: 10, padding: 12, marginBottom: 16 },
 
@@ -727,6 +980,13 @@ const s = StyleSheet.create({
   removeBtnText: { fontSize: 14, fontWeight: '700' },
   ageTag: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8, marginTop: 6, gap: 6 },
   ageTagText: { fontSize: 13, fontWeight: '600' },
+  relatieRow: { flexDirection: 'row', gap: 8, marginBottom: 4 },
+  relatiePill: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: 10, borderRadius: 10, borderWidth: 1 },
+  relatiePillText: { fontSize: 13, fontWeight: '600' },
+  aandachtspuntenGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 4 },
+  aandachtspuntPill: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 10, borderWidth: 1 },
+  aandachtspuntText: { fontSize: 12, fontWeight: '600' },
+  aandachtspuntTip: { fontSize: 12, lineHeight: 17, padding: 10, borderRadius: 8, marginTop: 4, overflow: 'hidden' },
   addChildBtn: { borderWidth: 1, borderStyle: 'dashed', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 8 },
   addChildBtnText: { fontSize: 15, fontWeight: '600' },
 
@@ -752,4 +1012,10 @@ const s = StyleSheet.create({
   expectList: { gap: 12 },
   expectRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   expectItem: { fontSize: 15, lineHeight: 22, flex: 1 },
+
+  // Doelen
+  doelenGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 12 },
+  doelPill: { paddingHorizontal: 16, paddingVertical: 12, borderRadius: 12, borderWidth: 1.5 },
+  doelPillText: { fontSize: 14, fontWeight: '600' },
+  doelCount: { fontSize: 13, fontWeight: '600', textAlign: 'center', marginBottom: 20 },
 });

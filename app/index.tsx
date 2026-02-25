@@ -12,6 +12,7 @@ import { useRouter } from 'expo-router';
 import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
 import { useAuth } from '@/lib/auth';
+import { supabase } from '@/lib/supabase';
 import Card from '@/components/Card';
 import Button from '@/components/Button';
 import { AppIcon, InlineIcon, type IconName } from '@/lib/icons';
@@ -33,7 +34,12 @@ export default function IndexScreen() {
   // Auto-redirect returning users who are logged in
   useEffect(() => {
     if (hydrated && !authLoading && profile && session) {
-      router.replace('/(tabs)/vandaag');
+      // Verify session is still valid (not stale from a recent signOut)
+      supabase.auth.getSession().then(({ data: { session: current } }) => {
+        if (current) {
+          router.replace('/(tabs)/vandaag');
+        }
+      });
     }
   }, [hydrated, authLoading, profile, session]);
 

@@ -18,6 +18,7 @@ import { InlineIcon } from '@/lib/icons';
 import { SKILL_COLORS } from '@/lib/colors';
 import { ALL_SKILLS } from '@/lib/skills';
 import type { InteractiveTask, Skill } from '@/lib/types';
+import { getModuleForTask } from '@/lib/task-module-map';
 
 const XP_WEEK_BONUS = 50;
 
@@ -39,7 +40,7 @@ export default function WeekDetailScreen() {
   const { colors } = useTheme();
   const router = useRouter();
   const { weekKey } = useLocalSearchParams<{ weekKey: string }>();
-  const { weekTaskCompletions, profile } = useStore();
+  const { weekTaskCompletions, profile, getTaskOutcome } = useStore();
   const [selectedTask, setSelectedTask] = useState<InteractiveTask | null>(null);
 
   // Reflectie-taken opzoeken voor deze week
@@ -55,7 +56,8 @@ export default function WeekDetailScreen() {
       .sort((a, b) => a.completedAt.localeCompare(b.completedAt));
   }, [weekTaskCompletions, weekKey]);
 
-  const isComplete = completions.length >= 7;
+  const taskCount = completions.filter((c) => !/^refl_\d{4}-/.test(c.taskId)).length;
+  const isComplete = taskCount >= 7;
   const totalXP = completions.reduce((sum, c) => sum + c.points, 0) + (isComplete ? XP_WEEK_BONUS : 0);
   const weekNum = profile?.startDate && weekKey ? getWeekNumber(weekKey, profile.startDate) : 1;
 
@@ -81,7 +83,7 @@ export default function WeekDetailScreen() {
       {/* Summary */}
       <View style={[s.summary, { backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
         <View style={s.summaryItem}>
-          <Text style={[s.summaryValue, { color: colors.text }]}>{completions.length}</Text>
+          <Text style={[s.summaryValue, { color: colors.text }]}>{taskCount}</Text>
           <Text style={[s.summaryLabel, { color: colors.text3 }]}>Taken</Text>
         </View>
         <View style={[s.summaryDivider, { backgroundColor: colors.border }]} />
@@ -145,8 +147,33 @@ export default function WeekDetailScreen() {
                     <Text style={[s.taskDate, { color: colors.text3 }]}>
                       {formatDateTime(item.completedAt)}
                     </Text>
+                    {task && !isReflection && (() => {
+                      const mod = getModuleForTask(task);
+                      if (!mod) return null;
+                      return (
+                        <Pressable
+                          onPress={(e) => { e.stopPropagation(); router.push(`/(tabs)/leren/module?skill=${mod.skill}&moduleId=${mod.id}` as any); }}
+                          hitSlop={4}
+                        >
+                          <Text style={[s.learnLink, { color: skillColor }]}>Leer meer</Text>
+                        </Pressable>
+                      );
+                    })()}
                   </View>
                 </View>
+                {/* Outcome badge */}
+                {weekKey && (() => {
+                  const oc = getTaskOutcome(item.taskId, weekKey);
+                  if (!oc) return null;
+                  const ocColor = oc.outcome === 'Gelukt' ? '#22C55E' : oc.outcome === 'Deels' ? '#FBBF24' : '#EF4444';
+                  return (
+                    <View style={[s.outcomeBadge, { backgroundColor: ocColor + '18' }]}>
+                      <Text style={[s.outcomeText, { color: ocColor }]}>
+                        {oc.outcome === 'Gelukt' ? '✓' : oc.outcome === 'Deels' ? '~' : '✕'}
+                      </Text>
+                    </View>
+                  );
+                })()}
                 <View style={[s.xpBadge, { backgroundColor: colors.amberDim }]}>
                   <Text style={[s.xpText, { color: colors.amber }]}>+{item.points}</Text>
                 </View>
@@ -306,4 +333,7 @@ const s = StyleSheet.create({
   modalBodyText: { fontSize: 15, lineHeight: 22 },
   modalScienceBox: { borderRadius: 12, padding: 16, marginBottom: 20 },
   modalBron: { fontSize: 12, marginTop: 8, fontStyle: 'italic' },
+  outcomeBadge: { width: 28, height: 28, borderRadius: 14, alignItems: 'center' as const, justifyContent: 'center' as const },
+  outcomeText: { fontSize: 14, fontWeight: '800' as const },
+  learnLink: { fontSize: 11, fontWeight: '700' as const },
 });

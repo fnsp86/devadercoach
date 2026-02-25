@@ -21,7 +21,9 @@ import Card from '@/components/Card';
 import Toggle from '@/components/Toggle';
 import Button from '@/components/Button';
 import { getLevelFromXP, getProgressToNextLevel, ALL_BADGES } from '@/lib/gamification-types';
-import { rarityColors } from '@/lib/colors';
+import { rarityColors, SKILL_COLORS } from '@/lib/colors';
+import { DOEL_SKILL_MAP } from '@/lib/task-selector';
+import type { Skill } from '@/lib/types';
 
 const NOTIFICATIONS_KEY = 'vc-notifications';
 
@@ -47,9 +49,11 @@ const XP_WEEK_BONUS = 50;
 
 export default function ProfielScreen() {
   const { colors, isDark, toggleTheme } = useTheme();
-  const { profile, clearAll, weekTaskCompletions, unlockedBadges, badgeUnlockDates, pulseCheckIns } = useStore();
+  const { profile, clearAll, saveForUser, weekTaskCompletions, unlockedBadges, badgeUnlockDates, pulseCheckIns, journalEntries } = useStore();
   const { signOut, user, communityProfile } = useAuth();
   const router = useRouter();
+
+  // ── Local data reset ──
 
   // Echte taken (excl. wekelijkse reflectievragen) voor teller
   // Reflectievragen hebben IDs als refl_2026-02-23_0 (met datum)
@@ -124,8 +128,16 @@ export default function ProfielScreen() {
         {
           text: 'Wis alles',
           style: 'destructive',
-          onPress: () => {
-            clearAll();
+          onPress: async () => {
+            const uid = user?.id;
+            // Sign out first → clears session + communityProfile (avatar)
+            try { await signOut(); } catch {}
+            // Clear all local data (profile, voortgang, badges, etc.)
+            await clearAll();
+            // Remove backup + marker so data doesn't get restored on next login
+            if (uid) await AsyncStorage.removeItem(`vc-userdata-${uid}`).catch(() => {});
+            await AsyncStorage.removeItem('vc-current-user-id').catch(() => {});
+            // Navigate to landing page
             router.replace('/');
           },
         },
@@ -274,9 +286,71 @@ export default function ProfielScreen() {
           </Text>
         </Card>
 
+        {/* Vader Dagboek */}
+        <Card style={{ marginTop: 16 }}>
+          <View style={styles.cardHeaderRow}>
+            <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 0 }]}>Vader Dagboek</Text>
+            <Pressable
+              onPress={() => router.push('/(tabs)/profiel/dagboek' as any)}
+              style={[styles.manageButton, { backgroundColor: colors.amberDim }]}
+            >
+              <Text style={[styles.manageButtonText, { color: colors.amber }]}>
+                {journalEntries.length > 0 ? `${journalEntries.length} notities →` : 'Bekijk →'}
+              </Text>
+            </Pressable>
+          </View>
+          <Text style={[styles.emptyText, { color: colors.text3 }]}>
+            Schrijf je wins en reflecties op. +5 XP per entry.
+          </Text>
+        </Card>
+
+        {/* Mijn Doelen */}
+        <Card style={{ marginTop: 16 }}>
+          <View style={styles.cardHeaderRow}>
+            <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 0 }]}>Mijn Doelen</Text>
+            <Pressable
+              onPress={() => router.push('/(tabs)/profiel/doelen' as any)}
+              style={[styles.manageButton, { backgroundColor: colors.amberDim }]}
+            >
+              <Text style={[styles.manageButtonText, { color: colors.amber }]}>Beheren</Text>
+            </Pressable>
+          </View>
+          {profile?.doelen && profile.doelen.length > 0 ? (
+            <View style={styles.doelenList}>
+              {profile.doelen.map((doel) => {
+                const skills = DOEL_SKILL_MAP[doel] ?? [];
+                return (
+                  <View key={doel} style={[styles.doelRow, { backgroundColor: colors.surface2 }]}>
+                    <Text style={[styles.doelName, { color: colors.text }]}>{doel}</Text>
+                    <View style={styles.doelSkills}>
+                      {skills.slice(0, 2).map((skill: Skill) => (
+                        <View key={skill} style={[styles.doelSkillChip, { backgroundColor: (SKILL_COLORS[skill] ?? '#667eea') + '18' }]}>
+                          <Text style={[styles.doelSkillText, { color: SKILL_COLORS[skill] ?? '#667eea' }]}>{skill}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                );
+              })}
+            </View>
+          ) : (
+            <Text style={[styles.emptyText, { color: colors.text3 }]}>
+              Stel doelen in om je weektaken hierop af te stemmen.
+            </Text>
+          )}
+        </Card>
+
         {/* Account */}
         <Card style={{ marginTop: 16 }}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Account</Text>
+          <View style={styles.cardHeaderRow}>
+            <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 0 }]}>Account</Text>
+            <Pressable
+              onPress={() => router.push('/(tabs)/profiel/edit' as any)}
+              style={[styles.manageButton, { backgroundColor: colors.amberDim }]}
+            >
+              <Text style={[styles.manageButtonText, { color: colors.amber }]}>Bewerken</Text>
+            </Pressable>
+          </View>
           <View style={styles.infoRow}>
             <Text style={[styles.infoLabel, { color: colors.text3 }]}>Naam</Text>
             <Text style={[styles.infoValue, { color: colors.text }]}>{profile?.naam || '—'}</Text>
@@ -304,10 +378,18 @@ export default function ProfielScreen() {
               <View key={child.id}>
                 {index > 0 && <View style={[styles.divider, { backgroundColor: colors.border }]} />}
                 <View style={styles.childRow}>
-                  <Text style={[styles.childName, { color: colors.text }]}>{child.name}</Text>
-                  <Text style={[styles.childAge, { color: colors.text2 }]}>
-                    {child.age} jaar · {child.ageGroup}
-                  </Text>
+                  <View style={{ flex: 1 }}>
+                    <Text style={[styles.childName, { color: colors.text }]}>
+                      {child.name}
+                      {child.relatie === 'bonuskind' ? ' (bonuskind)' : ''}
+                    </Text>
+                    <Text style={[styles.childAge, { color: colors.text2 }]}>
+                      {child.age} jaar · {child.ageGroup}
+                      {child.aandachtspunten && child.aandachtspunten.length > 0
+                        ? ` · ${child.aandachtspunten.join(', ')}`
+                        : ''}
+                    </Text>
+                  </View>
                 </View>
               </View>
             ))
@@ -399,7 +481,9 @@ export default function ProfielScreen() {
                 {
                   text: 'Uitloggen',
                   onPress: async () => {
-                    await signOut();
+                    // Save backup (data stays in AsyncStorage for instant re-login)
+                    if (user) await saveForUser(user.id);
+                    try { await signOut(); } catch {}
                     router.replace('/');
                   },
                 },
@@ -469,13 +553,17 @@ export default function ProfielScreen() {
                               text: 'Ja, verwijder alles',
                               style: 'destructive',
                               onPress: async () => {
+                                const uid = user?.id;
                                 try {
                                   await deleteOwnAccount();
                                 } catch {
                                   // Continue with local cleanup even if server fails
                                 }
                                 await signOut();
-                                clearAll();
+                                await clearAll();
+                                // Remove backup and marker for deleted account
+                                if (uid) await AsyncStorage.removeItem(`vc-userdata-${uid}`);
+                                await AsyncStorage.removeItem('vc-current-user-id');
                                 Alert.alert(
                                   'Account verwijderd',
                                   'Je account en alle gegevens zijn permanent verwijderd.',
@@ -580,6 +668,13 @@ const styles = StyleSheet.create({
 
   logoutRow: { flexDirection: 'row' as const, alignItems: 'center' as const, gap: 10, paddingVertical: 4 },
   logoutText: { fontSize: 16, fontWeight: '600' as const },
+
+  doelenList: { gap: 8 },
+  doelRow: { flexDirection: 'row' as const, alignItems: 'center' as const, borderRadius: 10, padding: 10, gap: 10 },
+  doelName: { fontSize: 14, fontWeight: '600' as const, flex: 1 },
+  doelSkills: { flexDirection: 'row' as const, gap: 4 },
+  doelSkillChip: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 5 },
+  doelSkillText: { fontSize: 10, fontWeight: '700' as const },
 
   dangerDescription: { fontSize: 14, lineHeight: 20, marginBottom: 16, marginTop: -4 },
   dangerButtonContainer: { alignSelf: 'flex-start' as const },

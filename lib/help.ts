@@ -1,4 +1,5 @@
-import type { Skill, HelpAgeGroup, HelpSituation } from "./types";
+import type { Skill, HelpAgeGroup, HelpSituation, ThemeTag } from "./types";
+import { BONUSKIND_HELP, GEDRAG_HELP, HOOGGEVOELIG_HELP } from './help-themed';
 
 export const HELP_SITUATIONS: HelpSituation[] = [
   // ═══════════════════════════════════════════════════════════════
@@ -28,9 +29,9 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "0-3",
     situatie: "Niet naar bed willen",
     icon: "🛏️",
-    watSpeeltInKind: "Scheidingsangst (verlaten worden), geen besef van tijd, FOMO (fear of missing out). Dag/nacht ritme nog niet volledig ontwikkeld.",
+    watSpeeltInKind: "Scheidingsangst (verlaten worden), geen besef van tijd, FOMO (angst om iets te missen). Dag/nacht ritme nog niet volledig ontwikkeld.",
     watSpeeltInVader: "Vermoeidheid en wanhoop. Behoefte aan eigen tijd. Frustratie dat ritme verstoord wordt.",
-    psychologie: "Consistency is key. Circadiaans ritme wordt gevormd door voorspelbare rituelen. Zekerheid creëert veiligheid.",
+    psychologie: "Consistentie is essentieel. Circadiaans ritme wordt gevormd door voorspelbare rituelen. Zekerheid creëert veiligheid.",
     stappen: [
       "Vast ritueel: zelfde volgorde, zelfde tijd (±15 min). Dim licht, rustige activiteit.",
       "Bij protest: rustig herhalen 'Het is slaaptijd'. Terug naar bed, geen gesprek.",
@@ -48,7 +49,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     icon: "🍽️",
     watSpeeltInKind: "Autonomie ontdekken ('ik' vs 'jij'). Textuur gevoeligheid. Geen honger of te moe. Autonomie oefenen door 'nee' zeggen.",
     watSpeeltInVader: "Zorgen over voeding/gezondheid. Frustratie (ik heb dit gemaakt!). Machteloosheid.",
-    psychologie: "Division of responsibility: jij bepaalt WAT en WANNEER, kind bepaalt HOEVEEL. Dwingen creëert negatieve eetassociatie.",
+    psychologie: "Verdeling van verantwoordelijkheid: jij bepaalt WAT en WANNEER, kind bepaalt HOEVEEL. Dwingen creëert negatieve eetassociatie.",
     stappen: [
       "Bied aan zonder druk. 'Dit is er. Je hoeft niet als je niet wilt.'",
       "Blijf zelf rustig eten. Model gedrag maar forceer niet.",
@@ -100,7 +101,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "0-3",
     situatie: "Speelgoed niet willen delen",
     icon: "🧸",
-    watSpeeltInKind: "Geen theory of mind (kan zich niet inleven). Object permanentie leren: als iemand het pakt = het is weg = paniek.",
+    watSpeeltInKind: "Geen mentaliserend vermogen (kan zich niet inleven). Object permanentie leren: als iemand het pakt = het is weg = paniek.",
     watSpeeltInVader: "Schaamte ('mijn kind is egoïstisch'). Druk om sociaal acceptabel gedrag.",
     psychologie: "Delen is een hoogontwikkelde sociale vaardigheid die rond 4-5j ontstaat. Bij peuters is 'bezit' absolute realiteit.",
     stappen: [
@@ -120,7 +121,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     icon: "😠",
     watSpeeltInKind: "Beperkte taal, dus fysiek uiten van frustratie/grenzen. Oorzaak-gevolg nog niet snappen. Impulscontrole = zero.",
     watSpeeltInVader: "Schaamte en paniek ('Is mijn kind agressief?'). Angst voor oordeel andere ouders.",
-    psychologie: "Dit is normaal ontwikkelingsgedrag, geen karakter. Impulse control komt pas later. Consequent ingrijpen zonder drama.",
+    psychologie: "Dit is normaal ontwikkelingsgedrag, geen karakter. Impulscontrole komt pas later. Consequent ingrijpen zonder drama.",
     stappen: [
       "Direct maar kalm stoppen: neem fysiek mee. 'Bijten doet pijn. Niet doen.'",
       "Troost ander kind eerst. Model empathie.",
@@ -154,9 +155,9 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "0-3",
     situatie: "Bang voor vreemden",
     icon: "👤",
-    watSpeeltInKind: "Vreemdelingangst (8-14 maanden) is gezonde ontwikkelingsfase. Attachment met jou is gevormd, nieuwe mensen = onzeker.",
+    watSpeeltInKind: "Vreemdelingangst (8-14 maanden) is gezonde ontwikkelingsfase. Gehechtheid met jou is gevormd, nieuwe mensen = onzeker.",
     watSpeeltInVader: "Gêne bij familie ('Hij is altijd zo verlegen!'). Frustratie dat kind niet sociaal is.",
-    psychologie: "Dit is een gezonde attachmentfase. Forceren ondermijnt veiligheid. Kind bepaalt tempo van contact.",
+    psychologie: "Dit is een gezonde gehechtheidsfase. Forceren ondermijnt veiligheid. Kind bepaalt tempo van contact.",
     stappen: [
       "Valideer angst: 'Nieuwe mensen zijn spannend. Dat mag.'",
       "Blijf veilige basis. Laat kind op eigen tempo warm worden.",
@@ -174,7 +175,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     icon: "🤱",
     watSpeeltInKind: "Separatieangst. Onzekerheid over terugkomen van ouder (object permanentie nog ontwikkelend). Veilige basis nodig.",
     watSpeeltInVader: "Guilty en vermoeid. Wens voor zelfstandiger kind. Mogelijk ook gewaardeerd voelen.",
-    psychologie: "Secure attachment creëer je door CONSISTENTE beschikbaarheid, niet door afstand forceren. Veiligheid eerst, zelfstandigheid volgt.",
+    psychologie: "Veilige gehechtheid creëer je door CONSISTENTE beschikbaarheid, niet door afstand forceren. Veiligheid eerst, zelfstandigheid volgt.",
     stappen: [
       "Accepteer behoefte. 'Je wilt bij mij zijn. Dat is oké.'",
       "Korte separaties oefenen met voorspelling: 'Mama komt terug na...'",
@@ -192,9 +193,9 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     icon: "🚽",
     watSpeeltInKind: "Controle over eigen lijf ontdekken. Geen urgentiebesef ontwikkeld. Angst voor toilet (groot, geluid).",
     watSpeeltInVader: "Sociale druk ('Andere kinderen kunnen het al!'). Vermoeidheid van verschonen. Deadline angst (school).",
-    psychologie: "Readiness is fysiologisch EN emotioneel. Forceren vertraagt proces en creëert negatieve associatie met toilet.",
+    psychologie: "Bereidheid is fysiologisch EN emotioneel. Forceren vertraagt proces en creëert negatieve associatie met toilet.",
     stappen: [
-      "Check readiness: kan kind 2 uur droog blijven? Toont interesse?",
+      "Check bereidheid: kan kind 2 uur droog blijven? Toont interesse?",
       "Laat kind leiden. Positieve association: boek lezen op potje, stickers.",
       "Bij ongeluk: rustig verschonen zonder blame. 'Volgende keer op potje proberen.'"
     ],
@@ -246,7 +247,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     icon: "🌅",
     watSpeeltInKind: "Biologische klok nog niet gereguleerd. Daglicht wekt op. Honger. Gewoonte.",
     watSpeeltInVader: "Chronische vermoeidheid. Frustratie (kan niet uitslapen). Impact op partnerschap.",
-    psychologie: "Circadian rhythm wordt beïnvloed door licht, routine en consistentie. Graduele shift mogelijk.",
+    psychologie: "Circadiaans ritme wordt beïnvloed door licht, routine en consistentie. Graduele shift mogelijk.",
     stappen: [
       "Verduisterende gordijnen. Geen schermen 2u voor bed.",
       "'Slaapclock' die aangeeft wanneer mag opstaan (7:00 bijvoorbeeld).",
@@ -316,7 +317,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "0-3",
     situatie: "Luistert niet naar 'nee'",
     icon: "🚫",
-    watSpeeltInKind: "Impulse control niet ontwikkeld. 'Nee' triggert soms juist interesse. Geen consequentiebesef.",
+    watSpeeltInKind: "Impulscontrole niet ontwikkeld. 'Nee' triggert soms juist interesse. Geen consequentiebesef.",
     watSpeeltInVader: "Frustratie ('Waarom luistert hij niet?!'). Machteloosheid. Twijfel aan opvoeding.",
     psychologie: "Pre-frontaal cortex ontwikkelt tot 25j. Bij peuter is impulscontrole minimaal. Fysieke interventie > verbale instructie.",
     stappen: [
@@ -372,7 +373,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     icon: "👥",
     watSpeeltInKind: "Nieuwe mensen = onzekerheid. Veilige basis (jij) nodig. Social referencing: kind checkt of jij signaleert veiligheid.",
     watSpeeltInVader: "Gêne ('Hij doet normaal nooit zo!'). Druk om sociaal kind te tonen. Moeite met gastvrij zijn.",
-    psychologie: "Dit is gezond attachment gedrag. Jouw acceptatie creëert veiligheid om later te verkennen.",
+    psychologie: "Dit is gezond gehechtheidsgedrag. Jouw acceptatie creëert veiligheid om later te verkennen.",
     stappen: [
       "Accepteer: 'Je vindt dit spannend. Blijf maar bij mij.'",
       "Laat kind tempo bepalen. Geen forceren contact.",
@@ -464,7 +465,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "4-7",
     situatie: "Kind luistert niet naar instructies",
     icon: "👂",
-    watSpeeltInKind: "Aandacht is beperkt. Geen prioritering: spel = belangrijk, opruimen = niet. Executive function nog in ontwikkeling.",
+    watSpeeltInKind: "Aandacht is beperkt. Geen prioritering: spel = belangrijk, opruimen = niet. Uitvoerende functies nog in ontwikkeling.",
     watSpeeltInVader: "Frustratie en machteloosheid. Gevoel van gebrek aan respect. Twijfel aan autoriteit.",
     psychologie: "Kinderen horen gemiddeld 7x 'nee' voordat ze handelen. Niet per se opzet maar beperkte werkgeheugen en impulscontrole.",
     stappen: [
@@ -537,7 +538,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "4-7",
     situatie: "Schermtijd discussies",
     icon: "📱",
-    watSpeeltInKind: "Dopamine hit van schermen = verslavend. Geen tijdsbesef. Switch off is moeilijk (overgang).",
+    watSpeeltInKind: "Dopaminepiek van schermen = verslavend. Geen tijdsbesef. Switch off is moeilijk (overgang).",
     watSpeeltInVader: "Schuldgevoel (geef ik te veel?). Moeheid (makkelijke bezighouding). Frustratie bij uitzetten.",
     psychologie: "Screens zijn ontworpen om addictief te zijn. Boundaries zijn jouw taak, niet kind's verantwoordelijkheid.",
     stappen: [
@@ -575,7 +576,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     icon: "🍽️",
     watSpeeltInKind: "Autonomie uiten via eten. Textuur/smaak issues. Geen honger. Controle behoefte.",
     watSpeeltInVader: "Zorgen over voeding. Frustratie (ik heb dit gemaakt!). Machteloosheid.",
-    psychologie: "Division of responsibility: jij WAT en WANNEER, kind HOEVEEL. Dwingen = averechts.",
+    psychologie: "Verdeling van verantwoordelijkheid: jij WAT en WANNEER, kind HOEVEEL. Dwingen = averechts.",
     stappen: [
       "Bied aan zonder druk. 'Dit is er.'",
       "Regel: iets nieuws minimaal 10x proberen voordat 'niet lekker' geldig is.",
@@ -753,9 +754,9 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "4-7",
     situatie: "Zeuren om iets te kopen",
     icon: "🛍️",
-    watSpeeltInKind: "Impulse control laag. Marketing werkt (bright colors!). Geen geld concept. Wil = moet hebben = nu.",
+    watSpeeltInKind: "Impulscontrole laag. Marketing werkt (bright colors!). Geen geld concept. Wil = moet hebben = nu.",
     watSpeeltInVader: "Gêne in winkel. Vermoeidheid. Soms schuld (ik gun het hem niet).",
-    psychologie: "Intermittent reinforcement: 1x toegeven = kind leert doorzetten want soms werkt het. Consistency is key.",
+    psychologie: "Wisselende beloning: 1x toegeven = kind leert doorzetten want soms werkt het. Consistentie is essentieel.",
     stappen: [
       "Vooraf duidelijk: 'We gaan boodschappen. We kopen geen speelgoed.'",
       "Bij zeuren: kort 'Nee. We hadden afgesproken.' Niet meer reageren.",
@@ -956,7 +957,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "8-12",
     situatie: "Schermtijd grenzen overschrijden",
     icon: "📱",
-    watSpeeltInKind: "Dopamine addiction. Social pressure (vrienden zitten erop). FOMO. Beperkte zelfcontrole bij beloningen.",
+    watSpeeltInKind: "Dopamineverslaving. Sociale druk (vrienden zitten erop). FOMO. Beperkte zelfcontrole bij beloningen.",
     watSpeeltInVader: "Schuldgevoel (geef ik teveel toe?). Moeheid van constante strijd. Zorgen over impact.",
     psychologie: "Screens zijn engineered to be addictive. Het is NIET willpower probleem bij kind. Jij moet de boundary zijn.",
     stappen: [
@@ -1064,7 +1065,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "8-12",
     situatie: "Alleen ongezond willen eten",
     icon: "🍔",
-    watSpeeltInKind: "Sugar/fat/salt = biologisch aantrekkelijk. Marketing werkt. Peer influence. Geen lange termijn denken over gezondheid.",
+    watSpeeltInKind: "Sugar/fat/salt = biologisch aantrekkelijk. Marketing werkt. Groepsdruk. Geen lange termijn denken over gezondheid.",
     watSpeeltInVader: "Zorgen over gezondheid. Frustratie (waarom luistert hij niet?). Machtsstrijd.",
     psychologie: "Jij bepaalt WAT in huis komt. Zij bepalen HOEVEEL ze eten. Model gezond gedrag > preken.",
     stappen: [
@@ -1118,7 +1119,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "8-12",
     situatie: "Kamer is complete chaos",
     icon: "🌪️",
-    watSpeeltInKind: "Geen waarde voor orde. Executive function (organisatie) nog ontwikkelend. Andere prioriteiten (spelen/schermen).",
+    watSpeeltInKind: "Geen waarde voor orde. Uitvoerende functies (organisatie) nog ontwikkelend. Andere prioriteiten (spelen/schermen).",
     watSpeeltInVader: "Frustratie en walging. Impuls om zelf op te ruimen. Bezorgdheid (wordt dit levenslang?).",
     psychologie: "Hun kamer = hun domein. Natural consequences werken beter dan battle. Teach organizational skills, don't just demand.",
     stappen: [
@@ -1190,7 +1191,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "8-12",
     situatie: "Geld problemen en zakgeld",
     icon: "💰",
-    watSpeeltInKind: "Geen concept long-term. Impulse buying. Peer pressure (vrienden hebben X). Geen verdien/waarde connectie.",
+    watSpeeltInKind: "Geen concept langetermijn. Impulsaankopen. Groepsdruk (vrienden hebben X). Geen verdien/waarde connectie.",
     watSpeeltInVader: "Zorgen over financiële toekomst. Frustratie ('Waarom leert hij niet sparen?'). Impuls om te rescuen.",
     psychologie: "Financial literacy is learned. Laat fouten maken met kleine bedragen NU, zodat ze leren voor grote bedragen LATER.",
     stappen: [
@@ -1208,9 +1209,9 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "8-12",
     situatie: "Social media obsessie (TikTok, Instagram)",
     icon: "📱",
-    watSpeeltInKind: "FOMO. Social validation (likes). Dopamine. Peer pressure (iedereen zit erop). Algorithm designed for addiction.",
+    watSpeeltInKind: "FOMO. Social validation (likes). Dopamine. Groepsdruk (iedereen zit erop). Algoritme ontworpen voor verslaving.",
     watSpeeltInVader: "Bezorgdheid over content. Zorgen over zelfbeeld. Frustratie met constant gedoe.",
-    psychologie: "Social media is engineered to maximize engagement = addiction. Pre-teen brein kan dit niet self-regulate. Jij moet de grens zijn.",
+    psychologie: "Social media is ontworpen om betrokkenheid te maximaliseren = addiction. Het pre-tienerbrein kan dit niet zelf reguleren. Jij moet de grens zijn.",
     stappen: [
       "Monitoring: weet wat ze doen. Volg accounts. Check content.",
       "Grenzen: tijd limit (1u per dag?). Niet tijdens eten/huiswerk/bed.",
@@ -1334,7 +1335,7 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "8-12",
     situatie: "Vergeetachtig en slordig",
     icon: "🤦",
-    watSpeeltInKind: "Executive function nog ontwikkelend. Working memory beperkt. Prioriteiten anders (spel > spullen). Mogelijk ADHD.",
+    watSpeeltInKind: "Uitvoerende functies nog ontwikkelend. Working memory beperkt. Prioriteiten anders (spel > spullen). Mogelijk ADHD.",
     watSpeeltInVader: "Frustratie ('Hoevaak moet ik dit zeggen?!'). Vermoeidheid van constant achter ze aan. Bezorgdheid.",
     psychologie: "Executieve functies ontwikkelen tot in twintigers. Externe structuur helpen tot internal ontwikkelt. Teach systems.",
     stappen: [
@@ -1374,9 +1375,9 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Geen communicatie meer",
     icon: "🚫",
-    watSpeeltInKind: "Individuatie proces - afstand nemen van ouders is developmentally appropriate. Autonomie zoeken. Privacy behoefte. Peers belangrijker.",
+    watSpeeltInKind: "Individuatieproces — afstand nemen van ouders is passend bij de ontwikkelingsfase. Autonomie zoeken. Privacybehoefte. Leeftijdsgenoten worden belangrijker.",
     watSpeeltInVader: "Verdriet om verlies van nabijheid. Onzekerheid ('doe ik iets fout?'). Frustratie. Gevoel van buitensluitig.",
-    psychologie: "Separatie is gezond en nodig. Jouw job: beschikbaar blijven zonder te pushen. Veilige haven, niet gevangenis.",
+    psychologie: "Separatie is gezond en nodig. Jouw taak: beschikbaar blijven zonder te pushen. Veilige haven, niet gevangenis.",
     stappen: [
       "Accepteer nieuwe fase. 'Ik merk dat je meer afstand neemt. Dat hoort bij je leeftijd.'",
       "Blijf beschikbaar zonder pushen. Zijdelingse momenten (auto, voor TV, wandelen).",
@@ -1392,16 +1393,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Schermtijd verslaving",
     icon: "📱",
-    watSpeeltInKind: "Dopamine hits van social media/gaming. FOMO. Sociale verbinding via scherm. Ontwikkelende impulse control. Escapism van stress.",
+    watSpeeltInKind: "Dopaminepieken van social media/gaming. FOMO. Sociale verbinding via scherm. Ontwikkelende impulscontrole. Escapisme van stress.",
     watSpeeltInVader: "Bezorgdheid over gezondheid/school. Machteloosheid ('Hoe stop ik dit?'). Conflict tussen grenzen en autonomie.",
-    psychologie: "Adolescent brein is extra gevoelig voor rewards en minder voor long-term consequenties. External limits needed terwijl zelfregulatie ontwikkelt.",
+    psychologie: "Het tienerbrein is extra gevoelig voor beloningen en minder voor langetermijnconsequenties. Externe grenzen zijn nodig terwijl zelfregulatie zich ontwikkelt.",
     stappen: [
-      "Gezamenlijke afspraken: 'Laten we samen kijken wat gezond is.' Involve tiener.",
-      "Praktische limits: telefoon uit kamer 's nachts, geen screens tijdens eten, wifi tijd.",
+      "Gezamenlijke afspraken: 'Laten we samen kijken wat gezond is.' Betrek de tiener.",
+      "Praktische grenzen: telefoon uit kamer 's nachts, geen schermen tijdens eten, wifitijd.",
       "Focus op waarom: 'Ik zie dat je moe bent, school achteruitgaat. Bezorgd om jou.'"
     ],
     voorbeeldzin: "Ik maak me zorgen. Je bent constant op je telefoon, schoolwerk lijdt. Laten we afspraken maken die werken voor ons beiden.",
-    valkuil: "Telefoon afpakken zonder gesprek - creëert extreme weerstand en sneaky gedrag.",
+    valkuil: "Telefoon afpakken zonder gesprek — creëert extreme weerstand en stiekem gedrag.",
     skillLink: "Grenzen"
   },
 
@@ -1410,16 +1411,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Huiswerk boycotten",
     icon: "📚",
-    watSpeeltInKind: "Executive function struggles. Overwhelm. Faalangst ('Als ik niet probeer, kan ik niet falen'). Gebrek aan intrinsieke motivatie. Depressie?",
+    watSpeeltInKind: "Problemen met uitvoerende functies. Overweldiging. Faalangst ('Als ik niet probeer, kan ik niet falen'). Gebrek aan intrinsieke motivatie. Depressie?",
     watSpeeltInVader: "Angst voor toekomst. Frustratie ('je gooit je kansen weg!'). Machteloosheid. Spanning tussen helpen en overname.",
-    psychologie: "Punishment werkt niet bij tieners - creëert oppositie. Understand underlying issue: is het luiheid of struggle? Zeer verschillend.",
+    psychologie: "Straf werkt niet bij tieners — creëert oppositie. Begrijp het onderliggende probleem: is het luiheid of worsteling? Dat maakt veel verschil.",
     stappen: [
       "Exploreer zonder oordeel: 'Ik zie je huiswerk niet doen. Wat maakt het moeilijk?'",
-      "Differenteer: is het organisatie? Begrip? Motivatie? Verschillende oplossingen.",
-      "Natural consequences: slechte cijfers zijn consequentie. Support aanbieden, niet overnemen."
+      "Differentieer: is het organisatie? Begrip? Motivatie? Verschillende oplossingen.",
+      "Natuurlijke consequenties: slechte cijfers zijn het gevolg. Hulp aanbieden, niet overnemen."
     ],
     voorbeeldzin: "Je cijfers gaan achteruit. Ik wil begrijpen wat er speelt. Vind je het moeilijk, saai, of iets anders?",
-    valkuil: "Straffen of lectures over toekomst - verhoogt weerstand en helpt niet met actual probleem.",
+    valkuil: "Straffen of preken over toekomst — verhoogt weerstand en helpt niet met het daadwerkelijke probleem.",
     skillLink: "Autonomie"
   },
 
@@ -1428,16 +1429,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Uitgaan en grenzen testen",
     icon: "🌃",
-    watSpeeltInKind: "Peer pressure. Behoefte aan acceptance. Risk-taking (adolescent brein zoekt risico). Autonomie. FOMO. Experimenteren met identiteit.",
-    watSpeeltInVader: "Angst voor gevaar (drank, drugs, seks, verkeer). Spanning tussen vrijheid geven en beschermen. Eigen jeugd triggers.",
-    psychologie: "Controlled risk-taking is developmentally appropriate. Total control = rebellie. Graduated freedom met safety net.",
+    watSpeeltInKind: "Groepsdruk. Behoefte aan acceptatie. Risico nemen (tienerbrein zoekt risico). Autonomie. FOMO. Experimenteren met identiteit.",
+    watSpeeltInVader: "Angst voor gevaar (drank, drugs, seks, verkeer). Spanning tussen vrijheid geven en beschermen. Eigen jeugdherinneringen als trigger.",
+    psychologie: "Gecontroleerd risico nemen is passend bij de ontwikkelingsfase. Totale controle = rebellie. Geleidelijke vrijheid met vangnet.",
     stappen: [
-      "Clear agreements vooraf: tijd thuis, waar, met wie, check-ins. Involvement in beslissing.",
-      "Safety net: 'Bel me altijd, no questions asked, als je me nodig hebt.' Taxi geld.",
-      "Consequenties bij breken afspraak: verlies privilege, niet oordeel over kind."
+      "Duidelijke afspraken vooraf: tijd thuis, waar, met wie, tussendoor even melden. Betrek de tiener bij de beslissing.",
+      "Vangnet: 'Bel me altijd, zonder vragen, als je me nodig hebt.' Taxigeld meegeven.",
+      "Consequenties bij breken afspraak: verlies van privilege, niet oordeel over kind."
     ],
     voorbeeldzin: "Ik vertrouw je. EN ik maak me zorgen. Daarom afspraken: thuis om 24:00, locatie delen, nuchter thuiskomen.",
-    valkuil: "Te strak of te los - beide escaleren. Te strak = rebellie/sneaky. Te los = onveilig.",
+    valkuil: "Te strak of te los — beide escaleren. Te strak = rebellie/stiekem gedrag. Te los = onveilig.",
     skillLink: "Grenzen"
   },
 
@@ -1446,16 +1447,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Vriendengroep zorgwekkend",
     icon: "👥",
-    watSpeeltInKind: "Identity formation through peers. Belonging need (overweldigend sterk). Experimenteren met 'wie ben ik'. Afstand van ouders = naar peers.",
+    watSpeeltInKind: "Identiteitsvorming via leeftijdsgenoten. Behoefte om erbij te horen (overweldigend sterk). Experimenteren met 'wie ben ik'. Afstand van ouders = naar leeftijdsgenoten.",
     watSpeeltInVader: "Angst dat verkeerde invloed schade doet. Machteloosheid (kan vrienden niet kiezen). Conflict tussen waardering kind en zorgen.",
-    psychologie: "Verbieden vrienden = meestal tegenovergestelde effect. Better: versterken values, open deur houden, vrienden beter leren kennen.",
+    psychologie: "Verbieden van vrienden = meestal tegenovergestelde effect. Beter: waarden versterken, open deur houden, vrienden beter leren kennen.",
     stappen: [
-      "Express zorgen zonder oordeel: 'Ik merk dat je tijd doorbrengt met [naam]. Vertel eens over hem/haar?'",
-      "Vrienden uitnodigen bij jou thuis - observeren, kennen, relatie opbouwen.",
+      "Spreek zorgen uit zonder oordeel: 'Ik merk dat je tijd doorbrengt met [naam]. Vertel eens over hem/haar?'",
+      "Vrienden uitnodigen bij jou thuis — observeren, leren kennen, relatie opbouwen.",
       "Versterken waarden zonder te verbieden: 'In onze familie...' niet 'Jouw vrienden zijn...'"
     ],
     voorbeeldzin: "Ik zie dat [naam] belangrijk voor je is. Ik maak me wel zorgen om [specifiek gedrag]. Kunnen we praten?",
-    valkuil: "Verbieden vriendschap - creëert sneaky gedrag, damaged trust, en vaak sterker hechten aan vriend.",
+    valkuil: "Verbieden van vriendschap — creëert stiekem gedrag, beschadigt vertrouwen, en vaak sterker hechten aan vriend.",
     skillLink: "Verbinding"
   },
 
@@ -1464,13 +1465,13 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Slecht humeur constant",
     icon: "😤",
-    watSpeeltInKind: "Hormones, slaaptekort, stress (school/social), ontwikkelende emotion regulation, mogelijk depressie/angst. Overwhelm.",
-    watSpeeltInVader: "Walking on eggshells gevoel. Irritatie. Verdriet ('Wat is er met mijn kind?'). Hulpeloosheid.",
-    psychologie: "Adolescent brein ondergaat massive restructuring. Emotions zijn intensiever, regulation zwakker. Temporary maar tough phase.",
+    watSpeeltInKind: "Hormonen, slaaptekort, stress (school/sociaal), ontwikkelende emotieregulatie, mogelijk depressie/angst. Overweldiging.",
+    watSpeeltInVader: "Op eieren lopen. Irritatie. Verdriet ('Wat is er met mijn kind?'). Hulpeloosheid.",
+    psychologie: "Het tienerbrein ondergaat massieve herstructurering. Emoties zijn intensiever, regulatie zwakker. Tijdelijk maar zware fase.",
     stappen: [
-      "Niet persoonlijk nemen. Dit is brain development, niet rejection of jou.",
-      "Pick battles: als het niemand schaadt, laat het gaan. Kies alleen essentials.",
-      "Check in zonder te pushen: 'Merk dat het zwaar is. Wil niet pushen maar ben er als je wilt praten.'"
+      "Niet persoonlijk nemen. Dit is hersenontwikkeling, niet afwijzing van jou.",
+      "Kies je gevechten: als het niemand schaadt, laat het gaan. Focus op het essentiële.",
+      "Informeer zonder te pushen: 'Ik merk dat het zwaar is. Wil niet pushen maar ben er als je wilt praten.'"
     ],
     voorbeeldzin: "Ik zie dat je het moeilijk hebt. Dat is oké. Ik blijf van je houden, ook als je chagrijnig bent.",
     valkuil: "'Waarom ben je zo?' vragen of kritisch reageren - escaleert conflict en verergert humeur.",
@@ -1482,16 +1483,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Liegen over waar ze zijn",
     icon: "🤥",
-    watSpeeltInKind: "Autonomie willen + angst voor grenzen/consequenties. Niet per se slechte intentie maar vermijding van 'nee'. Peer pressure.",
-    watSpeeltInVader: "Vertrouwen geschonden. Angst ('Als ze hierover liegen, wat nog meer?'). Conflict tussen autonomy en safety.",
-    psychologie: "Lying is vaak symptom: te strenge rules → lying to get freedom. Address cause (rules te restrictive?) niet alleen symptom.",
+    watSpeeltInKind: "Autonomie willen + angst voor grenzen/consequenties. Niet per se slechte intentie maar vermijding van 'nee'. Groepsdruk.",
+    watSpeeltInVader: "Vertrouwen geschonden. Angst ('Als ze hierover liegen, wat nog meer?'). Conflict tussen autonomie en veiligheid.",
+    psychologie: "Liegen is vaak een symptoom: te strenge regels → liegen om vrijheid te krijgen. Pak de oorzaak aan (regels te streng?) niet alleen het symptoom.",
     stappen: [
-      "Consequentie voor liegen: 'Liegen breekt trust. Consequentie: [verlies privilege].'",
-      "Explore waarom: 'Waarom voelde je dat je moest liegen? Zijn regels unfair?'",
-      "Rebuild trust geleidelijk: 'Trust is broken maar kan hersteld. Door eerlijkheid, check-ins, consistency.'"
+      "Consequentie voor liegen: 'Liegen breekt vertrouwen. Consequentie: [verlies privilege].'",
+      "Verken waarom: 'Waarom voelde je dat je moest liegen? Zijn de regels oneerlijk?'",
+      "Herstel vertrouwen geleidelijk: 'Vertrouwen is geschonden maar kan hersteld worden. Door eerlijkheid, check-ins, consequent gedrag.'"
     ],
     voorbeeldzin: "Je hebt gelogen over waar je was. Dat is niet oké. Laten we praten: waarom voelde je dat nodig?",
-    valkuil: "Massive punishment zonder gesprek - adresseert niet waarom lying happened. Kan escaleren.",
+    valkuil: "Zware straf zonder gesprek — adresseert niet waarom er gelogen werd. Kan escaleren.",
     skillLink: "Herstel"
   },
 
@@ -1500,16 +1501,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Relatie drama",
     icon: "💔",
-    watSpeeltInKind: "First experiences met liefde/pijn. Emoties zijn overweldigend (eerste heartbreak voelt als einde wereld). Hormones amplify alles.",
-    watSpeeltInVader: "Minimaliseren impuls ('Je bent 15, je vindt wel ander'). Handelingsverlegenheid. Beschermen willen van pijn.",
-    psychologie: "Voor hen is dit real, intense, significant. Valideren pijn zonder te minimaliseren. First heartbreak shapes future relationships.",
+    watSpeeltInKind: "Eerste ervaringen met liefde en pijn. Emoties zijn overweldigend (eerste liefdesverdriet voelt als einde van de wereld). Hormonen versterken alles.",
+    watSpeeltInVader: "Neiging om te minimaliseren ('Je bent 15, je vindt wel een ander'). Handelingsverlegenheid. Beschermen willen tegen pijn.",
+    psychologie: "Voor hen is dit echt, intens, significant. Valideer de pijn zonder te minimaliseren. Eerste liefdesverdriet vormt toekomstige relaties.",
     stappen: [
       "Valideer: 'Ik zie dat dit echt pijn doet. Het is oké om verdrietig te zijn.'",
-      "Aanwezig zijn: niet fixen, gewoon er zijn. 'Wil je praten of wil je rust?'",
-      "Geen 'ik zei het toch' of 'je vindt wel ander' - ontzettend invalidating."
+      "Aanwezig zijn: niet proberen op te lossen, gewoon er zijn. 'Wil je praten of wil je rust?'",
+      "Geen 'ik zei het toch' of 'je vindt wel een ander' — ontzettend invaliderend."
     ],
-    voorbeeldzin: "Dit is zwaar voor je. Heartbreak doet pijn, ook al ben je jong. Ik ben er voor je.",
-    valkuil: "Minimaliseren ('Je bent 15, dit is niet echt liefde') - invalideert hun ervaring compleet.",
+    voorbeeldzin: "Dit is zwaar voor je. Liefdesverdriet doet pijn, ook al ben je jong. Ik ben er voor je.",
+    valkuil: "Minimaliseren ('Je bent 15, dit is niet echt liefde') — invalideert hun ervaring compleet.",
     skillLink: "Emotiecoaching"
   },
 
@@ -1518,16 +1519,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Experimenteren met alcohol/drugs",
     icon: "🍺",
-    watSpeeltInKind: "Risk-taking, peer pressure, curiosity, escape (stress/anxiety), rebellion, brein zoekt novelty en underestimates risk.",
-    watSpeeltInVader: "Paniek. Angst voor verslaving. Eigen geschiedenis? Conflict tussen realistic approach en zero tolerance.",
-    psychologie: "Abstinence-only approach werkt niet goed. Harm reduction + open communication werkt beter. Ze zullen experimenteren - guide safely.",
+    watSpeeltInKind: "Risico nemen, groepsdruk, nieuwsgierigheid, ontsnapping (stress/angst), rebellie, brein zoekt nieuwe prikkels en onderschat risico.",
+    watSpeeltInVader: "Paniek. Angst voor verslaving. Eigen geschiedenis? Conflict tussen realistische aanpak en nultolerantie.",
+    psychologie: "Alleen onthouding prediken werkt niet goed. Schadebeperking + open communicatie werkt beter. Ze zullen experimenteren — begeleid veilig.",
     stappen: [
-      "Open gesprek zonder oordeel: 'Vertel me wat je hebt geprobeerd. Ik beloof niet meteen boos.'",
-      "Educate over risks zonder te prediken: hersenen ontwikkelen tot 25, impact op school/sport.",
-      "Clear boundaries: 'Ik kan niet stoppen experimenteren maar WEL rules: niet rijden, bel me als je vast zit, weet wat je neemt.'"
+      "Open gesprek zonder oordeel: 'Vertel me wat je hebt geprobeerd. Ik beloof niet meteen boos te worden.'",
+      "Informeer over risico's zonder te prediken: hersenen ontwikkelen tot 25, impact op school/sport.",
+      "Duidelijke grenzen: 'Ik kan experimenteren niet stoppen maar WEL regels stellen: niet rijden, bel me als je vastzit, weet wat je neemt.'"
     ],
-    voorbeeldzin: "Ik ben niet blij hiermee EN ik begrijp curiosity. Laten we eerlijk praten over safe vs unsafe.",
-    valkuil: "Extreme punishment zonder gesprek - pusht ondergronds en cut off communication completely.",
+    voorbeeldzin: "Ik ben niet blij hiermee EN ik begrijp de nieuwsgierigheid. Laten we eerlijk praten over veilig versus onveilig.",
+    valkuil: "Extreme straf zonder gesprek — duwt het ondergronds en snijdt communicatie volledig af.",
     skillLink: "Verbinding"
   },
 
@@ -1536,16 +1537,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Geen respect voor regels",
     icon: "🚧",
-    watSpeeltInKind: "Autonomy seeking. Testing limits (developmentally appropriate). Rebellie tegen perceived unfair authority. Impulsiviteit.",
-    watSpeeltInVader: "Disrespect gevoel. Frustratie. Autoriteit ondermijnd. Angst dat ze uit de hand loopt zonder grenzen.",
-    psychologie: "Authoritarian = rebellion. Permissive = chaos. Authoritative (firm + warm) = beste outcomes. Rules + rationale + respect.",
+    watSpeeltInKind: "Autonomie zoeken. Grenzen testen (passend bij de ontwikkelingsfase). Rebellie tegen waargenomen onrechtvaardig gezag. Impulsiviteit.",
+    watSpeeltInVader: "Gevoel van gebrek aan respect. Frustratie. Autoriteit ondermijnd. Angst dat het uit de hand loopt zonder grenzen.",
+    psychologie: "Autoritair = rebellie. Permissief = chaos. Autoritatief (stevig + warm) = beste uitkomsten. Regels + uitleg + respect.",
     stappen: [
-      "Explain waarom regels bestaan: niet 'omdat ik het zeg' maar rationele reason.",
-      "Some negotiation: 'Wat vind jij fair?' Involve in beslissingen waar mogelijk.",
-      "Clear consequenties, consistent: 'Dit is regel. Als je breekt, dan [consequentie].'"
+      "Leg uit waarom regels bestaan: niet 'omdat ik het zeg' maar een rationele reden.",
+      "Enige onderhandeling: 'Wat vind jij eerlijk?' Betrek bij beslissingen waar mogelijk.",
+      "Duidelijke consequenties, consequent: 'Dit is de regel. Als je die breekt, dan [consequentie].'"
     ],
-    voorbeeldzin: "Regels zijn er om je te beschermen, niet om je te controleren. Laten we samen kijken welke fair zijn.",
-    valkuil: "Dictatorship approach zonder uitleg - maximaliseert rebellie en destroyed relationship.",
+    voorbeeldzin: "Regels zijn er om je te beschermen, niet om je te controleren. Laten we samen kijken welke eerlijk zijn.",
+    valkuil: "Dictatoriale aanpak zonder uitleg — maximaliseert rebellie en vernietigt de relatie.",
     skillLink: "Grenzen"
   },
 
@@ -1554,16 +1555,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Financieel onverantwoordelijk",
     icon: "💸",
-    watSpeeltInKind: "Geen executive function voor budgeting yet. Impulsiviteit. Peer consumption pressure. No sense of money value (alles altijd beschikbaar?).",
-    watSpeeltInVader: "Frustratie ('Geld groeit niet op bomen!'). Bezorgdheid over toekomst financiële onafhankelijkheid.",
-    psychologie: "Money management is learned skill, not innate. Experience natuurlijke consequenties van overspending binnen safe container.",
+    watSpeeltInKind: "Uitvoerende functies voor budgetteren nog niet ontwikkeld. Impulsiviteit. Consumptiedruk van leeftijdsgenoten. Geen besef van de waarde van geld (altijd alles beschikbaar?).",
+    watSpeeltInVader: "Frustratie ('Geld groeit niet op bomen!'). Bezorgdheid over toekomstige financiële onafhankelijkheid.",
+    psychologie: "Omgaan met geld is een aangeleerde vaardigheid, niet aangeboren. Laat natuurlijke consequenties van te veel uitgeven ervaren binnen een veilig kader.",
     stappen: [
-      "Vast budget: 'Dit is jouw geld voor [maand]. Als op is, is op. Geen extra.'",
-      "Let ze fouten maken: uitgegeven in week 1? Tough luck, geen geld rest van maand.",
-      "Teach budgeting: apps, envelop methode. 'Eerst essentials, dan fun.'"
+      "Vast budget: 'Dit is jouw geld voor deze maand. Als het op is, is het op. Geen extra.'",
+      "Laat ze fouten maken: alles uitgegeven in week 1? Jammer, geen geld rest van de maand.",
+      "Leer budgetteren: apps, envelopmethode. 'Eerst de basis, dan leuke dingen.'"
     ],
-    voorbeeldzin: "Geld is op deze maand? Dat is jammer. Volgende maand kun je anders budgetteren. Geen extra cash.",
-    valkuil: "Constant rescuen - neemt natural consequences weg en leert 'papa/mama lost op'.",
+    voorbeeldzin: "Geld is op deze maand? Dat is jammer. Volgende maand kun je anders budgetteren. Geen extra geld.",
+    valkuil: "Constant redden — neemt natuurlijke consequenties weg en leert 'papa/mama lost het op'.",
     skillLink: "Autonomie"
   },
 
@@ -1572,16 +1573,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Studiekeuze stress",
     icon: "🎓",
-    watSpeeltInKind: "Overwhelm (te veel opties). Angst om verkeerde keuze. Externe druk (ouders/peers/maatschappij). Identity nog vormend ('wie ben ik?').",
-    watSpeeltInVader: "Eigen ambities projecteren? Angst dat ze verkeerde keuze maken. Spanning tussen guide en controle.",
-    psychologie: "Their life, their choice. Jouw job: support, not direct. Most mensen wisselen meerdere keren van studie/carrière - geen one perfect choice.",
+    watSpeeltInKind: "Overweldiging (te veel opties). Angst om verkeerde keuze. Externe druk (ouders/leeftijdsgenoten/maatschappij). Identiteit nog in vorming ('wie ben ik?').",
+    watSpeeltInVader: "Eigen ambities projecteren? Angst dat ze verkeerde keuze maken. Spanning tussen begeleiden en controleren.",
+    psychologie: "Hun leven, hun keuze. Jouw taak: ondersteunen, niet sturen. De meeste mensen wisselen meerdere keren van studie/carrière — er is geen ene perfecte keuze.",
     stappen: [
-      "Ontdek interesses: 'Wat doe je waarin je tijd vergeet?' Niet 'Wat wil je worden?'",
-      "Reality checks: open dagen, praten met studenten, stages.",
-      "Reassure: 'Geen verkeerde keuze. Je kunt altijd switchen. Ontdekken is onderdeel proces.'"
+      "Ontdek interesses: 'Wat doe je waarin je de tijd vergeet?' Niet 'Wat wil je worden?'",
+      "Realiteitscheck: open dagen, praten met studenten, stages.",
+      "Geruststellen: 'Er is geen verkeerde keuze. Je kunt altijd switchen. Ontdekken is onderdeel van het proces.'"
     ],
-    voorbeeldzin: "Ik zie dat je stressed bent over studiekeuze. Weet dat er geen perfecte keuze is. We figuren dit samen uit.",
-    valkuil: "Pushen naar specifieke richting ('Dokter worden!') - it's THEIR life, not yours.",
+    voorbeeldzin: "Ik zie dat je gestrest bent over je studiekeuze. Weet dat er geen perfecte keuze is. We puzzelen dit samen uit.",
+    valkuil: "Pushen naar specifieke richting ('Dokter worden!') — het is HUN leven, niet het jouwe.",
     skillLink: "Autonomie"
   },
 
@@ -1590,16 +1591,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Examen angst",
     icon: "📝",
-    watSpeeltInKind: "Performance anxiety. Perfectionism. High stakes pressure. Fear of failure/disappointing ouders. Test anxiety (blank during exam).",
-    watSpeeltInVader: "Bezorgdheid. Handelingsverlegenheid (hoe help ik?). Mogelijk eigen school stress projectie.",
-    psychologie: "Pressure van ouders kan anxiety verergeren. Message: 'Ik love je ongeacht cijfers' is cruciaal voor wellbeing.",
+    watSpeeltInKind: "Faalangst. Perfectionisme. Hoge druk. Angst om ouders teleur te stellen. Blokkade tijdens toets (blackout).",
+    watSpeeltInVader: "Bezorgdheid. Handelingsverlegenheid (hoe help ik?). Mogelijk eigen schoolstress projectie.",
+    psychologie: "Druk van ouders kan angst verergeren. De boodschap 'Ik hou van je ongeacht cijfers' is cruciaal voor welzijn.",
     stappen: [
-      "Expliciteer: 'Cijfers zijn belangrijk maar niet belangrijker dan jou. Ik love je bij een 5 evenveel als bij 10.'",
-      "Practical tools: studietechnieken, ademhalingsoefeningen, realistic planning.",
-      "Reframe failure: 'Slechte cijfer = informatie, niet bewijs van falen. Wat kunnen we leren?'"
+      "Maak het expliciet: 'Cijfers zijn belangrijk maar niet belangrijker dan jou. Ik hou van je bij een 5 evenveel als bij een 10.'",
+      "Praktische hulpmiddelen: studietechnieken, ademhalingsoefeningen, realistische planning.",
+      "Herkaderen van falen: 'Een slecht cijfer = informatie, niet bewijs van falen. Wat kunnen we hiervan leren?'"
     ],
-    voorbeeldzin: "Ik zie dat je stressed bent. Weet dat één examen je toekomst niet bepaalt. Wat heb je nodig om je beter te voelen?",
-    valkuil: "Extra druk toevoegen ('Je MOET goed scoren!') - verergert anxiety en performance paradoxically.",
+    voorbeeldzin: "Ik zie dat je gestrest bent. Weet dat één examen je toekomst niet bepaalt. Wat heb je nodig om je beter te voelen?",
+    valkuil: "Extra druk toevoegen ('Je MOET goed scoren!') — verergert angst en paradoxaal genoeg ook de prestatie.",
     skillLink: "Emotiecoaching"
   },
 
@@ -1608,16 +1609,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Social media negativiteit",
     icon: "📱",
-    watSpeeltInKind: "Comparison trap, cyberpesten, FOMO, unrealistic standards, validation seeking through likes. Dopamine addiction.",
+    watSpeeltInKind: "Vergelijkingsvalkuil, cyberpesten, FOMO, onrealistische normen, validatiezoeken through likes. Dopamineverslaving.",
     watSpeeltInVader: "Machteloosheid (hoe bescherm ik?). Bezorgdheid over zelfbeeld. Conflict tussen ban social media en realiteit.",
-    psychologie: "Social media genie is out of bottle. Can't forbid completely. Better: media literacy, self-awareness, boundaries.",
+    psychologie: "De geest van social media is uit de fles. Volledig verbieden kan niet. Beter: mediawijsheid, zelfbewustzijn, grenzen.",
     stappen: [
-      "Discuss comparison trap: 'Mensen delen highlights, niet reality. What you see ≠ hele verhaal.'",
-      "Monitor mental health impact: 'Hoe voel je na scrollen? Energised or drained?'",
-      "Screen time boundaries: geen telefoon 's nachts, apps die limiteren, 'tech-free' moments."
+      "Bespreek de vergelijkingsvalkuil: 'Mensen delen hoogtepunten, niet de werkelijkheid. Wat je ziet ≠ het hele verhaal.'",
+      "Let op impact op welzijn: 'Hoe voel je je na het scrollen? Energieker of leeggelopen?'",
+      "Schermtijdgrenzen: geen telefoon 's nachts, apps die limiteren, techvrije momenten."
     ],
     voorbeeldzin: "Social media kan zwaar zijn. Het toont niet de hele waarheid. Hoe voel jij je erover?",
-    valkuil: "Complete ban - unrealistic en sociale isolation. Ze zullen toch toegang vinden.",
+    valkuil: "Volledig verbod — onrealistisch en leidt tot sociaal isolement. Ze zullen toch toegang vinden.",
     skillLink: "Zelfregulatie"
   },
 
@@ -1626,13 +1627,13 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Zelfbeeld en uiterlijk obsessie",
     icon: "🪞",
-    watSpeeltInKind: "Body changes (puberteit), comparison met peers/media, identity formation. External validation seeking. Mogelijk body dysmorphia.",
+    watSpeeltInKind: "Body changes (puberteit), comparison met peers/media, identiteitsvorming. Extern validatiezoeken. Mogelijk lichaamsdysmorfie.",
     watSpeeltInVader: "Bezorgdheid over eating disorder. Verdriet dat ze zichzelf niet zien zoals jij ze ziet. Handelingsverlegenheid.",
-    psychologie: "Appearance hyper-important in adolescence (identity forming). Validate feelings, redirect naar whole person, model healthy relationship met eigen body.",
+    psychologie: "Uiterlijk is extreem belangrijk in de adolescentie (identiteitsvorming). Valideer gevoelens, richt de aandacht op de hele persoon, geef het goede voorbeeld met een gezonde relatie tot je eigen lichaam.",
     stappen: [
-      "Validate zonder te fixen: 'Ik hoor dat je onzeker bent over [aspect]. Dat klinkt zwaar.'",
-      "Focus op functie over vorm: 'Je lichaam is sterk, gezond, capabel' vs 'Je bent mooi'.",
-      "Watch YOUR language: geen comments over eigen body of anderen's bodies. Model acceptance."
+      "Valideer zonder te fixen: 'Ik hoor dat je onzeker bent over [aspect]. Dat klinkt zwaar.'",
+      "Focus op functie boven vorm: 'Je lichaam is sterk, gezond, capabel' in plaats van 'Je bent mooi'.",
+      "Let op JOUW taalgebruik: geen opmerkingen over je eigen lichaam of dat van anderen. Wees het voorbeeld van acceptatie."
     ],
     voorbeeldzin: "Ik zie dat je worstelt met hoe je eruitziet. Je bent zoveel meer dan je uiterlijk. Maar ik hoor dat dit moeilijk is.",
     valkuil: "'Je bent perfect!' - invalideert hun ervaring. Of: 'Dat valt wel mee' - dismissive.",
@@ -1644,15 +1645,15 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Somberheid/depressieve signalen",
     icon: "😔",
-    watSpeeltInKind: "Clinical depressie, situationele depressie (breakup, stress), identity crisis, hormonal changes, sociale isolatie, possible trauma.",
-    watSpeeltInVader: "Angst. Machteloosheid ('Hoe help ik?'). Mogelijk denial ('Het gaat wel over'). Stigma rondom mental health.",
-    psychologie: "Depression in teens is REAL en SERIOUS. Niet 'phase'. Professional help is often nodig. Jouw support cruciaal maar not enough alone.",
+    watSpeeltInKind: "Klinische depressie, situationele depressie (verbroken relatie, stress), identiteitscrisis, hormonale veranderingen, sociale isolatie, mogelijk trauma.",
+    watSpeeltInVader: "Angst. Machteloosheid ('Hoe help ik?'). Mogelijk ontkenning ('Het gaat wel over'). Stigma rondom mentale gezondheid.",
+    psychologie: "Depressie bij tieners is ECHT en SERIEUS. Niet 'een fase'. Professionele hulp is vaak nodig. Jouw steun is cruciaal maar alleen niet genoeg.",
     stappen: [
-      "Erken: 'Ik zie dat je het zwaar hebt. Dit is meer dan normale tiener mood. Ik maak me zorgen.'",
-      "Suggest professional help: 'Laten we met iemand praten die hierin gespecialiseerd is. Therapeut, schoolcounselor.'",
-      "Blijf connecteren zonder te pushen. Small moments tellen. Physical activity helpt (endorphins)."
+      "Erken: 'Ik zie dat je het zwaar hebt. Dit is meer dan normaal tienerchagrijn. Ik maak me zorgen.'",
+      "Stel professionele hulp voor: 'Laten we met iemand praten die hierin gespecialiseerd is. Therapeut, schoolcounselor.'",
+      "Blijf verbinding maken zonder te pushen. Kleine momenten tellen. Lichaamsbeweging helpt (endorfine)."
     ],
-    voorbeeldzin: "Ik zie dat je echt worstelt. Dit gaat voorbij normale ups en downs. Ik wil je helpen - laten we professionele support zoeken.",
+    voorbeeldzin: "Ik zie dat je echt worstelt. Dit gaat voorbij normale ups en downs. Ik wil je helpen — laten we professionele ondersteuning zoeken.",
     valkuil: "'Trek je er maar overheen' of 'Anderen hebben het zwaarder' - extremely invalidating en gevaarlijk.",
     skillLink: "Emotiecoaching"
   },
@@ -1662,16 +1663,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Agressief of intimiderend gedrag",
     icon: "😡",
-    watSpeeltInKind: "Anger regulation issues. Mogelijk trauma. Learned behavior (modeled?). Hormones. Feeling powerless → control through intimidation.",
-    watSpeeltInVader: "Angst (physically afraid?). Failure gevoel ('Waar ging het mis?'). Eigen triggered trauma.",
-    psychologie: "Aggression is usually symptom, not problem itself. What's underneath? Fear, pain, powerlessness? Address root cause.",
+    watSpeeltInKind: "Problemen met woederegulatie. Mogelijk trauma. Aangeleerd gedrag (voorgeleefd?). Hormonen. Machteloosheid → controle via intimidatie.",
+    watSpeeltInVader: "Angst (fysiek bang?). Faalgevoel ('Waar ging het mis?'). Eigen getriggerd trauma.",
+    psychologie: "Agressie is meestal een symptoom, niet het probleem zelf. Wat zit eronder? Angst, pijn, machteloosheid? Pak de oorzaak aan.",
     stappen: [
-      "Safety first: 'Ik voel me niet veilig als je [gedrag]. We praten later.'",
-      "When calm, explore: 'Wat gebeurde er voor je boos werd? Wat had je nodig?'",
-      "Clear consequences: 'Aggression is niet oké. Consequentie is [X]. Also: we zoeken hulp - therapie.'"
+      "Veiligheid eerst: 'Ik voel me niet veilig als je [gedrag]. We praten later.'",
+      "Als het rustig is, verken: 'Wat gebeurde er voor je boos werd? Wat had je nodig?'",
+      "Duidelijke consequenties: 'Agressie is niet oké. Consequentie is [X]. En: we zoeken hulp — therapie.'"
     ],
-    voorbeeldzin: "Jouw woede is valide. Hoe je het uit = niet oké. Laten we betere manieren vinden.",
-    valkuil: "Counter-aggression or yelling match - escaleert en models exact gedrag dat je wil stoppen.",
+    voorbeeldzin: "Jouw woede is begrijpelijk. Hoe je het uit = niet oké. Laten we betere manieren vinden.",
+    valkuil: "Tegenagressie of een schreeuwpartij — escaleert en laat precies het gedrag zien dat je wilt stoppen.",
     skillLink: "Grenzen"
   },
 
@@ -1682,11 +1683,11 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     icon: "🚪",
     watSpeeltInKind: "Depressie, sociale angst, trauma, overwhelm, identity crisis, conflict avoidance, gaming/internet addiction.",
     watSpeeltInVader: "Bezorgdheid (wat gebeurt er?). Afwijzing gevoel. Machteloosheid. Angst voor escalatie.",
-    psychologie: "Complete withdrawal is red flag - not normal adolescent behavior. Professional assessment needed. Don't wait.",
+    psychologie: "Volledig terugtrekken is een alarmsignaal — niet normaal tienergedrag. Professionele beoordeling is nodig. Wacht niet.",
     stappen: [
-      "Express zorgen non-accusatory: 'Ik merk dat je veel alleen bent. Ik maak me zorgen. Wat is er aan de hand?'",
-      "Niet forceren maar persistent blijven: 'Je hoeft niet te praten, maar ik blijf proberen. Omdat ik om je geef.'",
-      "Zoek professional help: therapist, school counselor. Dit overstijgt normal parenting."
+      "Spreek zorgen uit zonder beschuldiging: 'Ik merk dat je veel alleen bent. Ik maak me zorgen. Wat is er aan de hand?'",
+      "Niet forceren maar blijven proberen: 'Je hoeft niet te praten, maar ik blijf het proberen. Omdat ik om je geef.'",
+      "Zoek professionele hulp: therapeut, schoolcounselor. Dit overstijgt normaal ouderschap."
     ],
     voorbeeldzin: "Ik zie dat je je afsluit. Dat baart me zorgen. Ik ga niet weg maar ik wil je helpen. Laten we hulp zoeken.",
     valkuil: "'Doe de deur open!' of force interactie - pusht verder weg. But also: niet accepteren als 'phase'.",
@@ -1698,16 +1699,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Niet meer thuis eten",
     icon: "🍽️",
-    watSpeeltInKind: "Autonomy (eten met vrienden), schema conflicts (sport, activiteiten), social anxiety (eten met familie = awkward), possible eating disorder.",
-    watSpeeltInVader: "Verdriet om verlies van family time. Bezorgdheid over voeding. Afwijzing gevoel.",
-    psychologie: "Some absence normal (busy schedule), but complete avoidance kan signaal zijn. Balance tussen autonomy respecteren en family connection.",
+    watSpeeltInKind: "Autonomie (eten met vrienden), druk schema (sport, activiteiten), sociale ongemakkelijkheid (eten met familie = ongemakkelijk), mogelijk eetstoornis.",
+    watSpeeltInVader: "Verdriet om verlies van gezinsmoment. Bezorgdheid over voeding. Afwijzingsgevoel.",
+    psychologie: "Soms afwezig is normaal (druk schema), maar compleet vermijden kan een signaal zijn. Balans tussen autonomie respecteren en gezinsverbinding.",
     stappen: [
-      "One required family meal per week: 'Zondagavond is family dinner. Non-negotiable. Rest van week flexibel.'",
-      "Ask waarom: 'Ik mis je bij eten. Wat maakt het moeilijk?' Echt luisteren.",
-      "If eating disorder suspected: professional help immediately. Niet wachten."
+      "Eén verplichte gezinsmaaltijd per week: 'Zondagavond eten we samen. Staat vast. Rest van de week flexibel.'",
+      "Vraag waarom: 'Ik mis je bij het eten. Wat maakt het moeilijk?' Echt luisteren.",
+      "Bij vermoeden van eetstoornis: direct professionele hulp. Niet wachten."
     ],
-    voorbeeldzin: "Ik mis je bij dinner. Begrijp dat je busy bent, maar één moment per week samen is belangrijk voor mij.",
-    valkuil: "Dwingen elke dag - creëert verzet. Of completely accepteren - verlies important connection moment.",
+    voorbeeldzin: "Ik mis je bij het eten. Ik begrijp dat je het druk hebt, maar één moment per week samen is belangrijk voor mij.",
+    valkuil: "Dwingen om elke dag mee te eten — creëert verzet. Of volledig accepteren — verlies van belangrijk verbindingsmoment.",
     skillLink: "Verbinding"
   },
 
@@ -1716,9 +1717,9 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Dag-nacht ritme verstoord",
     icon: "🌙",
-    watSpeeltInKind: "Biological shift (circadian rhythm verplaatst later in puberteit). Gaming/screen. Stress/anxiety (slaap uitstel). School start te vroeg.",
+    watSpeeltInKind: "Biological shift (circadiaans ritme verplaatst later in puberteit). Gaming/screen. Stress/anxiety (slaap uitstel). School start te vroeg.",
     watSpeeltInVader: "Frustratie ('Lui!') zonder begrip biology. Bezorgdheid over gezondheid/school performance.",
-    psychologie: "Adolescent sleep cycle verplaatst naturally 2 uur later. School start is often biologisch te vroeg. Maar limits nog steeds nodig.",
+    psychologie: "De slaap-waakcyclus van tieners verschuift van nature 2 uur later. School begint vaak biologisch te vroeg. Maar grenzen zijn nog steeds nodig.",
     stappen: [
       "Educate over biologie: 'Jouw brein werkt anders dan volwassene. Je wordt later moe.'",
       "Practical boundaries: geen screens 1u voor bed, consistent wake tijd weekends (max 2u verschil weekdag).",
@@ -1734,16 +1735,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Risicogedrag",
     icon: "🛑",
-    watSpeeltInKind: "Sensation seeking (brein zoekt dit), underestimating consequences (PFC not fully developed), peer pressure, invincibility feeling.",
-    watSpeeltInVader: "Paniek. Angst voor permanente schade. Conflict tussen freedom en protection. Eigen jeugd herinneringen.",
-    psychologie: "Can't eliminate all risk (nor should you - learning experience). But can channel into safer risk: sport, adventure, challenges.",
+    watSpeeltInKind: "Spanning zoeken (brein zoekt dit), consequenties onderschatten (prefrontale cortex nog niet volledig ontwikkeld), groepsdruk, gevoel van onkwetsbaarheid.",
+    watSpeeltInVader: "Paniek. Angst voor permanente schade. Conflict tussen vrijheid en bescherming. Eigen jeugdherinneringen.",
+    psychologie: "Je kunt niet alle risico's wegnemen (en dat moet je ook niet — het is een leerervaring). Maar je kunt het ombuigen naar veiliger risico: sport, avontuur, uitdagingen.",
     stappen: [
-      "Pick battles: differentiate tussen risky (learning opportunity) vs dangerous (immediate harm).",
-      "Offer alternatives: 'Wil je adrenaline? Laten we skydiven/klimmen/racen in supervised setting.'",
-      "Clear consequences gevaarlijk gedrag + explain why: 'Dit risico = te groot because [permanent harm].'"
+      "Kies je gevechten: onderscheid tussen riskant (leerkans) en gevaarlijk (directe schade).",
+      "Bied alternatieven: 'Wil je adrenaline? Laten we skydiven/klimmen/racen in een begeleide setting.'",
+      "Duidelijke consequenties bij gevaarlijk gedrag + leg uit waarom: 'Dit risico is te groot vanwege [permanente schade].'"
     ],
-    voorbeeldzin: "Ik begrijp behoefte aan excitement. Laten we manieren vinden die veiliger zijn maar nog steeds leuk.",
-    valkuil: "Complete lockdown - creëert sneaky behavior. Of: 'Ja maar ik deed dit ook' - niet argument.",
+    voorbeeldzin: "Ik begrijp de behoefte aan spanning. Laten we manieren vinden die veiliger zijn maar nog steeds leuk.",
+    valkuil: "Volledige lockdown — creëert stiekem gedrag. Of: 'Ja maar ik deed dit ook' — dat is geen argument.",
     skillLink: "Autonomie"
   },
 
@@ -1752,16 +1753,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Overweldigende toekomst angst",
     icon: "😰",
-    watSpeeltInKind: "Existential anxiety (climate, economy, war). Performance pressure. Uncertain future. Identity nog unclear ('Wie word ik?'). Social media doomscrolling.",
-    watSpeeltInVader: "Eigen anxiety triggered. Handelingsverlegenheid (kan toekomst niet fixen). Reassurance willen geven maar unable to promise.",
-    psychologie: "This generation faces unique stressors. Validation crucial - 'Dit is real, not overdramatic.' Focus on control they DO have.",
+    watSpeeltInKind: "Existentiële angst (klimaat, economie, oorlog). Prestatiedruk. Onzekere toekomst. Identiteit nog onduidelijk ('Wie word ik?'). Doomscrolling op social media.",
+    watSpeeltInVader: "Eigen angst getriggerd. Handelingsverlegenheid (kan de toekomst niet fixen). Geruststelling willen geven maar niets kunnen beloven.",
+    psychologie: "Deze generatie heeft unieke stressbronnen. Erkenning is cruciaal — 'Dit is echt, niet overdreven.' Focus op wat ze WEL kunnen beïnvloeden.",
     stappen: [
-      "Valideer: 'Deze zorgen zijn valide. Wereld is complex. Het is oké om bezorgd te zijn.'",
-      "Refocus op control: 'We kunnen niet alles fixen. Wat CAN je doen? Activisme, studie, skills.'",
-      "Limit doomscrolling: 'News is important maar niet 24/7. Geef jezelf breather.'"
+      "Valideer: 'Deze zorgen zijn terecht. De wereld is complex. Het is oké om bezorgd te zijn.'",
+      "Herricht de focus: 'We kunnen niet alles fixen. Wat KUN je wél doen? Activisme, studie, vaardigheden.'",
+      "Beperk doomscrolling: 'Nieuws is belangrijk maar niet 24/7. Gun jezelf pauze.'"
     ],
-    voorbeeldzin: "De wereld voelt overwhelming. Jouw zorgen zijn reëel. Laten we focus op wat je WEL kunt beïnvloeden.",
-    valkuil: "'Maak je niet druk' of 'Het komt goed' - invalideert real concerns en voelt dismissive.",
+    voorbeeldzin: "De wereld voelt overweldigend. Jouw zorgen zijn reëel. Laten we focussen op wat je WEL kunt beïnvloeden.",
+    valkuil: "'Maak je niet druk' of 'Het komt goed' — invalideert echte zorgen en voelt afwijzend.",
     skillLink: "Emotiecoaching"
   },
 
@@ -1770,16 +1771,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Conflict over privacy",
     icon: "🔒",
-    watSpeeltInKind: "Developmentally appropriate autonomie behoefte. Identity forming (need space to explore). Separation from parents. 'Mijn leven' gevoel.",
-    watSpeeltInVader: "Spanning tussen vertrouwen en beschermen. 'Recht om te weten' gevoel. Bezorgdheid wat ze verbergen.",
-    psychologie: "Some privacy = healthy en nodig. Complete opacity = problematic. Find balance: privacy with accountability.",
+    watSpeeltInKind: "Bij de leeftijd passende behoefte aan autonomie. Identiteitsvorming (ruimte nodig om te ontdekken). Loskomen van ouders. 'Mijn leven' gevoel.",
+    watSpeeltInVader: "Spanning tussen vertrouwen en beschermen. 'Recht om te weten' gevoel. Bezorgdheid over wat ze verbergen.",
+    psychologie: "Enige privacy is gezond en nodig. Volledige ondoorzichtigheid is problematisch. Zoek balans: privacy met verantwoordelijkheid.",
     stappen: [
-      "Differentiate: private thoughts/diary = theirs. Safety issues (waar ze zijn) = shared info.",
-      "Earned privacy: 'Als je trust bewijst, krijg je meer privacy. Als je liegt, privacy vermindert.'",
-      "No snooping door kamer unless safety concern. 'Ik vertrouw je tot ik reden heb om niet te doen.'"
+      "Maak onderscheid: privégedachten/dagboek = van hen. Veiligheidszaken (waar ze zijn) = gedeelde informatie.",
+      "Verdiende privacy: 'Als je vertrouwen bewijst, krijg je meer privacy. Als je liegt, vermindert de privacy.'",
+      "Niet door kamer snuffelen tenzij er veiligheidszorgen zijn. 'Ik vertrouw je tot ik reden heb om dat niet te doen.'"
     ],
     voorbeeldzin: "Je hebt recht op privacy én ik moet je beschermen. Laten we grenzen vinden die voor ons beiden werken.",
-    valkuil: "Constant snooping through phone/kamer - destroys trust completely en teaches sneakier hiding.",
+    valkuil: "Constant snuffelen door telefoon/kamer — vernietigt vertrouwen volledig en leert ze slimmer te verbergen.",
     skillLink: "Autonomie"
   },
 
@@ -1788,16 +1789,16 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Geen hulp accepteren",
     icon: "❌",
-    watSpeeltInKind: "Schaamte ('Zwak zijn'). Autonomy ('Ik kan dit zelf'). Pride. Denial van probleem. Stigma rondom hulp vragen.",
-    watSpeeltInVader: "Frustratie (zie probleem, kind niet). Machteloosheid (kan niet forceren). Bezorgdheid dat situation escaleert.",
-    psychologie: "Can't force help op teenager - meestal backfires. Create environment waar help seeking = strength, not weakness.",
+    watSpeeltInKind: "Schaamte ('Zwak zijn'). Autonomie ('Ik kan dit zelf'). Trots. Ontkenning van het probleem. Stigma rondom hulp vragen.",
+    watSpeeltInVader: "Frustratie (ziet probleem, kind niet). Machteloosheid (kan niet forceren). Bezorgdheid dat de situatie escaleert.",
+    psychologie: "Je kunt hulp niet afdwingen bij een tiener — werkt meestal averechts. Creëer een omgeving waar hulp vragen kracht is, niet zwakte.",
     stappen: [
-      "Frame hulp als strength: 'Slimste mensen vragen hulp. Niet zwakte maar wijsheid.'",
-      "Lower threshold: niet alleen 'therapie' maar ook mentor, coach, tutor. Make it less 'big deal'.",
-      "Model zelf: 'Ik vraag ook hulp als ik ergens tegenaan loop. Voorbeeld: [deel iets].'"
+      "Hulp als kracht presenteren: 'De slimste mensen vragen hulp. Niet zwakte maar wijsheid.'",
+      "Verlaag de drempel: niet alleen 'therapie' maar ook mentor, coach, bijles. Maak het minder groot.",
+      "Geef zelf het voorbeeld: 'Ik vraag ook hulp als ik ergens tegenaan loop. Bijvoorbeeld: [deel iets].'"
     ],
     voorbeeldzin: "Ik zie dat je worstelt. Hulp vragen = niet zwak maar dapper. Kunnen we samen kijken naar opties?",
-    valkuil: "Forceren of ultimatums - creëert verzet. 'Je MOET naar therapie!' werkt niet bij teens.",
+    valkuil: "Forceren of ultimatums — creëert verzet. 'Je MOET naar therapie!' werkt niet bij tieners.",
     skillLink: "Verbinding"
   },
 
@@ -1806,17 +1807,27 @@ export const HELP_SITUATIONS: HelpSituation[] = [
     ageGroup: "13-18",
     situatie: "Verantwoordelijkheid ontwijken",
     icon: "🏃",
-    watSpeeltInKind: "Executive function developing. Excuses maken (face-saving). Geen ervaring met consequences (ouders rescuen?). Overwhelm (too much).",
-    watSpeeltInVader: "Frustratie ('Neem verantwoordelijkheid!'). Bezorgdheid over toekomst ('Wordt dit een patroon?'). Temptation om te rescuen.",
-    psychologie: "Responsibility is learned door experiencing natural consequences. Rescuing = preventing learning. Tough love needed.",
+    watSpeeltInKind: "Uitvoerende functies in ontwikkeling. Excuses maken (gezichtsbehoud). Geen ervaring met consequenties (ouders redden altijd?). Overweldiging (te veel).",
+    watSpeeltInVader: "Frustratie ('Neem verantwoordelijkheid!'). Bezorgdheid over toekomst ('Wordt dit een patroon?'). Verleiding om te redden.",
+    psychologie: "Verantwoordelijkheid wordt geleerd door het ervaren van natuurlijke consequenties. Redden = leren voorkomen. Strenge liefde is nodig.",
     stappen: [
-      "Stop rescuing: project vergeten? Slechte cijfer. Ontbijt gemist? Honger. Laundry niet gedaan? Geen schone kleren.",
-      "Clear expectations + natural consequences: 'Dit is jouw verantwoordelijkheid. Als niet gedaan, dan [consequence].'",
-      "Debrief after: 'Wat heb je geleerd? Wat doe je volgende keer anders?'"
+      "Stop met redden: project vergeten? Slecht cijfer. Ontbijt gemist? Honger. Was niet gedaan? Geen schone kleren.",
+      "Duidelijke verwachtingen + natuurlijke consequenties: 'Dit is jouw verantwoordelijkheid. Als het niet gedaan wordt, dan [consequentie].'",
+      "Nabespreken: 'Wat heb je geleerd? Wat doe je volgende keer anders?'"
     ],
     voorbeeldzin: "Je vergat je huiswerk. Dat is jouw verantwoordelijkheid. Ik red je niet. Wat ga je doen?",
-    valkuil: "Constant rescuen 'één keer nog' - neemt alle learning opportunity weg. Creates learned helplessness.",
+    valkuil: "Constant redden met 'één keer nog' — neemt elke leerkans weg. Creëert aangeleerde hulpeloosheid.",
     skillLink: "Autonomie"
   }
 
 ];
+
+/**
+ * Geeft alle help situaties inclusief themed content als die actief zijn.
+ */
+export function getHelpSituations(activeThemes: ThemeTag[] = []): HelpSituation[] {
+  if (activeThemes.length === 0) return HELP_SITUATIONS;
+  const themed = [...BONUSKIND_HELP, ...GEDRAG_HELP, ...HOOGGEVOELIG_HELP]
+    .filter(s => s.themes?.some(t => activeThemes.includes(t)));
+  return [...HELP_SITUATIONS, ...themed];
+}

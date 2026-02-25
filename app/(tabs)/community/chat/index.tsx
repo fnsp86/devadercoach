@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
-import { getConversations, getCommunityProfile, type Conversation, type CommunityProfile } from '@/lib/supabase';
+import { getConversations, getCommunityProfile, getBlockedUsers, type Conversation, type CommunityProfile } from '@/lib/supabase';
 import { InlineIcon } from '@/lib/icons';
 
 function timeAgo(dateStr: string | null): string {
@@ -40,10 +40,20 @@ export default function ChatList() {
     if (!user) return;
     setLoading(true);
     try {
-      const data = await getConversations(user.id);
-      // Load other user profiles
+      const [data, blockedIds] = await Promise.all([
+        getConversations(user.id),
+        getBlockedUsers(user.id),
+      ]);
+      const blockedSet = new Set(blockedIds);
+
+      // Filter out blocked users and enrich with profiles
+      const filtered = data.filter((conv) => {
+        const otherUserId = conv.participant1_id === user.id ? conv.participant2_id : conv.participant1_id;
+        return !blockedSet.has(otherUserId);
+      });
+
       const enriched = await Promise.all(
-        data.map(async (conv) => {
+        filtered.map(async (conv) => {
           const otherUserId = conv.participant1_id === user.id ? conv.participant2_id : conv.participant1_id;
           const otherProfile = await getCommunityProfile(otherUserId);
           return { ...conv, other_user: otherProfile ?? undefined };
@@ -60,7 +70,10 @@ export default function ChatList() {
     return (
       <Pressable
         onPress={() => router.push(`/(tabs)/community/chat/${item.id}`)}
-        style={[styles.convRow, { borderColor: colors.border }]}
+        style={({ pressed }) => [
+          styles.convRow,
+          { borderColor: colors.border, opacity: pressed ? 0.7 : 1 },
+        ]}
       >
         {item.other_user?.avatar_url ? (
           <Image source={{ uri: item.other_user.avatar_url }} style={styles.avatar} />
@@ -78,12 +91,18 @@ export default function ChatList() {
               {timeAgo(item.last_message_at)}
             </Text>
           </View>
+          {item.other_user?.stad ? (
+            <Text style={[styles.convCity, { color: colors.text3 }]} numberOfLines={1}>
+              {item.other_user.stad}
+            </Text>
+          ) : null}
           {item.last_message && (
             <Text style={[styles.convPreview, { color: colors.text2 }]} numberOfLines={1}>
               {item.last_message}
             </Text>
           )}
         </View>
+        <InlineIcon name="chevronRight" size={16} color={colors.text3} />
       </Pressable>
     );
   }
@@ -182,6 +201,7 @@ const styles = StyleSheet.create({
   },
   convName: { fontSize: 15, fontWeight: '700' },
   convTime: { fontSize: 12 },
+  convCity: { fontSize: 12, marginTop: 1 },
   convPreview: { fontSize: 14, marginTop: 2 },
   emptyContainer: { alignItems: 'center', paddingTop: 60, gap: 12 },
   emptyText: { fontSize: 15, fontWeight: '500', textAlign: 'center', lineHeight: 22 },

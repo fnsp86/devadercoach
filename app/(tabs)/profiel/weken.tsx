@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
 import { getWeekNumber } from '@/lib/week-selector';
 import { InlineIcon } from '@/lib/icons';
+import WeeklyRecapModal from '@/components/WeeklyRecapModal';
 
 const XP_PER_TASK = 15;
 const XP_WEEK_BONUS = 50;
@@ -28,13 +29,14 @@ export default function WekenScreen() {
   const { colors } = useTheme();
   const router = useRouter();
   const { weekTaskCompletions, profile } = useStore();
+  const [recapWeekKey, setRecapWeekKey] = useState('');
 
   const weeks = useMemo(() => {
-    // Group completions by weekKey
+    // Group completions by weekKey (excl. wekelijkse reflectievragen)
     const perWeek: Record<string, { count: number; xp: number }> = {};
     weekTaskCompletions.forEach((c) => {
       if (!perWeek[c.weekKey]) perWeek[c.weekKey] = { count: 0, xp: 0 };
-      perWeek[c.weekKey].count++;
+      if (!/^refl_\d{4}-/.test(c.taskId)) perWeek[c.weekKey].count++;
       perWeek[c.weekKey].xp += c.points;
     });
 
@@ -104,6 +106,15 @@ export default function WekenScreen() {
               </View>
 
               <View style={s.weekRight}>
+                {item.count > 0 && (
+                  <Pressable
+                    onPress={(e) => { e.stopPropagation(); setRecapWeekKey(item.weekKey); }}
+                    style={[s.recapBtn, { backgroundColor: colors.surface2 }]}
+                    hitSlop={4}
+                  >
+                    <InlineIcon name="trophy" size={12} color={colors.text3} />
+                  </Pressable>
+                )}
                 {item.complete ? (
                   <View style={[s.completeBadge, { backgroundColor: colors.amberDim }]}>
                     <InlineIcon name="check" size={14} color={colors.amber} />
@@ -116,6 +127,13 @@ export default function WekenScreen() {
               </View>
             </Pressable>
           )}
+        />
+      )}
+      {recapWeekKey !== '' && (
+        <WeeklyRecapModal
+          visible={recapWeekKey !== ''}
+          weekKey={recapWeekKey}
+          onClose={() => setRecapWeekKey('')}
         />
       )}
     </SafeAreaView>
@@ -161,6 +179,8 @@ const s = StyleSheet.create({
   completeBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10 },
   completeText: { fontSize: 13, fontWeight: '700' },
   progressText: { fontSize: 14, fontWeight: '600' },
+
+  recapBtn: { width: 30, height: 30, borderRadius: 15, alignItems: 'center' as const, justifyContent: 'center' as const },
 
   empty: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: 16, padding: 40 },
   emptyText: { fontSize: 16, fontWeight: '500', textAlign: 'center', lineHeight: 24 },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -10,10 +10,23 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
-import { HELP_SITUATIONS } from '@/lib/help';
+import { getHelpSituations } from '@/lib/help';
+import { resolveActiveThemes } from '@/lib/theme-resolver';
 import type { Skill, HelpSituation } from '@/lib/types';
 import { SKILL_COLORS } from '@/lib/colors';
 import { AppIcon, InlineIcon, emojiToIcon } from '@/lib/icons';
+import Card from '@/components/Card';
+import SkillBadge from '@/components/SkillBadge';
+
+const THEME_PURPLE = '#8B5CF6';
+
+function getThemeLabel(situation: HelpSituation): string | null {
+  if (!situation.themes || situation.themes.length === 0) return null;
+  if (situation.themes.includes('bonuskind') || situation.themes.includes('samengesteld_gezin') || situation.themes.includes('co-ouderschap')) {
+    return 'Bonuskind';
+  }
+  return 'Extra zorg';
+}
 
 export default function HelpDetailPage() {
   const { colors } = useTheme();
@@ -22,31 +35,68 @@ export default function HelpDetailPage() {
     situatie: string;
   }>();
 
-  const situation = HELP_SITUATIONS.find((s) => s.id === situatieId);
+  const {
+    profile,
+    isHelpFavorite,
+    toggleHelpFavorite,
+    addHelpHistory,
+    helpFeedback,
+    setHelpFeedback,
+  } = useStore();
+
+  const activeThemes = useMemo(
+    () => (profile ? resolveActiveThemes(profile) : []),
+    [profile],
+  );
+
+  const allSituations = useMemo(
+    () => getHelpSituations(activeThemes),
+    [activeThemes],
+  );
+
+  const situation = allSituations.find((s) => s.id === situatieId);
   const col = situation
     ? SKILL_COLORS[situation.skillLink] || colors.amber
     : colors.amber;
 
-  const { isHelpFavorite, toggleHelpFavorite } = useStore();
   const isFavorite = situation ? isHelpFavorite(situation.id) : false;
+  const themeLabel = situation ? getThemeLabel(situation) : null;
+  const currentFeedback = situatieId ? helpFeedback[situatieId] : undefined;
 
-  const relatedSituations = situation
-    ? HELP_SITUATIONS
-        .filter((s) => s.id !== situation.id)
-        .sort((a, b) => {
-          const aScore = (a.skillLink === situation.skillLink ? 2 : 0) + (a.ageGroup === situation.ageGroup ? 1 : 0);
-          const bScore = (b.skillLink === situation.skillLink ? 2 : 0) + (b.ageGroup === situation.ageGroup ? 1 : 0);
-          return bScore - aScore;
-        })
-        .slice(0, 3)
-    : [];
+  // Track help history on mount
+  useEffect(() => {
+    if (situatieId) {
+      addHelpHistory(situatieId);
+    }
+  }, [situatieId]);
+
+  // Related situations: better scoring with theme overlap
+  const relatedSituations = useMemo(() => {
+    if (!situation) return [];
+    return allSituations
+      .filter((s) => s.id !== situation.id)
+      .map((s) => {
+        let score = 0;
+        if (s.skillLink === situation.skillLink) score += 3;
+        if (s.ageGroup === situation.ageGroup) score += 2;
+        // Theme overlap bonus
+        if (situation.themes && s.themes) {
+          const overlap = situation.themes.filter((t) => s.themes!.includes(t)).length;
+          score += overlap * 2;
+        }
+        return { situation: s, score };
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3)
+      .map((r) => r.situation);
+  }, [situation, allSituations]);
 
   if (!situation) {
     return (
       <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg }]}>
         <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
           <Pressable onPress={() => router.back()} style={styles.backButton}>
-            <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
               <InlineIcon name="arrowLeft" size={16} color={colors.amber} />
               <Text style={[styles.backText, { color: colors.amber }]}>Terug</Text>
             </View>
@@ -71,20 +121,18 @@ export default function HelpDetailPage() {
         {/* Top bar with back + bookmark */}
         <View style={styles.topBar}>
           <Pressable onPress={() => router.back()} style={styles.backButton}>
-            <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
               <InlineIcon name="arrowLeft" size={16} color={colors.amber} />
               <Text style={[styles.backText, { color: colors.amber }]}>Terug</Text>
             </View>
           </Pressable>
-          {situation && (
-            <Pressable onPress={() => toggleHelpFavorite(situation.id)} style={styles.bookmarkBtn}>
-              <InlineIcon
-                name="heart"
-                size={22}
-                color={isFavorite ? '#EF4444' : colors.text3}
-              />
-            </Pressable>
-          )}
+          <Pressable onPress={() => toggleHelpFavorite(situation.id)} style={styles.bookmarkBtn}>
+            <InlineIcon
+              name="heart"
+              size={22}
+              color={isFavorite ? '#EF4444' : colors.text3}
+            />
+          </Pressable>
         </View>
 
         {/* Hero Header */}
@@ -95,10 +143,13 @@ export default function HelpDetailPage() {
           <Text style={[styles.heroTitle, { color: colors.text }]}>
             {situation.situatie}
           </Text>
-          <View style={[styles.skillBadge, { backgroundColor: col + '14' }]}>
-            <Text style={[styles.skillBadgeText, { color: col }]}>
-              {situation.skillLink}
-            </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <SkillBadge skill={situation.skillLink} size="md" />
+            {themeLabel && (
+              <View style={[styles.themeBadge, { backgroundColor: THEME_PURPLE + '20', borderColor: THEME_PURPLE + '40' }]}>
+                <Text style={[styles.themeBadgeText, { color: THEME_PURPLE }]}>{themeLabel}</Text>
+              </View>
+            )}
           </View>
         </View>
 
@@ -142,7 +193,7 @@ export default function HelpDetailPage() {
         </View>
 
         {/* 3 Stappen */}
-        <View style={[styles.stepsCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <Card style={{ marginBottom: 20 }}>
           <View style={styles.sectionHeader}>
             <InlineIcon name="zap" size={18} color={col} />
             <Text style={[styles.sectionLabel, { color: colors.text }]}>
@@ -163,10 +214,10 @@ export default function HelpDetailPage() {
               </View>
             ))}
           </View>
-        </View>
+        </Card>
 
         {/* Voorbeeldzin */}
-        <View style={[styles.quoteCard, { backgroundColor: '#22C55E10', borderColor: '#22C55E30' }]}>
+        <Card style={{ marginBottom: 20, backgroundColor: '#22C55E10', borderColor: '#22C55E30' }}>
           <View style={styles.sectionHeader}>
             <InlineIcon name="messageCircle" size={18} color="#22C55E" />
             <Text style={[styles.sectionLabel, { color: '#22C55E' }]}>
@@ -174,12 +225,12 @@ export default function HelpDetailPage() {
             </Text>
           </View>
           <Text style={[styles.quoteText, { color: colors.text }]}>
-            "{situation.voorbeeldzin}"
+            &ldquo;{situation.voorbeeldzin}&rdquo;
           </Text>
-        </View>
+        </Card>
 
         {/* Valkuil */}
-        <View style={[styles.warningCard, { backgroundColor: '#EF444408', borderColor: '#EF444425' }]}>
+        <Card style={{ marginBottom: 24, backgroundColor: '#EF444408', borderColor: '#EF444425' }}>
           <View style={styles.sectionHeader}>
             <InlineIcon name="alertTriangle" size={18} color="#EF4444" />
             <Text style={[styles.sectionLabel, { color: '#EF4444' }]}>
@@ -189,6 +240,37 @@ export default function HelpDetailPage() {
           <Text style={[styles.sectionText, { color: colors.text2 }]}>
             {situation.valkuil}
           </Text>
+        </Card>
+
+        {/* "Was dit nuttig?" feedback */}
+        <View style={[styles.feedbackRow, { borderColor: colors.border }]}>
+          <Text style={[styles.feedbackLabel, { color: colors.text2 }]}>Was dit nuttig?</Text>
+          <View style={{ flexDirection: 'row', gap: 12 }}>
+            <Pressable
+              onPress={() => setHelpFeedback(situation.id, 'up')}
+              style={[
+                styles.feedbackBtn,
+                {
+                  backgroundColor: currentFeedback === 'up' ? '#22C55E18' : colors.surface,
+                  borderColor: currentFeedback === 'up' ? '#22C55E' : colors.border,
+                },
+              ]}
+            >
+              <InlineIcon name="thumbsUp" size={18} color={currentFeedback === 'up' ? '#22C55E' : colors.text3} />
+            </Pressable>
+            <Pressable
+              onPress={() => setHelpFeedback(situation.id, 'down')}
+              style={[
+                styles.feedbackBtn,
+                {
+                  backgroundColor: currentFeedback === 'down' ? '#EF444418' : colors.surface,
+                  borderColor: currentFeedback === 'down' ? '#EF4444' : colors.border,
+                },
+              ]}
+            >
+              <InlineIcon name="thumbsDown" size={18} color={currentFeedback === 'down' ? '#EF4444' : colors.text3} />
+            </Pressable>
+          </View>
         </View>
 
         {/* Related skill CTA */}
@@ -203,7 +285,7 @@ export default function HelpDetailPage() {
           <InlineIcon name="bookMarked" size={24} color="#fff" />
           <View style={styles.ctaTextWrap}>
             <Text style={styles.ctaTitle}>Verdiep je in {situation.skillLink}</Text>
-            <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
               <Text style={styles.ctaSub}>Bekijk leermodules</Text>
               <InlineIcon name="arrowRight" size={13} color="rgba(255,255,255,0.75)" />
             </View>
@@ -237,6 +319,7 @@ export default function HelpDetailPage() {
             <Text style={[styles.relatedTitle, { color: colors.text }]}>Vergelijkbare situaties</Text>
             {relatedSituations.map((rel) => {
               const relColor = SKILL_COLORS[rel.skillLink] || colors.amber;
+              const relThemeLabel = getThemeLabel(rel);
               return (
                 <Pressable
                   key={rel.id}
@@ -253,9 +336,16 @@ export default function HelpDetailPage() {
                     <Text style={[styles.relatedCardTitle, { color: colors.text }]} numberOfLines={1}>
                       {rel.situatie}
                     </Text>
-                    <Text style={[styles.relatedCardSub, { color: colors.text3 }]}>
-                      {rel.ageGroup} jaar · {rel.skillLink}
-                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2 }}>
+                      <Text style={[styles.relatedCardSub, { color: colors.text3 }]}>
+                        {rel.ageGroup} jaar · {rel.skillLink}
+                      </Text>
+                      {relThemeLabel && (
+                        <View style={[styles.themeBadgeSmall, { backgroundColor: THEME_PURPLE + '20' }]}>
+                          <Text style={[styles.themeBadgeSmallText, { color: THEME_PURPLE }]}>{relThemeLabel}</Text>
+                        </View>
+                      )}
+                    </View>
                   </View>
                   <InlineIcon name="arrowRight" size={16} color={colors.text3} />
                 </Pressable>
@@ -269,7 +359,7 @@ export default function HelpDetailPage() {
           onPress={() => router.back()}
           style={[styles.backBar, { borderColor: colors.border }]}
         >
-          <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
             <InlineIcon name="arrowLeft" size={15} color={colors.text2} />
             <Text style={[styles.backBarText, { color: colors.text2 }]}>Terug naar overzicht</Text>
           </View>
@@ -309,7 +399,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 16,
   },
-  heroIcon: { fontSize: 44 },
   heroTitle: {
     fontSize: 22,
     fontWeight: '800',
@@ -318,12 +407,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
   },
-  skillBadge: {
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 10,
+  themeBadge: {
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
   },
-  skillBadgeText: { fontSize: 13, fontWeight: '700' },
+  themeBadgeText: { fontSize: 12, fontWeight: '700' },
 
   // Sections with left border
   section: {
@@ -338,17 +428,10 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 10,
   },
-  sectionEmoji: { fontSize: 18 },
   sectionLabel: { fontSize: 15, fontWeight: '700' },
   sectionText: { fontSize: 15, lineHeight: 23 },
 
-  // Steps card
-  stepsCard: {
-    borderWidth: 1,
-    borderRadius: 18,
-    padding: 20,
-    marginBottom: 20,
-  },
+  // Steps
   stepsContainer: { gap: 16, marginTop: 4 },
   stepRow: {
     flexDirection: 'row',
@@ -367,12 +450,6 @@ const styles = StyleSheet.create({
   stepText: { fontSize: 15, lineHeight: 23, flex: 1, paddingTop: 4 },
 
   // Quote
-  quoteCard: {
-    borderWidth: 1,
-    borderRadius: 18,
-    padding: 20,
-    marginBottom: 20,
-  },
   quoteText: {
     fontSize: 16,
     lineHeight: 24,
@@ -380,12 +457,24 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 
-  // Warning
-  warningCard: {
+  // Feedback
+  feedbackRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    paddingVertical: 14,
+    marginBottom: 20,
+  },
+  feedbackLabel: { fontSize: 15, fontWeight: '600' },
+  feedbackBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
     borderWidth: 1,
-    borderRadius: 18,
-    padding: 20,
-    marginBottom: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   // CTA
@@ -397,7 +486,6 @@ const styles = StyleSheet.create({
     padding: 18,
     marginBottom: 12,
   },
-  ctaEmoji: { fontSize: 24 },
   ctaTextWrap: { flex: 1 },
   ctaTitle: { color: '#fff', fontSize: 16, fontWeight: '700', marginBottom: 2 },
   ctaSub: { color: 'rgba(255,255,255,0.75)', fontSize: 13, fontWeight: '500' },
@@ -436,7 +524,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   relatedCardTitle: { fontSize: 14, fontWeight: '600' },
-  relatedCardSub: { fontSize: 12, marginTop: 2 },
+  relatedCardSub: { fontSize: 12 },
+  themeBadgeSmall: {
+    borderRadius: 4,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+  },
+  themeBadgeSmallText: { fontSize: 9, fontWeight: '700' },
 
   // Back bar
   backBar: {

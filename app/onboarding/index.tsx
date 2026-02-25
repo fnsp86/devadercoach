@@ -29,7 +29,7 @@ export default function OnboardingSkills() {
   const router = useRouter();
 
   if (!profile) {
-    return <Redirect href="/register" />;
+    return <Redirect href="/onboarding/children?setup=true" />;
   }
 
   function handleStart() {

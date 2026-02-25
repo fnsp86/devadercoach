@@ -1,5 +1,5 @@
 // Selecteert 7 taken per week op basis van kinderen + skills + weeknummer
-import type { InteractiveTask, AgeGroup, Skill, LearningModule } from './types';
+import type { InteractiveTask, AgeGroup, Skill, LearningModule, ThemeTag } from './types';
 
 
 // Seeded random voor consistente wekelijkse selectie
@@ -181,6 +181,9 @@ export function selectMixedWeekTasks(
   weekKey: string,
   weekNumber: number,
   completedTaskIds: string[] = [],
+  activeThemes: ThemeTag[] = [],
+  doelSkills: Skill[] = [],
+  recommendedSkill?: Skill,
 ): WeekTaskSelection {
   const rng = seededRandom(weekSeed(weekKey, weekNumber));
 
@@ -200,14 +203,66 @@ export function selectMixedWeekTasks(
   const completedSet = new Set(completedTaskIds);
   let pool = ageFiltered.filter((t) => !completedSet.has(t.id));
 
-  // Fallback: als pool te klein is, sta alle taken weer toe
-  if (pool.length < 7) {
+  // Fallback: recycle pas als alles op is (niet eerder)
+  if (pool.length === 0) {
     pool = ageFiltered;
   }
 
+  // ── Theme boost: reserveer 2 slots voor themed taken ──
+  const themedPicked: InteractiveTask[] = [];
+  const themedUsed = new Set<string>();
+
+  if (activeThemes.length > 0) {
+    const themedPool = shuffle(
+      pool.filter((t) => t.themes?.some((tag) => activeThemes.includes(tag))),
+      rng,
+    );
+    for (const t of themedPool) {
+      if (themedPicked.length >= 2) break;
+      themedPicked.push(t);
+      themedUsed.add(t.id);
+    }
+  }
+
+  // ── Doel boost: reserveer 2 slots voor taken die bij de doelen passen ──
+  const doelPicked: InteractiveTask[] = [];
+  const doelUsed = new Set<string>();
+
+  if (doelSkills.length > 0) {
+    const doelPool = shuffle(
+      pool.filter((t) => doelSkills.includes(t.skill) && !themedUsed.has(t.id)),
+      rng,
+    );
+    for (const t of doelPool) {
+      if (doelPicked.length >= 2) break;
+      doelPicked.push(t);
+      doelUsed.add(t.id);
+    }
+  }
+
+  // ── Recommendation boost: reserveer 1 slot voor de aanbevolen skill ──
+  const recPicked: InteractiveTask[] = [];
+  const recUsed = new Set<string>();
+
+  if (recommendedSkill) {
+    const recPool = shuffle(
+      pool.filter((t) => t.skill === recommendedSkill && !themedUsed.has(t.id) && !doelUsed.has(t.id)),
+      rng,
+    );
+    if (recPool.length > 0) {
+      recPicked.push(recPool[0]);
+      recUsed.add(recPool[0].id);
+    }
+  }
+
+  // Verwijder themed + doel + rec picks uit de normale pool
+  const reservedUsed = new Set([...themedUsed, ...doelUsed, ...recUsed]);
+  const normalPool = pool.filter((t) => !reservedUsed.has(t.id));
+  const normalTarget = 7 - themedPicked.length - doelPicked.length - recPicked.length;
+
   // Split in primary en secondary per moeilijkheid
-  const primaryPool = pool.filter((t) => skills.includes(t.skill));
-  const secondaryPool = pool.filter((t) => !skills.includes(t.skill));
+  const primaryPool = normalPool.filter((t) => skills.includes(t.skill));
+  const secondaryPool = normalPool.filter((t) => !skills.includes(t.skill));
 
   function byDifficulty(p: InteractiveTask[]) {
     return {
@@ -240,22 +295,28 @@ export function selectMixedWeekTasks(
     return result;
   }
 
-  const used = new Set<string>();
-  // 7 interactieve taken: 2 basis, 3 gevorderd, 2 expert
-  const basis = pick([...primary.basis, ...secondary.basis], [], 2, used);
-  const gevorderd = pick([...primary.gevorderd, ...secondary.gevorderd], [], 3, used);
-  const expert = pick([...primary.expert, ...secondary.expert], [], 2, used);
+  const used = new Set<string>([...themedUsed, ...doelUsed, ...recUsed]);
+  // Verdeel normal slots: ~30% basis, ~40% gevorderd, ~30% expert
+  const basisCount = Math.round(normalTarget * 0.3);
+  const expertCount = Math.round(normalTarget * 0.3);
+  const gevorderdCount = normalTarget - basisCount - expertCount;
 
-  const allShuffled = shuffle(pool, rng);
-  const allPicked = [...basis, ...gevorderd, ...expert];
-  while (allPicked.length < 7) {
+  const basis = pick([...primary.basis, ...secondary.basis], [], basisCount, used);
+  const gevorderd = pick([...primary.gevorderd, ...secondary.gevorderd], [], gevorderdCount, used);
+  const expert = pick([...primary.expert, ...secondary.expert], [], expertCount, used);
+
+  const allShuffled = shuffle(normalPool, rng);
+  const normalPicked = [...basis, ...gevorderd, ...expert];
+  while (normalPicked.length < normalTarget) {
     const next = allShuffled.find((t) => !used.has(t.id));
     if (!next) break;
-    allPicked.push(next);
+    normalPicked.push(next);
     used.add(next.id);
   }
 
-  return { weekKey, tasks: allPicked.slice(0, 7) };
+  // Combineer: themed + doel + rec + normal taken verspreid door de lijst
+  const finalTasks = [...themedPicked, ...doelPicked, ...recPicked, ...normalPicked].slice(0, 7);
+  return { weekKey, tasks: shuffle(finalTasks, rng) };
 }
 
 /**

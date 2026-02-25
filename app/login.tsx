@@ -12,12 +12,15 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@/lib/theme';
+import { useStore } from '@/lib/store';
 import { useAuth } from '@/lib/auth';
+import { supabase } from '@/lib/supabase';
 import { InlineIcon } from '@/lib/icons';
 import Button from '@/components/Button';
 
 export default function LoginScreen() {
   const { colors } = useTheme();
+  const { profile, restoreUserData } = useStore();
   const { signIn, resetPassword } = useAuth();
   const router = useRouter();
 
@@ -34,9 +37,27 @@ export default function LoginScreen() {
     setLoading(true);
     setError('');
     const result = await signIn(email.trim(), password);
-    setLoading(false);
     if (result.error) {
+      setLoading(false);
       setError('E-mail of wachtwoord klopt niet');
+      return;
+    }
+
+    // Restore/swap user data BEFORE navigating (loading stays visible)
+    const { data: { session: s } } = await supabase.auth.getSession();
+    const userId = s?.user?.id;
+    let hasProfile = !!profile;
+
+    if (userId) {
+      const restored = await restoreUserData(userId);
+      hasProfile = restored.hasProfile;
+    }
+
+    setLoading(false);
+
+    if (!hasProfile) {
+      // No local profile → send through onboarding (children → doelen → welcome)
+      router.replace('/onboarding/children?setup=true');
     } else {
       router.replace('/(tabs)/vandaag');
     }
@@ -53,10 +74,8 @@ export default function LoginScreen() {
     if (result.error) {
       Alert.alert('Fout', result.error);
     } else {
-      Alert.alert(
-        'E-mail verzonden',
-        `We hebben een herstellink gestuurd naar ${email.trim()}. Controleer ook je spam-map.`
-      );
+      // Navigeer naar reset-password scherm waar de vader de OTP code kan invoeren
+      router.push({ pathname: '/reset-password', params: { email: email.trim() } });
     }
   }
 

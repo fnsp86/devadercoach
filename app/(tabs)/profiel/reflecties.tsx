@@ -24,7 +24,8 @@ import { ALL_SKILLS } from '@/lib/skills';
 import { getLearningModulesForSkill } from '@/lib/learning-modules';
 import { transformModuleToStages } from '@/lib/module-stages';
 import { getWeeklyReflections } from '@/lib/week-selector';
-import type { ReflectionNote, Skill } from '@/lib/types';
+import { resolveActiveThemes } from '@/lib/theme-resolver';
+import type { ReflectionNote, Skill, ThemeTag } from '@/lib/types';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -96,7 +97,9 @@ function ModuleCard({ item, expanded, onToggle }: {
             <Text style={[st.cardDate, { color: colors.text3 }]}>{formatDate(item.completedAt)}</Text>
           </View>
         </View>
-        <InlineIcon name={expanded ? 'chevronUp' : 'chevronDown'} size={16} color={colors.text3} />
+        <View style={[st.chevronCircle, { backgroundColor: colors.surface2 }]}>
+          <InlineIcon name={expanded ? 'chevronUp' : 'chevronDown'} size={16} color={colors.text2} />
+        </View>
       </Pressable>
 
       {/* Expanded content */}
@@ -164,7 +167,9 @@ function WeeklyCard({ item, expanded, onToggle }: {
             <Text style={[st.cardDate, { color: colors.text3 }]}>{formatDate(item.completedAt)}</Text>
           </View>
         </View>
-        <InlineIcon name={expanded ? 'chevronUp' : 'chevronDown'} size={16} color={colors.text3} />
+        <View style={[st.chevronCircle, { backgroundColor: colors.surface2 }]}>
+          <InlineIcon name={expanded ? 'chevronUp' : 'chevronDown'} size={16} color={colors.text2} />
+        </View>
       </Pressable>
 
       {/* Expanded content */}
@@ -197,7 +202,13 @@ function WeeklyCard({ item, expanded, onToggle }: {
 export default function ReflectiesScreen() {
   const { colors } = useTheme();
   const router = useRouter();
-  const { reflectionNotes, stageProgress, weekTaskCompletions } = useStore();
+  const store = useStore();
+  const { reflectionNotes, stageProgress, weekTaskCompletions } = store;
+  const activeThemes = useMemo(() => {
+    const profile = store.profile;
+    if (!profile) return [] as ThemeTag[];
+    return resolveActiveThemes(profile);
+  }, [store.profile]);
   const [activeTab, setActiveTab] = useState<Tab>('modules');
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
@@ -217,7 +228,7 @@ export default function ReflectiesScreen() {
     const result: CompletedReflection[] = [];
 
     for (const skill of ALL_SKILLS) {
-      const modules = getLearningModulesForSkill(skill);
+      const modules = getLearningModulesForSkill(skill, activeThemes);
       for (const mod of modules) {
         const progress = stageProgress[mod.id];
         if (!progress) continue;
@@ -487,6 +498,13 @@ const st = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 12,
     overflow: 'hidden',
+  },
+  chevronCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
   },
   cardHeader: {
     flexDirection: 'row',

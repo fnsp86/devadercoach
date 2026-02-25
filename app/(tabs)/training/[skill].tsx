@@ -17,7 +17,8 @@ import { QUIZ_XP, getLevelFromXP } from '@/lib/gamification-types';
 import { checkAndUnlockBadges } from '@/lib/badge-checker';
 import GamificationPopup from '@/components/GamificationPopup';
 import type { GamificationEvent } from '@/components/GamificationPopup';
-import type { Skill, TrainingItem, QuizOption } from '@/lib/types';
+import type { Skill, TrainingItem, QuizOption, ThemeTag } from '@/lib/types';
+import { resolveActiveThemes } from '@/lib/theme-resolver';
 import ProgressBar from '@/components/ProgressBar';
 import Card from '@/components/Card';
 import { SKILL_COLORS } from '@/lib/colors';
@@ -37,7 +38,12 @@ export default function SkillTraining() {
   const skillColor = SKILL_COLORS[skill] || colors.amber;
 
   const store = useStore();
-  const items = useMemo(() => getTrainingForSkill(skill), [skill]);
+  const activeThemes = useMemo(() => {
+    const profile = store.profile;
+    if (!profile) return [] as ThemeTag[];
+    return resolveActiveThemes(profile);
+  }, [store.profile]);
+  const items = useMemo(() => getTrainingForSkill(skill, activeThemes), [skill, activeThemes]);
 
   // Initialize state from store progress so we never flash the wrong screen
   const [currentIndex, setCurrentIndex] = useState(() => {
@@ -398,6 +404,8 @@ export default function SkillTraining() {
             </Pressable>
           </View>
         </ScrollView>
+
+        <GamificationPopup event={gamificationEvent} onDismiss={() => setGamificationEvent(null)} />
       </SafeAreaView>
     );
   }

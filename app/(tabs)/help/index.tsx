@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   View,
   Text,
@@ -15,14 +15,18 @@ if (Platform.OS === 'android') {
   UIManager.setLayoutAnimationEnabledExperimental?.(true);
 }
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
-import { HELP_SITUATIONS } from '@/lib/help';
-import type { HelpAgeGroup, HelpSituation } from '@/lib/types';
+import { getHelpSituations } from '@/lib/help';
+import { resolveActiveThemes } from '@/lib/theme-resolver';
+import { doelenToSkills } from '@/lib/task-selector';
+import type { HelpAgeGroup, HelpSituation, Skill } from '@/lib/types';
 import { SKILL_COLORS } from '@/lib/colors';
 import { AppIcon, InlineIcon, getSkillIcon, emojiToIcon } from '@/lib/icons';
 import type { IconName } from '@/lib/icons';
+import Header from '@/components/Header';
+import Card from '@/components/Card';
 
 const AGE_TABS: { age: HelpAgeGroup; label: string; icon: IconName }[] = [
   { age: '0-3', label: '0-3', icon: 'baby' },
@@ -58,30 +62,56 @@ const SOS_IDS: Record<HelpAgeGroup, string[]> = {
   ],
 };
 
-function getDailySituation(ageGroup: HelpAgeGroup): HelpSituation | null {
-  const pool = HELP_SITUATIONS.filter((s) => s.ageGroup === ageGroup);
-  if (pool.length === 0) return null;
-  const today = new Date();
-  const dateStr = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
-  let hash = 0;
-  for (let i = 0; i < dateStr.length; i++) {
-    hash = ((hash << 5) - hash) + dateStr.charCodeAt(i);
-    hash = hash & hash;
-  }
-  return pool[Math.abs(hash) % pool.length];
-}
+const ALL_SKILLS: Skill[] = [
+  'Aanwezigheid', 'Emotiecoaching', 'Zelfregulatie', 'Grenzen',
+  'Autonomie', 'Herstel', 'Verbinding', 'Reflectie',
+];
 
-// Skill icons are now provided via getSkillIcon() from @/lib/icons
+const THEME_PURPLE = '#8B5CF6';
+
+function getThemeLabel(situation: HelpSituation): string | null {
+  if (!situation.themes || situation.themes.length === 0) return null;
+  if (situation.themes.includes('bonuskind') || situation.themes.includes('samengesteld_gezin') || situation.themes.includes('co-ouderschap')) {
+    return 'Bonuskind';
+  }
+  return 'Extra zorg';
+}
 
 export default function HelpPage() {
   const { colors } = useTheme();
   const router = useRouter();
-  const { profile, helpFavorites, isHelpFavorite } = useStore();
+  const { profile, helpFavorites, isHelpFavorite, helpHistory } = useStore();
 
   const [selectedAge, setSelectedAge] = useState<HelpAgeGroup>('4-7');
   const [searchQuery, setSearchQuery] = useState('');
   const [sosExpanded, setSosExpanded] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
+  const [collapsedSkills, setCollapsedSkills] = useState<Set<string>>(new Set());
+
+  // Reset collapsed state when tab regains focus
+  useFocusEffect(
+    useCallback(() => {
+      setCollapsedSkills(new Set());
+    }, []),
+  );
+
+  // Resolve active themes from profile
+  const activeThemes = useMemo(
+    () => (profile ? resolveActiveThemes(profile) : []),
+    [profile],
+  );
+
+  // All help situations including themed ones
+  const allSituations = useMemo(
+    () => getHelpSituations(activeThemes),
+    [activeThemes],
+  );
+
+  // Doel skills for "Voor jouw gezin" scoring
+  const doelSkills = useMemo(
+    () => (profile?.doelen ? doelenToSkills(profile.doelen) : []),
+    [profile?.doelen],
+  );
 
   useEffect(() => {
     if (profile?.children && profile.children.length > 0) {
@@ -94,24 +124,145 @@ export default function HelpPage() {
     }
   }, [profile]);
 
-  const dailySituation = useMemo(
-    () => getDailySituation(selectedAge),
-    [selectedAge]
-  );
-
+  // Search: searches ALL fields, ignores age filter
+  const isSearching = searchQuery.trim().length > 0;
   const filteredSituations = useMemo(() => {
-    if (searchQuery.trim()) {
+    if (isSearching) {
       const q = searchQuery.toLowerCase();
-      return HELP_SITUATIONS.filter((s) =>
+      return allSituations.filter((s) =>
         s.situatie.toLowerCase().includes(q) ||
-        s.watSpeeltInKind.toLowerCase().includes(q)
+        s.watSpeeltInKind.toLowerCase().includes(q) ||
+        s.watSpeeltInVader.toLowerCase().includes(q) ||
+        s.psychologie.toLowerCase().includes(q) ||
+        s.skillLink.toLowerCase().includes(q) ||
+        s.voorbeeldzin.toLowerCase().includes(q) ||
+        s.valkuil.toLowerCase().includes(q) ||
+        s.stappen.some((st) => st.toLowerCase().includes(q)),
       );
     }
     if (showFavorites) {
-      return HELP_SITUATIONS.filter((s) => helpFavorites.includes(s.id));
+      return allSituations.filter((s) => helpFavorites.includes(s.id));
     }
-    return HELP_SITUATIONS.filter((s) => s.ageGroup === selectedAge);
-  }, [searchQuery, showFavorites, helpFavorites, selectedAge]);
+    return allSituations.filter((s) => s.ageGroup === selectedAge);
+  }, [searchQuery, isSearching, showFavorites, helpFavorites, selectedAge, allSituations]);
+
+  // Group by skill for collapsible sections
+  const skillGroups = useMemo(() => {
+    const groups: { skill: Skill; situations: HelpSituation[] }[] = [];
+    const grouped: Record<string, HelpSituation[]> = {};
+    for (const s of filteredSituations) {
+      if (!grouped[s.skillLink]) grouped[s.skillLink] = [];
+      grouped[s.skillLink].push(s);
+    }
+    // Maintain consistent skill order
+    for (const sk of ALL_SKILLS) {
+      if (grouped[sk] && grouped[sk].length > 0) {
+        groups.push({ skill: sk, situations: grouped[sk] });
+      }
+    }
+    return groups;
+  }, [filteredSituations]);
+
+  // "Voor jouw gezin" recommended themed situations
+  const recommendedSituations = useMemo(() => {
+    if (activeThemes.length === 0 || isSearching || showFavorites) return [];
+    const themed = allSituations.filter(
+      (s) => s.themes && s.themes.length > 0 && s.ageGroup === selectedAge,
+    );
+    // Score: theme match (10), doel-skill match (5), not favorite (-2)
+    const scored = themed.map((s) => {
+      let score = 10;
+      if (doelSkills.includes(s.skillLink)) score += 5;
+      if (!helpFavorites.includes(s.id)) score -= 2;
+      return { situation: s, score };
+    });
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, 4).map((s) => s.situation);
+  }, [activeThemes, allSituations, selectedAge, doelSkills, helpFavorites, isSearching, showFavorites]);
+
+  // Recent viewed situations
+  const recentSituations = useMemo(() => {
+    if (helpHistory.length === 0 || isSearching || showFavorites) return [];
+    return helpHistory
+      .map((id) => allSituations.find((s) => s.id === id))
+      .filter(Boolean) as HelpSituation[];
+  }, [helpHistory, allSituations, isSearching, showFavorites]);
+
+  function toggleSkillGroup(skill: string) {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setCollapsedSkills((prev) => {
+      const next = new Set(prev);
+      if (next.has(skill)) next.delete(skill);
+      else next.add(skill);
+      return next;
+    });
+  }
+
+  function renderSituationCard(situation: HelpSituation, compact = false) {
+    const skillColor = SKILL_COLORS[situation.skillLink] || colors.amber;
+    const skillIconName = getSkillIcon(situation.skillLink);
+    const themeLabel = getThemeLabel(situation);
+
+    return (
+      <Pressable
+        key={situation.id}
+        onPress={() => router.push(`/(tabs)/help/${situation.id}`)}
+      >
+        <Card variant="small" style={{ marginBottom: compact ? 8 : 12 }}>
+          <View style={styles.cardHeader}>
+            <View style={[styles.cardIconWrap, { backgroundColor: skillColor + '14' }]}>
+              <AppIcon name={emojiToIcon(situation.icon)} size="md" variant="compact" color={skillColor} />
+            </View>
+            <View style={styles.cardHeaderText}>
+              <Text style={[styles.cardTitle, { color: colors.text }]} numberOfLines={2}>
+                {situation.situatie}
+              </Text>
+              <Text style={[styles.cardPreview, { color: colors.text3 }]} numberOfLines={2}>
+                {situation.watSpeeltInKind}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.cardFooter}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flex: 1 }}>
+              <View style={[styles.skillTag, { backgroundColor: skillColor + '14' }]}>
+                <InlineIcon name={skillIconName} size={13} color={skillColor} />
+                <Text style={[styles.skillTagText, { color: skillColor }]}>
+                  {situation.skillLink}
+                </Text>
+              </View>
+              {themeLabel && (
+                <View style={[styles.themeBadge, { backgroundColor: THEME_PURPLE + '20', borderColor: THEME_PURPLE + '40' }]}>
+                  <Text style={[styles.themeBadgeText, { color: THEME_PURPLE }]}>{themeLabel}</Text>
+                </View>
+              )}
+            </View>
+            <View style={[styles.arrowCircle, { backgroundColor: colors.amber + '18' }]}>
+              <InlineIcon name="arrowRight" size={16} color={colors.amber} />
+            </View>
+          </View>
+        </Card>
+      </Pressable>
+    );
+  }
+
+  function renderMiniCard(situation: HelpSituation) {
+    const skillColor = SKILL_COLORS[situation.skillLink] || colors.amber;
+    return (
+      <Pressable
+        key={situation.id}
+        onPress={() => router.push(`/(tabs)/help/${situation.id}`)}
+        style={[styles.miniCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
+      >
+        <View style={[styles.miniIconWrap, { backgroundColor: skillColor + '14' }]}>
+          <AppIcon name={emojiToIcon(situation.icon)} size="sm" variant="compact" color={skillColor} />
+        </View>
+        <Text style={[styles.miniTitle, { color: colors.text }]} numberOfLines={2}>
+          {situation.situatie}
+        </Text>
+      </Pressable>
+    );
+  }
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg }]}>
@@ -120,18 +271,11 @@ export default function HelpPage() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Hero Header */}
-        <View style={styles.heroSection}>
-          <View style={[styles.heroIconWrap, { backgroundColor: colors.amber + '18' }]}>
-            <AppIcon name="lightbulb" size="lg" variant="compact" color={colors.amber} iconSize={32} />
-          </View>
-          <Text style={[styles.heroTitle, { color: colors.text }]}>
-            Hulp per Situatie
-          </Text>
-          <Text style={[styles.heroSub, { color: colors.text2 }]}>
-            Direct toepasbare hulp met psychologie, stappen en voorbeeldzinnen
-          </Text>
-        </View>
+        {/* Header */}
+        <Header
+          title="Hulp per Situatie"
+          subtitle="Direct toepasbare hulp met psychologie, stappen en voorbeeldzinnen"
+        />
 
         {/* SOS Quick Access */}
         <Pressable
@@ -149,18 +293,20 @@ export default function HelpPage() {
               <Text style={[styles.sosTitle, { color: '#EF4444' }]}>SOS – Acute Situatie</Text>
               <Text style={[styles.sosSub, { color: colors.text3 }]}>Snelle hulp bij nood</Text>
             </View>
-            <InlineIcon
-              name={sosExpanded ? 'chevronUp' : 'chevronDown'}
-              size={20}
-              color="#EF4444"
-            />
+            <View style={[styles.chevronCircle, { backgroundColor: '#EF444420' }]}>
+              <InlineIcon
+                name={sosExpanded ? 'chevronUp' : 'chevronDown'}
+                size={16}
+                color="#EF4444"
+              />
+            </View>
           </View>
         </Pressable>
 
         {sosExpanded && (
           <View style={styles.sosGrid}>
             {SOS_IDS[selectedAge].map((id) => {
-              const sit = HELP_SITUATIONS.find((s) => s.id === id);
+              const sit = allSituations.find((s) => s.id === id);
               if (!sit) return null;
               return (
                 <Pressable
@@ -205,20 +351,20 @@ export default function HelpPage() {
         <View style={styles.filterRow}>
           <Pressable
             onPress={() => { setShowFavorites(!showFavorites); setSearchQuery(''); }}
-            style={[styles.favChip, {
+            style={[styles.filterChip, {
               backgroundColor: showFavorites ? colors.amber + '18' : colors.surface,
               borderColor: showFavorites ? colors.amber : colors.border,
             }]}
           >
             <InlineIcon name="heart" size={14} color={showFavorites ? colors.amber : colors.text3} />
-            <Text style={[styles.favChipText, { color: showFavorites ? colors.amber : colors.text3 }]}>
+            <Text style={[styles.filterChipText, { color: showFavorites ? colors.amber : colors.text3 }]}>
               Opgeslagen ({helpFavorites.length})
             </Text>
           </Pressable>
         </View>
 
         {/* Age tabs */}
-        {!searchQuery.trim() && !showFavorites && (
+        {!isSearching && !showFavorites && (
           <View style={styles.ageTabsRow}>
             {AGE_TABS.map((tab) => {
               const isActive = selectedAge === tab.age;
@@ -250,87 +396,71 @@ export default function HelpPage() {
           </View>
         )}
 
-        {/* Count */}
-        <Text style={[styles.countText, { color: colors.text3 }]}>
-          {filteredSituations.length} situaties gevonden
-          {searchQuery.trim() ? ` voor "${searchQuery}"` : ''}
-        </Text>
-
-        {/* Daily Tip */}
-        {!searchQuery.trim() && !showFavorites && dailySituation && (
-          <Pressable
-            onPress={() => router.push(`/(tabs)/help/${dailySituation.id}`)}
-            style={[styles.dailyCard, {
-              backgroundColor: colors.amber + '10',
-              borderColor: colors.amber + '30',
-            }]}
-          >
-            <View style={styles.dailyHeader}>
-              <View style={[styles.dailyBadge, { backgroundColor: colors.amber + '20' }]}>
-                <InlineIcon name="sun" size={14} color={colors.amber} />
-                <Text style={[styles.dailyBadgeText, { color: colors.amber }]}>Tip van de dag</Text>
-              </View>
-            </View>
-            <View style={styles.dailyContent}>
-              <View style={[styles.dailyIconWrap, { backgroundColor: colors.amber + '18' }]}>
-                <AppIcon name={emojiToIcon(dailySituation.icon)} size="md" variant="compact" color={colors.amber} />
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={[styles.dailyTitle, { color: colors.text }]} numberOfLines={2}>{dailySituation.situatie}</Text>
-                <Text style={[styles.dailyPreview, { color: colors.text3 }]} numberOfLines={2}>{dailySituation.psychologie}</Text>
-              </View>
-              <View style={[styles.dailyArrow, { backgroundColor: colors.amber + '20' }]}>
-                <InlineIcon name="arrowRight" size={16} color={colors.amber} />
-              </View>
-            </View>
-          </Pressable>
+        {/* Recent viewed */}
+        {recentSituations.length > 0 && !isSearching && !showFavorites && (
+          <View style={styles.sectionBlock}>
+            <Text style={[styles.sectionTitle, { color: colors.text2 }]}>Recent bekeken</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.miniRow}>
+              {recentSituations.map(renderMiniCard)}
+            </ScrollView>
+          </View>
         )}
 
-        {/* Situations */}
-        {filteredSituations.map((situation) => {
-          const skillColor = SKILL_COLORS[situation.skillLink] || colors.amber;
-          const skillIconName = getSkillIcon(situation.skillLink);
-          return (
-            <Pressable
-              key={situation.id}
-              onPress={() => router.push(`/(tabs)/help/${situation.id}`)}
-              style={[
-                styles.card,
-                {
-                  backgroundColor: colors.surface,
-                  borderColor: colors.border,
-                },
-              ]}
-            >
-              <View style={styles.cardHeader}>
-                <View style={[styles.cardIconWrap, { backgroundColor: skillColor + '14' }]}>
-                  <AppIcon name={emojiToIcon(situation.icon)} size="md" variant="compact" color={skillColor} />
-                </View>
-                <View style={styles.cardHeaderText}>
-                  <Text style={[styles.cardTitle, { color: colors.text }]} numberOfLines={2}>
-                    {situation.situatie}
-                  </Text>
-                  <Text
-                    style={[styles.cardPreview, { color: colors.text3 }]}
-                    numberOfLines={2}
-                  >
-                    {situation.watSpeeltInKind}
-                  </Text>
-                </View>
+        {/* "Voor jouw gezin" recommended themed situations */}
+        {recommendedSituations.length > 0 && (
+          <View style={styles.sectionBlock}>
+            <View style={styles.sectionHeaderRow}>
+              <Text style={[styles.sectionTitle, { color: colors.text2 }]}>Voor jouw gezin</Text>
+              <View style={[styles.themeDot, { backgroundColor: THEME_PURPLE + '20' }]}>
+                <Text style={[styles.themeDotText, { color: THEME_PURPLE }]}>Persoonlijk</Text>
               </View>
+            </View>
+            {recommendedSituations.map((s) => renderSituationCard(s, true))}
+          </View>
+        )}
 
-              <View style={styles.cardFooter}>
-                <View style={[styles.skillTag, { backgroundColor: skillColor + '14' }]}>
-                  <InlineIcon name={skillIconName} size={13} color={skillColor} />
-                  <Text style={[styles.skillTagText, { color: skillColor }]}>
-                    {situation.skillLink}
-                  </Text>
+        {/* Count */}
+        <Text style={[styles.countText, { color: colors.text3 }]}>
+          {filteredSituations.length} situaties
+          {isSearching ? ` voor "${searchQuery}"` : ''}
+        </Text>
+
+        {/* Skill-grouped situations (all open by default, tap header to collapse) */}
+        {skillGroups.map(({ skill, situations }) => {
+          const skillColor = SKILL_COLORS[skill] || colors.amber;
+          const isExpanded = isSearching || collapsedSkills.has(skill);
+          const skillIconName = getSkillIcon(skill);
+
+          return (
+            <View key={skill} style={styles.skillGroupBlock}>
+              <Pressable
+                onPress={() => toggleSkillGroup(skill)}
+                style={[styles.skillGroupHeader, { backgroundColor: skillColor + '08', borderColor: skillColor + '20' }]}
+              >
+                <View style={[styles.skillGroupIconWrap, { backgroundColor: skillColor + '18' }]}>
+                  <InlineIcon name={skillIconName} size={18} color={skillColor} />
                 </View>
-                <View style={[styles.arrowCircle, { backgroundColor: colors.amber + '18' }]}>
-                  <InlineIcon name="arrowRight" size={16} color={colors.amber} />
+                <Text style={[styles.skillGroupTitle, { color: colors.text }]}>
+                  {skill}
+                </Text>
+                <Text style={[styles.skillGroupCount, { color: skillColor }]}>
+                  {situations.length}
+                </Text>
+                <View style={[styles.chevronCircleSmall, { backgroundColor: skillColor + '14' }]}>
+                  <InlineIcon
+                    name={isExpanded ? 'chevronUp' : 'chevronDown'}
+                    size={14}
+                    color={skillColor}
+                  />
                 </View>
-              </View>
-            </Pressable>
+              </Pressable>
+
+              {isExpanded && (
+                <View style={styles.skillGroupContent}>
+                  {situations.map((s) => renderSituationCard(s, true))}
+                </View>
+              )}
+            </View>
           );
         })}
 
@@ -343,17 +473,14 @@ export default function HelpPage() {
               Geen situaties gevonden
             </Text>
             <Text style={[styles.emptyText, { color: colors.text3 }]}>
-              Probeer een andere leeftijdscategorie
+              {isSearching ? 'Probeer een ander zoekwoord' : 'Probeer een andere leeftijdscategorie'}
             </Text>
           </View>
         )}
 
         {/* Info box */}
-        <View style={[styles.infoCard, {
-          backgroundColor: colors.surface,
-          borderColor: colors.border,
-        }]}>
-          <View style={{flexDirection:'row',alignItems:'center',gap:6}}>
+        <Card style={{ marginTop: 20 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
             <InlineIcon name="zap" size={16} color={colors.amber} />
             <Text style={[styles.infoTitle, { color: colors.text }]}>
               Per situatie krijg je
@@ -374,7 +501,7 @@ export default function HelpPage() {
               </View>
             ))}
           </View>
-        </View>
+        </Card>
 
         <View style={styles.bottomSpacer} />
       </ScrollView>
@@ -387,25 +514,19 @@ const styles = StyleSheet.create({
   scroll: { flex: 1 },
   scrollContent: { padding: 20, paddingBottom: 40 },
 
-  // Hero
-  heroSection: { alignItems: 'center', marginBottom: 24 },
-  heroIconWrap: {
-    width: 64,
-    height: 64,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 14,
-  },
-  heroEmoji: { fontSize: 32 },
-  heroTitle: { fontSize: 26, fontWeight: '800', marginBottom: 8, textAlign: 'center' },
-  heroSub: { fontSize: 15, lineHeight: 22, textAlign: 'center', paddingHorizontal: 10 },
-
   // SOS
+  chevronCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+  },
   sosButton: {
     borderWidth: 1,
     borderRadius: 16,
     padding: 16,
+    marginTop: 16,
     marginBottom: 16,
   },
   sosInner: {
@@ -442,7 +563,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 14,
     paddingVertical: 12,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   searchInput: {
     flex: 1,
@@ -450,21 +571,21 @@ const styles = StyleSheet.create({
     padding: 0,
   },
 
-  // Favorites filter
+  // Filter chips
   filterRow: {
     flexDirection: 'row',
     marginBottom: 12,
   },
-  favChip: {
+  filterChip: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
     borderWidth: 1,
     borderRadius: 20,
-    paddingHorizontal: 14,
+    paddingHorizontal: 12,
     paddingVertical: 7,
   },
-  favChipText: { fontSize: 13, fontWeight: '600' },
+  filterChipText: { fontSize: 12, fontWeight: '600' },
 
   // Age tabs
   ageTabsRow: {
@@ -489,82 +610,92 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 3,
   },
-  ageTabEmoji: { fontSize: 20 },
   ageTabLabel: { fontSize: 12, fontWeight: '700' },
 
-  // Count
-  countText: { fontSize: 13, marginBottom: 14 },
+  // Section blocks
+  sectionBlock: { marginBottom: 16 },
+  sectionHeaderRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 10 },
+  sectionTitle: { fontSize: 14, fontWeight: '700', marginBottom: 10 },
+  themeDot: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 6,
+    marginBottom: 10,
+  },
+  themeDotText: { fontSize: 11, fontWeight: '700' },
 
-  // Daily tip
-  dailyCard: {
+  // Mini cards (recent viewed)
+  miniRow: { gap: 10, paddingRight: 20 },
+  miniCard: {
+    width: 120,
     borderWidth: 1,
-    borderRadius: 18,
-    padding: 16,
-    marginBottom: 16,
+    borderRadius: 12,
+    padding: 12,
+    gap: 8,
   },
-  dailyHeader: { marginBottom: 12 },
-  dailyBadge: {
+  miniIconWrap: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  miniTitle: { fontSize: 12, fontWeight: '600', lineHeight: 16 },
+
+  // Count
+  countText: { fontSize: 13, marginBottom: 10 },
+
+  // Skill group
+  skillGroupBlock: { marginBottom: 12 },
+  skillGroupHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    alignSelf: 'flex-start',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
+    gap: 10,
+    borderWidth: 1,
+    borderRadius: 14,
+    padding: 14,
   },
-  dailyBadgeText: { fontSize: 12, fontWeight: '700' },
-  dailyContent: {
-    flexDirection: 'row',
+  skillGroupIconWrap: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
     alignItems: 'center',
-    gap: 12,
+    justifyContent: 'center',
   },
-  dailyIconWrap: {
-    width: 48,
-    height: 48,
+  skillGroupTitle: { flex: 1, fontSize: 15, fontWeight: '700' },
+  skillGroupCount: { fontSize: 14, fontWeight: '700' },
+  chevronCircleSmall: {
+    width: 28,
+    height: 28,
     borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  dailyTitle: { fontSize: 15, fontWeight: '700', marginBottom: 4 },
-  dailyPreview: { fontSize: 13, lineHeight: 18 },
-  dailyArrow: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  skillGroupContent: { marginTop: 8 },
 
   // Cards
-  card: {
-    borderWidth: 1,
-    borderRadius: 18,
-    padding: 18,
-    marginBottom: 12,
-  },
   cardHeader: {
     flexDirection: 'row',
     gap: 14,
     marginBottom: 14,
   },
   cardIconWrap: {
-    width: 52,
-    height: 52,
-    borderRadius: 16,
+    width: 48,
+    height: 48,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  cardIcon: { fontSize: 28 },
   cardHeaderText: { flex: 1 },
   cardTitle: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
     marginBottom: 4,
-    lineHeight: 22,
+    lineHeight: 20,
   },
   cardPreview: {
     fontSize: 13,
-    lineHeight: 19,
+    lineHeight: 18,
   },
   cardFooter: {
     flexDirection: 'row',
@@ -579,8 +710,14 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: 8,
   },
-  skillTagEmoji: { fontSize: 13 },
   skillTagText: { fontSize: 12, fontWeight: '600' },
+  themeBadge: {
+    borderWidth: 1,
+    borderRadius: 6,
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+  },
+  themeBadgeText: { fontSize: 10, fontWeight: '700' },
   arrowCircle: {
     width: 32,
     height: 32,
@@ -588,7 +725,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  arrowText: { fontSize: 16, fontWeight: '700' },
 
   // Empty
   emptyContainer: { alignItems: 'center', paddingVertical: 50 },
@@ -600,21 +736,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 16,
   },
-  emptyEmoji: { fontSize: 36 },
   emptyTitle: { fontSize: 18, fontWeight: '700', marginBottom: 6 },
   emptyText: { fontSize: 14 },
 
   // Info card
-  infoCard: {
-    borderWidth: 1,
-    borderRadius: 18,
-    padding: 20,
-    marginTop: 20,
-  },
   infoTitle: { fontSize: 16, fontWeight: '700', marginBottom: 14 },
   infoList: { gap: 10 },
   infoItem: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  infoEmoji: { fontSize: 18 },
   infoText: { fontSize: 14, lineHeight: 20 },
 
   bottomSpacer: { height: 20 },

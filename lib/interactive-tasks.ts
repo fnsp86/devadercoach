@@ -27,6 +27,8 @@ import { INTERACTIVE_TASKS_24 } from './interactive-tasks-24';
 import { INTERACTIVE_TASKS_25 } from './interactive-tasks-25';
 import { INTERACTIVE_TASKS_26 } from './interactive-tasks-26';
 import { INTERACTIVE_TASKS_27 } from './interactive-tasks-27';
+import { INTERACTIVE_TASKS_28 } from './interactive-tasks-28';
+import { INTERACTIVE_TASKS_29 } from './interactive-tasks-29';
 
 export const ALL_INTERACTIVE_TASKS: InteractiveTask[] = [
   ...INTERACTIVE_TASKS_1,
@@ -56,4 +58,6 @@ export const ALL_INTERACTIVE_TASKS: InteractiveTask[] = [
   ...INTERACTIVE_TASKS_25,
   ...INTERACTIVE_TASKS_26,
   ...INTERACTIVE_TASKS_27,
+  ...INTERACTIVE_TASKS_28,
+  ...INTERACTIVE_TASKS_29,
 ];

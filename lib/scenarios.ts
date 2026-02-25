@@ -1,4 +1,6 @@
-import type { Scenario } from "./types";
+import type { Scenario, ThemeTag } from "./types";
+import { BONUSKIND_SCENARIOS } from "./themed-content-bonuskind";
+import { GEDRAG_SCENARIOS } from "./themed-content-gedrag";
 
 export const SCENARIOS: Scenario[] = [
   // ── Aanwezigheid ──────────────────────────────────────────────
@@ -170,16 +172,21 @@ export const SCENARIOS: Scenario[] = [
   },
 ];
 
-export function getScenariosForSkill(skill: string, ageGroup?: string): Scenario[] {
-  return SCENARIOS.filter(s => {
+export function getScenariosForSkill(skill: string, ageGroup?: string, activeThemes: ThemeTag[] = []): Scenario[] {
+  // Combineer basis-scenario's met themed scenario's als themes actief zijn
+  const allScenarios = activeThemes.length > 0
+    ? [...SCENARIOS, ...BONUSKIND_SCENARIOS.filter((s) => s.themes?.some((t) => activeThemes.includes(t))), ...GEDRAG_SCENARIOS.filter((s) => s.themes?.some((t) => activeThemes.includes(t)))]
+    : SCENARIOS;
+
+  return allScenarios.filter(s => {
     const skillMatch = s.skill === skill;
     const ageMatch = !ageGroup || s.ageGroups.includes(ageGroup as any);
     return skillMatch && ageMatch;
   });
 }
 
-export function getRandomScenario(skill: string, ageGroup?: string): Scenario | null {
-  const pool = getScenariosForSkill(skill, ageGroup);
+export function getRandomScenario(skill: string, ageGroup?: string, activeThemes: ThemeTag[] = []): Scenario | null {
+  const pool = getScenariosForSkill(skill, ageGroup, activeThemes);
   if (pool.length === 0) return null;
   return pool[Math.floor(Math.random() * pool.length)];
 }

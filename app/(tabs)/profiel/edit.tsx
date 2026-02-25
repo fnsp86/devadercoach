@@ -10,6 +10,7 @@ import {
   Alert,
   Image,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -20,6 +21,7 @@ import { useAuth } from '@/lib/auth';
 import { supabase, upsertCommunityProfile, uploadAvatar } from '@/lib/supabase';
 import { InlineIcon } from '@/lib/icons';
 import Button from '@/components/Button';
+import type { AppDoel } from '@/lib/types';
 
 export default function EditProfileScreen() {
   const { colors } = useTheme();
@@ -28,7 +30,7 @@ export default function EditProfileScreen() {
   const { user, communityProfile, setCommunityProfile } = useAuth();
 
   const [naam, setNaam] = useState(profile?.naam ?? '');
-  const [email, setEmail] = useState(profile?.email ?? '');
+  const [email, setEmail] = useState(profile?.email ?? user?.email ?? '');
   const [avatarUri, setAvatarUri] = useState<string | null>(communityProfile?.avatar_url ?? null);
   const [loading, setLoading] = useState(false);
 
@@ -52,62 +54,81 @@ export default function EditProfileScreen() {
       return;
     }
 
-    setLoading(true);
-    let shouldGoBack = true;
+    // 1. Save local profile immediately
+    const base = profile ?? {
+      naam: '',
+      email: '',
+      ageGroup: '6-9' as const,
+      doel: 'Gewoon een betere vader zijn' as AppDoel,
+      startDate: new Date().toISOString().split('T')[0],
+      children: [],
+    };
+    saveProfile({ ...base, naam: naam.trim(), email: email.trim() });
 
-    try {
-      // Update local profile
-      if (profile) {
-        saveProfile({ ...profile, naam: naam.trim(), email: email.trim() });
+    // 2. Check if avatar upload is needed (requires loading state)
+    const currentAvatarUrl = communityProfile?.avatar_url ?? null;
+    const needsAvatarUpload = user && avatarUri && avatarUri !== currentAvatarUrl && !avatarUri.startsWith('http');
+
+    if (needsAvatarUpload) {
+      // Avatar upload — stay on screen with loading indicator
+      setLoading(true);
+      try {
+        const uploadPromise = uploadAvatar(user!.id, avatarUri!);
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Upload timeout')), 30000)
+        );
+        const uploadedUrl = await Promise.race([uploadPromise, timeoutPromise]);
+        console.log('[avatar-upload] success, url:', uploadedUrl);
+
+        const updated = await upsertCommunityProfile({
+          user_id: user!.id,
+          naam: naam.trim(),
+          bio: communityProfile?.bio ?? '',
+          stad: communityProfile?.stad ?? '',
+          latitude: communityProfile?.latitude ?? null,
+          longitude: communityProfile?.longitude ?? null,
+          avatar_url: uploadedUrl,
+        });
+        setCommunityProfile(updated);
+        setLoading(false);
+        router.back();
+      } catch (e: any) {
+        console.error('[avatar-upload]', e?.message || e);
+        setLoading(false);
+        Alert.alert('Foto uploaden mislukt', 'Je foto kon niet worden geüpload. Controleer je internetverbinding en probeer het opnieuw.');
       }
+      return;
+    }
 
-      // Update email in Supabase if changed and user is logged in
-      if (user && email.trim() !== (profile?.email ?? '')) {
-        const { error } = await supabase.auth.updateUser({ email: email.trim() });
-        if (error) {
-          Alert.alert('E-mail wijzigen', error.message);
-        } else {
-          Alert.alert('E-mail bevestigen', 'We hebben een bevestigingsmail gestuurd naar je nieuwe e-mailadres.');
-        }
-      }
+    // 3. No avatar upload — navigate back immediately, sync in background
+    router.back();
 
-      // Update community profile if user is logged in
-      if (user) {
-        let uploadedAvatarUrl = communityProfile?.avatar_url ?? null;
-
-        // Upload new avatar if changed (local URI, not an existing URL)
-        if (avatarUri && avatarUri !== uploadedAvatarUrl && !avatarUri.startsWith('http')) {
-          try {
-            uploadedAvatarUrl = await uploadAvatar(user.id, avatarUri);
-            console.log('[avatar-upload] success, url:', uploadedAvatarUrl);
-          } catch (e: any) {
-            console.error('[avatar-upload]', e?.message || e);
-            shouldGoBack = false;
-            Alert.alert('Foto uploaden mislukt', 'Je foto kon niet worden geüpload. Controleer je internetverbinding en probeer het opnieuw.');
-            return;
+    if (user) {
+      // Email update (fire-and-forget with alert feedback)
+      if (email.trim() !== (profile?.email ?? '')) {
+        supabase.auth.updateUser({ email: email.trim() }).then(({ error }) => {
+          if (error) {
+            Alert.alert('E-mail wijzigen', error.message);
+          } else {
+            Alert.alert('E-mail bevestigen', 'We hebben een bevestigingsmail gestuurd naar je nieuwe e-mailadres.');
           }
-        }
-
-        try {
-          console.log('[profile-upsert] saving avatar_url:', uploadedAvatarUrl);
-          const updated = await upsertCommunityProfile({
-            user_id: user.id,
-            naam: naam.trim(),
-            bio: communityProfile?.bio ?? '',
-            stad: communityProfile?.stad ?? '',
-            latitude: communityProfile?.latitude ?? null,
-            longitude: communityProfile?.longitude ?? null,
-            avatar_url: uploadedAvatarUrl,
-          });
-          console.log('[profile-upsert] saved, avatar_url in response:', updated.avatar_url);
-          setCommunityProfile(updated);
-        } catch (e: any) {
-          console.error('[profile-upsert]', e?.message || e);
-        }
+        });
       }
-    } finally {
-      setLoading(false);
-      if (shouldGoBack) router.back();
+
+      // Community profile sync (fire-and-forget)
+      upsertCommunityProfile({
+        user_id: user.id,
+        naam: naam.trim(),
+        bio: communityProfile?.bio ?? '',
+        stad: communityProfile?.stad ?? '',
+        latitude: communityProfile?.latitude ?? null,
+        longitude: communityProfile?.longitude ?? null,
+        avatar_url: currentAvatarUrl,
+      }).then((updated) => {
+        setCommunityProfile(updated);
+      }).catch((e: any) => {
+        console.error('[profile-upsert]', e?.message || e);
+      });
     }
   }
 
@@ -180,10 +201,21 @@ export default function EditProfileScreen() {
               onPress={handleSave}
               variant="primary"
               size="lg"
+              disabled={loading}
             />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+
+      {/* Loading overlay */}
+      {loading && (
+        <View style={s.loadingOverlay}>
+          <View style={[s.loadingBox, { backgroundColor: colors.surface }]}>
+            <ActivityIndicator size="large" color={colors.amber} />
+            <Text style={[s.loadingText, { color: colors.text }]}>Profiel opslaan...</Text>
+          </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
@@ -248,5 +280,22 @@ const s = StyleSheet.create({
   hint: {
     fontSize: 12,
     marginTop: 6,
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  loadingBox: {
+    borderRadius: 16,
+    padding: 28,
+    alignItems: 'center',
+    gap: 12,
+  },
+  loadingText: {
+    fontSize: 15,
+    fontWeight: '600',
   },
 });
