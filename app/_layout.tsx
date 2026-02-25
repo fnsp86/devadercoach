@@ -15,10 +15,12 @@ function RootLayoutContent() {
   const responseListener = useRef<EventSubscription | null>(null);
 
   useEffect(() => {
-    // Handle tap on notification → navigate to chat
+    // Handle tap on notification → navigate to relevant screen
     responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
       const data = response.notification.request.content.data;
-      if (data?.conversationId) {
+      if (data?.type === 'duel' && data?.duelId) {
+        router.push('/(tabs)/training/duels' as any);
+      } else if (data?.conversationId) {
         router.push(`/(tabs)/community/chat/${data.conversationId}` as any);
       }
     });

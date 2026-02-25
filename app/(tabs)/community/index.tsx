@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
   View,
   Text,
@@ -28,17 +28,24 @@ import {
   upsertCommunityProfile,
   toggleStoryLike,
   getUserLikedStoryIds,
+  getChallengeStories,
+  getGroups,
   type Story,
   type CommunityProfile,
+  type Group,
 } from '@/lib/supabase';
-import { InlineIcon, AppIcon } from '@/lib/icons';
+import { InlineIcon, AppIcon, getSkillIcon } from '@/lib/icons';
+import { SKILL_COLORS } from '@/lib/colors';
+import { getWeekKey } from '@/lib/week-selector';
+import { generateWeeklyCommunityChallenge } from '@/lib/weekly-community-challenge';
 import Button from '@/components/Button';
 
 if (Platform.OS === 'android') {
   UIManager.setLayoutAnimationEnabledExperimental?.(true);
 }
 
-type CategoryFilter = 'all' | 'tip' | 'ervaring' | 'vraag' | 'overwinning';
+type ViewMode = 'feed' | 'groepen';
+type CategoryFilter = 'all' | 'tip' | 'ervaring' | 'vraag' | 'overwinning' | 'challenge';
 type SortMode = 'newest' | 'popular';
 
 const FILTER_OPTIONS: { key: CategoryFilter; label: string; icon: string }[] = [
@@ -47,6 +54,7 @@ const FILTER_OPTIONS: { key: CategoryFilter; label: string; icon: string }[] = [
   { key: 'ervaring', label: 'Ervaringen', icon: 'heart' },
   { key: 'vraag', label: 'Vragen', icon: 'helpCircle' },
   { key: 'overwinning', label: 'Wins', icon: 'trophy' },
+  { key: 'challenge', label: 'Challenge', icon: 'target' },
 ];
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -54,6 +62,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   ervaring: 'Ervaring',
   vraag: 'Vraag',
   overwinning: 'Win',
+  challenge: 'Challenge',
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -61,6 +70,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   ervaring: '#34D399',
   vraag: '#F59E0B',
   overwinning: '#A78BFA',
+  challenge: '#EF4444',
 };
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -68,6 +78,7 @@ const CATEGORY_ICONS: Record<string, string> = {
   ervaring: 'heart',
   vraag: 'helpCircle',
   overwinning: 'trophy',
+  challenge: 'target',
 };
 
 const EMPTY_STATES: Record<CategoryFilter, { icon: string; title: string; desc: string }> = {
@@ -76,6 +87,7 @@ const EMPTY_STATES: Record<CategoryFilter, { icon: string; title: string; desc: 
   ervaring: { icon: 'heart', title: 'Nog geen ervaringen', desc: 'Deel een mooie of leerzame ervaring als vader.' },
   vraag: { icon: 'helpCircle', title: 'Nog geen vragen', desc: 'Stel een vraag aan de community!' },
   overwinning: { icon: 'trophy', title: 'Nog geen overwinningen', desc: 'Vier je eerste vaderoverwinning hier!' },
+  challenge: { icon: 'target', title: 'Nog geen challenge verhalen', desc: 'Doe mee aan de weekchallenge en deel je ervaring!' },
 };
 
 function timeAgo(dateStr: string): string {
@@ -95,6 +107,11 @@ export default function SocialFeed() {
   const { profile } = useStore();
   const router = useRouter();
 
+  // View mode
+  const [viewMode, setViewMode] = useState<ViewMode>('feed');
+  const [myGroups, setMyGroups] = useState<Group[]>([]);
+  const [groupsLoading, setGroupsLoading] = useState(false);
+
   // Core state
   const [filter, setFilter] = useState<CategoryFilter>('all');
   const [sortMode, setSortMode] = useState<SortMode>('newest');
@@ -103,6 +120,11 @@ export default function SocialFeed() {
   const [refreshing, setRefreshing] = useState(false);
   const [nearbyFathers, setNearbyFathers] = useState<(CommunityProfile & { distance_km: number })[]>([]);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [challengeStories, setChallengeStories] = useState<Story[]>([]);
+
+  // Weekly challenge
+  const weekKey = useMemo(() => getWeekKey(), []);
+  const challenge = useMemo(() => generateWeeklyCommunityChallenge(weekKey), [weekKey]);
 
   // Pagination
   const [cursor, setCursor] = useState<string | null>(null);
@@ -146,7 +168,7 @@ export default function SocialFeed() {
     await AsyncStorage.setItem('vc-social-welcome-seen', '1');
   }, []);
 
-  const loadStories = useCallback(async (cat?: CategoryFilter) => {
+  const loadStories = useCallback(async (cat?: CategoryFilter, isBackground = false) => {
     const category = cat ?? filter;
     try {
       const data = await getStories({
@@ -156,7 +178,7 @@ export default function SocialFeed() {
       setStories(data);
       setCursor(data.length > 0 ? data[data.length - 1].created_at : null);
       setHasMore(data.length === 20);
-      setLikeDelta({});
+      if (!isBackground) setLikeDelta({});
       // Load liked state
       if (user && data.length > 0) {
         const ids = data.map((s) => s.id);
@@ -203,6 +225,23 @@ export default function SocialFeed() {
     }
   }, [communityProfile]);
 
+  const loadChallengeStories = useCallback(async () => {
+    try {
+      const data = await getChallengeStories(weekKey, 5);
+      setChallengeStories(data);
+    } catch { /* silent */ }
+  }, [weekKey]);
+
+  const loadMyGroups = useCallback(async () => {
+    if (!user) return;
+    setGroupsLoading(true);
+    try {
+      const groups = await getGroups(user.id);
+      setMyGroups(groups);
+    } catch { /* silent */ }
+    setGroupsLoading(false);
+  }, [user]);
+
   // Sorted + filtered stories
   const sortedAndFiltered = useMemo(() => {
     let result = stories;
@@ -228,18 +267,31 @@ export default function SocialFeed() {
     return counts;
   }, [stories]);
 
+  const hasLoadedOnce = useRef(false);
+
   useFocusEffect(
     useCallback(() => {
-      loadStories();
+      if (hasLoadedOnce.current) {
+        // Already have data — refresh silently in background (no spinner)
+        loadStories(undefined, true);
+      } else {
+        // First load — show spinner
+        hasLoadedOnce.current = true;
+        loadStories();
+      }
       loadNearby();
-    }, [loadStories, loadNearby])
+      loadChallengeStories();
+      loadMyGroups();
+    }, [loadStories, loadNearby, loadChallengeStories, loadMyGroups])
   );
 
   const handleRefresh = useCallback(() => {
     setRefreshing(true);
     loadStories();
     loadNearby();
-  }, [loadStories, loadNearby]);
+    loadChallengeStories();
+    loadMyGroups();
+  }, [loadStories, loadNearby, loadChallengeStories, loadMyGroups]);
 
   function handleFilterChange(key: CategoryFilter) {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -288,6 +340,48 @@ export default function SocialFeed() {
           </View>
         </ScrollView>
       </SafeAreaView>
+    );
+  }
+
+  function renderChallengeBanner() {
+    const skillColor = SKILL_COLORS[challenge.skill as keyof typeof SKILL_COLORS] ?? '#EF4444';
+    return (
+      <View style={[styles.challengeCard, { backgroundColor: skillColor + '10', borderColor: skillColor + '30' }]}>
+        <View style={styles.challengeHeader}>
+          <View style={[styles.challengeIconWrap, { backgroundColor: skillColor + '20' }]}>
+            <InlineIcon name="target" size={18} color={skillColor} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={[styles.challengeLabel, { color: skillColor }]}>WEEKCHALLENGE</Text>
+            <Text style={[styles.challengeTitle, { color: colors.text }]}>{challenge.title}</Text>
+          </View>
+        </View>
+        <Text style={[styles.challengeDesc, { color: colors.text2 }]}>{challenge.description}</Text>
+        {challengeStories.length > 0 && (
+          <View style={styles.challengeStats}>
+            <InlineIcon name="users" size={14} color={colors.text3} />
+            <Text style={[styles.challengeStatsText, { color: colors.text3 }]}>
+              {challengeStories.length} {challengeStories.length === 1 ? 'vader' : 'vaders'} doen mee
+            </Text>
+          </View>
+        )}
+        <Pressable
+          onPress={() => {
+            router.push({
+              pathname: '/(tabs)/community/story/create',
+              params: {
+                prefillCategory: 'challenge',
+                prefillSkill: challenge.skill,
+                challengeWeek: weekKey,
+              },
+            } as any);
+          }}
+          style={[styles.challengeBtn, { backgroundColor: skillColor }]}
+        >
+          <InlineIcon name="penLine" size={14} color="#fff" />
+          <Text style={styles.challengeBtnText}>Deel je ervaring</Text>
+        </Pressable>
+      </View>
     );
   }
 
@@ -380,6 +474,15 @@ export default function SocialFeed() {
                   {CATEGORY_LABELS[item.category]}
                 </Text>
               </View>
+              {item.skill && (() => {
+                const sc = SKILL_COLORS[item.skill as keyof typeof SKILL_COLORS] ?? '#667eea';
+                return (
+                  <View style={[styles.skillPill, { backgroundColor: sc + '18' }]}>
+                    <InlineIcon name={getSkillIcon(item.skill as any)} size={11} color={sc} />
+                    <Text style={[styles.skillPillText, { color: sc }]}>{item.skill}</Text>
+                  </View>
+                );
+              })()}
             </View>
 
             {/* Content */}
@@ -433,7 +536,7 @@ export default function SocialFeed() {
     <SafeAreaView style={[styles.container, { backgroundColor: colors.bg }]}>
       {/* Header */}
       <View style={styles.header}>
-        <View>
+        <View style={{ flex: 1 }}>
           <Text style={[styles.headerTitle, { color: colors.text }]}>Social</Text>
           {communityProfile?.stad && (
             <View style={styles.locationRow}>
@@ -476,149 +579,251 @@ export default function SocialFeed() {
         </View>
       </View>
 
-      {/* Search bar */}
-      {searchVisible && (
-        <View style={styles.searchContainer}>
-          <View style={[styles.searchBar, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-            <InlineIcon name="search" size={16} color={colors.text3} />
-            <TextInput
-              style={[styles.searchInput, { color: colors.text }]}
-              placeholder="Zoek in verhalen..."
-              placeholderTextColor={colors.text3}
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              autoFocus
-              returnKeyType="search"
-            />
-            {searchQuery.length > 0 && (
-              <Pressable onPress={() => setSearchQuery('')}>
-                <InlineIcon name="x" size={16} color={colors.text3} />
-              </Pressable>
-            )}
-          </View>
-        </View>
-      )}
-
-      {/* Category filters */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.filterScroll}
-        contentContainerStyle={styles.filterContent}
-      >
-        {FILTER_OPTIONS.map((opt) => {
-          const active = filter === opt.key;
-          const chipColor = opt.key === 'all' ? colors.amber : (CATEGORY_COLORS[opt.key] ?? colors.amber);
-          const count = categoryCounts[opt.key] ?? 0;
+      {/* Feed / Groepen tab bar */}
+      <View style={[styles.viewToggleRow, { borderBottomColor: colors.border }]}>
+        {(['feed', 'groepen'] as const).map((mode) => {
+          const active = viewMode === mode;
           return (
             <Pressable
-              key={opt.key}
-              onPress={() => handleFilterChange(opt.key)}
+              key={mode}
+              onPress={() => {
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                setViewMode(mode);
+              }}
               style={[
-                styles.filterChip,
-                {
-                  backgroundColor: active ? chipColor : colors.surface,
-                  borderColor: active ? chipColor : colors.text2,
-                },
+                styles.viewToggleTab,
+                active && { borderBottomColor: colors.amber, borderBottomWidth: 2 },
               ]}
             >
-              <InlineIcon name={opt.icon as any} size={15} color={active ? '#fff' : colors.text} />
-              <Text style={[styles.filterText, { color: active ? '#fff' : colors.text }]}>
-                {opt.label}
+              <InlineIcon
+                name={mode === 'feed' ? 'fileText' : 'users'}
+                size={15}
+                color={active ? colors.amber : colors.text3}
+              />
+              <Text style={[styles.viewToggleTabText, { color: active ? colors.amber : colors.text3 }]}>
+                {mode === 'feed' ? 'Feed' : 'Groepen'}
               </Text>
-              {count > 0 && (
-                <View
-                  style={[
-                    styles.filterCountBadge,
-                    { backgroundColor: active ? 'rgba(255,255,255,0.25)' : colors.surface2 },
-                  ]}
-                >
-                  <Text style={[styles.filterCountText, { color: active ? '#fff' : colors.text3 }]}>
-                    {count}
-                  </Text>
-                </View>
-              )}
             </Pressable>
           );
         })}
-      </ScrollView>
-
-      {/* Sort toggle */}
-      <View style={[styles.sortRow, { borderBottomColor: colors.border }]}>
-        <View style={[styles.sortToggle, { backgroundColor: colors.surface }]}>
-          {(['newest', 'popular'] as const).map((mode) => {
-            const active = sortMode === mode;
-            return (
-              <Pressable
-                key={mode}
-                onPress={() => {
-                  LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  setSortMode(mode);
-                }}
-                style={[styles.sortOption, active && { backgroundColor: colors.surface2 }]}
-              >
-                <InlineIcon
-                  name={mode === 'newest' ? 'clock' : 'flame'}
-                  size={13}
-                  color={active ? colors.text : colors.text3}
-                />
-                <Text style={[styles.sortOptionText, { color: active ? colors.text : colors.text3 }]}>
-                  {mode === 'newest' ? 'Nieuwste' : 'Populair'}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </View>
-        <View style={{ flex: 1 }} />
-        <Text style={[styles.resultCount, { color: colors.text3 }]}>
-          {sortedAndFiltered.length} {sortedAndFiltered.length === 1 ? 'post' : 'posts'}
-        </Text>
       </View>
 
-      {loading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.amber} />
-        </View>
-      ) : (
-        <FlatList
-          data={sortedAndFiltered}
-          keyExtractor={(item) => item.id}
-          renderItem={renderStoryCard}
-          contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor={colors.amber} />
-          }
-          ListHeaderComponent={renderNearbyBanner}
-          ListEmptyComponent={renderEmptyState}
-          onEndReached={loadMore}
-          onEndReachedThreshold={0.5}
-          removeClippedSubviews
-          maxToRenderPerBatch={10}
-          windowSize={5}
-          initialNumToRender={10}
-          ListFooterComponent={
-            loadingMore ? (
-              <View style={{ paddingVertical: 20 }}>
-                <ActivityIndicator size="small" color={colors.amber} />
+      {viewMode === 'feed' ? (
+        <>
+          {/* Search bar */}
+          {searchVisible && (
+            <View style={styles.searchContainer}>
+              <View style={[styles.searchBar, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                <InlineIcon name="search" size={16} color={colors.text3} />
+                <TextInput
+                  style={[styles.searchInput, { color: colors.text }]}
+                  placeholder="Zoek in verhalen..."
+                  placeholderTextColor={colors.text3}
+                  value={searchQuery}
+                  onChangeText={setSearchQuery}
+                  autoFocus
+                  returnKeyType="search"
+                />
+                {searchQuery.length > 0 && (
+                  <Pressable onPress={() => setSearchQuery('')}>
+                    <InlineIcon name="x" size={16} color={colors.text3} />
+                  </Pressable>
+                )}
               </View>
-            ) : null
-          }
-        />
+            </View>
+          )}
+
+          {/* Category filters */}
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.filterScroll}
+            contentContainerStyle={styles.filterContent}
+          >
+            {FILTER_OPTIONS.map((opt) => {
+              const active = filter === opt.key;
+              const chipColor = opt.key === 'all' ? colors.amber : (CATEGORY_COLORS[opt.key] ?? colors.amber);
+              const count = categoryCounts[opt.key] ?? 0;
+              return (
+                <Pressable
+                  key={opt.key}
+                  onPress={() => handleFilterChange(opt.key)}
+                  style={[
+                    styles.filterChip,
+                    {
+                      backgroundColor: active ? chipColor : colors.surface,
+                      borderColor: active ? chipColor : colors.text2,
+                    },
+                  ]}
+                >
+                  <InlineIcon name={opt.icon as any} size={15} color={active ? '#fff' : colors.text} />
+                  <Text style={[styles.filterText, { color: active ? '#fff' : colors.text }]}>
+                    {opt.label}
+                  </Text>
+                  {count > 0 && (
+                    <View
+                      style={[
+                        styles.filterCountBadge,
+                        { backgroundColor: active ? 'rgba(255,255,255,0.25)' : colors.surface2 },
+                      ]}
+                    >
+                      <Text style={[styles.filterCountText, { color: active ? '#fff' : colors.text3 }]}>
+                        {count}
+                      </Text>
+                    </View>
+                  )}
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+
+          {/* Sort toggle */}
+          <View style={[styles.sortRow, { borderBottomColor: colors.border }]}>
+            <View style={[styles.sortToggle, { backgroundColor: colors.surface }]}>
+              {(['newest', 'popular'] as const).map((mode) => {
+                const active = sortMode === mode;
+                return (
+                  <Pressable
+                    key={mode}
+                    onPress={() => {
+                      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      setSortMode(mode);
+                    }}
+                    style={[styles.sortOption, active && { backgroundColor: colors.surface2 }]}
+                  >
+                    <InlineIcon
+                      name={mode === 'newest' ? 'clock' : 'flame'}
+                      size={13}
+                      color={active ? colors.text : colors.text3}
+                    />
+                    <Text style={[styles.sortOptionText, { color: active ? colors.text : colors.text3 }]}>
+                      {mode === 'newest' ? 'Nieuwste' : 'Populair'}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+            <View style={{ flex: 1 }} />
+            <Text style={[styles.resultCount, { color: colors.text3 }]}>
+              {sortedAndFiltered.length} {sortedAndFiltered.length === 1 ? 'post' : 'posts'}
+            </Text>
+          </View>
+
+          {loading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color={colors.amber} />
+            </View>
+          ) : (
+            <FlatList
+              data={sortedAndFiltered}
+              keyExtractor={(item) => item.id}
+              renderItem={renderStoryCard}
+              contentContainerStyle={styles.listContent}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor={colors.amber} />
+              }
+              ListHeaderComponent={() => <>{renderChallengeBanner()}{renderNearbyBanner()}</>}
+              ListEmptyComponent={renderEmptyState}
+              onEndReached={loadMore}
+              onEndReachedThreshold={0.5}
+              removeClippedSubviews
+              maxToRenderPerBatch={10}
+              windowSize={5}
+              initialNumToRender={10}
+              ListFooterComponent={
+                loadingMore ? (
+                  <View style={{ paddingVertical: 20 }}>
+                    <ActivityIndicator size="small" color={colors.amber} />
+                  </View>
+                ) : null
+              }
+            />
+          )}
+
+        </>
+      ) : (
+        /* ── Groepen view ── */
+        <View style={{ flex: 1 }}>
+          {groupsLoading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color={colors.amber} />
+            </View>
+          ) : myGroups.length > 0 ? (
+            <FlatList
+              data={myGroups}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={styles.listContent}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor={colors.amber} />
+              }
+              ListHeaderComponent={
+                <Pressable
+                  onPress={() => router.push('/(tabs)/community/group/')}
+                  style={[styles.discoverGroupsBtn, { backgroundColor: colors.amberDim, borderColor: colors.amber + '30' }]}
+                >
+                  <InlineIcon name="search" size={16} color={colors.amber} />
+                  <Text style={[styles.discoverGroupsBtnText, { color: colors.amber }]}>Ontdek meer groepen</Text>
+                </Pressable>
+              }
+              renderItem={({ item }) => {
+                const icon = item.type === 'stad' ? '📍' : '🏷️';
+                return (
+                  <Pressable
+                    onPress={() => router.push(`/(tabs)/community/group/${item.id}`)}
+                    style={[styles.groupCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                  >
+                    <View style={[styles.groupIcon, { backgroundColor: colors.amberDim }]}>
+                      <Text style={{ fontSize: 20 }}>{icon}</Text>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <Text style={[styles.groupName, { color: colors.text }]} numberOfLines={1}>
+                        {item.name}
+                      </Text>
+                      <Text style={[styles.groupSub, { color: colors.text3 }]} numberOfLines={1}>
+                        {item.member_count} leden{item.last_message ? ` · ${item.last_message}` : ''}
+                      </Text>
+                    </View>
+                    <InlineIcon name="arrowRight" size={16} color={colors.text3} />
+                  </Pressable>
+                );
+              }}
+            />
+          ) : (
+            <View style={styles.emptyContainer}>
+              <Text style={{ fontSize: 36, marginBottom: 12 }}>👥</Text>
+              <Text style={[styles.emptyTitle, { color: colors.text }]}>Nog geen groepen</Text>
+              <Text style={[styles.emptyDesc, { color: colors.text3 }]}>
+                Word lid van een groep om met andere vaders te chatten.
+              </Text>
+              <Pressable
+                onPress={() => router.push('/(tabs)/community/group/')}
+                style={[styles.fab, { backgroundColor: colors.amber, position: 'relative', marginTop: 20 }]}
+              >
+                <InlineIcon name="search" size={18} color="#fff" />
+                <Text style={styles.fabText}>Ontdek groepen</Text>
+              </Pressable>
+            </View>
+          )}
+        </View>
       )}
 
-      {/* FAB */}
-      <Pressable
-        onPress={() => {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-          router.push('/(tabs)/community/story/create');
-        }}
-        style={[styles.fab, { backgroundColor: colors.amber }]}
-      >
-        <InlineIcon name="penLine" size={20} color="#fff" />
-        <Text style={styles.fabText}>Schrijf</Text>
-      </Pressable>
+      {/* FAB (feed only) */}
+      {viewMode === 'feed' && (
+        <Pressable
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            router.push('/(tabs)/community/story/create');
+          }}
+          style={[styles.fab, { backgroundColor: colors.amber }]}
+        >
+          <InlineIcon name="penLine" size={20} color="#fff" />
+          <Text style={styles.fabText}>Schrijf</Text>
+        </Pressable>
+      )}
 
       {/* First-visit welcome modal */}
       <Modal visible={showWelcome} transparent animationType="fade" onRequestClose={dismissWelcome}>
@@ -817,6 +1022,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   categoryText: { fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.3 },
+  skillPill: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 },
+  skillPillText: { fontSize: 11, fontWeight: '700' },
   storyContent: { fontSize: 14, lineHeight: 21, paddingHorizontal: 14, paddingTop: 8, paddingBottom: 10 },
   actionsBar: {
     flexDirection: 'row',
@@ -915,4 +1122,42 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   welcomeBtnText: { color: '#fff', fontSize: 16, fontWeight: '700' },
+
+  // Challenge banner
+  challengeCard: { borderWidth: 1, borderRadius: 16, padding: 16, marginBottom: 12, gap: 10 },
+  challengeHeader: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  challengeIconWrap: { width: 36, height: 36, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  challengeLabel: { fontSize: 11, fontWeight: '800', letterSpacing: 0.5 },
+  challengeTitle: { fontSize: 16, fontWeight: '700', marginTop: 2 },
+  challengeDesc: { fontSize: 14, lineHeight: 20 },
+  challengeStats: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  challengeStatsText: { fontSize: 13, fontWeight: '600' },
+  challengeBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingVertical: 12, borderRadius: 12, marginTop: 4 },
+  challengeBtnText: { color: '#fff', fontSize: 14, fontWeight: '700' },
+
+  // View toggle (Feed / Groepen) — tab bar style
+  viewToggleRow: {
+    flexDirection: 'row',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 20,
+  },
+  viewToggleTab: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 12,
+    borderBottomWidth: 2,
+    borderBottomColor: 'transparent',
+  },
+  viewToggleTabText: { fontSize: 14, fontWeight: '700' },
+
+  // Groups in community view
+  groupCard: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderRadius: 14, padding: 14, marginBottom: 10, gap: 12 },
+  groupIcon: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
+  groupName: { fontSize: 15, fontWeight: '700' },
+  groupSub: { fontSize: 13, marginTop: 2 },
+  discoverGroupsBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderWidth: 1, borderRadius: 12, paddingVertical: 14, marginBottom: 16 },
+  discoverGroupsBtnText: { fontSize: 14, fontWeight: '700' },
 });

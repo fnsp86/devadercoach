@@ -27,6 +27,7 @@ import { getSkillMasteryTier, MASTERY_TIER_INFO } from '@/lib/gamification-types
 import { resolveActiveThemes } from '@/lib/theme-resolver';
 import { SKILL_COLORS } from '@/lib/colors';
 import { AppIcon, InlineIcon, getSkillIcon } from '@/lib/icons';
+import { getTodayDateStr } from '@/lib/daily-arena';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mini progress ring (SVG-free, border-based)
@@ -407,7 +408,11 @@ function ArenaSection() {
 
   const skillData = useMemo(() => {
     return SKILL_LIST.map((s) => {
-      const totalItems = getTrainingForSkill(s.label, activeThemes).length;
+      const allItems = getTrainingForSkill(s.label, activeThemes);
+      const totalItems = allItems.length;
+      const mid = Math.ceil(totalItems / 2);
+      const part1Ids = new Set(allItems.slice(0, mid).map((i) => i.id));
+      const part2Ids = new Set(allItems.slice(mid).map((i) => i.id));
       const progress = store.getTrainingProgress(s.label);
       const completedCount = progress.completedItems.length;
       const correctCount = progress.correctAnswers;
@@ -415,6 +420,10 @@ function ArenaSection() {
       const scorePct = progress.totalAttempts > 0
         ? Math.round((correctCount / progress.totalAttempts) * 100)
         : 0;
+      const part1Total = mid;
+      const part1Completed = progress.completedItems.filter((id) => part1Ids.has(id)).length;
+      const part2Total = totalItems - mid;
+      const part2Completed = progress.completedItems.filter((id) => part2Ids.has(id)).length;
       return {
         ...s,
         totalItems,
@@ -423,6 +432,10 @@ function ArenaSection() {
         pct,
         scorePct,
         hasTraining: totalItems > 0,
+        part1Total,
+        part1Completed,
+        part2Total,
+        part2Completed,
       };
     });
   }, [store]);
@@ -431,6 +444,13 @@ function ArenaSection() {
   const totalItems = skillData.reduce((sum, s) => sum + s.totalItems, 0);
   const totalCompleted = skillData.reduce((sum, s) => sum + s.completedCount, 0);
   const totalPct = totalItems > 0 ? Math.round((totalCompleted / totalItems) * 100) : 0;
+
+  // Zwakste skill: laagste scorePct van skills met ≥5 pogingen
+  const weakestSkill = useMemo(() => {
+    const attempted = skillData.filter((s) => s.completedCount >= 5);
+    if (attempted.length === 0) return null;
+    return attempted.reduce((lowest, s) => s.scorePct < lowest.scorePct ? s : lowest);
+  }, [skillData]);
 
   function handleNavigate(skill: Skill) {
     router.push(`/(tabs)/training/${encodeURIComponent(skill)}`);
@@ -460,7 +480,92 @@ function ArenaSection() {
             {totalCompleted}/{totalItems} voltooid · {totalCorrect} goed beantwoord
           </Text>
         </View>
+
+        {/* Zwakste skill suggestie */}
+        {weakestSkill && weakestSkill.scorePct < 80 && (
+          <Pressable
+            onPress={() => handleNavigate(weakestSkill.label)}
+            style={[arena.weakestCard, { backgroundColor: colors.surface, borderColor: SKILL_COLORS[weakestSkill.label] + '40' }]}
+          >
+            <InlineIcon name="target" size={16} color={SKILL_COLORS[weakestSkill.label] || colors.amber} />
+            <Text style={[arena.weakestText, { color: colors.text2 }]}>
+              Zwakste skill: <Text style={{ color: SKILL_COLORS[weakestSkill.label] || colors.amber, fontWeight: '800' }}>{weakestSkill.label}</Text> ({weakestSkill.scorePct}%)
+            </Text>
+            <InlineIcon name="arrowRight" size={14} color={colors.text3} />
+          </Pressable>
+        )}
       </LinearGradient>
+
+      {/* ── Dagelijkse Duel Card ── */}
+      <Pressable
+        onPress={() => {
+          if (store.dailyArenaLastPlayed === getTodayDateStr()) {
+            router.push('/(tabs)/training/leaderboard');
+          } else {
+            router.push('/(tabs)/training/daily');
+          }
+        }}
+        style={[arena.dailyCard, { backgroundColor: colors.surface, borderColor: colors.amber + '40' }]}
+      >
+        <View style={[arena.dailyIconWrap, { backgroundColor: colors.amberDim }]}>
+          <InlineIcon name={store.dailyArenaLastPlayed === getTodayDateStr() ? 'trophy' : 'zap'} size={22} color={colors.amber} />
+        </View>
+        <View style={arena.dailyContent}>
+          <Text style={[arena.dailyTitle, { color: colors.text }]}>Dagelijkse Duel</Text>
+          <Text style={[arena.dailySub, { color: colors.text3 }]}>
+            {store.dailyArenaLastPlayed === getTodayDateStr()
+              ? 'Vandaag al gespeeld — bekijk de ranglijst!'
+              : '5 vragen · 20 sec per vraag · Versla andere vaders'}
+          </Text>
+        </View>
+        {store.dailyArenaStreak > 0 && (
+          <View style={[arena.dailyStreak, { backgroundColor: '#F59E0B18' }]}>
+            <InlineIcon name="flame" size={14} color="#F59E0B" />
+            <Text style={arena.dailyStreakText}>{store.dailyArenaStreak}</Text>
+          </View>
+        )}
+        <InlineIcon name="arrowRight" size={18} color={colors.text3} />
+      </Pressable>
+
+      {/* ── Snelle Ronde Card ── */}
+      <Pressable
+        onPress={() => router.push('/(tabs)/training/quickfire')}
+        style={[arena.dailyCard, { backgroundColor: colors.surface, borderColor: '#A78BFA40' }]}
+      >
+        <View style={[arena.dailyIconWrap, { backgroundColor: '#A78BFA18' }]}>
+          <InlineIcon name="zap" size={22} color="#A78BFA" />
+        </View>
+        <View style={arena.dailyContent}>
+          <Text style={[arena.dailyTitle, { color: colors.text }]}>Snelle Ronde</Text>
+          <Text style={[arena.dailySub, { color: colors.text3 }]}>
+            Eindeloos · 3 levens · Hoe ver kom jij?
+          </Text>
+        </View>
+        {store.quickFireBest > 0 && (
+          <View style={[arena.dailyStreak, { backgroundColor: '#A78BFA18' }]}>
+            <InlineIcon name="trophy" size={14} color="#A78BFA" />
+            <Text style={[arena.dailyStreakText, { color: '#A78BFA' }]}>{store.quickFireBest}</Text>
+          </View>
+        )}
+        <InlineIcon name="arrowRight" size={18} color={colors.text3} />
+      </Pressable>
+
+      {/* ── Skill Duel Card ── */}
+      <Pressable
+        onPress={() => router.push('/(tabs)/training/duels')}
+        style={[arena.dailyCard, { backgroundColor: colors.surface, borderColor: '#EF444440' }]}
+      >
+        <View style={[arena.dailyIconWrap, { backgroundColor: '#EF444418' }]}>
+          <InlineIcon name="swords" size={22} color="#EF4444" />
+        </View>
+        <View style={arena.dailyContent}>
+          <Text style={[arena.dailyTitle, { color: colors.text }]}>Skill Duel</Text>
+          <Text style={[arena.dailySub, { color: colors.text3 }]}>
+            Daag een vader uit · 10 vragen · Wie wint?
+          </Text>
+        </View>
+        <InlineIcon name="arrowRight" size={18} color={colors.text3} />
+      </Pressable>
 
       <View style={arena.grid}>
         {skillData.map((skill) => {
@@ -487,34 +592,40 @@ function ArenaSection() {
               <Text style={[arena.gridName, { color: colors.text }]} numberOfLines={1}>
                 {skill.label}
               </Text>
-              <View style={[arena.gridBarTrack, { backgroundColor: colors.surface2 }]}>
-                <View
-                  style={[
-                    arena.gridBarFill,
-                    { width: `${skill.pct}%`, backgroundColor: isComplete ? '#34D399' : skillColor },
-                  ]}
-                />
-              </View>
               {notStarted ? (
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 4 }}>
                   <Text style={[arena.gridStatus, { color: colors.text3 }]}>Start</Text>
                   <InlineIcon name="arrowRight" size={13} color={colors.text3} />
                 </View>
               ) : (
-                <View style={arena.gridScoreRow}>
-                  <Text style={[arena.gridScore, { color: isComplete ? '#34D399' : skillColor }]}>
-                    {skill.completedCount}/{skill.totalItems}
-                  </Text>
-                  {isComplete && skill.scorePct >= 100 && (
-                    <InlineIcon name="crown" size={14} color="#F59E0B" />
-                  )}
-                  {isComplete && skill.scorePct >= 80 && skill.scorePct < 100 && (
-                    <InlineIcon name="star" size={14} color="#F59E0B" />
-                  )}
+                <View style={arena.gridParts}>
+                  <View style={arena.gridPartRow}>
+                    <Text style={[arena.gridPartLabel, { color: colors.text3 }]}>Deel 1</Text>
+                    <View style={[arena.gridPartBar, { backgroundColor: colors.surface2 }]}>
+                      <View style={[arena.gridPartFill, { flex: skill.part1Completed || 0.001, backgroundColor: skill.part1Completed >= skill.part1Total ? '#34D399' : skillColor }]} />
+                      <View style={{ flex: Math.max(skill.part1Total - skill.part1Completed, 0.001) }} />
+                    </View>
+                    <Text style={[arena.gridPartCount, { color: skill.part1Completed >= skill.part1Total ? '#34D399' : colors.text3 }]}>
+                      {skill.part1Completed}/{skill.part1Total}
+                    </Text>
+                  </View>
+                  <View style={arena.gridPartRow}>
+                    <Text style={[arena.gridPartLabel, { color: colors.text3 }]}>Deel 2</Text>
+                    <View style={[arena.gridPartBar, { backgroundColor: colors.surface2 }]}>
+                      <View style={[arena.gridPartFill, { flex: skill.part2Completed || 0.001, backgroundColor: skill.part2Completed >= skill.part2Total ? '#34D399' : skillColor }]} />
+                      <View style={{ flex: Math.max(skill.part2Total - skill.part2Completed, 0.001) }} />
+                    </View>
+                    <Text style={[arena.gridPartCount, { color: skill.part2Completed >= skill.part2Total ? '#34D399' : colors.text3 }]}>
+                      {skill.part2Completed}/{skill.part2Total}
+                    </Text>
+                  </View>
                 </View>
               )}
-              {!notStarted && (
-                <Text style={[arena.gridPct, { color: colors.text3 }]}>{skill.pct}%</Text>
+              {isComplete && (
+                <View style={arena.gridScoreRow}>
+                  {skill.scorePct >= 100 && <InlineIcon name="crown" size={14} color="#F59E0B" />}
+                  {skill.scorePct >= 80 && skill.scorePct < 100 && <InlineIcon name="star" size={14} color="#F59E0B" />}
+                </View>
               )}
             </Pressable>
           );
@@ -527,7 +638,7 @@ function ArenaSection() {
           <Text style={[arena.infoTitle, { color: colors.amber }]}>Hoe werkt de Arena?</Text>
         </View>
         <Text style={[arena.infoText, { color: colors.text2 }]}>
-          Kies een skill en beantwoord 30 scenario-vragen. Verdien XP per goed antwoord en
+          Kies een skill en doorloop 2 delen met elk 25 scenario-vragen. Verdien XP per goed antwoord en
           unlock badges bij 80%+ en 100% scores. Je kunt quizzen herhalen om je score te verbeteren.
         </Text>
       </View>
@@ -564,10 +675,61 @@ const arena = StyleSheet.create({
   gridName: { fontSize: 15, fontWeight: '700', marginBottom: 10 },
   gridBarTrack: { height: 5, borderRadius: 3, overflow: 'hidden', marginBottom: 8 },
   gridBarFill: { height: '100%', borderRadius: 3 },
-  gridScoreRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  gridParts: { marginTop: 4, gap: 4 },
+  gridPartRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  gridPartLabel: { fontSize: 10, fontWeight: '600', width: 34 },
+  gridPartBar: { flex: 1, height: 5, borderRadius: 3, flexDirection: 'row', overflow: 'hidden' },
+  gridPartFill: { height: '100%', borderRadius: 3 },
+  gridPartCount: { fontSize: 10, fontWeight: '700', width: 32, textAlign: 'right' },
+  gridScoreRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4, marginTop: 4 },
   gridScore: { fontSize: 14, fontWeight: '800' },
   gridStatus: { fontSize: 13, fontWeight: '700' },
-  gridPct: { fontSize: 11, fontWeight: '600', marginTop: 2 },
+  dailyCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 16,
+    padding: 14,
+    borderRadius: 14,
+    borderWidth: 1,
+    gap: 12,
+  },
+  dailyIconWrap: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dailyContent: { flex: 1 },
+  dailyTitle: { fontSize: 16, fontWeight: '700', marginBottom: 2 },
+  dailySub: { fontSize: 12, fontWeight: '500', lineHeight: 16 },
+  dailyStreak: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  dailyStreakText: { fontSize: 13, fontWeight: '800', color: '#F59E0B' },
+  weakestCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 12,
+    padding: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  weakestText: { flex: 1, fontSize: 13, fontWeight: '600' },
+  newBadge: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 6,
+    marginTop: 2,
+  },
+  newBadgeText: { fontSize: 11, fontWeight: '800' },
   infoCard: { marginHorizontal: 16, marginTop: 16, borderWidth: 1, borderRadius: 14, padding: 16 },
   infoTitle: { fontSize: 15, fontWeight: '700', marginBottom: 8 },
   infoText: { fontSize: 14, lineHeight: 20 },

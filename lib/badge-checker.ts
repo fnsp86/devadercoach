@@ -3,12 +3,19 @@ import type { Badge } from './gamification-types';
 import type { Skill } from './types';
 
 export interface BadgeCheckContext {
-  source: 'quiz' | 'module' | 'task' | 'app_open';
+  source: 'quiz' | 'module' | 'task' | 'app_open' | 'daily_duel' | 'quickfire' | 'skill_duel';
   skill?: Skill;
   quizStreak?: number;
   quizCompleted?: boolean;
   isReread?: boolean;
   todayActivities?: string[]; // ['module', 'task', 'pulse', 'quiz']
+  dailyArenaStreak?: number;
+  dailyArenaCorrect?: number;
+  quickFireScore?: number;
+  duelScore?: number;
+  duelWon?: boolean;
+  totalDuelsPlayed?: number;
+  totalDuelsWon?: number;
 }
 
 export interface ArenaStats {
@@ -144,6 +151,34 @@ function checkSpecialBadge(
       return arenaStats.totalQuestionsAnswered >= 50;
     case 'arena_total_200':
       return arenaStats.totalQuestionsAnswered >= 200;
+
+    // Daily duel badges
+    case 'daily_duel_3':
+      return (context.dailyArenaStreak ?? 0) >= 3;
+    case 'daily_duel_7':
+      return (context.dailyArenaStreak ?? 0) >= 7;
+    case 'daily_duel_30':
+      return (context.dailyArenaStreak ?? 0) >= 30;
+    case 'daily_duel_perfect':
+      return context.source === 'daily_duel' && (context.dailyArenaCorrect ?? 0) >= 5;
+
+    // Quickfire badges
+    case 'quickfire_10':
+      return (context.quickFireScore ?? 0) >= 10;
+    case 'quickfire_25':
+      return (context.quickFireScore ?? 0) >= 25;
+    case 'quickfire_50':
+      return (context.quickFireScore ?? 0) >= 50;
+
+    // Skill Duel badges
+    case 'duel_first':
+      return context.source === 'skill_duel' && (context.totalDuelsPlayed ?? 0) >= 1;
+    case 'duel_5':
+      return context.source === 'skill_duel' && (context.totalDuelsPlayed ?? 0) >= 5;
+    case 'duel_win_3':
+      return context.source === 'skill_duel' && (context.totalDuelsWon ?? 0) >= 3;
+    case 'duel_perfect':
+      return context.source === 'skill_duel' && (context.duelScore ?? 0) >= 10;
 
     // Learn badges (new)
     case 'learn_first':

@@ -12,6 +12,7 @@ import {
   LayoutAnimation,
   Platform,
   UIManager,
+  Alert,
 } from 'react-native';
 
 if (Platform.OS === 'android') {
@@ -47,6 +48,8 @@ import JournalEntryModal from '@/components/JournalEntryModal';
 import { getModuleForTask } from '@/lib/task-module-map';
 import { getTopRecommendedSkills } from '@/lib/skill-recommender';
 import { SKILLS } from '@/lib/skills';
+import { useAuth } from '@/lib/auth';
+import { createStory } from '@/lib/supabase';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
@@ -857,6 +860,7 @@ export default function WeekScreen() {
   const { colors } = useTheme();
   const router = useRouter();
   const store = useStore();
+  const { user } = useAuth();
   const {
     profile,
     completeWeekTask,
@@ -884,6 +888,16 @@ export default function WeekScreen() {
   const [toast, setToast] = useState<ToastInfo | null>(null);
   const [gamificationEvent, setGamificationEvent] = useState<GamificationEvent | null>(null);
   const [expandedReflection, setExpandedReflection] = useState<string | null>(null);
+  const [sharePrompt, setSharePrompt] = useState<{ task: InteractiveTask; outcome: CompletionStatus; note?: string } | null>(null);
+  const [shareText, setShareText] = useState('');
+  const [sharePosting, setSharePosting] = useState(false);
+
+  // Track pending timeouts so we can cancel them on undo/re-complete
+  const pendingTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const clearPendingTimers = useCallback(() => {
+    pendingTimers.current.forEach(clearTimeout);
+    pendingTimers.current = [];
+  }, []);
 
   const weekKey = useMemo(() => getWeekKey(), []);
   const todayPulse = getTodayPulse();
@@ -1052,9 +1066,11 @@ export default function WeekScreen() {
 
   // Toon OutcomeModal in plaats van direct afronden
   const handleComplete = useCallback((task: InteractiveTask) => {
+    clearPendingTimers();
+    setSharePrompt(null);
     setOutcomeTask(task);
     setOutcomeVisible(true);
-  }, []);
+  }, [clearPendingTimers]);
 
   // Wordt aangeroepen vanuit OutcomeModal na keuze
   const handleOutcomeSave = useCallback((outcome: CompletionStatus, note?: string) => {
@@ -1106,23 +1122,35 @@ export default function WeekScreen() {
     }
 
     // Detect level-up or badge unlock after a short delay
-    setTimeout(async () => {
-      const weekBonus = newDoneCount >= 7 ? 50 : 0;
-      const totalXpAfter = xpBefore + xp + weekBonusBefore + weekBonus;
-      const levelBefore = getLevelFromXP(totalXpBefore);
-      const levelAfter = getLevelFromXP(totalXpAfter);
+    clearPendingTimers();
+    pendingTimers.current.push(
+      setTimeout(async () => {
+        const weekBonus = newDoneCount >= 7 ? 50 : 0;
+        const totalXpAfter = xpBefore + xp + weekBonusBefore + weekBonus;
+        const levelBefore = getLevelFromXP(totalXpBefore);
+        const levelAfter = getLevelFromXP(totalXpAfter);
 
-      if (levelAfter.level > levelBefore.level) {
-        setGamificationEvent({ type: 'levelup', level: levelAfter.level, title: levelAfter.title });
-        return;
-      }
+        if (levelAfter.level > levelBefore.level) {
+          setGamificationEvent({ type: 'levelup', level: levelAfter.level, title: levelAfter.title });
+          return;
+        }
 
-      const newBadges = checkAndUnlockBadges(store, { source: 'task' });
-      if (newBadges.length > 0) {
-        setGamificationEvent({ type: 'badge', badge: newBadges[0] });
-      }
-    }, 1000);
-  }, [outcomeTask, completeWeekTask, addTaskOutcome, weekKey, getWeekTasksDone, weekTaskIds, combo.multiplier, recordActiveDay, store]);
+        const newBadges = checkAndUnlockBadges(store, { source: 'task' });
+        if (newBadges.length > 0) {
+          setGamificationEvent({ type: 'badge', badge: newBadges[0] });
+        }
+      }, 1000),
+    );
+
+    // Show share prompt only on 1st and 7th (last) task of the week
+    if (newDoneCount === 1 || newDoneCount >= 7) {
+      pendingTimers.current.push(
+        setTimeout(() => {
+          setSharePrompt({ task, outcome, note });
+        }, 3000),
+      );
+    }
+  }, [outcomeTask, completeWeekTask, addTaskOutcome, weekKey, getWeekTasksDone, weekTaskIds, combo.multiplier, recordActiveDay, store, clearPendingTimers]);
 
   return (
     <SafeAreaView style={[s.safe, { backgroundColor: colors.bg }]}>
@@ -1182,7 +1210,8 @@ export default function WeekScreen() {
 
         {/* ── Vader Wijsheid (Level 2+) ──────────────────────────────── */}
         {wijsheid && (
-          <View style={[s.wijsheidCard, { backgroundColor: colors.surface2, borderColor: colors.border }]}>
+          <View style={[s.wijsheidCard, { backgroundColor: colors.amber + '08', borderLeftColor: colors.amber }]}>
+            <InlineIcon name="messageCircle" size={18} color={colors.amber} />
             <Text style={[s.wijsheidText, { color: colors.text }]}>"{wijsheid.text}"</Text>
             {wijsheid.bron && (
               <Text style={[s.wijsheidBron, { color: colors.text3 }]}>— {wijsheid.bron}</Text>
@@ -1244,7 +1273,7 @@ export default function WeekScreen() {
                 done={isWeekTaskDone(task.id, weekKey)}
                 outcome={getTaskOutcome(task.id, weekKey)?.outcome}
                 onComplete={() => handleComplete(task)}
-                onUndo={() => undoWeekTask(task.id, weekKey)}
+                onUndo={() => { clearPendingTimers(); setSharePrompt(null); undoWeekTask(task.id, weekKey); }}
                 relatedModule={mod ? { title: mod.title, id: mod.id, skill: mod.skill } : null}
                 onModulePress={(moduleId, skill) => router.push(`/(tabs)/leren/module?skill=${skill}&moduleId=${moduleId}` as any)}
               />
@@ -1338,15 +1367,21 @@ export default function WeekScreen() {
 
         {/* ── Week complete banner ─────────────────────────────────────── */}
         {weekComplete && (
-          <View style={[s.completeBanner, { backgroundColor: colors.amber + '20', borderColor: colors.amber }]}>
-            <InlineIcon name="trophy" size={30} color={colors.amber} />
-            <View>
-              <Text style={[s.completeBannerTitle, { color: colors.amber }]}>Week voltooid!</Text>
-              <Text style={[s.completeBannerSub, { color: colors.text2 }]}>
-                +{bonusXP} XP bonus · Week {weekNumber} klaar
-              </Text>
+          <Pressable
+            onPress={() => router.push('/(tabs)/profiel/weken')}
+            style={[s.completeBanner, { backgroundColor: colors.amber + '20', borderColor: colors.amber }]}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+              <InlineIcon name="trophy" size={30} color={colors.amber} />
+              <View>
+                <Text style={[s.completeBannerTitle, { color: colors.amber }]}>Week voltooid!</Text>
+                <Text style={[s.completeBannerSub, { color: colors.text2 }]}>
+                  +{bonusXP} XP bonus · Bekijk weekoverzicht
+                </Text>
+              </View>
             </View>
-          </View>
+            <InlineIcon name="arrowRight" size={20} color={colors.amber} />
+          </Pressable>
         )}
 
         {/* ── Win van de dag ─────────────────────────────────────────── */}
@@ -1396,6 +1431,67 @@ export default function WeekScreen() {
           weekKey={recapWeekKey}
           onClose={() => setRecapVisible(false)}
         />
+      )}
+
+      {/* Share prompt after task completion */}
+      {sharePrompt && (
+        <Modal
+          visible
+          animationType="slide"
+          transparent
+          onRequestClose={() => { setSharePrompt(null); setShareText(''); }}
+          onShow={() => {
+            const outcomeLabel = sharePrompt.outcome === 'Gelukt' ? 'Gelukt' : sharePrompt.outcome === 'Deels' ? 'Deels gelukt' : 'Lastig';
+            setShareText(`${sharePrompt.task.title} — ${outcomeLabel}${sharePrompt.note ? `\n\n${sharePrompt.note}` : ''}`);
+          }}
+        >
+          <Pressable style={s.shareOverlay} onPress={() => { setSharePrompt(null); setShareText(''); }}>
+            <Pressable style={[s.shareSheet, { backgroundColor: colors.surface }]} onPress={Keyboard.dismiss}>
+              <View style={[s.shareHandle, { backgroundColor: colors.border }]} />
+              <InlineIcon name="users" size={28} color={SKILL_COLOR[sharePrompt.task.skill] ?? '#667eea'} />
+              <Text style={[s.shareTitle, { color: colors.text }]}>Deel met de community</Text>
+              <TextInput
+                style={[s.shareInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.bg }]}
+                value={shareText}
+                onChangeText={setShareText}
+                multiline
+                maxLength={500}
+                placeholder="Schrijf je ervaring..."
+                placeholderTextColor={colors.text3}
+              />
+              <Pressable
+                style={[s.shareBtn, { backgroundColor: SKILL_COLOR[sharePrompt.task.skill] ?? '#667eea', opacity: sharePosting || !shareText.trim() ? 0.6 : 1 }]}
+                disabled={sharePosting || !shareText.trim()}
+                onPress={async () => {
+                  if (!user || !shareText.trim()) return;
+                  setSharePosting(true);
+                  try {
+                    await createStory({
+                      author_id: user.id,
+                      content: shareText.trim(),
+                      category: 'ervaring',
+                      skill: sharePrompt.task.skill,
+                    });
+                    setSharePrompt(null);
+                    setShareText('');
+                    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                    setToast({ title: 'Gedeeld!', icon: 'check', sub: 'Je ervaring staat in de feed', color: '#34D399' });
+                    setTimeout(() => setToast(null), 2500);
+                  } catch {
+                    Alert.alert('Fout', 'Kon niet delen. Probeer het opnieuw.');
+                  }
+                  setSharePosting(false);
+                }}
+              >
+                <InlineIcon name="send" size={16} color="#fff" />
+                <Text style={s.shareBtnText}>{sharePosting ? 'Delen...' : 'Deel je ervaring'}</Text>
+              </Pressable>
+              <Pressable onPress={() => { setSharePrompt(null); setShareText(''); }} style={s.shareSkip}>
+                <Text style={[s.shareSkipText, { color: colors.text3 }]}>Niet nu</Text>
+              </Pressable>
+            </Pressable>
+          </Pressable>
+        </Modal>
       )}
     </SafeAreaView>
   );
@@ -1459,18 +1555,20 @@ const s = StyleSheet.create({
     marginHorizontal: 16,
     marginBottom: 16,
     padding: 16,
+    paddingLeft: 18,
     borderRadius: 12,
-    borderWidth: 1,
+    borderLeftWidth: 4,
+    gap: 6,
   },
   wijsheidText: {
-    fontSize: 15,
+    fontSize: 16,
     fontStyle: 'italic',
-    lineHeight: 22,
+    lineHeight: 24,
     fontWeight: '500',
   },
   wijsheidBron: {
     fontSize: 12,
-    marginTop: 8,
+    marginTop: 2,
     fontWeight: '600',
   },
 
@@ -1507,12 +1605,12 @@ const s = StyleSheet.create({
   completeBanner: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginHorizontal: 16,
     marginBottom: 16,
     borderWidth: 1,
     borderRadius: 14,
     padding: 16,
-    gap: 14,
   },
   completeBannerEmoji: { fontSize: 30 },
   completeBannerTitle: { fontSize: 16, fontWeight: '800' },
@@ -1598,4 +1696,14 @@ const s = StyleSheet.create({
   reflDoneBtn: { borderRadius: 10, paddingVertical: 10, alignItems: 'center' as const },
   reflDoneBtnText: { color: '#fff', fontSize: 14, fontWeight: '700' as const },
   chevronWrap: { width: 32, height: 32, borderRadius: 16, alignItems: 'center' as const, justifyContent: 'center' as const },
+  shareOverlay: { flex: 1, justifyContent: 'flex-end' as const, backgroundColor: 'rgba(0,0,0,0.4)' },
+  shareSheet: { borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, alignItems: 'center' as const, gap: 12 },
+  shareHandle: { width: 40, height: 4, borderRadius: 2, marginBottom: 8 },
+  shareTitle: { fontSize: 18, fontWeight: '700' as const },
+  shareSub: { fontSize: 14, textAlign: 'center' as const, lineHeight: 20, paddingHorizontal: 12 },
+  shareInput: { width: '100%' as const, fontSize: 15, lineHeight: 22, borderWidth: 1, borderRadius: 12, padding: 14, minHeight: 80, textAlignVertical: 'top' as const },
+  shareBtn: { flexDirection: 'row' as const, alignItems: 'center' as const, justifyContent: 'center' as const, gap: 8, paddingVertical: 14, borderRadius: 14, width: '100%' as const, marginTop: 4 },
+  shareBtnText: { fontSize: 16, fontWeight: '700' as const, color: '#fff' },
+  shareSkip: { paddingVertical: 10, paddingBottom: 16 },
+  shareSkipText: { fontSize: 14, fontWeight: '600' as const },
 });

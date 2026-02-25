@@ -32,7 +32,11 @@ export default function TrainingOverview() {
   // Pre-compute training data per skill
   const skillData = useMemo(() => {
     return SKILL_LIST.map((s) => {
-      const totalItems = getTrainingForSkill(s.label, activeThemes).length;
+      const allItems = getTrainingForSkill(s.label, activeThemes);
+      const totalItems = allItems.length;
+      const mid = Math.ceil(totalItems / 2);
+      const part1Ids = new Set(allItems.slice(0, mid).map((i) => i.id));
+      const part2Ids = new Set(allItems.slice(mid).map((i) => i.id));
       const progress = store.getTrainingProgress(s.label);
       const completedCount = progress.completedItems.length;
       const correctCount = progress.correctAnswers;
@@ -40,6 +44,10 @@ export default function TrainingOverview() {
       const scorePct = progress.totalAttempts > 0
         ? Math.round((correctCount / progress.totalAttempts) * 100)
         : 0;
+      const part1Total = mid;
+      const part1Completed = progress.completedItems.filter((id) => part1Ids.has(id)).length;
+      const part2Total = totalItems - mid;
+      const part2Completed = progress.completedItems.filter((id) => part2Ids.has(id)).length;
       return {
         ...s,
         totalItems,
@@ -48,6 +56,10 @@ export default function TrainingOverview() {
         pct,
         scorePct,
         hasTraining: totalItems > 0,
+        part1Total,
+        part1Completed,
+        part2Total,
+        part2Completed,
       };
     });
   }, [store]);
@@ -127,42 +139,41 @@ export default function TrainingOverview() {
                   {skill.label}
                 </Text>
 
-                {/* Mini progress bar */}
-                <View style={[styles.gridBarTrack, { backgroundColor: colors.surface2 }]}>
-                  <View
-                    style={[
-                      styles.gridBarFill,
-                      {
-                        width: `${skill.pct}%`,
-                        backgroundColor: isComplete ? '#34D399' : skillColor,
-                      },
-                    ]}
-                  />
-                </View>
-
-                {/* Score / Status */}
+                {/* Deel 1/2 progress */}
                 {notStarted ? (
-                  <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
+                  <View style={{flexDirection:'row',alignItems:'center',gap:4, marginTop: 4}}>
                     <Text style={[styles.gridStatus, { color: colors.text3 }]}>Start</Text>
                     <InlineIcon name="arrowRight" size={13} color={colors.text3} />
                   </View>
                 ) : (
-                  <View style={styles.gridScoreRow}>
-                    <Text style={[styles.gridScore, { color: isComplete ? '#34D399' : skillColor }]}>
-                      {skill.completedCount}/{skill.totalItems}
-                    </Text>
-                    {isComplete && skill.scorePct >= 100 && (
-                      <InlineIcon name="crown" size={14} color="#F59E0B" />
-                    )}
-                    {isComplete && skill.scorePct >= 80 && skill.scorePct < 100 && (
-                      <InlineIcon name="star" size={14} color="#F59E0B" />
-                    )}
+                  <View style={styles.gridParts}>
+                    <View style={styles.gridPartRow}>
+                      <Text style={[styles.gridPartLabel, { color: colors.text3 }]}>Deel 1</Text>
+                      <View style={[styles.gridPartBar, { backgroundColor: colors.surface2 }]}>
+                        <View style={[styles.gridPartFill, { flex: skill.part1Completed || 0.001, backgroundColor: skill.part1Completed >= skill.part1Total ? '#34D399' : skillColor }]} />
+                        <View style={{ flex: Math.max(skill.part1Total - skill.part1Completed, 0.001) }} />
+                      </View>
+                      <Text style={[styles.gridPartCount, { color: skill.part1Completed >= skill.part1Total ? '#34D399' : colors.text3 }]}>
+                        {skill.part1Completed}/{skill.part1Total}
+                      </Text>
+                    </View>
+                    <View style={styles.gridPartRow}>
+                      <Text style={[styles.gridPartLabel, { color: colors.text3 }]}>Deel 2</Text>
+                      <View style={[styles.gridPartBar, { backgroundColor: colors.surface2 }]}>
+                        <View style={[styles.gridPartFill, { flex: skill.part2Completed || 0.001, backgroundColor: skill.part2Completed >= skill.part2Total ? '#34D399' : skillColor }]} />
+                        <View style={{ flex: Math.max(skill.part2Total - skill.part2Completed, 0.001) }} />
+                      </View>
+                      <Text style={[styles.gridPartCount, { color: skill.part2Completed >= skill.part2Total ? '#34D399' : colors.text3 }]}>
+                        {skill.part2Completed}/{skill.part2Total}
+                      </Text>
+                    </View>
                   </View>
                 )}
-
-                {/* Percentage */}
-                {!notStarted && (
-                  <Text style={[styles.gridPct, { color: colors.text3 }]}>{skill.pct}%</Text>
+                {isComplete && (
+                  <View style={styles.gridScoreRow}>
+                    {skill.scorePct >= 100 && <InlineIcon name="crown" size={14} color="#F59E0B" />}
+                    {skill.scorePct >= 80 && skill.scorePct < 100 && <InlineIcon name="star" size={14} color="#F59E0B" />}
+                  </View>
                 )}
               </Pressable>
             );
@@ -176,7 +187,7 @@ export default function TrainingOverview() {
             <Text style={[styles.infoTitle, { color: colors.amber }]}>Hoe werkt de Arena?</Text>
           </View>
           <Text style={[styles.infoText, { color: colors.text2 }]}>
-            Kies een skill en beantwoord 30 scenario-vragen. Verdien XP per goed antwoord en
+            Kies een skill en doorloop 2 delen met elk 25 scenario-vragen. Verdien XP per goed antwoord en
             unlock badges bij 80%+ en 100% scores. Je kunt quizzen herhalen om je score te verbeteren.
           </Text>
         </View>
@@ -279,36 +290,22 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 10,
   },
-  gridBarTrack: {
-    height: 5,
-    borderRadius: 3,
-    overflow: 'hidden',
-    marginBottom: 8,
-  },
-  gridBarFill: {
-    height: '100%',
-    borderRadius: 3,
-  },
+  gridParts: { marginTop: 4, gap: 4 },
+  gridPartRow: { flexDirection: 'row', alignItems: 'center', gap: 6 } as const,
+  gridPartLabel: { fontSize: 10, fontWeight: '600' as const, width: 34 },
+  gridPartBar: { flex: 1, height: 5, borderRadius: 3, flexDirection: 'row' as const, overflow: 'hidden' as const },
+  gridPartFill: { height: '100%' as const, borderRadius: 3 },
+  gridPartCount: { fontSize: 10, fontWeight: '700' as const, width: 32, textAlign: 'right' as const },
   gridScoreRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 4,
-  },
-  gridScore: {
-    fontSize: 14,
-    fontWeight: '800',
-  },
-  gridBadge: {
-    fontSize: 14,
+    marginTop: 4,
   },
   gridStatus: {
     fontSize: 13,
     fontWeight: '700',
-  },
-  gridPct: {
-    fontSize: 11,
-    fontWeight: '600',
-    marginTop: 2,
   },
 
   // Info card

@@ -103,6 +103,8 @@ const KEYS = {
   UNLOCKED_BADGES: 'vc-unlocked-badges',            // string[]
   BADGE_UNLOCK_DATES: 'vc-badge-unlock-dates',      // Record<string, string>
   ARENA_STATS: 'vc-arena-stats',                    // ArenaStats
+  DAILY_ARENA: 'vc-daily-arena',                    // { lastPlayed, streak }
+  QUICKFIRE: 'vc-quickfire',                        // { best, lastPlayed }
   REFLECTION_NOTES: 'vc-reflection-notes',          // ReflectionNote[]
   HELP_FAVORITES: 'vc-help-favorites',              // string[]
   HELP_HISTORY: 'vc-help-history',                  // string[] (laatste 10 bekeken)
@@ -159,6 +161,16 @@ interface StoreState {
   // Arena stats
   arenaStats: ArenaStats;
   updateArenaStats: (update: Partial<ArenaStats>) => void;
+
+  // Daily arena
+  dailyArenaLastPlayed: string;
+  dailyArenaStreak: number;
+  updateDailyArena: (date: string) => void;
+
+  // Quick-fire
+  quickFireBest: number;
+  quickFireLastPlayed: string;
+  updateQuickFire: (score: number) => void;
 
   // Pulse check-in
   pulseCheckIns: PulseCheckIn[];
@@ -247,6 +259,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [unlockedBadges, setUnlockedBadges] = useState<string[]>([]);
   const [badgeUnlockDates, setBadgeUnlockDates] = useState<Record<string, string>>({});
   const [arenaStats, setArenaStats] = useState<ArenaStats>(DEFAULT_ARENA_STATS);
+  const [dailyArenaLastPlayed, setDailyArenaLastPlayed] = useState('');
+  const [dailyArenaStreak, setDailyArenaStreak] = useState(0);
+  const [quickFireBest, setQuickFireBest] = useState(0);
+  const [quickFireLastPlayed, setQuickFireLastPlayed] = useState('');
   const [reflectionNotes, setReflectionNotes] = useState<ReflectionNote[]>([]);
   const [helpFavorites, setHelpFavorites] = useState<string[]>([]);
   const [helpHistory, setHelpHistory] = useState<string[]>([]);
@@ -277,6 +293,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       storedUnlockedBadges,
       storedBadgeUnlockDates,
       storedArenaStats,
+      storedDailyArena,
+      storedQuickFire,
       storedReflectionNotes,
       storedHelpFavorites,
       storedHelpHistory,
@@ -300,6 +318,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       load<string[]>(KEYS.UNLOCKED_BADGES),
       load<Record<string, string>>(KEYS.BADGE_UNLOCK_DATES),
       load<ArenaStats>(KEYS.ARENA_STATS),
+      load<{ lastPlayed: string; streak: number }>(KEYS.DAILY_ARENA),
+      load<{ best: number; lastPlayed: string }>(KEYS.QUICKFIRE),
       load<ReflectionNote[]>(KEYS.REFLECTION_NOTES),
       load<string[]>(KEYS.HELP_FAVORITES),
       load<string[]>(KEYS.HELP_HISTORY),
@@ -330,6 +350,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setUnlockedBadges(storedUnlockedBadges || []);
     setBadgeUnlockDates(storedBadgeUnlockDates || {});
     setArenaStats(storedArenaStats || DEFAULT_ARENA_STATS);
+    if (storedDailyArena) {
+      setDailyArenaLastPlayed(storedDailyArena.lastPlayed);
+      setDailyArenaStreak(storedDailyArena.streak);
+    }
+    if (storedQuickFire) {
+      setQuickFireBest(storedQuickFire.best);
+      setQuickFireLastPlayed(storedQuickFire.lastPlayed);
+    }
     setReflectionNotes(storedReflectionNotes || []);
     setHelpFavorites(storedHelpFavorites || []);
     setHelpHistory(storedHelpHistory || []);
@@ -367,6 +395,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       if (unlockedBadges.length > 0) blob[KEYS.UNLOCKED_BADGES] = JSON.stringify(unlockedBadges);
       if (Object.keys(badgeUnlockDates).length > 0) blob[KEYS.BADGE_UNLOCK_DATES] = JSON.stringify(badgeUnlockDates);
       blob[KEYS.ARENA_STATS] = JSON.stringify(arenaStats);
+      if (dailyArenaLastPlayed) blob[KEYS.DAILY_ARENA] = JSON.stringify({ lastPlayed: dailyArenaLastPlayed, streak: dailyArenaStreak });
+      if (quickFireBest > 0) blob[KEYS.QUICKFIRE] = JSON.stringify({ best: quickFireBest, lastPlayed: quickFireLastPlayed });
       if (reflectionNotes.length > 0) blob[KEYS.REFLECTION_NOTES] = JSON.stringify(reflectionNotes);
       if (helpFavorites.length > 0) blob[KEYS.HELP_FAVORITES] = JSON.stringify(helpFavorites);
       if (helpHistory.length > 0) blob[KEYS.HELP_HISTORY] = JSON.stringify(helpHistory);
@@ -1002,6 +1032,31 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     });
   }
 
+  function updateDailyArenaFn(date: string) {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+    const newStreak = dailyArenaLastPlayed === yesterdayStr
+      ? dailyArenaStreak + 1
+      : dailyArenaLastPlayed === date
+        ? dailyArenaStreak  // Same day, don't increment
+        : 1;                // Gap or first play
+
+    setDailyArenaLastPlayed(date);
+    setDailyArenaStreak(newStreak);
+    save(KEYS.DAILY_ARENA, { lastPlayed: date, streak: newStreak });
+  }
+
+  function updateQuickFireFn(score: number) {
+    const today = new Date().toISOString().split('T')[0];
+    setQuickFireLastPlayed(today);
+    if (score > quickFireBest) {
+      setQuickFireBest(score);
+    }
+    save(KEYS.QUICKFIRE, { best: Math.max(score, quickFireBest), lastPlayed: today });
+  }
+
   function awardBonusXPFn(amount: number, skill: Skill) {
     setSkillXP((prev) => {
       const current = prev[skill] || { xp: 0, level: 1, lastUpdated: '' };
@@ -1034,6 +1089,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setUnlockedBadges([]);
     setBadgeUnlockDates({});
     setArenaStats(DEFAULT_ARENA_STATS);
+    setDailyArenaLastPlayed('');
+    setDailyArenaStreak(0);
+    setQuickFireBest(0);
+    setQuickFireLastPlayed('');
     setReflectionNotes([]);
     setHelpFavorites([]);
     setHelpHistory([]);
@@ -1105,6 +1164,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     unlockBadge: unlockBadgeFn,
     arenaStats,
     updateArenaStats: updateArenaStatsFn,
+    dailyArenaLastPlayed,
+    dailyArenaStreak,
+    updateDailyArena: updateDailyArenaFn,
+    quickFireBest,
+    quickFireLastPlayed,
+    updateQuickFire: updateQuickFireFn,
     pulseCheckIns,
     addPulseCheckIn: addPulseCheckInFn,
     getTodayPulse: getTodayPulseFn,

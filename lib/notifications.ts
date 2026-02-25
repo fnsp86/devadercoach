@@ -36,10 +36,15 @@ export async function registerForPushNotifications(): Promise<string | null> {
     return null;
   }
 
-  // Android notification channel
+  // Android notification channels
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('chat', {
       name: 'Berichten',
+      importance: Notifications.AndroidImportance.HIGH,
+      vibrationPattern: [0, 250, 250, 250],
+    });
+    await Notifications.setNotificationChannelAsync('duels', {
+      name: 'Duels',
       importance: Notifications.AndroidImportance.HIGH,
       vibrationPattern: [0, 250, 250, 250],
     });

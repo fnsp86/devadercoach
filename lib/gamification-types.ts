@@ -727,6 +727,17 @@ export const ARENA_BADGES: Badge[] = [
   { id: "arena_streak_10", name: "Onverslaanbaar", description: "10 correct achter elkaar", emoji: "🔥", category: "arena", requirement: { type: "special", value: 10 }, rarity: "epic" },
   { id: "arena_total_50", name: "Quiz Veteraan", description: "50 arena vragen beantwoord", emoji: "📝", category: "arena", requirement: { type: "special", value: 50 }, rarity: "rare" },
   { id: "arena_total_200", name: "Quiz Kampioen", description: "200 arena vragen beantwoord", emoji: "👑", category: "arena", requirement: { type: "special", value: 200 }, rarity: "epic" },
+  { id: "daily_duel_3", name: "Trouwe Strijder", description: "3 dagen op rij dagelijkse duel gespeeld", emoji: "🗓️", category: "arena", requirement: { type: "special", value: 3 }, rarity: "common" },
+  { id: "daily_duel_7", name: "Weekkampioen", description: "7 dagen op rij dagelijkse duel gespeeld", emoji: "🔥", category: "arena", requirement: { type: "special", value: 7 }, rarity: "rare" },
+  { id: "daily_duel_30", name: "Maandmeester", description: "30 dagen op rij dagelijkse duel gespeeld", emoji: "🏅", category: "arena", requirement: { type: "special", value: 30 }, rarity: "epic" },
+  { id: "daily_duel_perfect", name: "Perfecte Duel", description: "5/5 correct in de dagelijkse duel", emoji: "🎯", category: "arena", requirement: { type: "special", value: 5 }, rarity: "rare" },
+  { id: "quickfire_10", name: "Vuurvast", description: "10 vragen beantwoord in Snelle Ronde", emoji: "⚡", category: "arena", requirement: { type: "special", value: 10 }, rarity: "common" },
+  { id: "quickfire_25", name: "Onverslaanbaar", description: "25 vragen beantwoord in Snelle Ronde", emoji: "💥", category: "arena", requirement: { type: "special", value: 25 }, rarity: "rare" },
+  { id: "quickfire_50", name: "Legende", description: "50 vragen beantwoord in Snelle Ronde", emoji: "🌟", category: "arena", requirement: { type: "special", value: 50 }, rarity: "epic" },
+  { id: "duel_first", name: "Duellant", description: "Eerste Skill Duel gespeeld", emoji: "⚔️", category: "arena", requirement: { type: "special", value: 1 }, rarity: "common" },
+  { id: "duel_5", name: "Strijder", description: "5 Skill Duels gespeeld", emoji: "🗡️", category: "arena", requirement: { type: "special", value: 5 }, rarity: "rare" },
+  { id: "duel_win_3", name: "Winnaar", description: "3 Skill Duels gewonnen", emoji: "🏆", category: "arena", requirement: { type: "special", value: 3 }, rarity: "rare" },
+  { id: "duel_perfect", name: "Perfecte Duel", description: "10/10 correct in een Skill Duel", emoji: "💎", category: "arena", requirement: { type: "special", value: 10 }, rarity: "epic" },
 ];
 
 export const LEARN_BADGES: Badge[] = [

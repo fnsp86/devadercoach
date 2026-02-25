@@ -68,26 +68,27 @@ export default function StoryDetail() {
 
     const { data } = await supabase
       .from('stories')
-      .select('*, author:profiles!author_id(*)')
+      .select('*, author:profiles!author_id(*), story_likes(count)')
       .eq('id', id)
       .single();
 
     if (data) {
       setStory(data as Story);
-      setLikesCount(data.likes_count);
+      // Use real count from relationship table
+      setLikesCount((data as any).story_likes?.[0]?.count ?? data.likes_count ?? 0);
     }
 
     const commentsData = await getStoryComments(id);
     setComments(commentsData);
 
-    // Check if user liked
+    // Check if user liked (maybeSingle avoids error when no row exists)
     if (user) {
       const { data: likeData } = await supabase
         .from('story_likes')
         .select('id')
         .eq('story_id', id)
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
       setLiked(!!likeData);
     }
 
@@ -98,7 +99,7 @@ export default function StoryDetail() {
     if (!user || !id) return;
     const wasLiked = liked;
     setLiked(!liked);
-    setLikesCount((c) => wasLiked ? c - 1 : c + 1);
+    setLikesCount((c) => Math.max(0, wasLiked ? c - 1 : c + 1));
     await toggleStoryLike(id, user.id);
   }
 
@@ -169,7 +170,7 @@ export default function StoryDetail() {
         style: 'destructive',
         onPress: async () => {
           try {
-            await deleteStoryComment(commentId);
+            await deleteStoryComment(commentId, id);
             setComments((prev) => prev.filter((c) => c.id !== commentId));
           } catch {
             Alert.alert('Fout', 'Kon reactie niet verwijderen.');

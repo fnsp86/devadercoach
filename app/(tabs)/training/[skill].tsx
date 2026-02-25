@@ -33,8 +33,9 @@ const DIFFICULTY_CONFIG: Record<string, { color: string; label: string }> = {
 export default function SkillTraining() {
   const { colors } = useTheme();
   const router = useRouter();
-  const { skill: rawSkill } = useLocalSearchParams<{ skill: string }>();
+  const { skill: rawSkill, part: rawPart } = useLocalSearchParams<{ skill: string; part?: string }>();
   const skill = decodeURIComponent(rawSkill || '') as Skill;
+  const part = rawPart ? parseInt(rawPart, 10) : undefined;
   const skillColor = SKILL_COLORS[skill] || colors.amber;
 
   const store = useStore();
@@ -43,7 +44,13 @@ export default function SkillTraining() {
     if (!profile) return [] as ThemeTag[];
     return resolveActiveThemes(profile);
   }, [store.profile]);
-  const items = useMemo(() => getTrainingForSkill(skill, activeThemes), [skill, activeThemes]);
+  const allItems = useMemo(() => getTrainingForSkill(skill, activeThemes), [skill, activeThemes]);
+  const items = useMemo(() => {
+    if (!part) return allItems;
+    const mid = Math.ceil(allItems.length / 2);
+    if (part === 1) return allItems.slice(0, mid);
+    return allItems.slice(mid);
+  }, [allItems, part]);
 
   // Initialize state from store progress so we never flash the wrong screen
   const [currentIndex, setCurrentIndex] = useState(() => {
@@ -229,6 +236,119 @@ export default function SkillTraining() {
     setSessionXP(0);
   }
 
+  // -- Deel-selectie screen (when no part is selected) --
+
+  if (!part && allItems.length > 0) {
+    const progress = store.getTrainingProgress(skill);
+    const mid = Math.ceil(allItems.length / 2);
+    const part1Items = allItems.slice(0, mid);
+    const part2Items = allItems.slice(mid);
+
+    const part1Completed = part1Items.filter((i) => progress.completedItems.includes(i.id)).length;
+    const part2Completed = part2Items.filter((i) => progress.completedItems.includes(i.id)).length;
+    const part1Done = part1Completed >= part1Items.length && part1Items.length > 0;
+    const part2Done = part2Completed >= part2Items.length && part2Items.length > 0;
+
+    function getPartLabel(completed: number, total: number, done: boolean): string {
+      if (done) return 'Voltooid';
+      if (completed === 0) return 'Start';
+      return 'Hervat';
+    }
+
+    return (
+      <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg }]}>
+        <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
+          <Pressable onPress={() => router.back()} style={styles.backButton}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+              <InlineIcon name="arrowLeft" size={16} color={colors.amber} />
+              <Text style={[styles.backText, { color: colors.amber }]}>Terug</Text>
+            </View>
+          </Pressable>
+
+          <Text style={[styles.partTitle, { color: colors.text }]}>{skill}</Text>
+          <Text style={[styles.partSubtitle, { color: colors.text2 }]}>
+            Kies een deel om te starten
+          </Text>
+
+          {/* Part 1 Card */}
+          <Pressable
+            onPress={() => router.push(`/(tabs)/training/${encodeURIComponent(skill)}?part=1` as any)}
+            style={[styles.partCard, { backgroundColor: colors.surface, borderColor: part1Done ? '#34D399' : colors.border }]}
+          >
+            <View style={styles.partCardHeader}>
+              <View style={[styles.partBadge, { backgroundColor: skillColor + '20' }]}>
+                <Text style={[styles.partBadgeText, { color: skillColor }]}>Deel 1</Text>
+              </View>
+              {part1Done && <InlineIcon name="check" size={18} color="#34D399" />}
+            </View>
+            <Text style={[styles.partCardLabel, { color: colors.text2 }]}>
+              Vragen 1–{part1Items.length}
+            </Text>
+            <View style={styles.partProgressRow}>
+              <View style={[styles.partProgressBar, { backgroundColor: colors.surface2 }]}>
+                <View style={[styles.partProgressFill, { backgroundColor: skillColor, flex: part1Completed || 0.001 }]} />
+                <View style={{ flex: Math.max(part1Items.length - part1Completed, 0.001) }} />
+              </View>
+              <Text style={[styles.partProgressText, { color: colors.text3 }]}>
+                {part1Completed}/{part1Items.length}
+              </Text>
+            </View>
+            <View style={[styles.partAction, { backgroundColor: part1Done ? '#34D39920' : skillColor + '15' }]}>
+              <Text style={[styles.partActionText, { color: part1Done ? '#34D399' : skillColor }]}>
+                {getPartLabel(part1Completed, part1Items.length, part1Done)}
+              </Text>
+            </View>
+          </Pressable>
+
+          {/* Part 2 Card */}
+          <Pressable
+            onPress={() => router.push(`/(tabs)/training/${encodeURIComponent(skill)}?part=2` as any)}
+            style={[styles.partCard, { backgroundColor: colors.surface, borderColor: part2Done ? '#34D399' : colors.border }]}
+          >
+            <View style={styles.partCardHeader}>
+              <View style={[styles.partBadge, { backgroundColor: skillColor + '20' }]}>
+                <Text style={[styles.partBadgeText, { color: skillColor }]}>Deel 2</Text>
+              </View>
+              {part2Done && <InlineIcon name="check" size={18} color="#34D399" />}
+            </View>
+            <Text style={[styles.partCardLabel, { color: colors.text2 }]}>
+              Vragen {part1Items.length + 1}–{allItems.length}
+            </Text>
+            <View style={styles.partProgressRow}>
+              <View style={[styles.partProgressBar, { backgroundColor: colors.surface2 }]}>
+                <View style={[styles.partProgressFill, { backgroundColor: skillColor, flex: part2Completed || 0.001 }]} />
+                <View style={{ flex: Math.max(part2Items.length - part2Completed, 0.001) }} />
+              </View>
+              <Text style={[styles.partProgressText, { color: colors.text3 }]}>
+                {part2Completed}/{part2Items.length}
+              </Text>
+            </View>
+            <View style={[styles.partAction, { backgroundColor: part2Done ? '#34D39920' : skillColor + '15' }]}>
+              <Text style={[styles.partActionText, { color: part2Done ? '#34D399' : skillColor }]}>
+                {getPartLabel(part2Completed, part2Items.length, part2Done)}
+              </Text>
+            </View>
+          </Pressable>
+
+          {/* Reset button */}
+          {(part1Completed > 0 || part2Completed > 0) && (
+            <Pressable
+              onPress={() => {
+                store.resetTraining(skill);
+                router.replace(`/(tabs)/training/${encodeURIComponent(skill)}` as any);
+              }}
+              style={[styles.partResetButton, { borderColor: colors.border }]}
+            >
+              <Text style={[styles.partResetText, { color: colors.text3 }]}>
+                Herhaal alles
+              </Text>
+            </Pressable>
+          )}
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
   // -- Empty state --
 
   if (items.length === 0) {
@@ -271,7 +391,10 @@ export default function SkillTraining() {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          <Pressable onPress={() => router.back()} style={styles.backButton}>
+          <Pressable onPress={() => part
+            ? router.replace(`/(tabs)/training/${encodeURIComponent(skill)}` as any)
+            : router.back()
+          } style={styles.backButton}>
             <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
               <InlineIcon name="arrowLeft" size={16} color={colors.amber} />
               <Text style={[styles.backText, { color: colors.amber }]}>Quiz</Text>
@@ -284,7 +407,7 @@ export default function SkillTraining() {
               Quiz voltooid!
             </Text>
             <Text style={[styles.completionSubtitle, { color: colors.text2 }]}>
-              Je hebt de {skill} quiz afgerond
+              {part ? `${skill} — Deel ${part} afgerond` : `Je hebt de ${skill} quiz afgerond`}
             </Text>
 
             {/* Stats */}
@@ -386,7 +509,10 @@ export default function SkillTraining() {
             </Pressable>
 
             <Pressable
-              onPress={() => router.navigate('/(tabs)/training')}
+              onPress={() => part
+                ? router.replace(`/(tabs)/training/${encodeURIComponent(skill)}` as any)
+                : router.navigate('/(tabs)/training')
+              }
               style={[
                 styles.completionButton,
                 {
@@ -399,7 +525,7 @@ export default function SkillTraining() {
               <Text
                 style={[styles.completionButtonText, { color: colors.text }]}
               >
-                Terug naar Quiz
+                {part ? 'Terug naar overzicht' : 'Terug naar Quiz'}
               </Text>
             </Pressable>
           </View>
@@ -424,7 +550,10 @@ export default function SkillTraining() {
         showsVerticalScrollIndicator={false}
       >
         {/* Back link */}
-        <Pressable onPress={() => router.back()} style={styles.backButton}>
+        <Pressable onPress={() => part
+          ? router.replace(`/(tabs)/training/${encodeURIComponent(skill)}` as any)
+          : router.back()
+        } style={styles.backButton}>
           <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
             <InlineIcon name="arrowLeft" size={16} color={colors.amber} />
             <Text style={[styles.backText, { color: colors.amber }]}>Quiz</Text>
@@ -1176,5 +1305,86 @@ const styles = StyleSheet.create({
 
   bottomSpacer: {
     height: 20,
+  },
+
+  // -- Part selection --
+  partTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  partSubtitle: {
+    fontSize: 15,
+    fontWeight: '500',
+    marginBottom: 24,
+  },
+  partCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    padding: 20,
+    marginBottom: 16,
+  },
+  partCardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  partBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 8,
+  },
+  partBadgeText: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  partCardLabel: {
+    fontSize: 13,
+    fontWeight: '500',
+    marginBottom: 12,
+  },
+  partProgressRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 14,
+  },
+  partProgressBar: {
+    flex: 1,
+    height: 8,
+    borderRadius: 4,
+    flexDirection: 'row',
+    overflow: 'hidden',
+  },
+  partProgressFill: {
+    height: '100%',
+    borderRadius: 4,
+  },
+  partProgressText: {
+    fontSize: 13,
+    fontWeight: '600',
+    minWidth: 40,
+    textAlign: 'right',
+  },
+  partAction: {
+    paddingVertical: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  partActionText: {
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  partResetButton: {
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  partResetText: {
+    fontSize: 14,
+    fontWeight: '600',
   },
 });

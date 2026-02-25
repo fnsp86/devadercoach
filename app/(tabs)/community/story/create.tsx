@@ -24,13 +24,14 @@ const CATEGORIES: { value: Category; label: string; color: string }[] = [
   { value: 'ervaring', label: 'Ervaring', color: '#34D399' },
   { value: 'vraag', label: 'Vraag', color: '#F59E0B' },
   { value: 'overwinning', label: 'Overwinning', color: '#A78BFA' },
+  { value: 'challenge', label: 'Challenge', color: '#EF4444' },
 ];
 
 export default function CreateStory() {
   const { colors } = useTheme();
   const { user } = useAuth();
   const router = useRouter();
-  const { prefill, prefillCategory } = useLocalSearchParams<{ prefill?: string; prefillCategory?: string }>();
+  const { prefill, prefillCategory, prefillSkill, challengeWeek } = useLocalSearchParams<{ prefill?: string; prefillCategory?: string; prefillSkill?: string; challengeWeek?: string }>();
 
   const [content, setContent] = useState(prefill ?? '');
   const [category, setCategory] = useState<Category>((prefillCategory as Category) ?? 'ervaring');
@@ -45,6 +46,8 @@ export default function CreateStory() {
         author_id: user.id,
         content: content.trim(),
         category,
+        ...(prefillSkill ? { skill: prefillSkill } : {}),
+        ...(challengeWeek ? { challenge_week: challengeWeek } : {}),
       });
       // If we came from another tab (e.g. help page with prefill),
       // navigate to community feed so the tab doesn't keep showing create

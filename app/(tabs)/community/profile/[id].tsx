@@ -19,10 +19,14 @@ import {
   blockUser,
   reportContent,
   getStories,
+  createDuel,
+  sendMessage,
   type CommunityProfile,
   type Story,
 } from '@/lib/supabase';
 import { InlineIcon } from '@/lib/icons';
+import { ALL_SKILLS } from '@/lib/skills';
+import { generateDuelSeed } from '@/lib/duel-arena';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 
@@ -73,6 +77,42 @@ export default function ProfileView() {
     } catch (err: any) {
       Alert.alert('Fout', err.message ?? 'Kon gesprek niet starten');
     }
+  }
+
+  function handleChallenge() {
+    if (!user || !profileUserId || !profile) return;
+    const skillButtons = ALL_SKILLS.map((skill) => ({
+      text: skill,
+      onPress: async () => {
+        try {
+          const seed = generateDuelSeed();
+          const duel = await createDuel(user.id, profileUserId, skill, seed);
+          // Send DM notification
+          try {
+            const conv = await getOrCreateConversation(user.id, profileUserId);
+            await sendMessage({
+              conversation_id: conv.id,
+              sender_id: user.id,
+              content: `⚔️ Ik daag je uit voor een Skill Duel in ${skill}! Open je Arena om te spelen.`,
+            });
+          } catch { /* DM is optional */ }
+          // Navigate to duel quiz
+          router.push(`/(tabs)/training/duel?duelId=${duel.id}&skill=${skill}&seed=${seed}&opponentName=${encodeURIComponent(profile.naam)}`);
+        } catch (err: any) {
+          Alert.alert('Fout', err.message ?? 'Kon duel niet aanmaken');
+        }
+      },
+    }));
+    Alert.alert('Kies een skill', 'Welke skill wil je duel spelen?', [
+      ...skillButtons.slice(0, 4),
+      { text: 'Meer...', onPress: () => {
+        Alert.alert('Kies een skill', '', [
+          ...skillButtons.slice(4),
+          { text: 'Annuleer', style: 'cancel' },
+        ]);
+      }},
+      { text: 'Annuleer', style: 'cancel' },
+    ]);
   }
 
   function handleBlock() {
@@ -178,6 +218,12 @@ export default function ProfileView() {
               />
             </View>
             <Pressable
+              onPress={handleChallenge}
+              style={[styles.challengeBtn, { backgroundColor: colors.amberDim }]}
+            >
+              <InlineIcon name="zap" size={18} color={colors.amber} />
+            </Pressable>
+            <Pressable
               onPress={handleBlock}
               style={[styles.blockBtn, { backgroundColor: colors.redDim }]}
             >
@@ -250,6 +296,13 @@ const styles = StyleSheet.create({
   locationText: { fontSize: 14, fontWeight: '500' },
   bio: { fontSize: 15, lineHeight: 22, textAlign: 'center', marginTop: 8 },
   actionRow: { flexDirection: 'row', gap: 10, marginBottom: 24, alignItems: 'center' },
+  challengeBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   blockBtn: {
     width: 44,
     height: 44,

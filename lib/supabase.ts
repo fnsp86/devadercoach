@@ -66,8 +66,10 @@ export interface Story {
   id: string;
   author_id: string;
   content: string;
-  category: 'tip' | 'ervaring' | 'vraag' | 'overwinning';
+  category: 'tip' | 'ervaring' | 'vraag' | 'overwinning' | 'challenge';
   image_url: string | null;
+  skill: string | null;
+  challenge_week: string | null;
   likes_count: number;
   comments_count: number;
   created_at: string;
@@ -108,7 +110,35 @@ export interface Group {
   type: 'stad' | 'thema';
   city: string | null;
   member_count: number;
+  last_message: string | null;
+  last_message_at: string | null;
   created_at: string;
+}
+
+export interface ArenaDuel {
+  id: string;
+  challenger_id: string;
+  opponent_id: string;
+  skill: string;
+  question_seed: string;
+  challenger_score: number | null;
+  opponent_score: number | null;
+  challenger_time_ms: number | null;
+  opponent_time_ms: number | null;
+  status: 'pending' | 'completed' | 'expired' | 'declined';
+  created_at: string;
+  completed_at: string | null;
+  challenger?: CommunityProfile;
+  opponent?: CommunityProfile;
+}
+
+export interface GroupMessage {
+  id: string;
+  group_id: string;
+  sender_id: string;
+  content: string;
+  created_at: string;
+  sender?: CommunityProfile;
 }
 
 // ─── Profile queries ────────────────────────────────────────────
@@ -163,7 +193,7 @@ export async function searchFathersByCity(city: string) {
 export async function getStories(opts: {
   cursor?: string;
   limit?: number;
-  category?: 'tip' | 'ervaring' | 'vraag' | 'overwinning';
+  category?: Story['category'];
   nearLat?: number;
   nearLng?: number;
   radiusKm?: number;
@@ -171,7 +201,7 @@ export async function getStories(opts: {
   const limit = opts.limit ?? 20;
   let query = supabase
     .from('stories')
-    .select('*, author:profiles!author_id(*)')
+    .select('*, author:profiles!author_id(*), story_likes(count), story_comments(count)')
     .order('created_at', { ascending: false })
     .limit(limit);
 
@@ -185,7 +215,12 @@ export async function getStories(opts: {
 
   const { data, error } = await query;
   if (error) throw error;
-  return (data ?? []) as Story[];
+  // Use real counts from relationship tables (more reliable than denormalized columns)
+  return (data ?? []).map((s: any) => ({
+    ...s,
+    likes_count: s.story_likes?.[0]?.count ?? s.likes_count ?? 0,
+    comments_count: s.story_comments?.[0]?.count ?? s.comments_count ?? 0,
+  })) as Story[];
 }
 
 export async function getUserLikedStoryIds(userId: string, storyIds: string[]): Promise<string[]> {
@@ -203,6 +238,8 @@ export async function createStory(story: {
   content: string;
   category: Story['category'];
   image_url?: string;
+  skill?: string;
+  challenge_week?: string;
 }) {
   const { data, error } = await supabase
     .from('stories')
@@ -213,20 +250,53 @@ export async function createStory(story: {
   return data as Story;
 }
 
+export async function getChallengeStories(weekKey: string, limit: number = 20): Promise<Story[]> {
+  const { data, error } = await supabase
+    .from('stories')
+    .select('*, author:profiles!author_id(*), story_likes(count), story_comments(count)')
+    .eq('challenge_week', weekKey)
+    .order('likes_count', { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return (data ?? []).map((s: any) => ({
+    ...s,
+    likes_count: s.story_likes?.[0]?.count ?? s.likes_count ?? 0,
+    comments_count: s.story_comments?.[0]?.count ?? s.comments_count ?? 0,
+  })) as Story[];
+}
+
 export async function toggleStoryLike(storyId: string, userId: string) {
-  // Check if already liked
+  // Check if already liked (maybeSingle avoids error when no row exists)
   const { data: existing } = await supabase
     .from('story_likes')
     .select('id')
     .eq('story_id', storyId)
     .eq('user_id', userId)
-    .single();
+    .maybeSingle();
 
   if (existing) {
     await supabase.from('story_likes').delete().eq('id', existing.id);
+    // Best-effort update denormalized count (may fail due to RLS, but real counts are fetched via embedded resources)
+    try {
+      const { data: story } = await supabase.from('stories').select('likes_count').eq('id', storyId).single();
+      if (story) {
+        await supabase.from('stories').update({ likes_count: Math.max(0, (story.likes_count ?? 0) - 1) }).eq('id', storyId);
+      }
+    } catch { /* count update is best-effort */ }
     return false; // Unliked
   } else {
-    await supabase.from('story_likes').insert({ story_id: storyId, user_id: userId });
+    const { error: insertErr } = await supabase.from('story_likes').insert({ story_id: storyId, user_id: userId });
+    if (insertErr) {
+      console.warn('[toggleStoryLike] Insert failed:', insertErr.message);
+      return false;
+    }
+    // Best-effort update denormalized count
+    try {
+      const { data: story } = await supabase.from('stories').select('likes_count').eq('id', storyId).single();
+      if (story) {
+        await supabase.from('stories').update({ likes_count: (story.likes_count ?? 0) + 1 }).eq('id', storyId);
+      }
+    } catch { /* count update is best-effort */ }
     return true; // Liked
   }
 }
@@ -252,6 +322,18 @@ export async function addStoryComment(comment: {
     .select('*, author:profiles!author_id(*)')
     .single();
   if (error) throw error;
+  // Increment comments_count on the story
+  const { data: story } = await supabase
+    .from('stories')
+    .select('comments_count')
+    .eq('id', comment.story_id)
+    .single();
+  if (story) {
+    await supabase
+      .from('stories')
+      .update({ comments_count: (story.comments_count ?? 0) + 1 })
+      .eq('id', comment.story_id);
+  }
   return data as StoryComment;
 }
 
@@ -260,9 +342,26 @@ export async function deleteStory(storyId: string) {
   if (error) throw error;
 }
 
-export async function deleteStoryComment(commentId: string) {
+export async function deleteStoryComment(commentId: string, storyId?: string) {
   const { error } = await supabase.from('story_comments').delete().eq('id', commentId);
   if (error) throw error;
+  // Decrement comments_count on the story
+  if (storyId) {
+    supabase
+      .from('stories')
+      .select('comments_count')
+      .eq('id', storyId)
+      .single()
+      .then(({ data: story }) => {
+        if (story) {
+          supabase
+            .from('stories')
+            .update({ comments_count: Math.max(0, (story.comments_count ?? 0) - 1) })
+            .eq('id', storyId)
+            .then(() => {});
+        }
+      });
+  }
 }
 
 // ─── Chat queries ───────────────────────────────────────────────
@@ -375,6 +474,243 @@ export async function leaveGroup(groupId: string, userId: string) {
   await supabase.from('group_members').delete().eq('group_id', groupId).eq('user_id', userId);
 }
 
+export async function getGroupById(groupId: string): Promise<Group | null> {
+  const { data, error } = await supabase
+    .from('groups')
+    .select('*')
+    .eq('id', groupId)
+    .single();
+  if (error) return null;
+  return data as Group;
+}
+
+export async function getGroupMembers(groupId: string): Promise<CommunityProfile[]> {
+  const { data, error } = await supabase
+    .from('group_members')
+    .select('user_id')
+    .eq('group_id', groupId);
+  if (error) throw error;
+  if (!data || data.length === 0) return [];
+
+  const userIds = data.map((d: any) => d.user_id);
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('*')
+    .in('user_id', userIds);
+  return (profiles ?? []) as CommunityProfile[];
+}
+
+export async function getGroupMessages(
+  groupId: string,
+  cursor?: string,
+  limit = 50,
+): Promise<GroupMessage[]> {
+  let query = supabase
+    .from('group_messages')
+    .select('*')
+    .eq('group_id', groupId)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+  if (cursor) {
+    query = query.lt('created_at', cursor);
+  }
+  const { data, error } = await query;
+  if (error) throw error;
+  if (!data || data.length === 0) return [];
+
+  // Fetch sender profiles
+  const senderIds = [...new Set(data.map((m: any) => m.sender_id))];
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('*')
+    .in('user_id', senderIds);
+  const profileMap = new Map((profiles ?? []).map((p: any) => [p.user_id, p]));
+
+  return data.map((m: any) => ({
+    ...m,
+    sender: profileMap.get(m.sender_id) ?? null,
+  })) as GroupMessage[];
+}
+
+export async function sendGroupMessage(
+  groupId: string,
+  senderId: string,
+  content: string,
+): Promise<GroupMessage> {
+  const { data, error } = await supabase
+    .from('group_messages')
+    .insert({ group_id: groupId, sender_id: senderId, content })
+    .select()
+    .single();
+  if (error) throw error;
+
+  // Update group's last message
+  await supabase
+    .from('groups')
+    .update({ last_message: content, last_message_at: new Date().toISOString() })
+    .eq('id', groupId);
+
+  return data as GroupMessage;
+}
+
+export async function discoverGroups(userId: string): Promise<{ myGroups: Group[]; otherGroups: Group[] }> {
+  const [myGroups, allGroups] = await Promise.all([
+    getGroups(userId),
+    getGroups(),
+  ]);
+  const myGroupIds = new Set(myGroups.map((g) => g.id));
+  const otherGroups = allGroups.filter((g) => !myGroupIds.has(g.id));
+  return { myGroups, otherGroups };
+}
+
+// ─── Arena Duels ────────────────────────────────────────────────
+
+export async function createDuel(
+  challengerId: string,
+  opponentId: string,
+  skill: string,
+  questionSeed: string,
+): Promise<ArenaDuel> {
+  const { data, error } = await supabase
+    .from('arena_duels')
+    .insert({
+      challenger_id: challengerId,
+      opponent_id: opponentId,
+      skill,
+      question_seed: questionSeed,
+      status: 'pending',
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return data as ArenaDuel;
+}
+
+export async function submitDuelScore(
+  duelId: string,
+  userId: string,
+  score: number,
+  timeMs: number,
+): Promise<ArenaDuel> {
+  // Determine if user is challenger or opponent
+  const { data: duel, error: fetchError } = await supabase
+    .from('arena_duels')
+    .select('*')
+    .eq('id', duelId)
+    .single();
+  if (fetchError) throw fetchError;
+
+  const isChallenger = duel.challenger_id === userId;
+  const scoreField = isChallenger ? 'challenger_score' : 'opponent_score';
+  const timeField = isChallenger ? 'challenger_time_ms' : 'opponent_time_ms';
+
+  const update: Record<string, any> = {
+    [scoreField]: score,
+    [timeField]: timeMs,
+  };
+
+  // If both scores are now present, mark as completed
+  const otherScore = isChallenger ? duel.opponent_score : duel.challenger_score;
+  if (otherScore !== null) {
+    update.status = 'completed';
+    update.completed_at = new Date().toISOString();
+  }
+
+  const { data, error } = await supabase
+    .from('arena_duels')
+    .update(update)
+    .eq('id', duelId)
+    .select()
+    .single();
+  if (error) throw error;
+  return data as ArenaDuel;
+}
+
+export async function getPendingDuels(userId: string): Promise<ArenaDuel[]> {
+  const { data, error } = await supabase
+    .from('arena_duels')
+    .select('*')
+    .eq('status', 'pending')
+    .or(`challenger_id.eq.${userId},opponent_id.eq.${userId}`)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  if (!data || data.length === 0) return [];
+
+  // Fetch profiles
+  const userIds = [...new Set(data.flatMap((d: any) => [d.challenger_id, d.opponent_id]))];
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('*')
+    .in('user_id', userIds);
+  const profileMap = new Map((profiles ?? []).map((p: any) => [p.user_id, p]));
+
+  return data.map((d: any) => ({
+    ...d,
+    challenger: profileMap.get(d.challenger_id) ?? null,
+    opponent: profileMap.get(d.opponent_id) ?? null,
+  })) as ArenaDuel[];
+}
+
+export async function getDuelHistory(userId: string, limit = 20): Promise<ArenaDuel[]> {
+  const { data, error } = await supabase
+    .from('arena_duels')
+    .select('*')
+    .or(`challenger_id.eq.${userId},opponent_id.eq.${userId}`)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  if (!data || data.length === 0) return [];
+
+  const userIds = [...new Set(data.flatMap((d: any) => [d.challenger_id, d.opponent_id]))];
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('*')
+    .in('user_id', userIds);
+  const profileMap = new Map((profiles ?? []).map((p: any) => [p.user_id, p]));
+
+  return data.map((d: any) => ({
+    ...d,
+    challenger: profileMap.get(d.challenger_id) ?? null,
+    opponent: profileMap.get(d.opponent_id) ?? null,
+  })) as ArenaDuel[];
+}
+
+export async function declineDuel(duelId: string, userId?: string): Promise<void> {
+  // Get duel info before declining
+  const { data: duel } = await supabase
+    .from('arena_duels')
+    .select('challenger_id, opponent_id, skill')
+    .eq('id', duelId)
+    .single();
+
+  await supabase
+    .from('arena_duels')
+    .update({ status: 'declined' })
+    .eq('id', duelId);
+
+  // Notify challenger via DM (triggers push notification)
+  if (duel && userId) {
+    const challengerId = duel.challenger_id;
+    if (challengerId !== userId) {
+      try {
+        const conv = await getOrCreateConversation(userId, challengerId);
+        await sendMessage({
+          conversation_id: conv.id,
+          sender_id: userId,
+          content: `⚔️ Ik heb het ${duel.skill} duel geweigerd. Daag me gerust opnieuw uit!`,
+        });
+      } catch { /* DM is optional */ }
+    }
+  }
+}
+
+export async function cancelDuel(duelId: string): Promise<void> {
+  await supabase
+    .from('arena_duels')
+    .update({ status: 'expired' })
+    .eq('id', duelId);
+}
+
 // ─── Safety ─────────────────────────────────────────────────────
 
 export async function reportContent(report: {
@@ -455,6 +791,135 @@ export async function sendAccountDeletionEmail(email: string, name: string) {
   } catch (e: any) {
     console.error('[deletion-email] Exception:', e?.message || e);
   }
+}
+
+// ─── Daily Arena ────────────────────────────────────────────────
+
+export interface DailyArenaScore {
+  id: string;
+  user_id: string;
+  date: string;
+  score: number;
+  time_ms: number;
+  correct_count: number;
+  created_at: string;
+  profile?: CommunityProfile;
+}
+
+export async function submitDailyArenaScore(
+  userId: string,
+  date: string,
+  score: number,
+  timeMs: number,
+  correctCount: number,
+) {
+  const { error } = await supabase
+    .from('daily_arena_scores')
+    .upsert(
+      { user_id: userId, date, score, time_ms: timeMs, correct_count: correctCount },
+      { onConflict: 'user_id,date' },
+    );
+  if (error) throw error;
+}
+
+export async function getDailyArenaLeaderboard(
+  date: string,
+  limit = 20,
+): Promise<DailyArenaScore[]> {
+  // Step 1: get scores
+  const { data: scores, error } = await supabase
+    .from('daily_arena_scores')
+    .select('*')
+    .eq('date', date)
+    .order('score', { ascending: false })
+    .order('time_ms', { ascending: true })
+    .limit(limit);
+  if (error) throw error;
+  if (!scores || scores.length === 0) return [];
+
+  // Step 2: get profiles for those users
+  const userIds = scores.map((s: any) => s.user_id);
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('user_id, naam, avatar_url, stad')
+    .in('user_id', userIds);
+
+  const profileMap = new Map((profiles ?? []).map((p: any) => [p.user_id, p]));
+
+  return scores.map((s: any) => ({
+    ...s,
+    profile: profileMap.get(s.user_id) ?? null,
+  })) as DailyArenaScore[];
+}
+
+export async function getWeeklyArenaLeaderboard(
+  weekStartDate: string,
+  weekEndDate: string,
+  limit = 20,
+) {
+  // Step 1: get all scores for the week
+  const { data, error } = await supabase
+    .from('daily_arena_scores')
+    .select('user_id, score, time_ms, correct_count')
+    .gte('date', weekStartDate)
+    .lte('date', weekEndDate)
+    .order('score', { ascending: false });
+  if (error) throw error;
+  if (!data || data.length === 0) return [];
+
+  // Step 2: get profiles for those users
+  const uniqueUserIds = [...new Set(data.map((r: any) => r.user_id))];
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('user_id, naam, avatar_url, stad')
+    .in('user_id', uniqueUserIds);
+  const profileMap = new Map((profiles ?? []).map((p: any) => [p.user_id, p]));
+
+  // Group by user and sum scores
+  const byUser = new Map<string, { totalScore: number; totalTime: number; totalCorrect: number; days: number; profile: any }>();
+  for (const row of data) {
+    const existing = byUser.get(row.user_id);
+    if (existing) {
+      existing.totalScore += row.score;
+      existing.totalTime += row.time_ms;
+      existing.totalCorrect += row.correct_count;
+      existing.days += 1;
+    } else {
+      byUser.set(row.user_id, {
+        totalScore: row.score,
+        totalTime: row.time_ms,
+        totalCorrect: row.correct_count,
+        days: 1,
+        profile: profileMap.get(row.user_id) ?? null,
+      });
+    }
+  }
+
+  return [...byUser.entries()]
+    .sort((a, b) => b[1].totalScore - a[1].totalScore)
+    .slice(0, limit)
+    .map(([userId, stats]) => ({
+      user_id: userId,
+      totalScore: stats.totalScore,
+      totalTime: stats.totalTime,
+      totalCorrect: stats.totalCorrect,
+      days: stats.days,
+      profile: stats.profile,
+    }));
+}
+
+export async function getUserDailyArenaScore(
+  userId: string,
+  date: string,
+): Promise<DailyArenaScore | null> {
+  const { data, error } = await supabase
+    .from('daily_arena_scores')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('date', date)
+    .maybeSingle();
+  if (error) throw error;
+  return data as DailyArenaScore | null;
 }
 
 // ─── Storage helpers ────────────────────────────────────────────
