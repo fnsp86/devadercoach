@@ -5,14 +5,7 @@ import {
   ScrollView,
   Pressable,
   StyleSheet,
-  LayoutAnimation,
-  Platform,
-  UIManager,
 } from 'react-native';
-
-if (Platform.OS === 'android') {
-  UIManager.setLayoutAnimationEnabledExperimental?.(true);
-}
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter, useFocusEffect, useLocalSearchParams } from 'expo-router';
@@ -20,9 +13,9 @@ import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
 import { SKILL_LIST } from '@/lib/skills';
 import { getLearningModulesForSkill } from '@/lib/learning-modules';
-import { transformModuleToStages } from '@/lib/module-stages';
+import { transformModuleToDiscoveryCards } from '@/lib/module-stages';
 import { getTrainingForSkill } from '@/lib/training-content';
-import type { Skill, LearningModule, ThemeTag } from '@/lib/types';
+import type { Skill, ThemeTag } from '@/lib/types';
 import { getSkillMasteryTier, MASTERY_TIER_INFO } from '@/lib/gamification-types';
 import { resolveActiveThemes } from '@/lib/theme-resolver';
 import { SKILL_COLORS } from '@/lib/colors';
@@ -83,54 +76,6 @@ const ringStyles = StyleSheet.create({
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Stage progress dots for a module
-// ─────────────────────────────────────────────────────────────────────────────
-
-function StageDots({
-  moduleId,
-  skill,
-  color,
-}: {
-  moduleId: string;
-  skill: Skill;
-  color: string;
-}) {
-  const { colors } = useTheme();
-  const { getStageProgress } = useStore();
-
-  const stages = useMemo(() => {
-    const mods = getLearningModulesForSkill(skill);
-    const mod = mods.find((m) => m.id === moduleId);
-    if (!mod) return [];
-    return transformModuleToStages(mod).stages;
-  }, [moduleId, skill]);
-
-  const progress = getStageProgress(moduleId);
-  const completedIds = progress?.completedStageIds ?? [];
-
-  return (
-    <View style={dotStyles.row}>
-      {stages.map((s) => (
-        <View
-          key={s.id}
-          style={[
-            dotStyles.dot,
-            {
-              backgroundColor: completedIds.includes(s.id) ? color : colors.surface2,
-            },
-          ]}
-        />
-      ))}
-    </View>
-  );
-}
-
-const dotStyles = StyleSheet.create({
-  row: { flexDirection: 'row', gap: 4, marginTop: 6 },
-  dot: { width: 8, height: 8, borderRadius: 4 },
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
 // SkillCard (compact, for grid)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -138,7 +83,6 @@ function SkillCard({
   skill,
   doneCount,
   totalCount,
-  isExpanded,
   masteryTier,
   hasThemed,
   onPress,
@@ -146,7 +90,6 @@ function SkillCard({
   skill: Skill;
   doneCount: number;
   totalCount: number;
-  isExpanded: boolean;
   masteryTier: 'none' | 'bronze' | 'silver' | 'gold';
   hasThemed?: boolean;
   onPress: () => void;
@@ -163,8 +106,8 @@ function SkillCard({
         gridStyles.card,
         {
           backgroundColor: colors.surface,
-          borderColor: isExpanded ? color : colors.border,
-          borderWidth: isExpanded ? 2 : 1,
+          borderColor: allDone ? '#22C55E' : colors.border,
+          borderWidth: 1,
         },
       ]}
     >
@@ -220,175 +163,6 @@ const gridStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Expanded skill module list
-// ─────────────────────────────────────────────────────────────────────────────
-
-type ModuleStatus = 'done' | 'in_progress' | 'next' | 'locked';
-
-function ExpandedSkillModules({
-  skill,
-  modules,
-  completedIds,
-  color,
-  onNavigate,
-}: {
-  skill: Skill;
-  modules: LearningModule[];
-  completedIds: string[];
-  color: string;
-  onNavigate: (moduleId: string) => void;
-}) {
-  const { colors } = useTheme();
-  const { getStageProgress } = useStore();
-
-  return (
-    <View style={expandStyles.container}>
-      {modules.map((mod, i) => {
-        const done = completedIds.includes(mod.id);
-        const prevDone = i === 0 || completedIds.includes(modules[i - 1].id);
-        const progress = getStageProgress(mod.id);
-        const hasStarted = progress && progress.completedStageIds.length > 0;
-
-        let status: ModuleStatus;
-        if (done || progress?.completedAt) {
-          status = 'done';
-        } else if (hasStarted) {
-          status = 'in_progress';
-        } else if (prevDone) {
-          status = 'next';
-        } else {
-          status = 'locked';
-        }
-
-        const borderColor =
-          status === 'done' ? '#22C55E'
-          : status === 'in_progress' ? color
-          : status === 'next' ? color + '60'
-          : colors.border;
-
-        return (
-          <Pressable
-            key={mod.id}
-            onPress={status !== 'locked' ? () => onNavigate(mod.id) : undefined}
-            style={[
-              expandStyles.moduleCard,
-              {
-                backgroundColor: colors.surface,
-                borderColor,
-                borderWidth: status === 'in_progress' ? 2 : 1,
-                opacity: status === 'locked' ? 0.5 : 1,
-              },
-            ]}
-          >
-            <View style={expandStyles.moduleTop}>
-              <View
-                style={[
-                  expandStyles.numberCircle,
-                  {
-                    backgroundColor:
-                      status === 'done' ? 'rgba(34,197,94,0.12)'
-                      : status === 'in_progress' || status === 'next' ? color + '18'
-                      : colors.surface2,
-                    borderColor:
-                      status === 'done' ? '#22C55E'
-                      : status === 'in_progress' || status === 'next' ? color
-                      : colors.border,
-                  },
-                ]}
-              >
-                {status === 'done' ? (
-                  <InlineIcon name="check" size={16} color="#22C55E" />
-                ) : status === 'locked' ? (
-                  <InlineIcon name="lock" size={14} color={colors.text3} />
-                ) : (
-                  <Text style={[expandStyles.number, { color: status === 'next' || status === 'in_progress' ? color : colors.text3 }]}>
-                    {i + 1}
-                  </Text>
-                )}
-              </View>
-
-              <View style={expandStyles.moduleInfo}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                  <Text style={[expandStyles.moduleTitle, { color: status === 'locked' ? colors.text3 : colors.text, flex: 1 }]} numberOfLines={1}>
-                    {mod.title}
-                  </Text>
-                  {mod.themes && mod.themes.length > 0 && (
-                    <View style={[expandStyles.themeBadge, { backgroundColor: '#8B5CF6' + '20', borderColor: '#8B5CF6' + '40' }]}>
-                      <Text style={[expandStyles.themeBadgeText, { color: '#8B5CF6' }]}>
-                        {mod.themes.includes('bonuskind') || mod.themes.includes('samengesteld_gezin') ? 'Bonuskind' : 'Extra zorg'}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-                <Text style={[expandStyles.moduleDesc, { color: colors.text3 }]} numberOfLines={1}>
-                  {mod.description}
-                </Text>
-                {status !== 'locked' && (
-                  <StageDots moduleId={mod.id} skill={skill} color={color} />
-                )}
-              </View>
-
-              <View style={expandStyles.statusCol}>
-                {status === 'done' && (
-                  <Text style={[expandStyles.statusText, { color: '#22C55E' }]}>Voltooid</Text>
-                )}
-                {status === 'in_progress' && (
-                  <Text style={[expandStyles.statusText, { color }]}>Bezig</Text>
-                )}
-                {status === 'next' && (
-                  <View style={[expandStyles.nextBadge, { backgroundColor: color + '18' }]}>
-                    <Text style={[expandStyles.nextText, { color }]}>Start</Text>
-                  </View>
-                )}
-                {status === 'locked' && (
-                  <InlineIcon name="lock" size={14} color={colors.text3} />
-                )}
-              </View>
-            </View>
-          </Pressable>
-        );
-      })}
-    </View>
-  );
-}
-
-const expandStyles = StyleSheet.create({
-  container: { gap: 8, marginTop: 12, marginBottom: 8 },
-  moduleCard: {
-    borderRadius: 14,
-    padding: 14,
-  },
-  moduleTop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  numberCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    borderWidth: 1.5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  number: { fontSize: 14, fontWeight: '800' },
-  moduleInfo: { flex: 1 },
-  moduleTitle: { fontSize: 14, fontWeight: '700', lineHeight: 19 },
-  moduleDesc: { fontSize: 12, marginTop: 2 },
-  themeBadge: {
-    borderWidth: 1,
-    borderRadius: 6,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-  },
-  themeBadgeText: { fontSize: 10, fontWeight: '700' },
-  statusCol: { alignItems: 'flex-end' },
-  statusText: { fontSize: 12, fontWeight: '700' },
-  nextBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
-  nextText: { fontSize: 12, fontWeight: '700' },
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -755,13 +529,12 @@ export default function LerenOverview() {
   }, [store.profile]);
 
   const [section, setSection] = useState<Section>('modules');
-  const [expandedSkill, setExpandedSkill] = useState<Skill | null>(null);
 
-  // Auto-expand skill when navigated from help situatie
+  // Auto-navigate to skill page when navigated from help situatie
   useEffect(() => {
     if (openSkill) {
       setSection('modules');
-      setExpandedSkill(decodeURIComponent(openSkill) as Skill);
+      router.push(`/(tabs)/leren/${encodeURIComponent(decodeURIComponent(openSkill))}` as any);
     }
   }, [openSkill]);
 
@@ -781,7 +554,7 @@ export default function LerenOverview() {
           const progress = stageProgress[mod.id];
           if (!progress) return false;
           if (progress.completedAt) return true;
-          const stages = transformModuleToStages(mod).stages;
+          const stages = transformModuleToDiscoveryCards(mod).stages;
           return progress.completedStageIds.length >= stages.length;
         })
         .map((mod) => mod.id);
@@ -801,17 +574,6 @@ export default function LerenOverview() {
   const pct = totalCount > 0 ? Math.round((totalDone / totalCount) * 100) : 0;
 
   const sortedSkills = SKILL_LIST;
-
-  function handleNavigate(skill: Skill, moduleId: string) {
-    router.push(
-      `/(tabs)/leren/module?skill=${encodeURIComponent(skill)}&moduleId=${encodeURIComponent(moduleId)}` as any,
-    );
-  }
-
-  function handleSkillPress(skill: Skill) {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setExpandedSkill(expandedSkill === skill ? null : skill);
-  }
 
   const ringColor = totalDone === 0 ? colors.border : '#F59E0B';
 
@@ -886,32 +648,14 @@ export default function LerenOverview() {
                       skill={skill.label}
                       doneCount={doneCount}
                       totalCount={modules.length}
-                      isExpanded={expandedSkill === skill.label}
                       masteryTier={masteryTier}
                       hasThemed={hasThemed}
-                      onPress={() => handleSkillPress(skill.label)}
+                      onPress={() => router.push(`/(tabs)/leren/${encodeURIComponent(skill.label)}` as any)}
                     />
                   );
                 })}
               </View>
 
-              {expandedSkill && (
-                <View style={[s.expandedSection, { borderColor: SKILL_COLORS[expandedSkill] + '40' }]}>
-                  <View style={s.expandedHeader}>
-                    <Text style={[s.expandedTitle, { color: colors.text }]}>{expandedSkill}</Text>
-                    <Pressable onPress={() => setExpandedSkill(null)} style={s.closeBtn}>
-                      <InlineIcon name="x" size={18} color={colors.text3} />
-                    </Pressable>
-                  </View>
-                  <ExpandedSkillModules
-                    skill={expandedSkill}
-                    modules={getLearningModulesForSkill(expandedSkill, activeThemes)}
-                    completedIds={completedBySkill[expandedSkill] ?? []}
-                    color={SKILL_COLORS[expandedSkill] ?? '#667eea'}
-                    onNavigate={(moduleId) => handleNavigate(expandedSkill, moduleId)}
-                  />
-                </View>
-              )}
             </View>
           </>
         ) : (
@@ -1002,25 +746,5 @@ const s = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 10,
     justifyContent: 'space-between',
-  },
-
-  // Expanded
-  expandedSection: {
-    marginTop: 16,
-    borderRadius: 16,
-    borderWidth: 1,
-    padding: 14,
-  },
-  expandedHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  expandedTitle: {
-    fontSize: 18,
-    fontWeight: '800',
-  },
-  closeBtn: {
-    padding: 8,
   },
 });

@@ -22,7 +22,7 @@ import { SKILL_COLORS } from '@/lib/colors';
 import { InlineIcon } from '@/lib/icons';
 import { ALL_SKILLS } from '@/lib/skills';
 import { getLearningModulesForSkill } from '@/lib/learning-modules';
-import { transformModuleToStages } from '@/lib/module-stages';
+import { transformModuleToDiscoveryCards } from '@/lib/module-stages';
 import { getWeeklyReflections } from '@/lib/week-selector';
 import { resolveActiveThemes } from '@/lib/theme-resolver';
 import type { ReflectionNote, Skill, ThemeTag } from '@/lib/types';
@@ -233,7 +233,7 @@ export default function ReflectiesScreen() {
         const progress = stageProgress[mod.id];
         if (!progress) continue;
 
-        const moduleStages = transformModuleToStages(mod);
+        const moduleStages = transformModuleToDiscoveryCards(mod);
         for (const stage of moduleStages.stages) {
           if (stage.type !== 'reflection') continue;
           if (!progress.completedStageIds.includes(stage.id)) continue;

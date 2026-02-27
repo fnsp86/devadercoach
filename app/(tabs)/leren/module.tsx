@@ -8,7 +8,6 @@ import {
   Animated,
   TextInput,
   Dimensions,
-  Linking,
   LayoutAnimation,
   Platform,
   UIManager,
@@ -20,12 +19,11 @@ if (Platform.OS === 'android') {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
-import YouTubeEmbed from '@/components/YouTubeEmbed';
 import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
 import { getLearningModulesForSkill } from '@/lib/learning-modules';
-import { transformModuleToStages } from '@/lib/module-stages';
-import type { Skill, Stage, ModuleStages, InsightCard, ScenarioChoice, QuizQuestion, ThemeTag } from '@/lib/types';
+import { transformModuleToDiscoveryCards, migrateStageIds } from '@/lib/module-stages';
+import type { Skill, Stage, ModuleStages, InsightCard, ScenarioChoice, ThemeTag } from '@/lib/types';
 import { resolveActiveThemes } from '@/lib/theme-resolver';
 import SkillCompletionPopup from '@/components/SkillCompletionPopup';
 import { SKILLS } from '@/lib/skills';
@@ -34,65 +32,50 @@ import { checkAndUnlockBadges } from '@/lib/badge-checker';
 import type { GamificationEvent } from '@/components/GamificationPopup';
 import GamificationPopup from '@/components/GamificationPopup';
 import { SKILL_COLORS } from '@/lib/colors';
-import { AppIcon, InlineIcon, getSkillIcon } from '@/lib/icons';
+import { AppIcon, InlineIcon } from '@/lib/icons';
 import { getTasksForModule } from '@/lib/task-module-map';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // ─────────────────────────────────────────────────────────────────────────────
-// StageProgressBar — dots bovenaan
+// ProgressBar — smooth bar bovenaan (i.p.v. dots, want 12-15 stages is teveel)
 // ─────────────────────────────────────────────────────────────────────────────
 
-function StageProgressBar({
-  stages,
-  currentIndex,
-  completedIds,
+function ProgressBar({
+  current,
+  total,
   skillColor,
 }: {
-  stages: Stage[];
-  currentIndex: number;
-  completedIds: string[];
+  current: number;
+  total: number;
   skillColor: string;
 }) {
   const { colors } = useTheme();
+  const progress = total > 0 ? (current + 1) / total : 0;
+
   return (
-    <View style={progStyles.container}>
-      {stages.map((stage, i) => {
-        const done = completedIds.includes(stage.id);
-        const active = i === currentIndex;
-        return (
-          <View
-            key={stage.id}
-            style={[
-              progStyles.dot,
-              {
-                backgroundColor: done
-                  ? '#22C55E'
-                  : active
-                  ? skillColor
-                  : colors.surface2,
-                width: active ? 24 : 10,
-              },
-            ]}
-          />
-        );
-      })}
+    <View style={[progressStyles.track, { backgroundColor: colors.surface2 }]}>
+      <View
+        style={[
+          progressStyles.fill,
+          { backgroundColor: skillColor, width: `${Math.min(progress * 100, 100)}%` },
+        ]}
+      />
     </View>
   );
 }
 
-const progStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 5,
+const progressStyles = StyleSheet.create({
+  track: {
     flex: 1,
-    paddingRight: 40,
+    height: 6,
+    borderRadius: 3,
+    overflow: 'hidden',
+    marginRight: 12,
   },
-  dot: {
-    height: 8,
-    borderRadius: 4,
+  fill: {
+    height: '100%',
+    borderRadius: 3,
   },
 });
 
@@ -164,7 +147,6 @@ const xpStyles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
   },
-  starIcon: { marginRight: 2 },
   value: {
     color: '#F59E0B',
     fontSize: 22,
@@ -181,16 +163,52 @@ const xpStyles = StyleSheet.create({
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// InsightCardsStage — verticale kaartlijst met volledige teksten
+// ONTDEKKAART RENDERERS
 // ─────────────────────────────────────────────────────────────────────────────
+
+/** Map emoji naar Lucide icoon naam voor professionele weergave */
+const EMOJI_ICON_MAP: Record<string, string> = {
+  '😡': 'alertTriangle', '😤': 'alertTriangle', '🚨': 'alertTriangle', '🔴': 'alertTriangle',
+  '🌡️': 'alertTriangle', '🪫': 'alertTriangle', '🟠': 'alertTriangle',
+  '🙅': 'ban', '😶': 'ban', '🚫': 'ban', '🔇': 'ban', '🕳️': 'ban',
+  '🏃': 'footprints', '😭': 'heart', '💗': 'heart', '💚': 'heart', '💛': 'heart', '💔': 'heart',
+  '👴': 'user', '👶': 'baby', '👥': 'users', '🎭': 'users', '👻': 'eye',
+  '🔄': 'refreshCw', '🔁': 'refreshCw',
+  '🧭': 'compass', '🌍': 'compass', '🌉': 'compass', '🪞': 'compass',
+  '🔎': 'search', '🔍': 'search',
+  '🌋': 'flame', '🔥': 'flame',
+  '⚖️': 'barChart3', '📉': 'barChart3',
+  '🤚': 'hand', '🤲': 'hand',
+  '💬': 'messageCircle',
+  '📡': 'zap', '💥': 'zap', '⚡': 'zap', '🚀': 'zap', '🔋': 'zap',
+  '🌪️': 'waves', '🌊': 'waves', '🌫️': 'waves', '🎢': 'waves',
+  '🔧': 'construction', '🏗️': 'construction', '🏠': 'construction', '📦': 'construction', '⚙️': 'construction',
+  '🌱': 'sprout', '🤝': 'handshake', '🔗': 'handshake',
+  '📋': 'fileText', '🏷️': 'fileText', '🪪': 'fileText',
+  '🎨': 'lightbulb', '💡': 'lightbulb',
+  '🛡️': 'shield', '💪': 'shield', '🦸': 'shield', '🧱': 'shield',
+  '🧠': 'brain', '🤖': 'brain', '🫁': 'brain',
+  '📱': 'smartphone', '🔑': 'lock',
+  '👀': 'eye', '👁️': 'eye', '🙈': 'eye', '🙉': 'eye', '😐': 'eye', '🫣': 'eye',
+  '👂': 'eye',
+  '🎯': 'target', '⚓': 'target',
+  '✅': 'check', '🟢': 'check',
+  '⏱️': 'clock', '⏳': 'clock',
+  '☀️': 'sun', '🌅': 'sun', '🌤️': 'sun',
+  '🌙': 'moon',
+  '📖': 'bookOpen',
+  '💰': 'star', '🟡': 'star',
+  '🤫': 'eye', '🚪': 'arrowRight',
+  '🧊': 'snowflake',
+};
 
 /** Render body text met paragraaf-structuur */
 function ParagraphText({ text, color }: { text: string; color: string }) {
   const paragraphs = text.split(/\n\n+/).filter((p) => p.trim().length > 0);
   return (
-    <View style={insightStyles.paragraphs}>
+    <View style={{ gap: 10 }}>
       {paragraphs.map((p, i) => (
-        <Text key={i} style={[insightStyles.paragraph, { color }]}>
+        <Text key={i} style={{ fontSize: 15, lineHeight: 24, fontWeight: '500', color }}>
           {p.trim()}
         </Text>
       ))}
@@ -198,247 +216,425 @@ function ParagraphText({ text, color }: { text: string; color: string }) {
   );
 }
 
-/** Render mission instructies met nette bullets en paragrafen */
-function MissionText({ text, color, bulletColor }: { text: string; color: string; bulletColor: string }) {
-  const lines = text.split(/\n/).filter((l) => l.trim().length > 0);
-  return (
-    <View style={insightStyles.paragraphs}>
-      {lines.map((line, i) => {
-        const trimmed = line.trim();
-        // Herken bullet-regels (begint met -, •, *, of nummer.)
-        const bulletMatch = trimmed.match(/^[-•*]\s+(.+)$/);
-        const numMatch = trimmed.match(/^(\d+)[.)]\s+(.+)$/);
-        if (bulletMatch) {
-          return (
-            <View key={i} style={missionStyles.bulletRow}>
-              <Text style={[missionStyles.bulletDot, { color: bulletColor }]}>{'\u2022'}</Text>
-              <Text style={[missionStyles.bulletText, { color }]}>{bulletMatch[1]}</Text>
-            </View>
-          );
-        }
-        if (numMatch) {
-          return (
-            <View key={i} style={missionStyles.bulletRow}>
-              <Text style={[missionStyles.bulletNum, { color: bulletColor }]}>{numMatch[1]}.</Text>
-              <Text style={[missionStyles.bulletText, { color }]}>{numMatch[2]}</Text>
-            </View>
-          );
-        }
-        return (
-          <Text key={i} style={[insightStyles.paragraph, { color }]}>
-            {trimmed}
-          </Text>
-        );
-      })}
-    </View>
-  );
-}
-
-function InsightCardsStage({
-  cards,
+// ── HerkenCard ──────────────────────────────────────────────────────────────
+function HerkenCard({
+  stage,
   skillColor,
   onComplete,
-  stageLabel,
 }: {
-  cards: InsightCard[];
+  stage: Stage;
   skillColor: string;
   onComplete: () => void;
-  stageLabel?: string;
 }) {
   const { colors } = useTheme();
-  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set([0]));
+  const [tapped, setTapped] = useState<'herken' | 'nieuw' | null>(null);
+  const responseAnim = useRef(new Animated.Value(0)).current;
 
-  const toggleCard = (index: number) => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setExpandedCards((prev) => {
-      const next = new Set(prev);
-      if (next.has(index)) next.delete(index);
-      else next.add(index);
-      return next;
-    });
-  };
-
-  // Count non-summary cards for numbering
-  const contentCards = cards.filter((c) => !c.isSamenvatting);
+  function handleTap(type: 'herken' | 'nieuw') {
+    if (tapped) return;
+    setTapped(type);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    Animated.spring(responseAnim, { toValue: 1, friction: 6, useNativeDriver: true }).start();
+    setTimeout(onComplete, 1200);
+  }
 
   return (
-    <View style={stageShared.container}>
-      {/* Verticale kaartlijst */}
-      {cards.map((card, i) => {
-        const isAlwaysOpen = !!card.isSamenvatting;
-        const isExpanded = isAlwaysOpen || expandedCards.has(i);
-        const isCollapsible = !isAlwaysOpen;
-        const cardNumber = card.isSamenvatting ? 0 : contentCards.indexOf(card) + 1;
+    <View style={cardStyles.fullCard}>
+      <View style={[cardStyles.cardInner, { backgroundColor: skillColor + '08' }]}>
+        <View style={cardStyles.stageIcon}>
+          <AppIcon name="search" size="lg" variant="featured" color={skillColor} bgColor={skillColor + '12'} iconSize={28} />
+        </View>
+        <Text style={[cardStyles.cardLabel, { color: skillColor }]}>HERKEN JE DIT?</Text>
+        <Text style={[cardStyles.herkenText, { color: colors.text }]}>
+          {stage.herkenText}
+        </Text>
 
-        return (
-          <Pressable
-            key={i}
-            onPress={isCollapsible ? () => toggleCard(i) : undefined}
-            style={[
-              insightStyles.card,
-              {
-                backgroundColor: card.isSamenvatting ? skillColor + '06' : colors.surface,
-                borderColor: card.isSamenvatting ? skillColor + '25' : colors.border,
-              },
-            ]}
-          >
-            {/* Top accent line */}
-            {!card.isSamenvatting && i === 0 && (
-              <View style={[insightStyles.topAccent, { backgroundColor: skillColor }]} />
-            )}
+        {!tapped && (
+          <View style={cardStyles.herkenButtons}>
+            <Pressable
+              onPress={() => handleTap('herken')}
+              style={[cardStyles.herkenBtn, { backgroundColor: skillColor + '15', borderColor: skillColor + '30' }]}
+            >
+              <Text style={[cardStyles.herkenBtnText, { color: skillColor }]}>Herken ik</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => handleTap('nieuw')}
+              style={[cardStyles.herkenBtn, { backgroundColor: colors.surface2, borderColor: colors.border }]}
+            >
+              <Text style={[cardStyles.herkenBtnText, { color: colors.text2 }]}>Nieuw voor mij</Text>
+            </Pressable>
+          </View>
+        )}
 
-            {/* Samenvatting badge */}
-            {card.isSamenvatting && (
-              <View style={[insightStyles.samenvattingBadge, { backgroundColor: skillColor + '15', borderColor: skillColor + '25' }]}>
-                <InlineIcon name="lightbulb" size={12} color={skillColor} />
-                <Text style={[insightStyles.samenvattingText, { color: skillColor }]}>IN HET KORT</Text>
-              </View>
-            )}
-
-            {!card.isSamenvatting && (
-              <View style={insightStyles.titleRow}>
-                {contentCards.length > 1 && (
-                  <View style={[insightStyles.cardNumber, { backgroundColor: skillColor + '12' }]}>
-                    <Text style={[insightStyles.cardNumberText, { color: skillColor }]}>{cardNumber}</Text>
-                  </View>
-                )}
-                <Text style={[insightStyles.title, { color: colors.text, flex: 1 }]}>{card.title}</Text>
-                {isCollapsible && (
-                  <View style={[insightStyles.chevronBg, { backgroundColor: isExpanded ? skillColor + '12' : colors.surface2 }]}>
-                    <InlineIcon name={isExpanded ? 'chevronUp' : 'chevronDown'} size={16} color={isExpanded ? skillColor : colors.text3} />
-                  </View>
-                )}
-              </View>
-            )}
-
-            {isExpanded && (
-              <>
-                {/* Highlight callout */}
-                {card.highlight && (
-                  <View style={[insightStyles.highlightBlock, { backgroundColor: skillColor + '08', borderLeftColor: skillColor }]}>
-                    <Text style={[insightStyles.highlightText, { color: skillColor }]}>{card.highlight}</Text>
-                  </View>
-                )}
-
-                {/* Volledige body tekst met paragrafen */}
-                <ParagraphText text={card.body} color={colors.text2} />
-              </>
-            )}
-          </Pressable>
-        );
-      })}
-
-      <Pressable
-        onPress={onComplete}
-        style={[stageShared.ctaButton, { backgroundColor: skillColor }]}
-      >
-        <Text style={stageShared.ctaText}>Volgende etappe</Text>
-        <InlineIcon name="arrowRight" size={16} color="#fff" />
-      </Pressable>
+        {tapped && (
+          <Animated.View style={{
+            opacity: responseAnim,
+            transform: [{ translateY: responseAnim.interpolate({ inputRange: [0, 1], outputRange: [20, 0] }) }],
+          }}>
+            <View style={[cardStyles.herkenResponse, { backgroundColor: skillColor + '10' }]}>
+              <Text style={[cardStyles.herkenResponseText, { color: skillColor }]}>
+                {tapped === 'herken'
+                  ? 'Je bent niet de enige. Veel vaders herkennen dit.'
+                  : 'Goed dat je hier open voor staat. Laten we erin duiken!'}
+              </Text>
+            </View>
+          </Animated.View>
+        )}
+      </View>
     </View>
   );
 }
 
-const insightStyles = StyleSheet.create({
-  card: {
-    borderRadius: 20,
-    borderWidth: 1,
-    padding: 24,
-    marginBottom: 14,
-    position: 'relative',
-    overflow: 'hidden',
+// ── InzichtCard ─────────────────────────────────────────────────────────────
+function InzichtCard({
+  stage,
+  skillColor,
+  onComplete,
+}: {
+  stage: Stage;
+  skillColor: string;
+  onComplete: () => void;
+}) {
+  const { colors } = useTheme();
+  const card = stage.cards?.[0];
+  const [showMore, setShowMore] = useState(false);
+
+  if (!card) return null;
+
+  return (
+    <View style={cardStyles.fullCard}>
+      <View style={[cardStyles.cardInner, { backgroundColor: colors.surface }]}>
+        <View style={cardStyles.stageIcon}>
+          <AppIcon name="lightbulb" size="lg" variant="featured" color={skillColor} bgColor={skillColor + '12'} iconSize={24} />
+        </View>
+        <Text style={[cardStyles.cardLabel, { color: skillColor }]}>{stage.stageLabel}</Text>
+
+        {card.highlight && (
+          <View style={[cardStyles.highlightBlock, { backgroundColor: skillColor + '08', borderLeftColor: skillColor }]}>
+            <Text style={[cardStyles.highlightText, { color: skillColor }]}>{card.highlight}</Text>
+          </View>
+        )}
+
+        <Text style={[cardStyles.bodyText, { color: colors.text }]}>{card.body}</Text>
+
+        {stage.readMoreText && (
+          <View>
+            <Pressable
+              onPress={() => {
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                setShowMore(!showMore);
+              }}
+              style={cardStyles.readMoreToggle}
+            >
+              <Text style={[cardStyles.readMoreText, { color: skillColor }]}>
+                {showMore ? 'Minder' : 'Lees meer'}
+              </Text>
+              <InlineIcon name={showMore ? 'chevronUp' : 'chevronDown'} size={14} color={skillColor} />
+            </Pressable>
+            {showMore && (
+              <Text style={[cardStyles.bodyText, { color: colors.text2, marginTop: 12 }]}>
+                {stage.readMoreText}
+              </Text>
+            )}
+          </View>
+        )}
+
+        <Pressable
+          onPress={onComplete}
+          style={[cardStyles.continueBtn, { backgroundColor: skillColor }]}
+        >
+          <Text style={cardStyles.continueBtnText}>Volgende</Text>
+          <InlineIcon name="arrowRight" size={16} color="#fff" />
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+// ── WistJeDatCard ───────────────────────────────────────────────────────────
+function WistJeDatCard({
+  stage,
+  skillColor,
+  onComplete,
+}: {
+  stage: Stage;
+  skillColor: string;
+  onComplete: () => void;
+}) {
+  const { colors } = useTheme();
+  const facts = stage.facts ?? (stage.factText ? [{ text: stage.factText, source: stage.factSource }] : []);
+  const [revealedCount, setRevealedCount] = useState(0);
+  const flipAnim = useRef(new Animated.Value(0)).current;
+
+  function handleReveal() {
+    if (revealedCount >= facts.length) return;
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    flipAnim.setValue(0);
+    Animated.spring(flipAnim, { toValue: 1, friction: 6, tension: 80, useNativeDriver: true }).start();
+    setRevealedCount((c) => c + 1);
+  }
+
+  const allRevealed = revealedCount >= facts.length;
+
+  return (
+    <View style={cardStyles.fullCard}>
+      <View style={[cardStyles.cardInner, { backgroundColor: colors.amberDim }]}>
+        <View style={cardStyles.stageIcon}>
+          <AppIcon name="brain" size="lg" variant="featured" color={colors.amber} bgColor={colors.amber + '12'} iconSize={24} />
+        </View>
+        <Text style={[cardStyles.cardLabel, { color: colors.amber }]}>WIST JE DAT...</Text>
+
+        {/* Feiten */}
+        <View style={wistStyles.factsContainer}>
+          {facts.map((fact, i) => {
+            const isRevealed = i < revealedCount;
+            if (!isRevealed) {
+              // Hidden card
+              return (
+                <Pressable
+                  key={i}
+                  onPress={i === revealedCount ? handleReveal : undefined}
+                  style={[wistStyles.hiddenCard, {
+                    backgroundColor: colors.surface,
+                    borderColor: colors.amber + '30',
+                    opacity: i === revealedCount ? 1 : 0.4,
+                  }]}
+                >
+                  <InlineIcon name="brain" size={20} color={colors.amber} />
+                  <Text style={[wistStyles.tapHint, { color: colors.amber }]}>
+                    {i === revealedCount ? 'Tik om te onthullen' : `Feit ${i + 1}`}
+                  </Text>
+                </Pressable>
+              );
+            }
+            // Revealed card
+            return (
+              <View key={i} style={[wistStyles.revealedCard, { backgroundColor: colors.surface, borderColor: colors.amber + '30' }]}>
+                <View style={[wistStyles.factNumber, { backgroundColor: colors.amber + '15' }]}>
+                  <Text style={[wistStyles.factNumberText, { color: colors.amber }]}>{i + 1}</Text>
+                </View>
+                <Text style={[wistStyles.factText, { color: colors.text }]}>{fact.text}</Text>
+                {fact.source && (
+                  <Text style={[wistStyles.source, { color: colors.text3 }]}>Bron: {fact.source}</Text>
+                )}
+              </View>
+            );
+          })}
+        </View>
+
+        {allRevealed && (
+          <Pressable
+            onPress={onComplete}
+            style={[cardStyles.continueBtn, { backgroundColor: colors.amber }]}
+          >
+            <Text style={cardStyles.continueBtnText}>Volgende</Text>
+            <InlineIcon name="arrowRight" size={16} color="#fff" />
+          </Pressable>
+        )}
+      </View>
+    </View>
+  );
+}
+
+const wistStyles = StyleSheet.create({
+  factsContainer: {
+    gap: 12,
+    width: '100%',
   },
-  topAccent: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 3,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  samenvattingBadge: {
-    alignSelf: 'flex-start',
+  hiddenCard: {
+    borderRadius: 16,
+    borderWidth: 1.5,
+    padding: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 8,
-    borderWidth: 1,
-    marginBottom: 12,
+    justifyContent: 'center',
+    gap: 10,
+    minHeight: 60,
   },
-  samenvattingText: {
-    fontSize: 10,
-    fontWeight: '800',
-    letterSpacing: 1.5,
+  tapHint: {
+    fontSize: 14,
+    fontWeight: '700',
   },
-  cardNumber: {
+  revealedCard: {
+    borderRadius: 16,
+    borderWidth: 1.5,
+    padding: 20,
+  },
+  factNumber: {
     width: 28,
     height: 28,
     borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 10,
   },
-  cardNumberText: {
-    fontSize: 13,
+  factNumberText: {
+    fontSize: 14,
     fontWeight: '800',
   },
-  titleRow: { flexDirection: 'row' as const, alignItems: 'center' as const, gap: 10, marginBottom: 14 },
-  title: { fontSize: 18, fontWeight: '800', lineHeight: 24 },
-  chevronBg: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  highlightBlock: {
-    borderLeftWidth: 3,
-    paddingLeft: 14,
-    paddingVertical: 10,
-    paddingRight: 8,
-    marginBottom: 16,
-    borderRadius: 6,
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
-  },
-  highlightText: {
-    fontSize: 14,
-    lineHeight: 21,
-    fontWeight: '700',
-    fontStyle: 'italic',
-  },
-  paragraphs: { gap: 10 },
-  paragraph: {
+  factText: {
     fontSize: 15,
     lineHeight: 24,
     fontWeight: '500',
   },
+  source: {
+    fontSize: 12,
+    fontWeight: '600',
+    marginTop: 10,
+    fontStyle: 'italic',
+  },
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ScenarioStage
-// ─────────────────────────────────────────────────────────────────────────────
-
-function ScenarioStage({
-  situation,
-  choices,
-  explanation,
+// ── DiagramCard ─────────────────────────────────────────────────────────────
+function DiagramCard({
+  stage,
   skillColor,
   onComplete,
 }: {
-  situation: string;
-  choices: ScenarioChoice[];
-  explanation?: string;
+  stage: Stage;
+  skillColor: string;
+  onComplete: () => void;
+}) {
+  const { colors } = useTheme();
+  const [visibleCount, setVisibleCount] = useState(0);
+  const items = stage.diagramItems ?? [];
+
+  function handleTapItem(index: number) {
+    if (index !== visibleCount) return; // only reveal next in sequence
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setVisibleCount((c) => c + 1);
+  }
+
+  const allRevealed = visibleCount >= items.length;
+
+  return (
+    <View style={cardStyles.fullCard}>
+      <View style={[cardStyles.cardInner, { backgroundColor: colors.surface2 }]}>
+        <View style={cardStyles.stageIcon}>
+          <AppIcon name="barChart3" size="lg" variant="featured" color={skillColor} bgColor={skillColor + '12'} iconSize={24} />
+        </View>
+        <Text style={[cardStyles.cardLabel, { color: skillColor }]}>{stage.stageLabel}</Text>
+
+        {stage.diagramIntro && (
+          <Text style={[cardStyles.bodyText, { color: colors.text2, marginBottom: 16, textAlign: 'center' }]}>
+            {stage.diagramIntro}
+          </Text>
+        )}
+
+        <View style={diagramStyles.itemsList}>
+          {items.map((item, i) => {
+            const isRevealed = i < visibleCount;
+            const isNext = i === visibleCount;
+
+            if (!isRevealed) {
+              // Hidden/next item — tappable
+              return (
+                <Pressable
+                  key={i}
+                  onPress={() => handleTapItem(i)}
+                  style={[
+                    diagramStyles.hiddenItem,
+                    {
+                      backgroundColor: colors.surface,
+                      borderColor: isNext ? skillColor + '40' : colors.border,
+                      opacity: isNext ? 1 : 0.35,
+                    },
+                  ]}
+                >
+                  <View style={[diagramStyles.itemIconWrap, { backgroundColor: (isNext ? skillColor : colors.text3) + '10' }]}>
+                    <InlineIcon name={(EMOJI_ICON_MAP[item.emoji] || 'info') as any} size={18} color={isNext ? skillColor : colors.text3} />
+                  </View>
+                  <Text style={[diagramStyles.hiddenLabel, { color: isNext ? skillColor : colors.text3 }]}>
+                    {isNext ? 'Tik om te onthullen' : `Stap ${i + 1}`}
+                  </Text>
+                </Pressable>
+              );
+            }
+
+            // Revealed item
+            return (
+              <View
+                key={i}
+                style={[
+                  diagramStyles.item,
+                  { backgroundColor: colors.surface, borderColor: colors.border },
+                ]}
+              >
+                <View style={[diagramStyles.itemIconWrap, { backgroundColor: skillColor + '10' }]}>
+                  <InlineIcon name={(EMOJI_ICON_MAP[item.emoji] || 'info') as any} size={20} color={skillColor} />
+                </View>
+                <View style={diagramStyles.itemContent}>
+                  <Text style={[diagramStyles.itemLabel, { color: colors.text }]}>{item.label}</Text>
+                  <Text style={[diagramStyles.itemDesc, { color: colors.text2 }]}>{item.description}</Text>
+                </View>
+              </View>
+            );
+          })}
+        </View>
+
+        {allRevealed && (
+          <Pressable
+            onPress={onComplete}
+            style={[cardStyles.continueBtn, { backgroundColor: skillColor }]}
+          >
+            <Text style={cardStyles.continueBtnText}>Volgende</Text>
+            <InlineIcon name="arrowRight" size={16} color="#fff" />
+          </Pressable>
+        )}
+      </View>
+    </View>
+  );
+}
+
+const diagramStyles = StyleSheet.create({
+  itemsList: { gap: 10, width: '100%' },
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    padding: 16,
+    borderRadius: 14,
+    borderWidth: 1,
+  },
+  hiddenItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    padding: 16,
+    borderRadius: 14,
+    borderWidth: 1.5,
+    minHeight: 56,
+  },
+  hiddenLabel: { fontSize: 14, fontWeight: '700' },
+  itemIconWrap: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+  },
+  itemContent: { flex: 1 },
+  itemLabel: { fontSize: 16, fontWeight: '800', marginBottom: 2 },
+  itemDesc: { fontSize: 14, lineHeight: 20 },
+});
+
+// ── KeuzeCard ───────────────────────────────────────────────────────────────
+function KeuzeCard({
+  stage,
+  skillColor,
+  onComplete,
+}: {
+  stage: Stage;
   skillColor: string;
   onComplete: (correct: boolean) => void;
 }) {
   const { colors } = useTheme();
   const [chosen, setChosen] = useState<string | null>(null);
-  const [showAlternative, setShowAlternative] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
   const revealAnim = useRef(new Animated.Value(0)).current;
+  const choices = stage.choices ?? [];
 
   function handleChoose(choice: ScenarioChoice) {
     if (chosen) return;
@@ -455,204 +651,156 @@ function ScenarioStage({
   const isCorrect = chosenChoice?.isCorrect ?? null;
 
   return (
-    <View style={stageShared.container}>
-      {/* Situation */}
-      <View style={[scenarioStyles.situationCard, { backgroundColor: colors.surface2 }]}>
-        <Text style={[scenarioStyles.situationText, { color: colors.text }]}>{situation}</Text>
-      </View>
+    <View style={cardStyles.fullCard}>
+      <View style={[cardStyles.cardInner, { backgroundColor: skillColor + '08' }]}>
+        <View style={cardStyles.stageIcon}>
+          <AppIcon name="target" size="lg" variant="featured" color={skillColor} bgColor={skillColor + '12'} iconSize={24} />
+        </View>
+        <Text style={[cardStyles.cardLabel, { color: skillColor }]}>WAT ZOU JIJ DOEN?</Text>
 
-      {/* Wat zou jij doen? */}
-      {!chosen && (
-        <Text style={[scenarioStyles.prompt, { color: colors.text }]}>Wat zou jij doen?</Text>
-      )}
+        {/* Situatie */}
+        <View style={[keuzeStyles.situationCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <Text style={[keuzeStyles.situationText, { color: colors.text }]}>{stage.situation}</Text>
+        </View>
 
-      {/* Choices */}
-      <View style={scenarioStyles.choicesContainer}>
-        {choices.map((choice) => {
-          const isThis = chosen === choice.id;
-          let borderColor = colors.border;
-          let bg = colors.surface;
-          if (chosen) {
-            if (choice.isCorrect) {
-              borderColor = '#22C55E';
-              bg = 'rgba(34,197,94,0.08)';
-            } else if (isThis && !choice.isCorrect) {
-              borderColor = '#EF4444';
-              bg = 'rgba(239,68,68,0.08)';
-            } else {
-              bg = colors.surface2;
-            }
-          }
-          return (
-            <Pressable
-              key={choice.id}
-              onPress={() => handleChoose(choice)}
-              disabled={!!chosen}
-              style={[scenarioStyles.choiceBtn, { backgroundColor: bg, borderColor, opacity: chosen && !isThis && !choice.isCorrect ? 0.5 : 1 }]}
-            >
-              {chosen && choice.isCorrect && (
-                <InlineIcon name="checkCircle" size={18} color="#22C55E" />
-              )}
-              {chosen && isThis && !choice.isCorrect && (
-                <InlineIcon name="xCircle" size={18} color="#EF4444" />
-              )}
-              <Text style={[scenarioStyles.choiceText, { color: colors.text }]}>{choice.text}</Text>
-            </Pressable>
-          );
-        })}
-      </View>
+        {/* Keuzes */}
+        {!chosen && (
+          <View style={keuzeStyles.choicesContainer}>
+            {choices.map((choice) => (
+              <Pressable
+                key={choice.id}
+                onPress={() => handleChoose(choice)}
+                style={[keuzeStyles.choiceBtn, { backgroundColor: colors.surface, borderColor: skillColor + '30' }]}
+              >
+                <Text style={[keuzeStyles.choiceText, { color: colors.text }]}>{choice.text}</Text>
+              </Pressable>
+            ))}
+          </View>
+        )}
 
-      {/* Reveal — volledige teksten na keuze */}
-      {chosen && chosenChoice && (
-        <Animated.View
-          style={{
+        {/* Resultaat na keuze */}
+        {chosen && chosenChoice && (
+          <Animated.View style={{
             opacity: revealAnim,
             transform: [{ translateY: revealAnim.interpolate({ inputRange: [0, 1], outputRange: [30, 0] }) }],
-          }}
-        >
-          {/* Resultaat banner */}
-          <View style={[scenarioStyles.resultBanner, {
-            backgroundColor: isCorrect ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.08)',
-          }]}>
-            <InlineIcon name={isCorrect ? 'checkCircle' : 'xCircle'} size={24} color={isCorrect ? '#22C55E' : '#EF4444'} />
-            <Text style={[scenarioStyles.resultTitle, { color: isCorrect ? '#22C55E' : '#EF4444' }]}>
-              {isCorrect ? 'Goed gekozen!' : 'Niet helemaal...'}
-            </Text>
-          </View>
-
-          {/* Jouw keuze — volledige aanpak-tekst */}
-          <View style={[scenarioStyles.approachCard, {
-            backgroundColor: colors.surface,
-            borderColor: isCorrect ? '#22C55E40' : '#EF444440',
-          }]}>
-            <View style={[scenarioStyles.approachBadge, {
-              backgroundColor: isCorrect ? 'rgba(34,197,94,0.12)' : 'rgba(239,68,68,0.1)',
+          }}>
+            {/* Banner */}
+            <View style={[keuzeStyles.resultBanner, {
+              backgroundColor: isCorrect ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.08)',
             }]}>
-              <Text style={[scenarioStyles.approachBadgeText, {
-                color: isCorrect ? '#22C55E' : '#EF4444',
-              }]}>JOUW KEUZE</Text>
+              <InlineIcon name={isCorrect ? 'checkCircle' : 'xCircle'} size={24} color={isCorrect ? '#22C55E' : '#EF4444'} />
+              <Text style={[keuzeStyles.resultTitle, { color: isCorrect ? '#22C55E' : '#EF4444' }]}>
+                {isCorrect ? 'Goed gekozen!' : 'Niet helemaal...'}
+              </Text>
             </View>
-            <ParagraphText text={chosenChoice.fullText} color={colors.text2} />
-          </View>
 
-          {/* Uitleg — inklapbaar */}
-          {explanation && (
-            <View>
-              <Pressable
-                onPress={() => setShowExplanation(!showExplanation)}
-                style={scenarioStyles.alternativeToggle}
-              >
-                <Text style={[scenarioStyles.alternativeToggleText, { color: skillColor }]}>
-                  {showExplanation ? 'Verberg uitleg' : 'Bekijk uitleg'}
-                </Text>
-              </Pressable>
-              {showExplanation && (
-                <View style={[scenarioStyles.explanationCard, {
-                  backgroundColor: colors.surface,
-                  borderColor: colors.border,
-                }]}>
-                  <Text style={[scenarioStyles.explanationLabel, { color: skillColor }]}>Uitleg</Text>
-                  <ParagraphText text={explanation} color={colors.text2} />
-                </View>
-              )}
-            </View>
-          )}
-
-          {/* Alternatief */}
-          {isCorrect && wrongChoice ? (
-            /* Bij juiste keuze: inklapbaar alternatief */
-            <View>
-              <Pressable
-                onPress={() => setShowAlternative(!showAlternative)}
-                style={scenarioStyles.alternativeToggle}
-              >
-                <Text style={[scenarioStyles.alternativeToggleText, { color: skillColor }]}>
-                  {showAlternative ? 'Verberg de foute aanpak' : 'Bekijk de foute aanpak'}
-                </Text>
-              </Pressable>
-              {showAlternative && (
-                <View style={[scenarioStyles.approachCard, {
-                  backgroundColor: colors.surface,
-                  borderColor: '#EF444430',
-                }]}>
-                  <View style={[scenarioStyles.approachBadge, { backgroundColor: 'rgba(239,68,68,0.1)' }]}>
-                    <Text style={[scenarioStyles.approachBadgeText, { color: '#EF4444' }]}>FOUTE AANPAK</Text>
-                  </View>
-                  <ParagraphText text={wrongChoice.fullText} color={colors.text2} />
-                </View>
-              )}
-            </View>
-          ) : !isCorrect && correctChoice ? (
-            /* Bij foute keuze: betere aanpak direct zichtbaar */
-            <View style={[scenarioStyles.approachCard, {
+            {/* Jouw keuze */}
+            <View style={[keuzeStyles.approachCard, {
               backgroundColor: colors.surface,
-              borderColor: '#22C55E40',
+              borderColor: isCorrect ? '#22C55E40' : '#EF444440',
             }]}>
-              <View style={[scenarioStyles.approachBadge, { backgroundColor: 'rgba(34,197,94,0.12)' }]}>
-                <Text style={[scenarioStyles.approachBadgeText, { color: '#22C55E' }]}>BETERE AANPAK</Text>
+              <View style={[keuzeStyles.approachBadge, {
+                backgroundColor: isCorrect ? 'rgba(34,197,94,0.12)' : 'rgba(239,68,68,0.1)',
+              }]}>
+                <Text style={[keuzeStyles.approachBadgeText, {
+                  color: isCorrect ? '#22C55E' : '#EF4444',
+                }]}>JOUW KEUZE</Text>
               </View>
-              <ParagraphText text={correctChoice.fullText} color={colors.text2} />
+              <ParagraphText text={chosenChoice.fullText} color={colors.text2} />
             </View>
-          ) : null}
 
-          <Pressable
-            onPress={() => onComplete(isCorrect === true)}
-            style={[stageShared.ctaButton, { backgroundColor: skillColor, marginTop: 20 }]}
-          >
-            <Text style={stageShared.ctaText}>Volgende etappe</Text>
-            <InlineIcon name="arrowRight" size={16} color="#fff" />
-          </Pressable>
-        </Animated.View>
-      )}
+            {/* Betere aanpak bij fout */}
+            {!isCorrect && correctChoice && (
+              <View style={[keuzeStyles.approachCard, {
+                backgroundColor: colors.surface,
+                borderColor: '#22C55E40',
+              }]}>
+                <View style={[keuzeStyles.approachBadge, { backgroundColor: 'rgba(34,197,94,0.12)' }]}>
+                  <Text style={[keuzeStyles.approachBadgeText, { color: '#22C55E' }]}>BETERE AANPAK</Text>
+                </View>
+                <ParagraphText text={correctChoice.fullText} color={colors.text2} />
+              </View>
+            )}
+
+            {/* Foute aanpak bij goed antwoord — zodat papa het verschil ziet */}
+            {isCorrect && wrongChoice && (
+              <View style={[keuzeStyles.approachCard, {
+                backgroundColor: colors.surface,
+                borderColor: '#EF444425',
+              }]}>
+                <View style={[keuzeStyles.approachBadge, { backgroundColor: 'rgba(239,68,68,0.08)' }]}>
+                  <Text style={[keuzeStyles.approachBadgeText, { color: '#EF4444' }]}>DIT LIEVER NIET</Text>
+                </View>
+                <ParagraphText text={wrongChoice.fullText} color={colors.text3} />
+              </View>
+            )}
+
+            {/* Uitleg toggle */}
+            {stage.explanation && (
+              <View>
+                <Pressable
+                  onPress={() => {
+                    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                    setShowExplanation(!showExplanation);
+                  }}
+                  style={keuzeStyles.explanationToggle}
+                >
+                  <Text style={[keuzeStyles.explanationToggleText, { color: skillColor }]}>
+                    {showExplanation ? 'Verberg uitleg' : 'Waarom?'}
+                  </Text>
+                </Pressable>
+                {showExplanation && (
+                  <View style={[keuzeStyles.explanationCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                    <ParagraphText text={stage.explanation} color={colors.text2} />
+                  </View>
+                )}
+              </View>
+            )}
+
+            <Pressable
+              onPress={() => onComplete(isCorrect === true)}
+              style={[cardStyles.continueBtn, { backgroundColor: skillColor, marginTop: 20 }]}
+            >
+              <Text style={cardStyles.continueBtnText}>Volgende</Text>
+              <InlineIcon name="arrowRight" size={16} color="#fff" />
+            </Pressable>
+          </Animated.View>
+        )}
+      </View>
     </View>
   );
 }
 
-const scenarioStyles = StyleSheet.create({
+const keuzeStyles = StyleSheet.create({
   situationCard: {
-    borderRadius: 20,
-    padding: 24,
-    marginBottom: 24,
+    borderRadius: 16,
+    borderWidth: 1,
+    padding: 20,
+    marginBottom: 20,
   },
-  situationText: {
-    fontSize: 16,
-    lineHeight: 26,
-    fontWeight: '500',
-  },
-  prompt: {
-    fontSize: 18,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
+  situationText: { fontSize: 16, lineHeight: 26, fontWeight: '500' },
   choicesContainer: { gap: 12 },
   choiceBtn: {
     borderRadius: 14,
     borderWidth: 1.5,
     padding: 18,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 10,
   },
-  choiceIconWrap: { marginTop: 1 },
-  choiceText: { fontSize: 15, lineHeight: 22, fontWeight: '600', flex: 1 },
+  choiceText: { fontSize: 15, lineHeight: 22, fontWeight: '600' },
   resultBanner: {
     borderRadius: 14,
     padding: 16,
-    marginTop: 20,
     marginBottom: 16,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
     justifyContent: 'center',
   },
-  resultIcon: { marginRight: 2 },
   resultTitle: { fontSize: 20, fontWeight: '800' },
   approachCard: {
     borderRadius: 16,
     borderWidth: 1,
     padding: 20,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   approachBadge: {
     alignSelf: 'flex-start',
@@ -661,282 +809,89 @@ const scenarioStyles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 14,
   },
-  approachBadgeText: {
-    fontSize: 11,
-    fontWeight: '800',
-    letterSpacing: 1.2,
-  },
+  approachBadgeText: { fontSize: 11, fontWeight: '800', letterSpacing: 1.2 },
+  explanationToggle: { alignSelf: 'center', paddingVertical: 10 },
+  explanationToggleText: { fontSize: 14, fontWeight: '700' },
   explanationCard: {
-    borderRadius: 16,
-    borderWidth: 1,
-    padding: 20,
-    marginBottom: 16,
-  },
-  explanationLabel: {
-    fontSize: 12,
-    fontWeight: '800',
-    letterSpacing: 1,
-    textTransform: 'uppercase',
-    marginBottom: 12,
-  },
-  alternativeToggle: {
-    alignSelf: 'center',
-    paddingVertical: 10,
-    marginBottom: 8,
-  },
-  alternativeToggleText: {
-    fontSize: 14,
-    fontWeight: '700',
-  },
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// QuizStage
-// ─────────────────────────────────────────────────────────────────────────────
-
-function QuizStage({
-  questions,
-  skillColor,
-  onComplete,
-}: {
-  questions: QuizQuestion[];
-  skillColor: string;
-  onComplete: (correct: number, total: number) => void;
-}) {
-  const { colors } = useTheme();
-  const [qIndex, setQIndex] = useState(0);
-  const [selected, setSelected] = useState<string | null>(null);
-  const [score, setScore] = useState(0);
-
-  const q = questions[qIndex];
-  const isLast = qIndex >= questions.length - 1;
-
-  function handleSelect(optId: string) {
-    if (selected) return;
-    setSelected(optId);
-    const correct = q.options.find((o) => o.id === optId)?.isCorrect;
-    if (correct) setScore((s) => s + 1);
-    Haptics.impactAsync(correct ? Haptics.ImpactFeedbackStyle.Light : Haptics.ImpactFeedbackStyle.Heavy);
-  }
-
-  function handleNext() {
-    if (isLast) {
-      const finalScore = score + (q.options.find((o) => o.id === selected)?.isCorrect ? 0 : 0); // score already updated
-      onComplete(score, questions.length);
-    } else {
-      setSelected(null);
-      setQIndex((i) => i + 1);
-    }
-  }
-
-  return (
-    <View style={stageShared.container}>
-      <Text style={[stageShared.badgeLabel, { color: skillColor, textAlign: 'center', marginBottom: 16 }]}>
-        Vraag {qIndex + 1} van {questions.length}
-      </Text>
-
-      <Text style={[quizStyles.question, { color: colors.text }]}>{q.question}</Text>
-
-      <View style={quizStyles.optionsContainer}>
-        {q.options.map((opt) => {
-          let bg = colors.surface;
-          let border = colors.border;
-          if (selected) {
-            if (opt.isCorrect) {
-              bg = 'rgba(34,197,94,0.1)';
-              border = '#22C55E';
-            } else if (opt.id === selected && !opt.isCorrect) {
-              bg = 'rgba(239,68,68,0.08)';
-              border = '#EF4444';
-            }
-          }
-          return (
-            <Pressable
-              key={opt.id}
-              onPress={() => handleSelect(opt.id)}
-              disabled={!!selected}
-              style={[quizStyles.option, { backgroundColor: bg, borderColor: border }]}
-            >
-              {selected && opt.isCorrect && <InlineIcon name="checkCircle" size={16} color="#22C55E" />}
-              {selected && opt.id === selected && !opt.isCorrect && <InlineIcon name="xCircle" size={16} color="#EF4444" />}
-              <Text style={[quizStyles.optText, { color: colors.text }]}>{opt.text}</Text>
-            </Pressable>
-          );
-        })}
-      </View>
-
-      {selected && (
-        <View style={[quizStyles.explanationCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <Text style={[quizStyles.explanation, { color: colors.text2 }]}>{q.explanation}</Text>
-        </View>
-      )}
-
-      {selected && (
-        <Pressable
-          onPress={handleNext}
-          style={[stageShared.ctaButton, { backgroundColor: skillColor }]}
-        >
-          <Text style={stageShared.ctaText}>
-            {isLast ? `Klaar! ${score}/${questions.length} goed` : 'Volgende vraag'}
-          </Text>
-        </Pressable>
-      )}
-
-      {/* Score indicator */}
-      <View style={quizStyles.scoreRow}>
-        {questions.map((_, i) => (
-          <View
-            key={i}
-            style={[
-              quizStyles.scoreDot,
-              {
-                backgroundColor:
-                  i < qIndex ? (i < score ? '#22C55E' : '#EF4444')
-                  : i === qIndex ? skillColor + '40'
-                  : colors.surface2,
-              },
-            ]}
-          />
-        ))}
-      </View>
-    </View>
-  );
-}
-
-const quizStyles = StyleSheet.create({
-  question: { fontSize: 18, fontWeight: '700', lineHeight: 26, marginBottom: 20, textAlign: 'center' },
-  optionsContainer: { gap: 10 },
-  option: {
-    borderRadius: 14,
-    borderWidth: 1.5,
-    padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  optIconWrap: { marginRight: 2 },
-  optText: { fontSize: 15, fontWeight: '600', flex: 1, lineHeight: 21 },
-  explanationCard: { borderRadius: 12, borderWidth: 1, padding: 16, marginTop: 16 },
-  explanation: { fontSize: 14, lineHeight: 21 },
-  scoreRow: { flexDirection: 'row', justifyContent: 'center', gap: 8, marginTop: 20 },
-  scoreDot: { width: 12, height: 12, borderRadius: 6 },
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// VideoStage
-// ─────────────────────────────────────────────────────────────────────────────
-
-function VideoStage({
-  youtubeId,
-  videoTitle,
-  videoDuration,
-  videoContext,
-  keyTakeaway,
-  skillColor,
-  onComplete,
-}: {
-  youtubeId: string;
-  videoTitle?: string;
-  videoDuration?: string;
-  videoContext?: string;
-  keyTakeaway?: string;
-  skillColor: string;
-  onComplete: () => void;
-}) {
-  const { colors } = useTheme();
-
-  return (
-    <View style={stageShared.container}>
-      {videoContext && (
-        <Text style={[videoStyles.context, { color: colors.text2 }]}>{videoContext}</Text>
-      )}
-
-      {videoTitle && (
-        <Text style={[videoStyles.videoTitleAbove, { color: colors.text }]}>{videoTitle}</Text>
-      )}
-
-      {/* Embedded YouTube player */}
-      <View style={videoStyles.playerContainer}>
-        <YouTubeEmbed
-          videoId={youtubeId}
-          height={220}
-          width={SCREEN_WIDTH - 40}
-        />
-      </View>
-
-      <View style={videoStyles.metaRow}>
-        {videoDuration && (
-          <Text style={[videoStyles.durationLabel, { color: colors.text3 }]}>Duur: {videoDuration}</Text>
-        )}
-        <Pressable onPress={() => Linking.openURL(`https://youtube.com/watch?v=${youtubeId}`)}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-            <Text style={[videoStyles.fallbackLink, { color: colors.text3 }]}>Bekijk op YouTube</Text>
-            <InlineIcon name="arrowRight" size={13} color={colors.text3} />
-          </View>
-        </Pressable>
-      </View>
-
-      {/* Key takeaway */}
-      {keyTakeaway && (
-        <View style={[videoStyles.takeawayCard, { backgroundColor: colors.surface, borderColor: skillColor + '40' }]}>
-          <Text style={[videoStyles.takeawayLabel, { color: skillColor }]}>Kernpunt</Text>
-          <Text style={[videoStyles.takeawayText, { color: colors.text }]}>{keyTakeaway}</Text>
-        </View>
-      )}
-
-      <Pressable
-        onPress={onComplete}
-        style={[stageShared.ctaButton, { backgroundColor: skillColor }]}
-      >
-        <Text style={stageShared.ctaText}>Volgende etappe</Text>
-      </Pressable>
-    </View>
-  );
-}
-
-const videoStyles = StyleSheet.create({
-  context: { fontSize: 15, lineHeight: 23, marginBottom: 12, textAlign: 'center' },
-  videoTitleAbove: { fontSize: 17, fontWeight: '700', textAlign: 'center', marginBottom: 14 },
-  playerContainer: {
-    borderRadius: 14,
-    overflow: 'hidden',
-    marginBottom: 12,
-  },
-  metaRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, paddingHorizontal: 4 },
-  durationLabel: { fontSize: 13, fontWeight: '600' },
-  fallbackLink: { fontSize: 13, fontWeight: '600' },
-  takeawayCard: {
     borderRadius: 14,
     borderWidth: 1,
     padding: 18,
-    marginBottom: 16,
+    marginBottom: 8,
   },
-  takeawayLabel: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 },
-  takeawayText: { fontSize: 15, lineHeight: 23, fontWeight: '600' },
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MissionStage
-// ─────────────────────────────────────────────────────────────────────────────
-
-function MissionStage({
-  missionTitle,
-  missionInstructions,
-  missionDuration,
-  missionTips,
+// ── StrategieCard ───────────────────────────────────────────────────────────
+function StrategieCard({
+  stage,
   skillColor,
   onComplete,
 }: {
-  missionTitle?: string;
-  missionInstructions?: string;
-  missionDuration?: number;
-  missionTips?: string[];
+  stage: Stage;
   skillColor: string;
   onComplete: () => void;
 }) {
   const { colors } = useTheme();
-  const [showTips, setShowTips] = useState(false);
+
+  return (
+    <View style={cardStyles.fullCard}>
+      <View style={[cardStyles.cardInner, { backgroundColor: colors.surface }]}>
+        <View style={[strategieStyles.iconWrap, { backgroundColor: skillColor + '12' }]}>
+          <InlineIcon name="shield" size={28} color={skillColor} />
+        </View>
+        <Text style={[cardStyles.cardLabel, { color: skillColor }]}>{stage.stageLabel}</Text>
+
+        {stage.strategieTitle && (
+          <Text style={[strategieStyles.title, { color: colors.text }]}>{stage.strategieTitle}</Text>
+        )}
+
+        {stage.strategieText && (
+          <Text style={[cardStyles.bodyText, { color: colors.text2 }]}>{stage.strategieText}</Text>
+        )}
+
+        <Pressable
+          onPress={onComplete}
+          style={[cardStyles.continueBtn, { backgroundColor: skillColor }]}
+        >
+          <Text style={cardStyles.continueBtnText}>Volgende</Text>
+          <InlineIcon name="arrowRight" size={16} color="#fff" />
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+const strategieStyles = StyleSheet.create({
+  iconWrap: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginBottom: 8,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '800',
+    textAlign: 'center',
+    marginBottom: 12,
+    lineHeight: 28,
+  },
+});
+
+// ── UitdagingCard ───────────────────────────────────────────────────────────
+function UitdagingCard({
+  stage,
+  skillColor,
+  onComplete,
+}: {
+  stage: Stage;
+  skillColor: string;
+  onComplete: () => void;
+}) {
+  const { colors } = useTheme();
   const [accepted, setAccepted] = useState(false);
+  const [showTips, setShowTips] = useState(false);
 
   function handleAccept() {
     setAccepted(true);
@@ -945,114 +900,120 @@ function MissionStage({
   }
 
   return (
-    <View style={stageShared.container}>
-      <View style={missionStyles.bigIcon}>
-        <AppIcon name="target" size="lg" variant="featured" color={skillColor} bgColor={skillColor + '15'} iconSize={36} />
-      </View>
-
-      <Text style={[missionStyles.title, { color: colors.text }]}>
-        {missionTitle || 'Jouw missie deze week'}
-      </Text>
-
-      {missionDuration != null && (
-        <View style={[missionStyles.durationBadge, { backgroundColor: skillColor + '18' }]}>
-          <Text style={[missionStyles.durationText, { color: skillColor }]}>{missionDuration} min</Text>
+    <View style={cardStyles.fullCard}>
+      <View style={[cardStyles.cardInner, { backgroundColor: colors.amberDim }]}>
+        <View style={[uitdagingStyles.iconWrap, { backgroundColor: colors.amber + '18' }]}>
+          <AppIcon name="target" size="lg" variant="featured" color={colors.amber} bgColor="transparent" iconSize={36} />
         </View>
-      )}
+        <Text style={[cardStyles.cardLabel, { color: colors.amber }]}>UITDAGING</Text>
 
-      {missionInstructions && (
-        <View style={[missionStyles.instructionsCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <MissionText text={missionInstructions} color={colors.text2} bulletColor={skillColor} />
-        </View>
-      )}
+        <Text style={[uitdagingStyles.title, { color: colors.text }]}>
+          {stage.missionTitle || 'Jouw uitdaging'}
+        </Text>
 
-      {/* Tips */}
-      {missionTips && missionTips.length > 0 && (
-        <View>
-          <Pressable onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); setShowTips(!showTips); }} style={missionStyles.tipsToggle}>
-            <Text style={[missionStyles.tipsToggleText, { color: skillColor }]}>
-              {showTips ? 'Verberg tips' : 'Bekijk tips'} ({missionTips.length})
-            </Text>
+        {stage.missionDuration != null && (
+          <View style={[uitdagingStyles.durationBadge, { backgroundColor: colors.amber + '18' }]}>
+            <InlineIcon name="clock" size={14} color={colors.amber} />
+            <Text style={[uitdagingStyles.durationText, { color: colors.amber }]}>{stage.missionDuration} min</Text>
+          </View>
+        )}
+
+        {stage.missionInstructions && (
+          <View style={[uitdagingStyles.instructionsCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <ParagraphText text={stage.missionInstructions} color={colors.text2} />
+          </View>
+        )}
+
+        {stage.missionTips && stage.missionTips.length > 0 && (
+          <View>
+            <Pressable
+              onPress={() => {
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                setShowTips(!showTips);
+              }}
+              style={uitdagingStyles.tipsToggle}
+            >
+              <Text style={[uitdagingStyles.tipsToggleText, { color: colors.amber }]}>
+                {showTips ? 'Verberg tips' : 'Bekijk tips'}
+              </Text>
+            </Pressable>
+            {showTips && (
+              <View style={[uitdagingStyles.tipsCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                {stage.missionTips.map((tip, i) => (
+                  <View key={i} style={uitdagingStyles.tipRow}>
+                    <Text style={[uitdagingStyles.tipBullet, { color: colors.amber }]}>{'\u2022'}</Text>
+                    <Text style={[uitdagingStyles.tipText, { color: colors.text2 }]}>{tip}</Text>
+                  </View>
+                ))}
+              </View>
+            )}
+          </View>
+        )}
+
+        {!accepted ? (
+          <Pressable
+            onPress={handleAccept}
+            style={[cardStyles.continueBtn, { backgroundColor: colors.amber, marginTop: 20 }]}
+          >
+            <Text style={cardStyles.continueBtnText}>Ik doe het!</Text>
+            <InlineIcon name="flame" size={16} color="#fff" />
           </Pressable>
-          {showTips && (
-            <View style={[missionStyles.tipsCard, { backgroundColor: colors.surface2, borderColor: colors.border }]}>
-              {missionTips.map((tip, i) => (
-                <View key={i} style={missionStyles.tipRow}>
-                  <Text style={[missionStyles.tipBullet, { color: skillColor }]}>{'\u2022'}</Text>
-                  <Text style={[missionStyles.tipText, { color: colors.text2 }]}>{tip}</Text>
-                </View>
-              ))}
-            </View>
-          )}
-        </View>
-      )}
-
-      {!accepted ? (
-        <Pressable
-          onPress={handleAccept}
-          style={[stageShared.ctaButton, { backgroundColor: skillColor, marginTop: 24 }]}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-            <Text style={stageShared.ctaText}>Missie Geaccepteerd</Text>
-            <InlineIcon name="check" size={16} color="#fff" />
+        ) : (
+          <View style={uitdagingStyles.acceptedRow}>
+            <InlineIcon name="checkCircle" size={20} color="#22C55E" />
+            <Text style={uitdagingStyles.acceptedText}>Uitdaging geaccepteerd!</Text>
           </View>
-        </Pressable>
-      ) : (
-        <View style={missionStyles.acceptedRow}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-            <InlineIcon name="checkCircle" size={18} color="#22C55E" />
-            <Text style={[missionStyles.acceptedText, { color: '#22C55E' }]}>
-              Missie geaccepteerd!
-            </Text>
-          </View>
-        </View>
-      )}
+        )}
+      </View>
     </View>
   );
 }
 
-const missionStyles = StyleSheet.create({
-  bigIcon: { alignItems: 'center', marginBottom: 16 },
+const uitdagingStyles = StyleSheet.create({
+  iconWrap: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginBottom: 4,
+  },
   title: { fontSize: 22, fontWeight: '800', textAlign: 'center', marginBottom: 12 },
-  durationBadge: { alignSelf: 'center', paddingHorizontal: 14, paddingVertical: 6, borderRadius: 12, marginBottom: 16 },
+  durationBadge: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
   durationText: { fontSize: 14, fontWeight: '700' },
-  instructionsCard: { borderRadius: 14, borderWidth: 1, padding: 20, marginBottom: 12 },
-  instructions: { fontSize: 15, lineHeight: 24 },
-  bulletRow: { flexDirection: 'row', gap: 8, marginBottom: 6 },
-  bulletDot: { fontSize: 16, marginTop: 1, fontWeight: '700' },
-  bulletNum: { fontSize: 14, fontWeight: '700', minWidth: 20 },
-  bulletText: { fontSize: 15, lineHeight: 24, flex: 1 },
+  instructionsCard: { borderRadius: 14, borderWidth: 1, padding: 20, marginBottom: 8 },
   tipsToggle: { alignSelf: 'center', paddingVertical: 8 },
   tipsToggleText: { fontSize: 14, fontWeight: '700' },
   tipsCard: { borderRadius: 12, borderWidth: 1, padding: 16, marginTop: 8 },
   tipRow: { flexDirection: 'row', gap: 10, marginBottom: 8 },
   tipBullet: { fontSize: 16, marginTop: 1 },
   tipText: { fontSize: 14, lineHeight: 21, flex: 1 },
-  acceptedRow: { alignItems: 'center', marginTop: 24 },
-  acceptedText: { fontSize: 18, fontWeight: '800' },
+  acceptedRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 24 },
+  acceptedText: { fontSize: 18, fontWeight: '800', color: '#22C55E' },
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ReflectionStage
-// ─────────────────────────────────────────────────────────────────────────────
-
-function ReflectionStage({
-  reflectionQuestion,
-  allQuestions,
+// ── SpiegelCard ─────────────────────────────────────────────────────────────
+function SpiegelCard({
+  stage,
   skillColor,
   onComplete,
-  summaryCard,
-  stageId,
   moduleId,
   moduleTitle,
   skill,
 }: {
-  reflectionQuestion?: string;
-  allQuestions?: string[];
+  stage: Stage;
   skillColor: string;
   onComplete: () => void;
-  summaryCard?: { title: string; body: string };
-  stageId?: string;
   moduleId?: string;
   moduleTitle?: string;
   skill?: string;
@@ -1060,17 +1021,15 @@ function ReflectionStage({
   const { colors } = useTheme();
   const { addReflectionNote } = useStore();
   const [journal, setJournal] = useState('');
-  const [showMore, setShowMore] = useState(false);
 
   function handleComplete() {
-    // Sla reflectie-notitie op als de gebruiker iets heeft geschreven
-    if (journal.trim() && moduleId && stageId && skill) {
+    if (journal.trim() && moduleId && stage.id && skill) {
       addReflectionNote({
         moduleId,
         moduleTitle: moduleTitle || '',
         skill,
-        stageId,
-        question: reflectionQuestion || 'Wat neem je mee uit deze module?',
+        stageId: stage.id,
+        question: stage.reflectionQuestion || 'Wat neem je mee?',
         note: journal.trim(),
         createdAt: new Date().toISOString(),
       });
@@ -1079,18 +1038,23 @@ function ReflectionStage({
   }
 
   return (
-    <View style={stageShared.container}>
-      <View style={[reflectStyles.gradientBg, { backgroundColor: skillColor + '08' }]}>
-        <View style={reflectStyles.emojiIcon}>
-          <AppIcon name="compass" size="lg" variant="featured" color={skillColor} bgColor={skillColor + '12'} iconSize={32} />
+    <View style={cardStyles.fullCard}>
+      <View style={[cardStyles.cardInner, { backgroundColor: colors.blueDim }]}>
+        <View style={cardStyles.stageIcon}>
+          <AppIcon name="compass" size="lg" variant="featured" color={colors.blue} bgColor={colors.blue + '12'} iconSize={24} />
         </View>
+        <Text style={[cardStyles.cardLabel, { color: colors.blue }]}>EVEN STILSTAAN</Text>
 
-        <Text style={[reflectStyles.mainQuestion, { color: colors.text }]}>
-          {reflectionQuestion || 'Wat neem je mee uit deze module?'}
+        {stage.spiegelContext && (
+          <Text style={[spiegelStyles.context, { color: colors.text3 }]}>{stage.spiegelContext}</Text>
+        )}
+
+        <Text style={[spiegelStyles.question, { color: colors.text }]}>
+          {stage.reflectionQuestion || 'Wat neem je mee uit deze module?'}
         </Text>
 
         <TextInput
-          style={[reflectStyles.input, { color: colors.text, backgroundColor: colors.surface, borderColor: colors.border }]}
+          style={[spiegelStyles.input, { color: colors.text, backgroundColor: colors.surface, borderColor: colors.border }]}
           placeholder="Schrijf hier je gedachten... (optioneel)"
           placeholderTextColor={colors.text3}
           multiline
@@ -1099,53 +1063,38 @@ function ReflectionStage({
           onChangeText={setJournal}
         />
         {journal.trim().length > 0 && (
-          <Text style={[reflectStyles.savedHint, { color: colors.text3 }]}>
+          <Text style={[spiegelStyles.savedHint, { color: colors.text3 }]}>
             Je notitie wordt opgeslagen bij het afronden
           </Text>
         )}
 
-        {allQuestions && allQuestions.length > 1 && (
-          <View>
-            <Pressable onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); setShowMore(!showMore); }} style={reflectStyles.moreToggle}>
-              <Text style={[reflectStyles.moreToggleText, { color: skillColor }]}>
-                {showMore ? 'Verberg extra vragen' : 'Meer reflectievragen'}
+        {/* Extra vragen */}
+        {stage.allQuestions && stage.allQuestions.length > 1 && (
+          <View style={spiegelStyles.moreList}>
+            <Text style={[spiegelStyles.moreLabel, { color: colors.text3 }]}>Meer om over na te denken:</Text>
+            {stage.allQuestions.slice(1, 3).map((q, i) => (
+              <Text key={i} style={[spiegelStyles.moreQuestion, { color: colors.text2 }]}>
+                {'\u2022'} {q}
               </Text>
-            </Pressable>
-            {showMore && (
-              <View style={reflectStyles.moreList}>
-                {allQuestions.slice(1).map((q, i) => (
-                  <Text key={i} style={[reflectStyles.moreQuestion, { color: colors.text2 }]}>
-                    {'\u2022'} {q}
-                  </Text>
-                ))}
-              </View>
-            )}
-          </View>
-        )}
-
-        {/* Samenvatting als afsluiter */}
-        {summaryCard && (
-          <View style={[reflectStyles.summaryCard, { backgroundColor: colors.surface, borderColor: skillColor + '30' }]}>
-            <Text style={[reflectStyles.summaryBadge, { color: skillColor }]}>IN HET KORT</Text>
-            <ParagraphText text={summaryCard.body} color={colors.text2} />
+            ))}
           </View>
         )}
 
         <Pressable
           onPress={handleComplete}
-          style={[stageShared.ctaButton, { backgroundColor: skillColor, marginTop: 24 }]}
+          style={[cardStyles.continueBtn, { backgroundColor: colors.blue, marginTop: 20 }]}
         >
-          <Text style={stageShared.ctaText}>Afronden</Text>
+          <Text style={cardStyles.continueBtnText}>Afronden</Text>
+          <InlineIcon name="arrowRight" size={16} color="#fff" />
         </Pressable>
       </View>
     </View>
   );
 }
 
-const reflectStyles = StyleSheet.create({
-  gradientBg: { borderRadius: 20, padding: 24, marginHorizontal: -24, marginTop: -8, paddingTop: 8 },
-  emojiIcon: { alignItems: 'center', marginBottom: 16 },
-  mainQuestion: { fontSize: 20, fontWeight: '700', textAlign: 'center', lineHeight: 28, marginBottom: 20 },
+const spiegelStyles = StyleSheet.create({
+  context: { fontSize: 13, fontWeight: '600', textAlign: 'center', marginBottom: 12, fontStyle: 'italic' },
+  question: { fontSize: 20, fontWeight: '700', textAlign: 'center', lineHeight: 28, marginBottom: 20 },
   input: {
     borderRadius: 14,
     borderWidth: 1,
@@ -1154,27 +1103,200 @@ const reflectStyles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
   },
-  savedHint: {
-    fontSize: 12,
-    marginTop: 6,
-    textAlign: 'center',
-    fontStyle: 'italic',
-  },
-  moreToggle: { alignSelf: 'center', paddingVertical: 10, marginTop: 8 },
-  moreToggleText: { fontSize: 14, fontWeight: '700' },
-  moreList: { gap: 10, marginTop: 8 },
+  savedHint: { fontSize: 12, marginTop: 6, textAlign: 'center', fontStyle: 'italic' },
+  moreList: { marginTop: 16, gap: 8 },
+  moreLabel: { fontSize: 12, fontWeight: '700', letterSpacing: 0.5, textTransform: 'uppercase', marginBottom: 4 },
   moreQuestion: { fontSize: 14, lineHeight: 21 },
-  summaryCard: {
-    marginTop: 20,
+});
+
+// ── SamenvattingCard ────────────────────────────────────────────────────────
+function SamenvattingCard({
+  stage,
+  skillColor,
+  onComplete,
+}: {
+  stage: Stage;
+  skillColor: string;
+  onComplete: () => void;
+}) {
+  const { colors } = useTheme();
+  const takeaways = stage.takeaways ?? [];
+
+  return (
+    <View style={cardStyles.fullCard}>
+      <View style={[cardStyles.cardInner, { backgroundColor: skillColor + '08' }]}>
+        <View style={cardStyles.stageIcon}>
+          <AppIcon name="bookMarked" size="lg" variant="featured" color={skillColor} bgColor={skillColor + '12'} iconSize={24} />
+        </View>
+        <Text style={[cardStyles.cardLabel, { color: skillColor }]}>ONTHOUD DIT</Text>
+
+        <View style={samenvattingStyles.takeawaysList}>
+          {takeaways.map((t, i) => (
+            <View key={i} style={[samenvattingStyles.takeawayRow, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <View style={[samenvattingStyles.checkCircle, { backgroundColor: skillColor + '15' }]}>
+                <InlineIcon name="check" size={14} color={skillColor} />
+              </View>
+              <Text style={[samenvattingStyles.takeawayText, { color: colors.text }]}>{t}</Text>
+            </View>
+          ))}
+        </View>
+
+        {stage.researchRef && (
+          <View style={[samenvattingStyles.researchCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <InlineIcon name="bookOpen" size={14} color={colors.text3} />
+            <Text style={[samenvattingStyles.researchText, { color: colors.text3 }]}>{stage.researchRef}</Text>
+          </View>
+        )}
+
+        <Pressable
+          onPress={onComplete}
+          style={[cardStyles.continueBtn, { backgroundColor: skillColor, marginTop: 20 }]}
+        >
+          <Text style={cardStyles.continueBtnText}>Module afronden</Text>
+          <InlineIcon name="checkCircle" size={16} color="#fff" />
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+const samenvattingStyles = StyleSheet.create({
+  takeawaysList: { gap: 12, width: '100%' },
+  takeawayRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 14,
     padding: 16,
     borderRadius: 14,
     borderWidth: 1,
   },
-  summaryBadge: {
-    fontSize: 10,
-    fontWeight: '800',
-    letterSpacing: 1,
+  checkCircle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 1,
+  },
+  takeawayText: { fontSize: 15, lineHeight: 22, fontWeight: '600', flex: 1 },
+  researchCard: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+    padding: 14,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginTop: 16,
+  },
+  researchText: { fontSize: 12, lineHeight: 18, flex: 1, fontStyle: 'italic' },
+});
+
+// ── Shared card styles ──────────────────────────────────────────────────────
+const cardStyles = StyleSheet.create({
+  fullCard: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 8,
+  },
+  cardInner: {
+    borderRadius: 24,
+    padding: 28,
+    alignItems: 'center',
+  },
+  stageIcon: {
     marginBottom: 8,
+  },
+  cardLabel: {
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 2,
+    textTransform: 'uppercase',
+    marginBottom: 16,
+  },
+  bodyText: {
+    fontSize: 16,
+    lineHeight: 26,
+    fontWeight: '500',
+    textAlign: 'left',
+    alignSelf: 'stretch',
+  },
+  herkenText: {
+    fontSize: 18,
+    lineHeight: 28,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  herkenButtons: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  herkenBtn: {
+    flex: 1,
+    borderRadius: 14,
+    borderWidth: 1.5,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  herkenBtnText: {
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  herkenResponse: {
+    borderRadius: 14,
+    padding: 18,
+    marginTop: 16,
+  },
+  herkenResponseText: {
+    fontSize: 15,
+    fontWeight: '600',
+    textAlign: 'center',
+    lineHeight: 22,
+  },
+  highlightBlock: {
+    borderLeftWidth: 3,
+    paddingLeft: 14,
+    paddingVertical: 10,
+    paddingRight: 8,
+    marginBottom: 16,
+    borderRadius: 6,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+    alignSelf: 'stretch',
+  },
+  highlightText: {
+    fontSize: 14,
+    lineHeight: 21,
+    fontWeight: '700',
+    fontStyle: 'italic',
+  },
+  readMoreToggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    alignSelf: 'center',
+    paddingVertical: 10,
+    marginTop: 8,
+  },
+  readMoreText: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  continueBtn: {
+    borderRadius: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    marginTop: 24,
+    alignSelf: 'stretch',
+  },
+  continueBtnText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '800',
   },
 });
 
@@ -1184,7 +1306,6 @@ const reflectStyles = StyleSheet.create({
 
 function ModuleCompletionScreen({
   moduleStages,
-  quizScore,
   skillColor,
   onNextModule,
   onBack,
@@ -1192,7 +1313,6 @@ function ModuleCompletionScreen({
   nextModuleTitle,
 }: {
   moduleStages: ModuleStages;
-  quizScore: { correct: number; total: number };
   skillColor: string;
   onNextModule: (() => void) | null;
   onBack: () => void;
@@ -1217,7 +1337,7 @@ function ModuleCompletionScreen({
         <View style={completeStyles.bigCheckIcon}>
           <AppIcon name="checkCircle" size="lg" variant="featured" color="#22C55E" bgColor="rgba(34,197,94,0.10)" iconSize={44} />
         </View>
-        <Text style={[completeStyles.title, { color: colors.text }]}>Missie Voltooid!</Text>
+        <Text style={[completeStyles.title, { color: colors.text }]}>Module Voltooid!</Text>
         <Text style={[completeStyles.moduleName, { color: skillColor }]}>{moduleStages.title}</Text>
 
         {/* XP summary */}
@@ -1228,16 +1348,6 @@ function ModuleCompletionScreen({
           </View>
           <Text style={[completeStyles.xpLabel, { color: colors.text2 }]}>verdiend</Text>
         </View>
-
-        {/* Quiz score */}
-        {quizScore.total > 0 && (
-          <View style={[completeStyles.scoreCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-            <Text style={[completeStyles.scoreTitle, { color: colors.text }]}>Quiz score</Text>
-            <Text style={[completeStyles.scoreValue, { color: skillColor }]}>
-              {quizScore.correct}/{quizScore.total}
-            </Text>
-          </View>
-        )}
 
         {/* Key takeaways */}
         {moduleStages.keyTakeaways.length > 0 && (
@@ -1277,7 +1387,7 @@ function ModuleCompletionScreen({
               style={[completeStyles.primaryBtn, { backgroundColor: skillColor }]}
             >
               <View>
-                <Text style={completeStyles.primaryBtnLabel}>Volgende Missie</Text>
+                <Text style={completeStyles.primaryBtnLabel}>Volgende Module</Text>
                 {nextModuleTitle && (
                   <Text style={completeStyles.primaryBtnTitle} numberOfLines={1}>{nextModuleTitle}</Text>
                 )}
@@ -1324,18 +1434,6 @@ const completeStyles = StyleSheet.create({
   xpIconRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   xpValue: { fontSize: 34, fontWeight: '900', color: '#F59E0B', letterSpacing: -0.5 },
   xpLabel: { fontSize: 14, fontWeight: '600', marginTop: 4 },
-  scoreCard: {
-    borderRadius: 14,
-    borderWidth: 1,
-    padding: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    marginBottom: 16,
-  },
-  scoreTitle: { fontSize: 15, fontWeight: '700' },
-  scoreValue: { fontSize: 20, fontWeight: '900' },
   takeawaysCard: {
     borderRadius: 18,
     borderWidth: 1,
@@ -1358,7 +1456,6 @@ const completeStyles = StyleSheet.create({
   },
   primaryBtnLabel: { color: 'rgba(255,255,255,0.75)', fontSize: 12, fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.5 },
   primaryBtnTitle: { color: '#fff', fontSize: 16, fontWeight: '800', marginTop: 2 },
-  arrowIcon: { marginLeft: 4 },
   secondaryBtn: {
     borderRadius: 14,
     borderWidth: 1,
@@ -1376,40 +1473,68 @@ const completeStyles = StyleSheet.create({
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Shared stage styles
+// Stage renderer — dispatches to the right card component
 // ─────────────────────────────────────────────────────────────────────────────
 
-const stageShared = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 8,
-  },
-  topBadge: {
-    alignSelf: 'center',
-    marginBottom: 20,
-  },
-  badgeLabel: {
-    fontSize: 12,
-    fontWeight: '800',
-    letterSpacing: 2,
-    textTransform: 'uppercase',
-  },
-  ctaButton: {
-    borderRadius: 16,
-    paddingVertical: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    marginTop: 16,
-  },
-  ctaText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '800',
-  },
-});
+function renderStage(
+  stage: Stage,
+  skillColor: string,
+  onComplete: (xp: number) => void,
+  moduleInfo: { moduleId: string; moduleTitle: string; skill: string },
+) {
+  switch (stage.type) {
+    case 'herken':
+      return <HerkenCard stage={stage} skillColor={skillColor} onComplete={() => onComplete(stage.xpReward)} />;
+    case 'inzicht':
+      return <InzichtCard stage={stage} skillColor={skillColor} onComplete={() => onComplete(stage.xpReward)} />;
+    case 'wist_je_dat':
+      return <WistJeDatCard stage={stage} skillColor={skillColor} onComplete={() => onComplete(stage.xpReward)} />;
+    case 'diagram':
+      return <DiagramCard stage={stage} skillColor={skillColor} onComplete={() => onComplete(stage.xpReward)} />;
+    case 'keuze':
+      return <KeuzeCard stage={stage} skillColor={skillColor} onComplete={(correct) => onComplete(stage.xpReward + (correct ? 5 : 0))} />;
+    case 'strategie':
+      return <StrategieCard stage={stage} skillColor={skillColor} onComplete={() => onComplete(stage.xpReward)} />;
+    case 'uitdaging':
+      return <UitdagingCard stage={stage} skillColor={skillColor} onComplete={() => onComplete(stage.xpReward)} />;
+    case 'spiegel':
+      return (
+        <SpiegelCard
+          stage={stage}
+          skillColor={skillColor}
+          onComplete={() => onComplete(stage.xpReward)}
+          moduleId={moduleInfo.moduleId}
+          moduleTitle={moduleInfo.moduleTitle}
+          skill={moduleInfo.skill}
+        />
+      );
+    case 'samenvatting':
+      return <SamenvattingCard stage={stage} skillColor={skillColor} onComplete={() => onComplete(stage.xpReward)} />;
+    // Legacy support for old stages
+    case 'insight_cards':
+    case 'scenario':
+    case 'quiz':
+    case 'video':
+    case 'mission':
+    case 'reflection':
+      // Simple fallback: show a continue button
+      return (
+        <View style={cardStyles.fullCard}>
+          <View style={[cardStyles.cardInner, { backgroundColor: skillColor + '08' }]}>
+            <Text style={[cardStyles.cardLabel, { color: skillColor }]}>{stage.stageLabel}</Text>
+            <Pressable
+              onPress={() => onComplete(stage.xpReward)}
+              style={[cardStyles.continueBtn, { backgroundColor: skillColor }]}
+            >
+              <Text style={cardStyles.continueBtnText}>Volgende</Text>
+            </Pressable>
+          </View>
+        </View>
+      );
+    default:
+      return null;
+  }
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ModulePlayer — Main component
@@ -1430,58 +1555,57 @@ export default function ModulePlayer() {
     return resolveActiveThemes(profile);
   }, [store.profile]);
 
-  // Transform module into stages
+  // Transform module into discovery cards
   const moduleStages = useMemo(() => {
     if (!skill || !moduleId) return null;
     const mods = getLearningModulesForSkill(skill, activeThemes);
     const found = mods.find((m) => m.id === moduleId);
     if (!found) return null;
-    return transformModuleToStages(found);
+    return transformModuleToDiscoveryCards(found);
   }, [skill, moduleId, activeThemes]);
 
   // Stage navigation state
   const [stageIndex, setStageIndex] = useState(0);
   const [completedStageIds, setCompletedStageIds] = useState<string[]>([]);
   const [showCompletion, setShowCompletion] = useState(false);
-  const [quizScore, setQuizScore] = useState({ correct: 0, total: 0 });
   const [xpPopup, setXpPopup] = useState<{ xp: number; key: number } | null>(null);
   const [showSkillCompletion, setShowSkillCompletion] = useState(false);
   const [milestoneEvent, setMilestoneEvent] = useState<GamificationEvent | null>(null);
   const [reviewMode, setReviewMode] = useState(false);
 
-  // Fade animation (smooth, no slide jump)
+  // Fade animation
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const scrollRef = useRef<ScrollView>(null);
   const isAnimating = useRef(false);
 
-  // Reset ALL state when moduleId changes (fixes "volgende module" bug)
+  // Reset ALL state when moduleId changes
   useEffect(() => {
     setStageIndex(0);
     setCompletedStageIds([]);
     setShowCompletion(false);
-    setQuizScore({ correct: 0, total: 0 });
     setXpPopup(null);
     fadeAnim.setValue(1);
     isAnimating.current = false;
   }, [moduleId]);
 
-  // Load persisted progress (runs after reset)
+  // Load persisted progress (with migration from old _d{N} IDs to semantic IDs)
   useEffect(() => {
-    if (!moduleId) return;
+    if (!moduleId || !moduleStages) return;
     const progress = getStageProgress(moduleId);
     if (progress) {
-      setCompletedStageIds(progress.completedStageIds);
+      const migrated = migrateStageIds(progress.completedStageIds, moduleStages.stages, moduleId);
+      setCompletedStageIds(migrated);
       if (progress.completedAt) {
         setShowCompletion(true);
       } else if (progress.currentStageIndex > 0) {
-        setStageIndex(Math.min(progress.currentStageIndex, (moduleStages?.stages.length ?? 1) - 1));
+        setStageIndex(Math.min(progress.currentStageIndex, moduleStages.stages.length - 1));
       }
     }
-  }, [moduleId]);
+  }, [moduleId, moduleStages]);
 
-  // Animate stage transition (fade out → change → fade in + scroll to top)
+  // Animate stage transition
   function animateToStage(nextIndex: number) {
-    if (isAnimating.current) return; // Voorkom dubbele animaties
+    if (isAnimating.current) return;
     isAnimating.current = true;
     Animated.timing(fadeAnim, { toValue: 0, duration: 150, useNativeDriver: true }).start(() => {
       setStageIndex(nextIndex);
@@ -1497,7 +1621,7 @@ export default function ModulePlayer() {
     const stage = moduleStages.stages[stageIndex];
     if (!stage) return;
 
-    // Review mode: navigate stages without XP or progress tracking
+    // Review mode: navigate without XP
     if (reviewMode) {
       if (stageIndex < moduleStages.stages.length - 1) {
         animateToStage(stageIndex + 1);
@@ -1513,9 +1637,11 @@ export default function ModulePlayer() {
     const newCompleted = [...completedStageIds, stage.id];
     setCompletedStageIds(newCompleted);
 
-    // Show XP popup
-    setXpPopup({ xp: xpEarned, key: Date.now() });
-    setTimeout(() => setXpPopup(null), 2000);
+    // Show XP popup (only for interactive cards with XP)
+    if (xpEarned > 0) {
+      setXpPopup({ xp: xpEarned, key: Date.now() });
+      setTimeout(() => setXpPopup(null), 2000);
+    }
 
     // Check if all stages are done
     if (stageIndex >= moduleStages.stages.length - 1) {
@@ -1524,7 +1650,7 @@ export default function ModulePlayer() {
         markModuleComplete();
       }, 800);
     } else {
-      setTimeout(() => animateToStage(stageIndex + 1), 400);
+      setTimeout(() => animateToStage(stageIndex + 1), 300);
     }
   }
 
@@ -1560,7 +1686,7 @@ export default function ModulePlayer() {
         setTimeout(() => setShowSkillCompletion(true), 1200);
       }
 
-      // Check for module milestone (total across all skills)
+      // Check for module milestone
       const allSkills = ['Aanwezigheid', 'Emotiecoaching', 'Zelfregulatie', 'Grenzen', 'Autonomie', 'Herstel', 'Verbinding', 'Reflectie'];
       let totalCompleted = 0;
       for (const sk of allSkills) {
@@ -1572,7 +1698,7 @@ export default function ModulePlayer() {
       if (milestone) {
         setTimeout(() => {
           setMilestoneEvent({ type: 'milestone', emoji: milestone.emoji, title: milestone.title, message: milestone.message });
-        }, completed.length >= allMods.length ? 5000 : 1500); // Delay after skill popup if both trigger
+        }, completed.length >= allMods.length ? 5000 : 1500);
       }
 
       // Check for learn badges
@@ -1624,14 +1750,13 @@ export default function ModulePlayer() {
   // ── Completion screen ──────────────────────────────────────────────────────
   if (showCompletion) {
     const allModuleTitles = getLearningModulesForSkill(skill, activeThemes).map((m) => m.title);
-    const totalSkillXP = allModuleTitles.length * 30; // ~30 XP per module average
+    const totalSkillXP = allModuleTitles.length * 30;
     const skillEmoji = SKILLS[skill]?.emoji || '';
 
     return (
       <SafeAreaView style={[mainStyles.safe, { backgroundColor: colors.bg }]}>
         <ModuleCompletionScreen
           moduleStages={moduleStages}
-          quizScore={quizScore}
           skillColor={skillColor}
           onNextModule={nextModule ? handleNextModule : null}
           onBack={() => router.back()}
@@ -1657,7 +1782,7 @@ export default function ModulePlayer() {
     );
   }
 
-  // ── Stage player ───────────────────────────────────────────────────────────
+  // ── Card player ────────────────────────────────────────────────────────────
   const currentStage = moduleStages.stages[stageIndex];
   const totalStages = moduleStages.stages.length;
 
@@ -1676,46 +1801,44 @@ export default function ModulePlayer() {
         </View>
       )}
 
-      {/* Header with back + progress + module title */}
+      {/* Header with back + progress bar + step count + close */}
       <View style={[mainStyles.headerBar, { borderBottomColor: colors.border }]}>
-        <Pressable onPress={() => router.back()} style={mainStyles.backButton}>
-          <InlineIcon name="arrowLeft" size={18} color={colors.amber} />
+        <Pressable onPress={handleGoBack} style={mainStyles.backButton}>
+          <InlineIcon name="arrowLeft" size={18} color={colors.text2} />
         </Pressable>
-        <StageProgressBar
-          stages={moduleStages.stages}
-          currentIndex={stageIndex}
-          completedIds={completedStageIds}
+        <ProgressBar
+          current={stageIndex}
+          total={totalStages}
           skillColor={skillColor}
         />
-      </View>
-
-      {/* Stage step indicator */}
-      <View style={mainStyles.stepIndicator}>
-        <Text style={[mainStyles.stepLabel, { color: skillColor }]}>
-          {currentStage?.stageLabel ?? ''}
-        </Text>
         <Text style={[mainStyles.stepCount, { color: colors.text3 }]}>
-          Stap {stageIndex + 1} van {totalStages}
+          {stageIndex + 1}/{totalStages}
         </Text>
+        <Pressable
+          onPress={() => router.back()}
+          style={[mainStyles.closeButton, { backgroundColor: colors.surface2 }]}
+        >
+          <InlineIcon name="x" size={18} color={colors.text2} />
+        </Pressable>
       </View>
 
       {/* XP Popup */}
       {xpPopup && <XPPopup xp={xpPopup.xp} visible key={xpPopup.key} />}
 
-      {/* Stage content with fade animation */}
+      {/* Card content with fade animation */}
       <Animated.ScrollView
         ref={scrollRef as any}
         style={[mainStyles.stageScroll, { opacity: fadeAnim }]}
         contentContainerStyle={mainStyles.stageScrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {currentStage && renderStage(currentStage, skillColor, handleStageComplete, quizScore, setQuizScore, {
+        {currentStage && renderStage(currentStage, skillColor, handleStageComplete, {
           moduleId: moduleId || '',
           moduleTitle: moduleStages?.title || '',
           skill,
         })}
 
-        {/* Vorige etappe knop */}
+        {/* Vorige kaart knop */}
         {stageIndex > 0 && (
           <Pressable
             onPress={() => animateToStage(stageIndex - 1)}
@@ -1724,7 +1847,7 @@ export default function ModulePlayer() {
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
               <InlineIcon name="arrowLeft" size={14} color={colors.text3} />
               <Text style={[mainStyles.prevButtonText, { color: colors.text3 }]}>
-                Vorige etappe
+                Vorige
               </Text>
             </View>
           </Pressable>
@@ -1732,91 +1855,6 @@ export default function ModulePlayer() {
       </Animated.ScrollView>
     </SafeAreaView>
   );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Stage renderer
-// ─────────────────────────────────────────────────────────────────────────────
-
-function renderStage(
-  stage: Stage,
-  skillColor: string,
-  onComplete: (xp: number) => void,
-  quizScore: { correct: number; total: number },
-  setQuizScore: (s: { correct: number; total: number }) => void,
-  moduleInfo?: { moduleId: string; moduleTitle: string; skill: string },
-) {
-  switch (stage.type) {
-    case 'insight_cards':
-      return (
-        <InsightCardsStage
-          cards={stage.cards || []}
-          skillColor={skillColor}
-          onComplete={() => onComplete(stage.xpReward)}
-          stageLabel={stage.stageLabel}
-        />
-      );
-    case 'scenario':
-      return (
-        <ScenarioStage
-          situation={stage.situation || ''}
-          choices={stage.choices || []}
-          explanation={stage.explanation}
-          skillColor={skillColor}
-          onComplete={(correct) => onComplete(stage.xpReward + (correct ? 10 : 0))}
-        />
-      );
-    case 'quiz':
-      return (
-        <QuizStage
-          questions={stage.questions || []}
-          skillColor={skillColor}
-          onComplete={(correct, total) => {
-            setQuizScore({ correct, total });
-            onComplete(correct * stage.xpReward);
-          }}
-        />
-      );
-    case 'video':
-      return (
-        <VideoStage
-          youtubeId={stage.youtubeId || ''}
-          videoTitle={stage.videoTitle}
-          videoDuration={stage.videoDuration}
-          videoContext={stage.videoContext}
-          keyTakeaway={stage.keyTakeaway}
-          skillColor={skillColor}
-          onComplete={() => onComplete(stage.xpReward)}
-        />
-      );
-    case 'mission':
-      return (
-        <MissionStage
-          missionTitle={stage.missionTitle}
-          missionInstructions={stage.missionInstructions}
-          missionDuration={stage.missionDuration}
-          missionTips={stage.missionTips}
-          skillColor={skillColor}
-          onComplete={() => onComplete(stage.xpReward)}
-        />
-      );
-    case 'reflection':
-      return (
-        <ReflectionStage
-          reflectionQuestion={stage.reflectionQuestion}
-          allQuestions={stage.allQuestions}
-          skillColor={skillColor}
-          onComplete={() => onComplete(stage.xpReward)}
-          summaryCard={stage.summaryCard}
-          stageId={stage.id}
-          moduleId={moduleInfo?.moduleId}
-          moduleTitle={moduleInfo?.moduleTitle}
-          skill={moduleInfo?.skill}
-        />
-      );
-    default:
-      return null;
-  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1834,24 +1872,20 @@ const mainStyles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   backButton: { paddingVertical: 4, paddingRight: 12 },
+  closeButton: {
+    marginLeft: 10,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+  },
   backText: { fontSize: 18, fontWeight: '700' },
-  stepIndicator: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 14,
-    paddingBottom: 6,
-  },
-  stepLabel: {
-    fontSize: 11,
-    fontWeight: '800',
-    letterSpacing: 2,
-    textTransform: 'uppercase',
-  },
   stepCount: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: 13,
+    fontWeight: '700',
+    minWidth: 36,
+    textAlign: 'right',
   },
   stageScroll: { flex: 1 },
   stageScrollContent: { paddingBottom: 60, paddingTop: 4 },

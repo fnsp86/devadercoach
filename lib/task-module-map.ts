@@ -54,20 +54,26 @@ export function getTasksForModule(
     if (filtered.length >= 3) pool = filtered;
   }
 
-  // Sorteer: taken met expliciete moduleRef match eerst, dan gevarieerde moeilijkheid
+  // Use moduleId as seed to pick different tasks per module
+  const hash = moduleId.split('').reduce((s, c) => s + c.charCodeAt(0), 0);
+
+  // Taken met expliciete moduleRef match eerst
   const withRef = pool.filter((t) => t.moduleRef === moduleId);
   const withoutRef = pool.filter((t) => t.moduleRef !== moduleId);
 
-  // Mix moeilijkheidsgraden
+  // Mix moeilijkheidsgraden, offset by hash for variety per module
   const basis = withoutRef.filter((t) => t.difficulty === 'basis');
   const gevorderd = withoutRef.filter((t) => t.difficulty === 'gevorderd');
   const expert = withoutRef.filter((t) => t.difficulty === 'expert');
 
+  const pick = (arr: typeof pool, offset: number) =>
+    arr.length > 0 ? [arr[offset % arr.length]] : [];
+
   const result = [
     ...withRef,
-    ...basis.slice(0, 1),
-    ...gevorderd.slice(0, 1),
-    ...expert.slice(0, 1),
+    ...pick(basis, hash),
+    ...pick(gevorderd, hash + 1),
+    ...pick(expert, hash + 2),
   ];
 
   return result.slice(0, 3);

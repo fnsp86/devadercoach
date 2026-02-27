@@ -18,12 +18,12 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Kapot is niet het probleem",
-      text: "Hier komt het goede nieuws. Elke relatie gaat stuk. Elke dag. Meerdere keren per dag.\n\nOnderzoek laat zien dat 70% van alle interacties tussen ouder en kind een misafstemming bevat. Zeventig procent. Je leest dat goed.\n\nHet verschil tussen een veilige en onveilige hechting? Niet het aantal keren dat het misgaat. Maar het aantal keren dat je het herstelt.\n\nDe kinderpsycholoog Winnicott noemde het de 'good enough parent'. Niet perfect. Goed genoeg. En goed genoeg betekent: stuk, herstel, stuk, herstel. Op repeat.\n\nDat patroon — breken en repareren — is precies hoe je kind leert dat relaties veilig zijn. Niet omdat ze nooit beschadigen. Maar omdat ze hersteld kunnen worden.",
+      text: "Hier komt het goede nieuws. Elke relatie gaat stuk. Elke dag. Meerdere keren per dag.\n\nOnderzoek laat zien dat 70% van alle interacties tussen ouder en kind een misafstemming bevat. Zeventig procent. Je leest dat goed.\n\nHet verschil tussen een veilige en onveilige hechting? Niet het aantal keren dat het misgaat. Maar het aantal keren dat je het herstelt.\n\nDe kinderpsycholoog Winnicott noemde het de 'good enough parent'. Niet perfect. Goed genoeg. En goed genoeg betekent: stuk, herstel, stuk, herstel. Op repeat.\n\nDat patroon. Breken en repareren. Is precies hoe je kind leert dat relaties veilig zijn. Niet omdat ze nooit beschadigen. Maar omdat ze hersteld kunnen worden.",
     },
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Edward Tronick's Still Face Experiment toonde aan dat baby's al in hun eerste jaar herstel verwachten na stress. Het breken van contact is niet het probleem — het uitblijven van herstel wel. Kinderen die regelmatig herstel ervaren ontwikkelen sterkere emotieregulatie en veerkracht. Winnicott bevestigde: perfecte ouders bestaan niet, maar 'good enough' ouders bouwen veilige hechting.",
+      text: "Edward Tronick's Still Face Experiment toonde aan dat baby's al in hun eerste jaar herstel verwachten na stress. Het breken van contact is niet het probleem. Het uitblijven van herstel wel. Kinderen die regelmatig herstel ervaren ontwikkelen sterkere emotieregulatie en veerkracht. Winnicott bevestigde: perfecte ouders bestaan niet, maar 'good enough' ouders bouwen veilige hechting.",
     },
     {
       type: "diagram" as const,
@@ -51,7 +51,14 @@ export const HERSTEL_MODULES: LearningModule[] = [
       situation: "Levi (6) morste melk over zijn huiswerk. Papa schreeuwde: 'Kun je niet uitkijken?!' Levi verstijfde. Nu is het stil in huis.",
       wrongApproach: "DOEN ALSOF HET NIET GEBEURDE:\n\nPapa voelt zich rot. Maar zegt niks. Een uur later: 'Hé Levi, zullen we een spelletje doen?'\nLevi doet mee maar is afstandelijk.\nPapa denkt: zie je, het is weer goed.\n\nHet is niet goed. Levi leerde: als papa boos wordt, doen we alsof het niet gebeurde. Zijn gevoel telt niet.",
       rightApproach: "TERUGGAAN EN HERSTELLEN:\n\nPapa gaat naar Levi's kamer. Knielt. Oogcontact.\n'Levi, ik schreeuwde net tegen je. Dat was niet oké. Het was maar melk. Jij deed niks verkeerd. Het spijt me.'\nLevi: '...ik schrok.'\nPapa: 'Dat snap ik. Dat was niet fijn. Sorry.'\n\nLevi leert: papa maakt fouten. Maar papa komt terug. Ik ben veilig.",
-      explanation: "Negeren voelt makkelijker, maar het kind leert dat zijn gevoelens er niet toe doen. Teruggaan en benoemen is moeilijker — en precies wat veilige hechting bouwt.",
+      explanation: "Negeren voelt makkelijker, maar het kind leert dat zijn gevoelens er niet toe doen. Teruggaan en benoemen is moeilijker. En precies wat veilige hechting bouwt.",
+    },
+    {
+      type: "example" as const,
+      situation: "Jasmijn (4) wilde zelf haar boterham smeren. Het werd een troep. Papa griste het mes uit haar hand en zei geïrriteerd: 'Laat mij maar, jij maakt er een bende van.' Jasmijn deed haar armen over elkaar en weigerde te eten.",
+      wrongApproach: "❌ AFLEIDEN EN DOORGAAN:\n\nPapa zet de boterham voor Jasmijn neer.\n'Kijk, pindakaas! Lekker toch?'\nJasmijn draait haar hoofd weg.\nPapa zucht: 'Doe niet zo moeilijk. Eet nou gewoon.'\nJasmijn eet uiteindelijk, maar zegt de rest van de ochtend niks.\n\nPapa negeerde wat er echt gebeurde: hij nam haar iets af en maakte haar klein. Het broodje is niet het probleem.",
+      rightApproach: "✅ TERUGKOMEN OP HET MOMENT:\n\nPapa stopt. Kijkt naar Jasmijn.\n'Hé. Ik pakte het mes van je af. Dat was niet aardig. Jij wilde het zelf doen en dat is juist knap.'\nJasmijn kijkt op.\nPapa geeft het mes terug. 'Probeer maar. Ik help je als je wilt.'\nJasmijn smeert voorzichtig. Het is niet perfect. Maar ze glimlacht.\n\nPapa herstelde de breuk én gaf haar autonomie terug. Dubbele winst.",
+      explanation: "Bij kleine kinderen gaat herstel vaak over autonomie teruggeven. Jasmijn was niet boos over het mes. Ze was boos omdat papa haar het gevoel gaf dat ze het niet kon. Herstel betekent hier: erkennen én de kans teruggeven.",
     },
     {
       type: "text" as const,
@@ -78,11 +85,11 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Samenvatting",
-      text: "70% van ouder-kind interacties bevat misafstemming. Dat is normaal. Het verschil maakt herstel. Ga terug, benoem wat jij fout deed, en maak verbinding. Niet perfect zijn — maar altijd terugkomen. Dat bouwt veilige hechting.",
+      text: "70% van ouder-kind interacties bevat misafstemming. Dat is normaal. Het verschil maakt herstel. Ga terug, benoem wat jij fout deed, en maak verbinding. Niet perfect zijn. Maar altijd terugkomen. Dat bouwt veilige hechting.",
     },
   ],
   keyTakeaways: [
-    "70% van ouder-kind interacties bevat misafstemming — dat is normaal en niet het probleem",
+    "70% van ouder-kind interacties bevat misafstemming. Dat is normaal en niet het probleem",
     "Het verschil tussen veilige en onveilige hechting is niet perfectie maar herstel",
     "Ga altijd terug naar je kind, benoem wat jij fout deed, en herstel de verbinding",
   ],
@@ -109,8 +116,8 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       question: "Je herstelt al drie keer deze week na een uitbarsting. Je partner zegt: 'Je gebruikt herstel als excuus om te blijven schreeuwen.' Wat klopt er?",
       options: [
-        { text: "Je partner heeft gelijk — je moet eerst stoppen met schreeuwen voordat herstel zin heeft", isCorrect: false },
-        { text: "Je partner zit ernaast — herstel is altijd goed, ongeacht hoe vaak je het nodig hebt", isCorrect: false },
+        { text: "Je partner heeft gelijk. Je moet eerst stoppen met schreeuwen voordat herstel zin heeft", isCorrect: false },
+        { text: "Je partner zit ernaast. Herstel is altijd goed, ongeacht hoe vaak je het nodig hebt", isCorrect: false },
         { text: "Er zit een kern van waarheid in, maar de oplossing is herstel combineren met werk aan je triggers, niet stoppen met herstellen", isCorrect: true },
       ],
       explanation: "Herstel is geen vrijbrief, maar het stopzetten ervan beschermt je kind niet. De juiste aanpak is tweesporig: blijf herstellen (dat beschermt de relatie nu) én werk structureel aan je triggers (dat vermindert de breuken). Het één vervangt het ander niet.",
@@ -122,7 +129,7 @@ export const HERSTEL_MODULES: LearningModule[] = [
         { text: "Geef je kind volledige ruimte door de kamer te verlaten en later terug te komen als het rustig is", isCorrect: false },
         { text: "Blijf zitten en leg uit waarom je sorry wilt zeggen, zodat je kind begrijpt dat je goede bedoelingen hebt", isCorrect: false },
       ],
-      explanation: "Een kind dat je wegduwt na een breuk test of je echt blijft. Helemaal weggaan bevestigt de onveiligheid. Blijven uitleggen respecteert de grens niet. De middenweg — ruimte geven maar beschikbaar blijven — laat zien: ik respecteer je gevoel én ik laat je niet alleen.",
+      explanation: "Een kind dat je wegduwt na een breuk test of je echt blijft. Helemaal weggaan bevestigt de onveiligheid. Blijven uitleggen respecteert de grens niet. De middenweg. Ruimte geven maar beschikbaar blijven. Laat zien: ik respecteer je gevoel én ik laat je niet alleen.",
     },
   ],
 },
@@ -175,8 +182,15 @@ export const HERSTEL_MODULES: LearningModule[] = [
       type: "example" as const,
       situation: "Emma (7) treuzelde met aankleden. Papa verloor zijn geduld en riep: 'Doe het nou gewoon! Elke ochtend hetzelfde!' Emma huilde. Papa wil sorry zeggen.",
       wrongApproach: "DE NON-SORRY:\n\nPapa: 'Sorry hè, maar als jij nou gewoon op tijd was begonnen had ik niet hoeven schreeuwen.'\nEmma kijkt naar de grond.\nPapa: 'Oké? Zijn we weer vrienden?'\nEmma knikt. Maar ze is niet oké.\n\nDit is geen sorry. Dit is een beschuldiging verpakt als excuus. Emma leerde: mijn gevoel is minder belangrijk dan papa's ongeduld.",
-      rightApproach: "DE VIJF-STAPPEN SORRY:\n\nPapa gaat op zijn hurken. Oogcontact.\n'Emma, ik riep vanmorgen hard tegen je.' (1: benoem)\n'Dat was niet fijn. Je schrok ervan.' (2: impact)\n'Dat was mijn schuld. Jij deed niks verkeerd — aankleden duurt soms lang, dat is normaal.' (3: verantwoordelijkheid)\n'Volgende keer ga ik even diep ademhalen als ik merk dat ik ongeduldig word.' (4: anders)\nStilte. Knuffel als Emma dat wil. (5: vraag niks terug)\n\nEmma leerde: papa's fouten zijn niet mijn schuld. En sorry is veilig.",
+      rightApproach: "DE VIJF-STAPPEN SORRY:\n\nPapa gaat op zijn hurken. Oogcontact.\n'Emma, ik riep vanmorgen hard tegen je.' (1: benoem)\n'Dat was niet fijn. Je schrok ervan.' (2: impact)\n'Dat was mijn schuld. Jij deed niks verkeerd. Aankleden duurt soms lang, dat is normaal.' (3: verantwoordelijkheid)\n'Volgende keer ga ik even diep ademhalen als ik merk dat ik ongeduldig word.' (4: anders)\nStilte. Knuffel als Emma dat wil. (5: vraag niks terug)\n\nEmma leerde: papa's fouten zijn niet mijn schuld. En sorry is veilig.",
       explanation: "De non-sorry verplaatst de schuld naar het kind. De echte sorry neemt eigenaarschap. Het verschil: Emma voelt zich veilig genoeg om fouten te mogen maken.",
+    },
+    {
+      type: "example" as const,
+      situation: "Thijs (11) maakte per ongeluk de afstandsbediening kapot. Papa reageerde sarcastisch: 'Briljant. Echt weer typisch jij.' Thijs liep zonder iets te zeggen naar zijn kamer.",
+      wrongApproach: "❌ DE SORRY-MET-VOORWAARDE:\n\nPapa klopt op Thijs' deur.\n'Hé, sorry dat ik zo reageerde. Maar je moet wel beter opletten met spullen.'\nThijs kijkt hem aan. 'Je zegt sorry maar je geeft mij toch de schuld.'\nPapa: 'Ik zég toch sorry?'\n\nDe 'maar' wiste de sorry. Thijs hoorde: het blijft mijn schuld. Papa's excuus is een verpakte beschuldiging.",
+      rightApproach: "✅ DE VIJF STAPPEN IN ACTIE:\n\nPapa klopt. Gaat op de rand van het bed zitten.\n'Thijs, ik zei net iets gemeens. Dat \"typisch jij\" was niet oké.' (1: benoem)\n'Dat deed pijn, toch?' (2: impact)\n'Dat was mijn frustratie. Niet jouw schuld. Dingen gaan kapot, dat hoort erbij.' (3: verantwoordelijkheid)\n'Ik ga proberen even te wachten voor ik reageer als ik geïrriteerd ben.' (4: anders)\nStilte. Papa blijft zitten. (5: vraag niks terug)\n\nThijs leert: papa's woorden en daden kloppen. Sorry is geen aanval.",
+      explanation: "Bij oudere kinderen is sarcasme een veelvoorkomende breuk. Het voelt minder erg dan schreeuwen, maar snijdt dieper. Een echt excuus na sarcasme herstelt niet alleen het moment, maar laat zien dat woorden ertoe doen.",
     },
     {
       type: "text" as const,
@@ -203,11 +217,11 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Samenvatting",
-      text: "Een echte sorry heeft vijf stappen: benoem je gedrag, erken de impact, neem verantwoordelijkheid, zeg wat je anders doet, en vraag niks terug. Geen 'maar'. Geen voorwaarden. Dat voelt kwetsbaar — en precies daarom bouwt het vertrouwen.",
+      text: "Een echte sorry heeft vijf stappen: benoem je gedrag, erken de impact, neem verantwoordelijkheid, zeg wat je anders doet, en vraag niks terug. Geen 'maar'. Geen voorwaarden. Dat voelt kwetsbaar. En precies daarom bouwt het vertrouwen.",
     },
   ],
   keyTakeaways: [
-    "Een echt excuus heeft vijf stappen — de meeste vaders gebruiken er maar één",
+    "Een echt excuus heeft vijf stappen. De meeste vaders gebruiken er maar één",
     "Het woord 'maar' in een sorry wist alles wat ervoor kwam",
     "Verantwoordelijkheid nemen zonder voorwaarden is het krachtigste element van herstel",
   ],
@@ -217,7 +231,7 @@ export const HERSTEL_MODULES: LearningModule[] = [
       question: "Je zegt drie keer per week sorry tegen je kind na een uitbarsting. Je kind begint je sorry's te negeren. Wat is hier waarschijnlijk aan de hand?",
       options: [
         { text: "Je kind is gewoon koppig en heeft meer tijd nodig om sorry's te accepteren", isCorrect: false },
-        { text: "Je sorry's zijn hol geworden omdat stap 4 (gedrag veranderen) steeds ontbreekt — woorden zonder verandering verliezen betekenis", isCorrect: true },
+        { text: "Je sorry's zijn hol geworden omdat stap 4 (gedrag veranderen) steeds ontbreekt. Woorden zonder verandering verliezen betekenis", isCorrect: true },
         { text: "Je moet stoppen met sorry zeggen en in plaats daarvan je kind laten zien dat je van ze houdt via cadeaus en aandacht", isCorrect: false },
       ],
       explanation: "Een excuus zonder gedragsverandering wordt een ritueel. Stap 4 ('wat ik anders ga doen') is cruciaal omdat het de sorry onderscheidt van een lege herhaling. Als je kind sorry's negeert, is dat vaak een teken dat je woorden en daden niet meer overeenkomen.",
@@ -226,15 +240,15 @@ export const HERSTEL_MODULES: LearningModule[] = [
       question: "Papa zegt: 'Sorry dat je je zo voelde.' Waarom is dit problematischer dan het lijkt?",
       options: [
         { text: "Het erkent de emotie van het kind, maar verschuift subtiel de verantwoordelijkheid naar het kind alsof hun gevoel het probleem is", isCorrect: true },
-        { text: "Het is eigenlijk prima — het toont empathie en dat is het belangrijkste bij een excuus", isCorrect: false },
-        { text: "Het is te vaag — papa moet specifieker benoemen welk gevoel het kind had", isCorrect: false },
+        { text: "Het is eigenlijk prima. Het toont empathie en dat is het belangrijkste bij een excuus", isCorrect: false },
+        { text: "Het is te vaag. Papa moet specifieker benoemen welk gevoel het kind had", isCorrect: false },
       ],
       explanation: "'Sorry dat je je zo voelde' klinkt empathisch maar bevat geen eigenaarschap. Het impliceert: het probleem is jouw gevoel, niet mijn gedrag. Onderzoek toont dat juist dit soort 'bijna-sorry's' vertrouwen meer schaden dan helemaal geen excuus, omdat het kind de mismatch voelt maar niet kan benoemen.",
     },
     {
       question: "Je kind (9) zegt na je vijf-stappen-sorry: 'Maakt niet uit, het is al goed.' Maar je ziet dat het niet goed is. Wat is de beste reactie?",
       options: [
-        { text: "Accepteer het — als je kind zegt dat het goed is, moet je dat respecteren en niet doordrukken", isCorrect: false },
+        { text: "Accepteer het. Als je kind zegt dat het goed is, moet je dat respecteren en niet doordrukken", isCorrect: false },
         { text: "Zeg: 'Ik hoor dat je zegt dat het goed is. Maar als het toch nog niet oké voelt, mag je dat ook zeggen. Ik ga nergens heen.'", isCorrect: true },
         { text: "Vraag door: 'Weet je het zeker? Je ziet er niet oké uit.' zodat je kind leert eerlijk te zijn over gevoelens", isCorrect: false },
       ],
@@ -247,7 +261,7 @@ export const HERSTEL_MODULES: LearningModule[] = [
         { text: "Je handhaafde een afgesproken bedtijd en je kind huilde van teleurstelling", isCorrect: true },
         { text: "Je vergat de schoolopvoering van je kind en kwam niet opdagen", isCorrect: false },
       ],
-      explanation: "Een grens handhaven is geen breuk — ook al is je kind verdrietig. Sorry zeggen voor een consequente afspraak ondermijnt je gezag en leert je kind dat elke negatieve emotie betekent dat iemand iets fout deed. Empathie tonen ('ik snap dat je baalt') is iets anders dan je excuseren.",
+      explanation: "Een grens handhaven is geen breuk. Ook al is je kind verdrietig. Sorry zeggen voor een consequente afspraak ondermijnt je gezag en leert je kind dat elke negatieve emotie betekent dat iemand iets fout deed. Empathie tonen ('ik snap dat je baalt') is iets anders dan je excuseren.",
     },
   ],
 },
@@ -263,7 +277,7 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Het is 7 uur. Het voelt nog steeds raar.",
-      text: "Gisteravond was er ruzie. Je was moe, je kind was moe, het escaleerde. Nu is het ochtend. Je smeert boterhammen en je kind is stil. Jullie lopen op eieren.\n\nDit moment — deze ongemakkelijke ochtend — is een van de krachtigste vensters voor herstel die je hebt.",
+      text: "Gisteravond was er ruzie. Je was moe, je kind was moe, het escaleerde. Nu is het ochtend. Je smeert boterhammen en je kind is stil. Jullie lopen op eieren.\n\nDit moment. Deze ongemakkelijke ochtend. Is een van de krachtigste vensters voor herstel die je hebt.",
     },
     {
       type: "text" as const,
@@ -273,7 +287,7 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Cortisol — het stresshormoon — bereikt 's ochtends zijn piek. Na een stressvolle avond is dat niveau hoger dan normaal. Onderzoek naar emotioneel geheugen laat zien dat de eerste ervaring na slaap het sterkst kleurt hoe een gebeurtenis wordt opgeslagen. Vroeg herstel vermindert de kans op chronische stresspatronen bij kinderen.",
+      text: "Cortisol. Het stresshormoon. Bereikt 's ochtends zijn piek. Na een stressvolle avond is dat niveau hoger dan normaal. Onderzoek naar emotioneel geheugen laat zien dat de eerste ervaring na slaap het sterkst kleurt hoe een gebeurtenis wordt opgeslagen. Vroeg herstel vermindert de kans op chronische stresspatronen bij kinderen.",
     },
     {
       type: "diagram" as const,
@@ -300,8 +314,15 @@ export const HERSTEL_MODULES: LearningModule[] = [
       type: "example" as const,
       situation: "Gisteravond was er ruzie over schermtijd. Papa pakte de tablet af en schreeuwde. Sem (9) rende huilend naar zijn kamer. Nu is het ochtend. Sem zit stil aan de ontbijttafel.",
       wrongApproach: "OP EIEREN LOPEN:\n\nPapa voelt de spanning. Zegt extra vrolijk: 'Goedemorgen! Lekker geslapen? Wil je chocopasta?'\nSem mompelt iets. Beiden doen alsof gisteravond niet bestond.\nDe rest van de dag voelt vreemd. Afstand.\n\nDoor het te negeren leert Sem: boosheid is iets waar we niet over praten. Mijn gevoelens parkeer ik.",
-      rightApproach: "FYSIEK EERST, WOORDEN DAARNA:\n\nPapa loopt naar Sem. Legt een hand op zijn schouder. Sems lichaam ontspant een fractie.\n'Hé. Gisteravond was niet leuk. Ik pakte je tablet af en ik schreeuwde. Dat was niet oké van mij.'\nStilte.\nSem: '...ik was ook boos.'\nPapa: 'Dat mag. Laten we het er vanavond over hebben. Nu eerst ontbijt.'\n\nFysiek contact eerst — het zenuwstelsel kalmeert sneller via aanraking dan via woorden. Dan kort benoemen. Niet alles uitpraten — dat komt later.",
+      rightApproach: "FYSIEK EERST, WOORDEN DAARNA:\n\nPapa loopt naar Sem. Legt een hand op zijn schouder. Sems lichaam ontspant een fractie.\n'Hé. Gisteravond was niet leuk. Ik pakte je tablet af en ik schreeuwde. Dat was niet oké van mij.'\nStilte.\nSem: '...ik was ook boos.'\nPapa: 'Dat mag. Laten we het er vanavond over hebben. Nu eerst ontbijt.'\n\nFysiek contact eerst. Het zenuwstelsel kalmeert sneller via aanraking dan via woorden. Dan kort benoemen. Niet alles uitpraten. Dat komt later.",
       explanation: "De ochtend is niet het moment voor een lang gesprek. Het is het moment voor een signaal: ik ben er nog. We zijn oké. Fysiek contact (hand, knuffel, schouderklopje) werkt sneller dan woorden.",
+    },
+    {
+      type: "example" as const,
+      situation: "Luna (5) wilde gisteravond nog een verhaaltje. Papa was uitgeput en snauwde: 'Nee! Ga slapen! Nu!' Luna huilde zichzelf in slaap. Nu is het ochtend. Luna staat met haar knuffel in de deuropening van de keuken en kijkt papa aan.",
+      wrongApproach: "❌ OVERCOMPENSEREN:\n\nPapa voelt zich schuldig. Maakt pannenkoeken, zet de tv aan, is overdreven vrolijk.\n'Goedemorgen schat! Pannenkoeken! En je mag tv kijken!'\nLuna eet, maar blijft stil. De vrolijkheid voelt nep.\n\nOvercompenseren is vermijding met een strik erom. Luna voelt dat er iets niet klopt, maar kan het niet benoemen. De spanning blijft.",
+      rightApproach: "✅ HET STILLE SIGNAAL:\n\nPapa ziet Luna in de deuropening. Legt zijn telefoon neer.\nLoopt naar haar toe. Knielt. Trekt haar zachtjes tegen zich aan.\nFluistert: 'Ik was gisteravond niet lief tegen je. Dat was niet fijn, hè?'\nLuna knikt tegen zijn schouder.\n'Het spijt me. Jij wilde gewoon nog een verhaaltje.'\nStilte. Luna kruipt op zijn schoot.\n\nGeen pannenkoeken nodig. Alleen aanwezigheid en drie eerlijke zinnen.",
+      explanation: "Bij jonge kinderen is overcompenseren na een breuk verleidelijk: extra cadeaus, extra tv, extra lief. Maar kinderen voelen het verschil tussen compensatie en echte verbinding. Fysiek contact en korte eerlijke woorden zijn krachtiger dan pannenkoeken.",
     },
     {
       type: "text" as const,
@@ -311,7 +332,7 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "Het ochtend-signaal",
-      instructions: "De volgende keer dat een avond niet lekker liep — en die avond komt, gegarandeerd — doe het volgende. Sta 's ochtends vijf minuten eerder op. Wees de eerste die contact maakt. Loop naar je kind. Raak ze aan (schouder, hoofd, knuffel). Zeg maximaal drie korte zinnen. Kijk wat er gebeurt met hun lichaam. Let op: ontspannen de schouders? Komt er oogcontact?",
+      instructions: "De volgende keer dat een avond niet lekker liep. En die avond komt, gegarandeerd. Doe het volgende. Sta 's ochtends vijf minuten eerder op. Wees de eerste die contact maakt. Loop naar je kind. Raak ze aan (schouder, hoofd, knuffel). Zeg maximaal drie korte zinnen. Kijk wat er gebeurt met hun lichaam. Let op: ontspannen de schouders? Komt er oogcontact?",
       duration: 3,
       tips: [
         "Als je kind nog klein is (onder 5): een knuffel en 'papa vindt je lief' is alles wat nodig is",
@@ -328,30 +349,30 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Samenvatting",
-      text: "De ochtend na een conflict is een kritiek herstelvenster. Je kind slaapt met stress — de eerste interactie kleurt hoe het geheugen wordt opgeslagen. Fysiek contact eerst, dan korte woorden. Niet alles uitpraten. Alleen het signaal: ik ben er nog.",
+      text: "De ochtend na een conflict is een kritiek herstelvenster. Je kind slaapt met stress. De eerste interactie kleurt hoe het geheugen wordt opgeslagen. Fysiek contact eerst, dan korte woorden. Niet alles uitpraten. Alleen het signaal: ik ben er nog.",
     },
   ],
   keyTakeaways: [
-    "De ochtend na een conflict is het krachtigste venster voor herstel — gebruik de eerste vijf minuten",
+    "De ochtend na een conflict is het krachtigste venster voor herstel. Gebruik de eerste vijf minuten",
     "Fysiek contact (knuffel, hand op schouder) kalmeert het zenuwstelsel sneller dan woorden",
-    "De ochtend is voor het signaal, niet voor het gesprek — kort, warm, en benoem wat er was",
+    "De ochtend is voor het signaal, niet voor het gesprek. Kort, warm, en benoem wat er was",
   ],
-  research: "Van der Kolk (2014). The Body Keeps the Score; Walker (2017). Why We Sleep — over geheugenconsolidatie en emotie",
+  research: "Van der Kolk (2014). The Body Keeps the Score; Walker (2017). Why We Sleep. Over geheugenconsolidatie en emotie",
   quizQuestions: [
     {
       question: "Je wilt 's ochtends herstellen, maar je merkt dat je zelf nog geïrriteerd bent over gisteravond. Wat is het risico als je tóch nu herstelt?",
       options: [
         { text: "Je irritatie lekt door in je toon en woorden, waardoor het herstel als een verwijt aanvoelt in plaats van als veiligheid", isCorrect: true },
-        { text: "Er is geen risico — het gaat om de timing, en hoe eerder hoe beter, ook als je zelf nog boos bent", isCorrect: false },
+        { text: "Er is geen risico. Het gaat om de timing, en hoe eerder hoe beter, ook als je zelf nog boos bent", isCorrect: false },
         { text: "Je kind merkt je irritatie niet als je de juiste woorden gebruikt, dus de inhoud is belangrijker dan je stemming", isCorrect: false },
       ],
-      explanation: "Kinderen lezen lichaamstaal en toon accurater dan woorden. Een 'sorry' met onderliggende irritatie voelt onveilig. Eerst vijf minuten zelf kalmeren (ademhaling, even alleen) is geen uitstel maar voorwaarde voor echt herstel. De eerste vijf minuten samen zijn het venster — niet de eerste vijf minuten van de dag.",
+      explanation: "Kinderen lezen lichaamstaal en toon accurater dan woorden. Een 'sorry' met onderliggende irritatie voelt onveilig. Eerst vijf minuten zelf kalmeren (ademhaling, even alleen) is geen uitstel maar voorwaarde voor echt herstel. De eerste vijf minuten samen zijn het venster. Niet de eerste vijf minuten van de dag.",
     },
     {
       question: "Welke van deze uitspraken over de timing van herstel is NIET juist?",
       options: [
         { text: "De eerste interactie na het slapen kleurt hoe het conflict wordt opgeslagen in het geheugen", isCorrect: false },
-        { text: "Als je de ochtend mist, is het zinloos om later op de dag nog te herstellen — het geheugenvenster is dan gesloten", isCorrect: true },
+        { text: "Als je de ochtend mist, is het zinloos om later op de dag nog te herstellen. Het geheugenvenster is dan gesloten", isCorrect: true },
         { text: "Cortisol is 's ochtends verhoogd na een stressvolle avond, wat het brein extra ontvankelijk maakt voor signalen van veiligheid of onveiligheid", isCorrect: false },
       ],
       explanation: "Het ochtendvenster is het krachtigst, maar niet het enige moment. Herstel later op de dag is altijd beter dan geen herstel. Het brein blijft ontvankelijk voor correctie van emotionele herinneringen, zij het met afnemend effect. De ochtend is ideaal, niet verplicht.",
@@ -359,7 +380,7 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       question: "Je kind (10) doet 's ochtends alsof er niks is gebeurd en praat vrolijk over school. Wat is de meest waarschijnlijke verklaring?",
       options: [
-        { text: "Je kind is er echt overheen — kinderen verwerken sneller dan volwassenen en hebben minder last van conflicten", isCorrect: false },
+        { text: "Je kind is er echt overheen. Kinderen verwerken sneller dan volwassenen en hebben minder last van conflicten", isCorrect: false },
         { text: "Je kind vermijdt de spanning en neemt de rol aan van 'degene die het gezin stabiel houdt' door te doen alsof alles normaal is", isCorrect: true },
         { text: "Je kind wacht af of jij het onderwerp aansnijdt en interpreteert je stilte als signaal dat het niet besproken hoeft te worden", isCorrect: false },
       ],
@@ -368,11 +389,11 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       question: "Je hebt gisteravond al hersteld en sorry gezegd. De volgende ochtend is je kind toch stil. Moet je het opnieuw benoemen?",
       options: [
-        { text: "Nee — je hebt al hersteld, en opnieuw beginnen ondermijnt je eerdere sorry en maakt het groter dan het is", isCorrect: false },
-        { text: "Ja, volledig — doorloop alle vijf de stappen opnieuw zodat het deze keer echt landt", isCorrect: false },
+        { text: "Nee. Je hebt al hersteld, en opnieuw beginnen ondermijnt je eerdere sorry en maakt het groter dan het is", isCorrect: false },
+        { text: "Ja, volledig. Doorloop alle vijf de stappen opnieuw zodat het deze keer echt landt", isCorrect: false },
         { text: "Kort en warm, zonder het hele gesprek over te doen: 'Hé, ik denk nog aan gisteravond. Hoe voel je je nu?'", isCorrect: true },
       ],
-      explanation: "Het gaat niet om het excuus herhalen maar om het signaal vernieuwen. Emotioneel geheugen wordt 's nachts opnieuw verwerkt, dus je kind kan 's ochtends opnieuw onzekerheid voelen. Een kort 'check-in' moment — zonder de hele sorry opnieuw — laat zien dat je het niet vergeten bent en dat het kind gezien wordt.",
+      explanation: "Het gaat niet om het excuus herhalen maar om het signaal vernieuwen. Emotioneel geheugen wordt 's nachts opnieuw verwerkt, dus je kind kan 's ochtends opnieuw onzekerheid voelen. Een kort 'check-in' moment. Zonder de hele sorry opnieuw. Laat zien dat je het niet vergeten bent en dat het kind gezien wordt.",
     },
   ],
 },
@@ -393,7 +414,7 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Waarom beloftes falen",
-      text: "Je brein werkt met gewoonte-loops. Trigger, gedrag, beloning. Dat is geen keuze — dat is bedrading.\n\nAls je moe bent (trigger), je kind voor de derde keer niet luistert (trigger), en je schreeuwt (gedrag) — dan voelt dat even als opluchting (beloning). Je brein slaat op: dit werkt.\n\nEen belofte om 'nooit meer te schreeuwen' is als een belofte om nooit meer te niezen. Je bestrijdt een automatisme met wilskracht. Dat is de verkeerde strijd.\n\nWat wél werkt: triggers leren herkennen. Niet het schreeuwen bestrijden — maar het moment ervoor zien aankomen.\n\nKristin Neff's onderzoek naar zelfcompassie laat zien dat vaders die zichzelf veroordelen na een uitbarsting méér schreeuwen, niet minder. Schuldgevoel vreet energie. Zelfcompassie geeft ruimte om te veranderen.\n\nJe bent geen slecht mens. Je hebt een slecht systeem. En systemen kun je veranderen.",
+      text: "Je brein werkt met gewoonte-loops. Trigger, gedrag, beloning. Dat is geen keuze. Dat is bedrading.\n\nAls je moe bent (trigger), je kind voor de derde keer niet luistert (trigger), en je schreeuwt (gedrag). Dan voelt dat even als opluchting (beloning). Je brein slaat op: dit werkt.\n\nEen belofte om 'nooit meer te schreeuwen' is als een belofte om nooit meer te niezen. Je bestrijdt een automatisme met wilskracht. Dat is de verkeerde strijd.\n\nWat wél werkt: triggers leren herkennen. Niet het schreeuwen bestrijden. Maar het moment ervoor zien aankomen.\n\nKristin Neff's onderzoek naar zelfcompassie laat zien dat vaders die zichzelf veroordelen na een uitbarsting méér schreeuwen, niet minder. Schuldgevoel vreet energie. Zelfcompassie geeft ruimte om te veranderen.\n\nJe bent geen slecht mens. Je hebt een slecht systeem. En systemen kun je veranderen.",
     },
     {
       type: "text" as const,
@@ -426,7 +447,14 @@ export const HERSTEL_MODULES: LearningModule[] = [
       situation: "Bas (8) weigert voor de vierde keer zijn schoenen aan te doen. Papa voelt de irritatie stijgen. Vorige week brak hij zijn belofte om niet meer te schreeuwen.",
       wrongApproach: "DE BELOFTE-CYCLUS:\n\nPapa voelt de spanning. Denkt: ik heb beloofd niet meer te schreeuwen.\nHoudt zich in. Houdt zich in. Houdt zich in.\nBas blijft treuzelen.\nPapa ontploft: 'DOE NOU DIE SCHOENEN AAN!'\nDaarna: schuldgevoel. Belofte. 'Dit was de laatste keer.'\nVolgende week: exact hetzelfde.\n\nWilskracht is eindig. Elke keer dat je je inhoudt kost het meer. Tot het op is.",
       rightApproach: "HET SYSTEEM:\n\nPapa voelt spanning in zijn kaak. Herkent het: dit is mijn trigger-signaal.\nZegt tegen Bas: 'Ik kom zo terug.' Loopt naar de gang. Tien tellen. Drie ademhalingen.\nKomt terug. Rustiger. 'Bas, we moeten over twee minuten weg. Ik help je met je schoenen.'\n\nPapa beloofde niet om nooit meer boos te worden. Papa bouwde een systeem: kaak spannen → gang → ademhalen. Dat is herhaalbaar.",
-      explanation: "De belofte-cyclus is een val: inhouden, ontploffen, schuldgevoel, nieuwe belofte. Het systeem doorbreekt de cyclus: trigger herkennen, fysiek afstand nemen, terugkomen. Geen wilskracht nodig — alleen een plan.",
+      explanation: "De belofte-cyclus is een val: inhouden, ontploffen, schuldgevoel, nieuwe belofte. Het systeem doorbreekt de cyclus: trigger herkennen, fysiek afstand nemen, terugkomen. Geen wilskracht nodig. Alleen een plan.",
+    },
+    {
+      type: "example" as const,
+      situation: "Sophie (6) en Daan (3) vechten om een speelgoedauto. Het is 18:15, papa is net thuis van werk. Sophie duwt Daan, Daan huilt. Papa voelt de hitte in zijn hoofd stijgen.",
+      wrongApproach: "❌ DE INNERLIJKE BELOFTE:\n\nPapa denkt: rustig blijven, rustig blijven.\nSophie en Daan gaan door. Geschreeuw. Gehuil.\nPapa ontploft: 'STOP! ALLEBEI NAAR JE KAMER! NU!'\nBeide kinderen huilen. Papa slaat met zijn hand op tafel.\nDaarna, op de bank: ik ga dit nooit meer doen. Echt niet.\n\nDinsdag 18:20. Exact hetzelfde scenario. Exact dezelfde ontploffing.",
+      rightApproach: "✅ HET TUSSENMOMENT PAKKEN:\n\nPapa voelt de hitte. Herkent het: net thuis, moe, honger, lawaai. Zijn combinatie.\nZegt hardop: 'Papa heeft even een minuutje nodig.'\nLoopt naar het aanrecht. Glas water. Vijf tellen.\nKomt terug. 'Sophie, Daan, ik zie dat jullie allebei die auto willen. Sophie, jij had hem eerst?'\nRustig. Niet perfect. Maar geen ontploffing.\n\nPapa gebruikte geen wilskracht. Hij gebruikte zijn trigger-map: net thuis + moe + kinderconflict = gevaar. Glas water = exit-route.",
+      explanation: "Het moment net na thuiskomen is voor veel vaders de gevaarlijkste trigger. Je bent leeg van werk en loopt een huis vol energie binnen. Een systeem voor dat specifieke moment (eerst vijf minuten landen) voorkomt meer uitbarstingen dan welke belofte ook.",
     },
     {
       type: "text" as const,
@@ -447,7 +475,7 @@ export const HERSTEL_MODULES: LearningModule[] = [
       type: "reflection" as const,
       questions: [
         "Welke beloftes maak je steeds opnieuw aan jezelf? Wat zou er veranderen als je die belofte vervangt door een systeem?",
-        "Wat zeg je tegen jezelf als je weer schreeuwt? Is die stem behulpzaam — of maakt hij het erger?",
+        "Wat zeg je tegen jezelf als je weer schreeuwt? Is die stem behulpzaam. Of maakt hij het erger?",
       ],
     },
     {
@@ -458,10 +486,10 @@ export const HERSTEL_MODULES: LearningModule[] = [
   ],
   keyTakeaways: [
     "Beloftes om 'nooit meer te schreeuwen' falen omdat je vecht tegen neurologische gewoonte-loops",
-    "Leer je lichaamssignaal herkennen — dat geeft je drie tot zes seconden voorsprong op het schreeuwen",
+    "Leer je lichaamssignaal herkennen. Dat geeft je drie tot zes seconden voorsprong op het schreeuwen",
     "Vervang beloftes door systemen: als-dan plannen die herhaalbaar zijn zonder wilskracht",
   ],
-  research: "Neff (2011). Self-Compassion: The Proven Power of Being Kind to Yourself; Duhigg (2012). The Power of Habit — gewoonte-loops en gedragsverandering",
+  research: "Neff (2011). Self-Compassion: The Proven Power of Being Kind to Yourself; Duhigg (2012). The Power of Habit. Gewoonte-loops en gedragsverandering",
   quizQuestions: [
     {
       question: "Een als-dan plan ('als ik X voel, dan doe ik Y') werkt beter dan een voornemen ('ik ga niet meer schreeuwen'). Waarom?",
@@ -477,14 +505,14 @@ export const HERSTEL_MODULES: LearningModule[] = [
       options: [
         { text: "Het motiveert je om het de volgende keer beter te doen, omdat de pijn van schuld een krachtige drijfveer is", isCorrect: false },
         { text: "Het vergroot de kans op een volgende uitbarsting, omdat zelfkritiek energie vreet die je nodig hebt voor zelfregulatie", isCorrect: true },
-        { text: "Het heeft weinig effect — schuldgevoel verdwijnt vanzelf en je gedrag wordt bepaald door je gewoonte-loops, niet door je emoties erna", isCorrect: false },
+        { text: "Het heeft weinig effect. Schuldgevoel verdwijnt vanzelf en je gedrag wordt bepaald door je gewoonte-loops, niet door je emoties erna", isCorrect: false },
       ],
       explanation: "Dit is contra-intuïtief: schuldgevoel voelt als een rem, maar werkt als een gaspedaal. Zelfveroordeling activeert je stresssysteem en put je zelfregulatie-reserves uit. Zelfcompassie ('ik maakte een fout, ik ben geen fout') geeft je brein juist de ruimte om te leren en te veranderen.",
     },
     {
       question: "Je hebt een als-dan plan: 'als ik spanning in mijn kaak voel, loop ik naar de gang.' Maar je kind volgt je naar de gang en blijft doorgaan. Wat nu?",
       options: [
-        { text: "Je plan faalt — je moet een nieuw als-dan plan maken voor situaties waarin weglopen niet kan", isCorrect: false },
+        { text: "Je plan faalt. Je moet een nieuw als-dan plan maken voor situaties waarin weglopen niet kan", isCorrect: false },
         { text: "Vertel je kind: 'Papa heeft even een pauze nodig. Ik kom over twee minuten terug.' en sluit de deur", isCorrect: false },
         { text: "Pas je systeem aan met een backup-stap: 'Als weglopen niet kan, dan handen op de aanrecht, ogen dicht, vijf keer inademen'", isCorrect: true },
       ],
@@ -493,9 +521,9 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       question: "Je trigger-map toont: elke dag 18:00-19:00, moe, hongerig, kinderen druk na school. Een vriend zegt: 'Gewoon eerder eten en het probleem is opgelost.' Wat klopt er?",
       options: [
-        { text: "Hij heeft gelijk — situatiecontrole (de omstandigheden veranderen) is effectiever dan zelfcontrole", isCorrect: false },
+        { text: "Hij heeft gelijk. Situatiecontrole (de omstandigheden veranderen) is effectiever dan zelfcontrole", isCorrect: false },
         { text: "De beste aanpak combineert situatiecontrole (eerder eten, snack, rustmoment) met een als-dan plan voor wanneer de situatie tóch escaleert", isCorrect: true },
-        { text: "Situatie veranderen is symptoombestrijding — je moet leren om met stress om te gaan in plaats van stress te vermijden", isCorrect: false },
+        { text: "Situatie veranderen is symptoombestrijding. Je moet leren om met stress om te gaan in plaats van stress te vermijden", isCorrect: false },
       ],
       explanation: "Situatiecontrole is krachtig maar niet waterdicht: je kunt niet elke avond perfect choreograferen. En stresstolerantie opbouwen klinkt stoer maar negeert dat je reserves eindig zijn. De combinatie is de sleutel: verander wat je kunt aan de situatie, en heb een plan voor wanneer het toch misgaat.",
     },
@@ -513,12 +541,12 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Ze durft het niet meer te proberen.",
-      text: "Noor (8) zit boven een tekenblad. Ze tekent een paard. Het wordt niet perfect. Ze grist het papier van tafel, propt het samen. 'Ik kan het toch niet.'\n\nJe herkent het. Want ergens — misschien van jou — heeft ze geleerd dat fouten niet oké zijn.",
+      text: "Noor (8) zit boven een tekenblad. Ze tekent een paard. Het wordt niet perfect. Ze grist het papier van tafel, propt het samen. 'Ik kan het toch niet.'\n\nJe herkent het. Want ergens. Misschien van jou. Heeft ze geleerd dat fouten niet oké zijn.",
     },
     {
       type: "text" as const,
       heading: "Jij bent het leerboek",
-      text: "Kinderen leren niet van wat je zegt. Ze leren van wat je doet. En als jij nooit je fouten laat zien — als je altijd sterk en foutloos lijkt — leert je kind: fouten horen niet bij sterke mensen.\n\nOmgekeerd: als jij laat zien dat je fouten maakt, dat je ervan baalt, en dat je herstelt? Dan leert je kind dat fouten overleefbaar zijn. Normaal. Onderdeel van het leven.\n\nBrené Brown noemt dit 'kwetsbaarheid modelleren'. Het is geen zwakte — het is de moedigste vorm van ouderschap. Want het betekent dat je je kind laat zien wie je echt bent. Inclusief de rommel.\n\nPsychologische veiligheid — het gevoel dat je fouten mag maken zonder afwijzing — is de nummer één voorspeller van veerkracht bij kinderen. En die veiligheid begint niet bij regels. Die begint bij een vader die zegt: 'Ik deed het ook fout vandaag. En dat is oké.'",
+      text: "Kinderen leren niet van wat je zegt. Ze leren van wat je doet. En als jij nooit je fouten laat zien. Als je altijd sterk en foutloos lijkt. Leert je kind: fouten horen niet bij sterke mensen.\n\nOmgekeerd: als jij laat zien dat je fouten maakt, dat je ervan baalt, en dat je herstelt? Dan leert je kind dat fouten overleefbaar zijn. Normaal. Onderdeel van het leven.\n\nBrené Brown noemt dit 'kwetsbaarheid modelleren'. Het is geen zwakte. Het is de moedigste vorm van ouderschap. Want het betekent dat je je kind laat zien wie je echt bent. Inclusief de rommel.\n\nPsychologische veiligheid. Het gevoel dat je fouten mag maken zonder afwijzing. Is de nummer één voorspeller van veerkracht bij kinderen. En die veiligheid begint niet bij regels. Die begint bij een vader die zegt: 'Ik deed het ook fout vandaag. En dat is oké.'",
     },
     {
       type: "text" as const,
@@ -551,17 +579,24 @@ export const HERSTEL_MODULES: LearningModule[] = [
       situation: "Noor (8) weigert haar wiskundeoefeningen te maken. 'Ik snap het toch niet. Ik ben dom.' Ze duwt haar schrift weg.",
       wrongApproach: "DE PEPTALK:\n\nPapa: 'Je bent niet dom! Je bent superslim! Je kunt het wel!'\nNoor rolt met haar ogen. Ze gelooft het niet.\nPapa: 'Gewoon proberen. Fouten mag.'\nNoor: 'Jij maakt nooit fouten.'\nStilte.\n\nPapa zegt dat fouten mogen, maar laat het nooit zien. Noor ziet de mismatch. Ze gelooft wat ze ziet, niet wat ze hoort.",
       rightApproach: "FEILBAARHEID DELEN:\n\nPapa gaat naast Noor zitten.\n'Weet je wat mij vandaag gebeurde op werk? Ik stuurde een mail naar de verkeerde persoon. Best gênant.'\nNoor kijkt op. 'Echt?'\n'Ja. Ik baalde. Maar ik heb sorry gezegd en het opgelost. Het was niet leuk, maar het was ook niet het einde van de wereld.'\nStilte.\nNoor pakt haar potlood. 'Kan je me helpen met die eerste som?'\n\nPapa liet zien: fouten overkomen mij ook. En ik overleef ze. Noor durft weer.",
-      explanation: "Peptalk ('je bent slim!') mist als je kind bewijs nodig heeft. Het krachtigste bewijs? Een vader die zijn eigen fouten deelt. Niet om medelijden te krijgen — maar om te laten zien: falen hoort bij leven.",
+      explanation: "Peptalk ('je bent slim!') mist als je kind bewijs nodig heeft. Het krachtigste bewijs? Een vader die zijn eigen fouten deelt. Niet om medelijden te krijgen. Maar om te laten zien: falen hoort bij leven.",
+    },
+    {
+      type: "example" as const,
+      situation: "Finn (12) komt thuis met een onvoldoende voor zijn spreekbeurt. Hij smijt zijn tas in de hoek. 'Iedereen lachte. Ik doe nooit meer een spreekbeurt.'",
+      wrongApproach: "❌ DE ONKWETSBARE VADER:\n\nPapa: 'Ach joh, een spreekbeurt is niet zo moeilijk. Ik stond vroeger ook voor de klas, je moet gewoon goed voorbereiden.'\nFinn: 'Jij snapt er niks van.'\nPapa: 'Volgende keer oefenen we samen. Dan gaat het beter.'\nFinn loopt naar zijn kamer en sluit de deur.\n\nPapa bedoelde het goed, maar liet zien: ik had dit probleem niet. Het ligt aan jouw voorbereiding. Finn voelt zich alleen in zijn schaamte.",
+      rightApproach: "✅ NAAST JE KIND GAAN STAAN:\n\nPapa gaat naast Finn op de bank zitten.\n'Dat klinkt echt klote. Uitgelachen worden is het ergste.'\nStilte.\n'Weet je, vorige maand moest ik een presentatie geven op werk. Ik raakte mijn tekst kwijt halverwege. Stond daar als een idioot. Ik schaamde me dood.'\nFinn kijkt op. 'Echt?'\n'Ja. En ik leef nog. Het was verschrikkelijk en het ging over. Dat van jou gaat ook over.'\n\nPapa gaf geen advies. Papa deelde zijn eigen schaamte. Finn voelt: ik ben niet de enige. Dit is overleefbaar.",
+      explanation: "Bij pubers werkt advies vaak averechts. Ze willen niet horen hoe ze het moeten oplossen. Ze willen weten dat ze niet de enige zijn die falen. Een vader die zijn eigen schaamte deelt zonder het op te lossen, geeft zijn kind het krachtigste cadeau: normalisatie.",
     },
     {
       type: "text" as const,
       heading: "Je toolkit",
-      text: "1. Het feilbaarheid-experiment. Deel deze week één eigen fout met je kind. Iets kleins. 'Ik vergat de was op te hangen.' 'Ik was ongeduldig bij de kassa.' Laat zien hoe je ermee omging.\n\n2. Normaliseer 'oeps'. Maak 'oeps' een gewoon woord in huis. Jij zegt het. Je kind zegt het. Oeps = ik maakte een fout, ik ga het fixen. Geen drama.\n\n3. Vier de poging, niet het resultaat. 'Ik zag dat je het probeerde, ook al lukte het niet.' Dat ene zinnetje bouwt meer lef dan honderd keer 'knap!'\n\n4. Laat je kind jou helpen herstellen. 'Ik weet niet goed hoe ik dit moet oplossen. Heb jij een idee?' Dat geeft ze agency én laat zien dat vragen om hulp sterk is.\n\n5. Tiener-variant. Pubers (13+) vinden 'oeps' kinderachtig — en terecht. Gebruik hun taal: 'Ik heb het verknald vandaag op werk.' of 'Ik had dat anders moeten aanpakken.' Hoe eerlijker en volwassener je deelt, hoe meer een tiener zich opent over eigen fouten.",
+      text: "1. Het feilbaarheid-experiment. Deel deze week één eigen fout met je kind. Iets kleins. 'Ik vergat de was op te hangen.' 'Ik was ongeduldig bij de kassa.' Laat zien hoe je ermee omging.\n\n2. Normaliseer 'oeps'. Maak 'oeps' een gewoon woord in huis. Jij zegt het. Je kind zegt het. Oeps = ik maakte een fout, ik ga het fixen. Geen drama.\n\n3. Vier de poging, niet het resultaat. 'Ik zag dat je het probeerde, ook al lukte het niet.' Dat ene zinnetje bouwt meer lef dan honderd keer 'knap!'\n\n4. Laat je kind jou helpen herstellen. 'Ik weet niet goed hoe ik dit moet oplossen. Heb jij een idee?' Dat geeft ze agency én laat zien dat vragen om hulp sterk is.\n\n5. Tiener-variant. Pubers (13+) vinden 'oeps' kinderachtig. En terecht. Gebruik hun taal: 'Ik heb het verknald vandaag op werk.' of 'Ik had dat anders moeten aanpakken.' Hoe eerlijker en volwassener je deelt, hoe meer een tiener zich opent over eigen fouten.",
     },
     {
       type: "exercise" as const,
       title: "Het feilbaarheid-experiment",
-      instructions: "Vanavond of morgen aan tafel: vertel je kind over een fout die je deze week maakte. Het hoeft niet groot te zijn — iets vergeten, iets stoms gezegd, ergens te laat gekomen. Vertel drie dingen: 1) Wat er gebeurde. 2) Hoe je je voelde. 3) Wat je ermee deed. Let op de reactie van je kind. Vaak beginnen ze daarna zelf ook te vertellen over hun dag.",
+      instructions: "Vanavond of morgen aan tafel: vertel je kind over een fout die je deze week maakte. Het hoeft niet groot te zijn. Iets vergeten, iets stoms gezegd, ergens te laat gekomen. Vertel drie dingen: 1) Wat er gebeurde. 2) Hoe je je voelde. 3) Wat je ermee deed. Let op de reactie van je kind. Vaak beginnen ze daarna zelf ook te vertellen over hun dag.",
       duration: 5,
       tips: [
         "Kies iets kleins en herkenbaars. Het hoeft geen diepe bekentenis te zijn. Gewoon menselijk.",
@@ -571,29 +606,29 @@ export const HERSTEL_MODULES: LearningModule[] = [
     {
       type: "reflection" as const,
       questions: [
-        "Wanneer heb je voor het laatst een fout van jezelf gedeeld met je kind? Wat hield je tegen — of wat maakte het makkelijk?",
+        "Wanneer heb je voor het laatst een fout van jezelf gedeeld met je kind? Wat hield je tegen. Of wat maakte het makkelijk?",
         "Welke boodschap over fouten heb je meegekregen van je eigen ouders? Wil je die doorgeven?",
       ],
     },
     {
       type: "text" as const,
       heading: "Samenvatting",
-      text: "Kinderen leren van wat je doet, niet van wat je zegt. Als jij je fouten deelt en herstelt, leert je kind dat fouten overleefbaar zijn. Deel één fout per week. Vier de poging, niet het resultaat. Kwetsbaarheid is geen zwakte — het is de basis van psychologische veiligheid.",
+      text: "Kinderen leren van wat je doet, niet van wat je zegt. Als jij je fouten deelt en herstelt, leert je kind dat fouten overleefbaar zijn. Deel één fout per week. Vier de poging, niet het resultaat. Kwetsbaarheid is geen zwakte. Het is de basis van psychologische veiligheid.",
     },
   ],
   keyTakeaways: [
-    "Kinderen leren niet van wat je zegt maar van wat je voordoet — deel je eigen fouten",
+    "Kinderen leren niet van wat je zegt maar van wat je voordoet. Deel je eigen fouten",
     "Psychologische veiligheid (fouten mogen maken) is de nummer één voorspeller van veerkracht",
     "Een vader die herstelt na fouten leert zijn kind: falen is overleefbaar en normaal",
   ],
-  research: "Brown (2012). Daring Greatly; Edmondson (1999). Psychological Safety and Learning Behavior in Work Teams; Dweck (2006). Mindset — growth mindset bij kinderen",
+  research: "Brown (2012). Daring Greatly; Edmondson (1999). Psychological Safety and Learning Behavior in Work Teams; Dweck (2006). Mindset. Growth mindset bij kinderen",
   quizQuestions: [
     {
       question: "Je deelt aan tafel dat je een fout maakte op werk. Je kind (7) reageert bezorgd: 'Word je dan ontslagen, papa?' Wat ging er mis?",
       options: [
-        { text: "Je koos een te zware fout om te delen — kwetsbaarheid modelleren werkt alleen met lichte, alledaagse fouten die je kind kan relativeren", isCorrect: true },
-        { text: "Er ging niks mis — dit is een natuurlijke reactie en je kunt het gebruiken om uit te leggen dat fouten op werk normaal zijn", isCorrect: false },
-        { text: "Je kind is te jong voor dit soort gesprekken — wacht tot ze 10+ zijn voordat je werkfouten deelt", isCorrect: false },
+        { text: "Je koos een te zware fout om te delen. Kwetsbaarheid modelleren werkt alleen met lichte, alledaagse fouten die je kind kan relativeren", isCorrect: true },
+        { text: "Er ging niks mis. Dit is een natuurlijke reactie en je kunt het gebruiken om uit te leggen dat fouten op werk normaal zijn", isCorrect: false },
+        { text: "Je kind is te jong voor dit soort gesprekken. Wacht tot ze 10+ zijn voordat je werkfouten deelt", isCorrect: false },
       ],
       explanation: "Kwetsbaarheid modelleren is niet hetzelfde als je kind belasten met volwassenenproblematiek. Het doel is dat je kind ziet dat fouten overleefbaar zijn, niet dat ze zich zorgen gaan maken over de consequenties. Kies fouten die voor een kind herkenbaar en onschuldig zijn: iets vergeten, iets morsen, te laat komen.",
     },
@@ -610,7 +645,7 @@ export const HERSTEL_MODULES: LearningModule[] = [
       question: "Je tiener (14) zegt: 'Hou op met die fouten delen aan tafel, het is zielig.' Wat is de beste interpretatie?",
       options: [
         { text: "Je tiener manipuleert je om een grens te stellen tegen emotioneel kwetsbare gesprekken", isCorrect: false },
-        { text: "Je aanpak is te kinderlijk voor een tiener — pas je taal en diepte aan hun ontwikkelingsniveau aan", isCorrect: true },
+        { text: "Je aanpak is te kinderlijk voor een tiener. Pas je taal en diepte aan hun ontwikkelingsniveau aan", isCorrect: true },
         { text: "Je tiener vindt kwetsbaarheid ongemakkelijk, en dat is juist het teken dat het goed is om door te gaan", isCorrect: false },
       ],
       explanation: "Pubers hebben een fijn ontwikkelde radar voor 'pedagogisch gedoe'. Als je kwetsbaarheid aanvoelt als een les, werkt het averechts. Tieners hebben behoefte aan gelijkwaardiger gesprekken. Deel je fouten terloops, in hun taal, zonder de moraal erbij. 'Ik heb het verknald vandaag' tussen neus en lippen is krachtiger dan een opgezet tafelgesprek.",

@@ -163,6 +163,7 @@ export default function GroupsScreen() {
                 styles.filterText,
                 { color: filter === f.value ? colors.amber : colors.text2 },
               ]}
+              numberOfLines={1}
             >
               {f.label}
               {f.value === 'mijn' && myGroups.length > 0 ? ` (${myGroups.length})` : ''}
@@ -235,12 +236,14 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   filterChip: {
+    flex: 1,
     borderWidth: 1,
     borderRadius: 10,
-    paddingHorizontal: 14,
+    paddingHorizontal: 8,
     paddingVertical: 8,
+    alignItems: 'center' as const,
   },
-  filterText: { fontSize: 13, fontWeight: '600' },
+  filterText: { fontSize: 12, fontWeight: '600' },
   loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   listContent: { paddingHorizontal: 16, paddingBottom: 40 },
   groupCard: {

@@ -68,7 +68,7 @@ export const INTERACTIVE_TASKS_1: InteractiveTask[] = [
   },
   {
     id: "aanw_02_05",
-    title: "Narrate je handelingen",
+    title: "Vertel wat je doet",
     skill: "Aanwezigheid",
     description: "Vertel hardop wat je doet als je voor je baby zorgt: 'Papa doet nu je luier om, zo, lekker schoon.'",
     duration: "5 min",

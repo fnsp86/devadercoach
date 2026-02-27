@@ -110,7 +110,7 @@ function checkSpecialBadge(
       return hour >= 23 || hour < 4;
     }
     case 'early_bird': {
-      if (context.source === 'app_open') return false;
+      if (context.source !== 'app_open') return false;
       const hour = new Date().getHours();
       return hour >= 4 && hour < 7;
     }

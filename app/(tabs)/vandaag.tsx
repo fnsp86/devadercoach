@@ -13,6 +13,7 @@ import {
   Platform,
   UIManager,
   Alert,
+  InteractionManager,
 } from 'react-native';
 
 if (Platform.OS === 'android') {
@@ -61,8 +62,8 @@ function getTodayKey(): string {
 }
 
 function formatWeekRange(weekKey: string): string {
-  const monday = new Date(weekKey);
-  const sunday = new Date(weekKey);
+  const monday = new Date(weekKey + 'T00:00:00');
+  const sunday = new Date(weekKey + 'T00:00:00');
   sunday.setDate(sunday.getDate() + 6);
   const opts: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'short' };
   return `${monday.toLocaleDateString('nl-NL', opts)} – ${sunday.toLocaleDateString('nl-NL', opts)}`;
@@ -168,6 +169,37 @@ function TaskCard({
   const diffColor = DIFFICULTY_COLOR[task.difficulty] ?? '#FBBF24';
   const xp = (task as any).points ?? (task as any).xpReward ?? 10;
 
+  // Afgeronde taken zijn standaard ingeklapt
+  const toggle = () => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); setExpanded((e) => !e); };
+
+  // ── Collapsed done state: alleen titel + checkmark ──
+  if (done && !expanded) {
+    return (
+      <Pressable
+        onPress={toggle}
+        style={[
+          tcStyles.card,
+          tcStyles.doneCardCollapsed,
+          { backgroundColor: colors.surface, borderColor: skillColor },
+        ]}
+      >
+        <InlineIcon name="checkCircle" size={18} color="#22C55E" />
+        <Text style={[tcStyles.title, { color: colors.text3 }]} numberOfLines={1}>
+          {task.title}
+        </Text>
+        {outcome && (
+          <InlineIcon
+            name={outcome === 'Gelukt' ? 'checkCircle' : outcome === 'Deels' ? 'alertTriangle' : 'xCircle'}
+            size={14}
+            color={outcome === 'Gelukt' ? '#22C55E' : outcome === 'Deels' ? '#FBBF24' : '#EF4444'}
+          />
+        )}
+        <InlineIcon name="chevronDown" size={14} color={colors.text3} />
+      </Pressable>
+    );
+  }
+
+  // ── Full card (open taken, of afgeronde taken uitgeklapt) ──
   return (
     <View
       style={[
@@ -180,7 +212,7 @@ function TaskCard({
       ]}
     >
       {/* Pills row — expandable header */}
-      <Pressable onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); setExpanded((e) => !e); }} style={[tcStyles.topRow, { backgroundColor: expanded ? skillColor + '08' : 'transparent', borderRadius: 10, marginHorizontal: -8, paddingHorizontal: 8 }]}>
+      <Pressable onPress={toggle} style={[tcStyles.topRow, { backgroundColor: expanded ? skillColor + '08' : 'transparent', borderRadius: 10, marginHorizontal: -8, paddingHorizontal: 8 }]}>
         <View style={tcStyles.pills}>
           <View style={[tcStyles.pill, { backgroundColor: skillColor + '22' }]}>
             <Text style={[tcStyles.pillText, { color: skillColor }]}>{task.skill}</Text>
@@ -198,14 +230,11 @@ function TaskCard({
       </Pressable>
 
       <View style={tcStyles.titleRow}>
-        <View style={[
-          tcStyles.checkCircle,
-          done
-            ? { backgroundColor: '#22C55E' }
-            : { backgroundColor: 'transparent', borderWidth: 2, borderColor: colors.border },
-        ]}>
-          {done && <InlineIcon name="check" size={14} color="#fff" />}
-        </View>
+        {done ? (
+          <InlineIcon name="checkCircle" size={20} color="#22C55E" />
+        ) : (
+          <View style={[tcStyles.checkCircle, { borderWidth: 2, borderColor: colors.border }]} />
+        )}
         <Text style={[tcStyles.title, { color: done ? colors.text3 : colors.text }]}>
           {task.title}
         </Text>
@@ -284,10 +313,15 @@ function TaskCard({
         <View style={[tcStyles.outcomeBadge, {
           backgroundColor: outcome === 'Gelukt' ? '#22C55E18' : outcome === 'Deels' ? '#FBBF2418' : '#EF444418',
         }]}>
+          <InlineIcon
+            name={outcome === 'Gelukt' ? 'checkCircle' : outcome === 'Deels' ? 'alertTriangle' : 'xCircle'}
+            size={14}
+            color={outcome === 'Gelukt' ? '#22C55E' : outcome === 'Deels' ? '#FBBF24' : '#EF4444'}
+          />
           <Text style={[tcStyles.outcomeText, {
             color: outcome === 'Gelukt' ? '#22C55E' : outcome === 'Deels' ? '#FBBF24' : '#EF4444',
           }]}>
-            {outcome === 'Gelukt' ? '✓ Gelukt' : outcome === 'Deels' ? '~ Deels gelukt' : '✕ Niet gelukt'}
+            {outcome === 'Gelukt' ? 'Gelukt' : outcome === 'Deels' ? 'Deels gelukt' : 'Niet gelukt'}
           </Text>
         </View>
       )}
@@ -310,20 +344,22 @@ function TaskCard({
 }
 
 const tcStyles = StyleSheet.create({
-  card: { borderRadius: 16, padding: 16, marginBottom: 12 },
-  topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, minHeight: 48, paddingVertical: 6 },
-  chevronWrap: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
+  card: { borderRadius: 14, padding: 14, marginBottom: 8 },
+  doneCardCollapsed: { flexDirection: 'row' as const, alignItems: 'center' as const, gap: 10, borderWidth: 2, paddingVertical: 10 },
+  doneOutcomeInline: { fontSize: 13, fontWeight: '700' as const },
+  topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6, minHeight: 36, paddingVertical: 3 },
+  chevronWrap: { width: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
   pills: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
   pill: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 },
   pillText: { fontSize: 11, fontWeight: '700' },
   xpText: { fontSize: 12, fontWeight: '600' },
   chevron: { fontSize: 11 },
   titleRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 6 },
-  checkCircle: { width: 24, height: 24, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  checkCircle: { width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
   checkMark: { color: '#fff', fontSize: 14, fontWeight: '800' },
-  title: { fontSize: 17, fontWeight: '700', flex: 1 },
-  desc: { fontSize: 14, lineHeight: 20, marginBottom: 6 },
-  dur: { fontSize: 12, marginBottom: 12 },
+  title: { fontSize: 15, fontWeight: '700', flex: 1 },
+  desc: { fontSize: 13, lineHeight: 18, marginBottom: 6 },
+  dur: { fontSize: 12, marginBottom: 8 },
   expanded: { borderTopWidth: 1, paddingTop: 14, marginTop: 4 },
   section: { marginBottom: 14 },
   sectionTitle: { fontSize: 12, fontWeight: '700', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 },
@@ -331,11 +367,11 @@ const tcStyles = StyleSheet.create({
   scienceBox: { borderRadius: 10, padding: 12, marginBottom: 14 },
   bodyText: { fontSize: 14, lineHeight: 20 },
   bron: { fontSize: 12, marginTop: 6, fontStyle: 'italic' },
-  doneBtn: { borderRadius: 12, paddingVertical: 14, alignItems: 'center', marginTop: 4 },
-  doneBtnText: { color: '#fff', fontSize: 15, fontWeight: '700' },
-  undoBtn: { borderRadius: 12, paddingVertical: 12, alignItems: 'center', marginTop: 4, borderWidth: 1 },
+  doneBtn: { borderRadius: 12, paddingVertical: 11, alignItems: 'center', marginTop: 4 },
+  doneBtnText: { color: '#fff', fontSize: 14, fontWeight: '700' },
+  undoBtn: { borderRadius: 12, paddingVertical: 10, alignItems: 'center', marginTop: 4, borderWidth: 1 },
   undoText: { fontSize: 14, fontWeight: '600' },
-  outcomeBadge: { alignSelf: 'flex-start' as const, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8, marginTop: 4, marginBottom: 4 },
+  outcomeBadge: { flexDirection: 'row' as const, alignItems: 'center' as const, alignSelf: 'flex-start' as const, gap: 6, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8, marginTop: 4, marginBottom: 4 },
   outcomeText: { fontSize: 13, fontWeight: '700' },
   moduleLink: {
     flexDirection: 'row' as const,
@@ -534,10 +570,10 @@ const pmStyles = StyleSheet.create({
 // OutcomeModal ("Hoe ging het?")
 // ─────────────────────────────────────────────────────────────────────────────
 
-const OUTCOME_OPTIONS: { value: CompletionStatus; label: string; emoji: string; color: string; sub: string }[] = [
-  { value: 'Gelukt', label: 'Gelukt', emoji: '✓', color: '#22C55E', sub: 'Ik heb het gedaan zoals beschreven' },
-  { value: 'Deels', label: 'Deels gelukt', emoji: '~', color: '#FBBF24', sub: 'Ik heb een poging gedaan' },
-  { value: 'Niet', label: 'Niet gelukt', emoji: '✕', color: '#EF4444', sub: 'Kwam er niet van of het lukte niet' },
+const OUTCOME_OPTIONS: { value: CompletionStatus; label: string; icon: string; color: string; sub: string }[] = [
+  { value: 'Gelukt', label: 'Gelukt', icon: 'checkCircle', color: '#22C55E', sub: 'Ik heb het gedaan zoals beschreven' },
+  { value: 'Deels', label: 'Deels gelukt', icon: 'alertTriangle', color: '#FBBF24', sub: 'Ik heb een poging gedaan' },
+  { value: 'Niet', label: 'Niet gelukt', icon: 'xCircle', color: '#EF4444', sub: 'Kwam er niet van of het lukte niet' },
 ];
 
 function OutcomeModal({
@@ -614,7 +650,7 @@ function OutcomeModal({
                   ]}
                 >
                   <View style={[omStyles.optionIcon, { backgroundColor: opt.color + '22' }]}>
-                    <Text style={[omStyles.optionEmoji, { color: opt.color }]}>{opt.emoji}</Text>
+                    <InlineIcon name={opt.icon as any} size={20} color={opt.color} />
                   </View>
                   <View style={omStyles.optionTextWrap}>
                     <Text style={[omStyles.optionLabel, { color: isSelected ? opt.color : colors.text }]}>
@@ -1023,6 +1059,16 @@ export default function WeekScreen() {
   }, [profile, weekKey]);
 
   const weekTaskIds = useMemo(() => new Set(weekTasks.map(t => t.id)), [weekTasks]);
+
+  // Open taken bovenaan, afgeronde taken onderaan
+  const sortedTasks = useMemo(() => {
+    return [...weekTasks].sort((a, b) => {
+      const aDone = isWeekTaskDone(a.id, weekKey) ? 1 : 0;
+      const bDone = isWeekTaskDone(b.id, weekKey) ? 1 : 0;
+      return aDone - bDone;
+    });
+  }, [weekTasks, weekTaskCompletions, weekKey]);
+
   const doneTasks = getWeekTasksDone(weekKey).filter(c => weekTaskIds.has(c.taskId));
   const doneCount = doneTasks.length;
   const weekComplete = doneCount >= 7;
@@ -1055,13 +1101,15 @@ export default function WeekScreen() {
       xp,
     });
 
-    // Check badges after reflection
-    setTimeout(() => {
-      const newBadges = checkAndUnlockBadges(store, { source: 'task' });
-      if (newBadges.length > 0) {
-        setGamificationEvent({ type: 'badge', badge: newBadges[0] });
-      }
-    }, 1000);
+    // Check badges after reflection (defer to avoid UI freeze)
+    InteractionManager.runAfterInteractions(() => {
+      setTimeout(() => {
+        const newBadges = checkAndUnlockBadges(store, { source: 'task' });
+        if (newBadges.length > 0) {
+          setGamificationEvent({ type: 'badge', badge: newBadges[0] });
+        }
+      }, 500);
+    });
   }, [combo.multiplier, completeWeekTask, weekKey, recordActiveDay, store]);
 
   // Toon OutcomeModal in plaats van direct afronden
@@ -1121,35 +1169,37 @@ export default function WeekScreen() {
       setToast({ title: outcomeEmoji, sub: `${celebration.sub} · nog ${7 - newDoneCount} te gaan`, color: skillColor, icon: celebration.icon, xp });
     }
 
-    // Detect level-up or badge unlock after a short delay
+    // Detect level-up or badge unlock after UI has settled
     clearPendingTimers();
-    pendingTimers.current.push(
-      setTimeout(async () => {
-        const weekBonus = newDoneCount >= 7 ? 50 : 0;
-        const totalXpAfter = xpBefore + xp + weekBonusBefore + weekBonus;
-        const levelBefore = getLevelFromXP(totalXpBefore);
-        const levelAfter = getLevelFromXP(totalXpAfter);
-
-        if (levelAfter.level > levelBefore.level) {
-          setGamificationEvent({ type: 'levelup', level: levelAfter.level, title: levelAfter.title });
-          return;
-        }
-
-        const newBadges = checkAndUnlockBadges(store, { source: 'task' });
-        if (newBadges.length > 0) {
-          setGamificationEvent({ type: 'badge', badge: newBadges[0] });
-        }
-      }, 1000),
-    );
-
-    // Show share prompt only on 1st and 7th (last) task of the week
-    if (newDoneCount === 1 || newDoneCount >= 7) {
+    InteractionManager.runAfterInteractions(() => {
       pendingTimers.current.push(
         setTimeout(() => {
-          setSharePrompt({ task, outcome, note });
-        }, 3000),
+          const weekBonus = newDoneCount >= 7 ? 50 : 0;
+          const totalXpAfter = xpBefore + xp + weekBonusBefore + weekBonus;
+          const levelBefore = getLevelFromXP(totalXpBefore);
+          const levelAfter = getLevelFromXP(totalXpAfter);
+
+          if (levelAfter.level > levelBefore.level) {
+            setGamificationEvent({ type: 'levelup', level: levelAfter.level, title: levelAfter.title });
+            return;
+          }
+
+          const newBadges = checkAndUnlockBadges(store, { source: 'task' });
+          if (newBadges.length > 0) {
+            setGamificationEvent({ type: 'badge', badge: newBadges[0] });
+          }
+        }, 500),
       );
-    }
+
+      // Show share prompt only on 1st and 7th (last) task of the week
+      if (newDoneCount === 1 || newDoneCount >= 7) {
+        pendingTimers.current.push(
+          setTimeout(() => {
+            setSharePrompt({ task, outcome, note });
+          }, 3000),
+        );
+      }
+    });
   }, [outcomeTask, completeWeekTask, addTaskOutcome, weekKey, getWeekTasksDone, weekTaskIds, combo.multiplier, recordActiveDay, store, clearPendingTimers]);
 
   return (
@@ -1211,7 +1261,7 @@ export default function WeekScreen() {
         {/* ── Vader Wijsheid (Level 2+) ──────────────────────────────── */}
         {wijsheid && (
           <View style={[s.wijsheidCard, { backgroundColor: colors.amber + '08', borderLeftColor: colors.amber }]}>
-            <InlineIcon name="messageCircle" size={18} color={colors.amber} />
+            <InlineIcon name="messageCircle" size={14} color={colors.amber} />
             <Text style={[s.wijsheidText, { color: colors.text }]}>"{wijsheid.text}"</Text>
             {wijsheid.bron && (
               <Text style={[s.wijsheidBron, { color: colors.text3 }]}>— {wijsheid.bron}</Text>
@@ -1234,9 +1284,9 @@ export default function WeekScreen() {
           <View style={s.pulseLeft}>
             <View style={s.pulseEmojiWrap}>
               {todayPulse ? (
-                <InlineIcon name="checkCircle" size={26} color={colors.success} />
+                <InlineIcon name="checkCircle" size={22} color={colors.success} />
               ) : (
-                <InlineIcon name="compass" size={26} color={colors.amber} />
+                <InlineIcon name="compass" size={22} color={colors.amber} />
               )}
             </View>
             <View>
@@ -1264,7 +1314,7 @@ export default function WeekScreen() {
             Kies vrij – doe ze wanneer het uitkomt
           </Text>
 
-          {weekTasks.map((task) => {
+          {sortedTasks.map((task) => {
             const mod = getModuleForTask(task, activeThemes);
             return (
               <TaskCard
@@ -1399,8 +1449,8 @@ export default function WeekScreen() {
           <InlineIcon name="chevronRight" size={16} color={colors.text3} />
         </Pressable>
 
-        {/* ── Info ────────────────────────────────────────────────────── */}
-        <View style={[s.infoCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        {/* ── Info (verberg na week 2) ─────────────────────────────── */}
+        {weekNumber <= 2 && <View style={[s.infoCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 8 }}>
             <InlineIcon name="info" size={14} color={colors.text} />
             <Text style={[s.infoTitle, { color: colors.text, marginBottom: 0 }]}>Hoe werkt dit?</Text>
@@ -1411,7 +1461,7 @@ export default function WeekScreen() {
           <Text style={[s.infoText, { color: colors.text2, marginTop: 8 }]}>
             Doe elke dag de Vader Pulse check-in (20 sec) om je streak te bewaren en dagelijks een nieuw inzicht te leren.
           </Text>
-        </View>
+        </View>}
 
       </ScrollView>
 
@@ -1554,21 +1604,21 @@ const s = StyleSheet.create({
   wijsheidCard: {
     marginHorizontal: 16,
     marginBottom: 16,
-    padding: 16,
-    paddingLeft: 18,
+    padding: 12,
+    paddingLeft: 14,
     borderRadius: 12,
     borderLeftWidth: 4,
-    gap: 6,
+    gap: 4,
   },
   wijsheidText: {
-    fontSize: 16,
+    fontSize: 13,
     fontStyle: 'italic',
-    lineHeight: 24,
+    lineHeight: 19,
     fontWeight: '500',
   },
   wijsheidBron: {
-    fontSize: 12,
-    marginTop: 2,
+    fontSize: 11,
+    marginTop: 1,
     fontWeight: '600',
   },
 
@@ -1580,11 +1630,11 @@ const s = StyleSheet.create({
     marginHorizontal: 16,
     marginBottom: 16,
     borderRadius: 16,
-    padding: 16,
+    padding: 14,
   },
-  pulseLeft: { flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1 },
-  pulseEmojiWrap: { width: 26, alignItems: 'center' as const, justifyContent: 'center' as const },
-  pulseTitle: { fontSize: 15, fontWeight: '700' },
+  pulseLeft: { flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 },
+  pulseEmojiWrap: { width: 22, alignItems: 'center' as const, justifyContent: 'center' as const },
+  pulseTitle: { fontSize: 14, fontWeight: '700' },
   pulseSub: { fontSize: 12, marginTop: 2 },
   pulseArrow: {
     width: 34,
@@ -1599,7 +1649,7 @@ const s = StyleSheet.create({
   // Tasks section
   tasksSection: { paddingHorizontal: 16, marginBottom: 8 },
   tasksSectionTitle: { fontSize: 19, fontWeight: '800', marginBottom: 4 },
-  tasksSectionSub: { fontSize: 13, marginBottom: 16 },
+  tasksSectionSub: { fontSize: 13, marginBottom: 12 },
 
   // Complete banner
   completeBanner: {
@@ -1639,13 +1689,13 @@ const s = StyleSheet.create({
     gap: 12,
     marginHorizontal: 16,
     marginBottom: 16,
-    padding: 14,
+    padding: 12,
     borderRadius: 14,
     borderWidth: 1,
   },
   journalIcon: {
-    width: 38,
-    height: 38,
+    width: 34,
+    height: 34,
     borderRadius: 19,
     alignItems: 'center' as const,
     justifyContent: 'center' as const,

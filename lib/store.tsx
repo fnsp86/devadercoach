@@ -208,6 +208,7 @@ interface StoreState {
   // Help history & feedback
   helpHistory: string[];
   addHelpHistory: (situationId: string) => void;
+  removeHelpHistory: (situationId: string) => void;
   helpFeedback: Record<string, 'up' | 'down'>;
   setHelpFeedback: (situationId: string, feedback: 'up' | 'down') => void;
 
@@ -862,6 +863,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     });
   }
 
+  function removeHelpHistoryFn(situationId: string) {
+    setHelpHistory((prev) => {
+      const updated = prev.filter((id) => id !== situationId);
+      save(KEYS.HELP_HISTORY, updated);
+      return updated;
+    });
+  }
+
   function setHelpFeedbackFn(situationId: string, feedback: 'up' | 'down') {
     setHelpFeedback((prev) => {
       const updated = { ...prev, [situationId]: feedback };
@@ -1183,6 +1192,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     isHelpFavorite: isHelpFavoriteFn,
     helpHistory,
     addHelpHistory: addHelpHistoryFn,
+    removeHelpHistory: removeHelpHistoryFn,
     helpFeedback,
     setHelpFeedback: setHelpFeedbackFn,
     taskOutcomes,

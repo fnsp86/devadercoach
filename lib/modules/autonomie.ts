@@ -23,7 +23,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Vygotsky beschreef de 'zone van naaste ontwikkeling': het gebied tussen wat je kind alleen kan en wat ze met een beetje hulp kan. Dáár zit de groei. Te veel hulp? Je kind leert niks. Te weinig? Frustratie en opgeven. De juiste hulp op het juiste moment heet scaffolding — als een steiger die je weghaalt zodra de muur staat.",
+      text: "Vygotsky beschreef de 'zone van naaste ontwikkeling': het gebied tussen wat je kind alleen kan en wat ze met een beetje hulp kan. Dáár zit de groei. Te veel hulp? Je kind leert niks. Te weinig? Frustratie en opgeven. De juiste hulp op het juiste moment heet scaffolding. Als een steiger die je weghaalt zodra de muur staat.",
     },
     {
       type: "diagram" as const,
@@ -32,7 +32,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
         {
           emoji: "🟢",
           label: "Comfortzone",
-          description: "Dit kan ze al. Hier is geen hulp nodig. Laat haar dit zelf doen — ook als het langzamer gaat dan jij wilt.",
+          description: "Dit kan ze al. Hier is geen hulp nodig. Laat haar dit zelf doen. Ook als het langzamer gaat dan jij wilt.",
         },
         {
           emoji: "🟡",
@@ -42,7 +42,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
         {
           emoji: "🔴",
           label: "Frustratiezone",
-          description: "Dit is te moeilijk. Hier helpen hints niet. Hier mag je ingrijpen — maar door de taak kleiner te maken, niet door het over te nemen.",
+          description: "Dit is te moeilijk. Hier helpen hints niet. Hier mag je ingrijpen. Maar door de taak kleiner te maken, niet door het over te nemen.",
         },
       ],
     },
@@ -51,7 +51,14 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       situation: "Nora (5) probeert haar schoenen aan te doen. Ze heeft de verkeerde voet, trekt aan de klittenband, het lukt niet. Ze zucht. Je ziet haar frustratie groeien.",
       wrongApproach: "TE SNEL HELPEN:\n\nPapa ziet Nora worstelen. Na drie seconden: 'Kom, ik doe het wel even.'\nPapa doet de schoenen aan. Klaar in tien seconden.\nNora rent naar buiten.\n\nProbleem opgelost. Maar Nora heeft geleerd: als het moeilijk is, doet papa het.",
       rightApproach: "WACHTEN EN SCAFFOLDEN:\n\nPapa ziet Nora worstelen. Handen in zijn zakken. Wacht tien seconden.\nNora: 'Het lukt niet!'\nPapa: 'Hmm. Welke voet zit die schoen nu op?'\nNora kijkt. Wisselt. Trekt. Klittenband vast.\nNora: 'Hé! Het lukt!'\n\nZelfde schoen. Maar nu is het háár overwinning.",
-      explanation: "Het verschil is tien seconden wachten en één vraag stellen. Papa nam het niet over — hij gaf net genoeg richting zodat Nora het zelf kon ontdekken. Dat is scaffolding.",
+      explanation: "Het verschil is tien seconden wachten en één vraag stellen. Papa nam het niet over. Hij gaf net genoeg richting zodat Nora het zelf kon ontdekken. Dat is scaffolding.",
+    },
+    {
+      type: "example" as const,
+      situation: "Finn (8) maakt een werkstuk over dieren. Hij zoekt al tien minuten hoe je 'krokodil' schrijft. Hij heeft het woordenboek erbij maar snapt de alfabetische volgorde nog niet helemaal.",
+      wrongApproach: "❌ VOORZEGGEN:\n\nPapa kijkt over Finns schouder.\nPapa: 'K-R-O-K-O-D-I-L. Hier, ik spel het wel even.'\nFinn schrijft het over.\nPapa: 'Zo, klaar. Volgende woord?'\n\nFinn heeft het woord, maar niet geleerd hoe hij het zelf kan vinden.",
+      rightApproach: "✅ RICHTING GEVEN:\n\nPapa: 'Hmm, krokodil. Met welke letter begint dat?'\nFinn: 'Een K.'\nPapa: 'Oké. En waar zit de K in het woordenboek, meer vooraan of achteraan?'\nFinn bladert. Vindt de K. Zoekt verder.\nFinn: 'Gevonden! K-R-O-K-O-D-I-L!'\nPapa: 'Netjes. Nu kun je elk woord vinden.'",
+      explanation: "Papa gaf geen antwoord maar een zoekstrategie. Finn leerde niet alleen hoe je 'krokodil' schrijft, maar hoe je een woordenboek gebruikt. Eén vraag op het juiste moment opende een vaardigheid die hij bij elk volgend woord kan inzetten.",
     },
     {
       type: "text" as const,
@@ -61,7 +68,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De Tien-Seconden-Regel",
-      instructions: "1. Kies vandaag of morgen één moment waarop je kind iets probeert dat lastig is — schoenen, rits, puzzel, huiswerk.\n2. Stop je handen letterlijk in je zakken.\n3. Tel in je hoofd tot tien. Tien seconden voelen lang. Houd vol.\n4. Stel maximaal één vraag: 'Wat is je plan?' of 'Wat zou je kunnen proberen?'\n5. Kijk wat er gebeurt — en voel je eigen ongemak. Dat ongemak is het teken dat je het goed doet.",
+      instructions: "1. Kies vandaag of morgen één moment waarop je kind iets probeert dat lastig is. Schoenen, rits, puzzel, huiswerk.\n2. Stop je handen letterlijk in je zakken.\n3. Tel in je hoofd tot tien. Tien seconden voelen lang. Houd vol.\n4. Stel maximaal één vraag: 'Wat is je plan?' of 'Wat zou je kunnen proberen?'\n5. Kijk wat er gebeurt. En voel je eigen ongemak. Dat ongemak is het teken dat je het goed doet.",
       duration: 3,
       tips: [
         "Het voelt ongemakkelijk om te wachten. Dat is normaal. Dat ongemak is het teken dat je het goed doet.",
@@ -72,19 +79,19 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       type: "reflection" as const,
       questions: [
         "Bij welke dagelijkse dingen grijp je automatisch in terwijl je kind het waarschijnlijk zelf zou kunnen?",
-        "Hoe voelt het voor jou als je je kind ziet worstelen? Wat wil je het liefst doen — en waarom?",
+        "Hoe voelt het voor jou als je je kind ziet worstelen? Wat wil je het liefst doen. En waarom?",
       ],
     },
     {
       type: "text" as const,
       heading: "Samenvatting",
-      text: "Te snel helpen steelt leermomenten. De zone van naaste ontwikkeling is waar groei zit — net buiten comfort, niet in frustratie. Handen in je zakken, tien seconden wachten, en stel een vraag in plaats van het over te nemen.",
+      text: "Te snel helpen steelt leermomenten. De zone van naaste ontwikkeling is waar groei zit. Net buiten comfort, niet in frustratie. Handen in je zakken, tien seconden wachten, en stel een vraag in plaats van het over te nemen.",
     },
   ],
   keyTakeaways: [
-    "Elke keer dat je te snel helpt, steel je een leermoment — wacht tien seconden",
+    "Elke keer dat je te snel helpt, steel je een leermoment. Wacht tien seconden",
     "De zone van naaste ontwikkeling is waar groei zit: net moeilijk genoeg, met net genoeg steun",
-    "Scaffolding = hints en vragen geven, niet overnemen — zodat het hun overwinning wordt",
+    "Scaffolding = hints en vragen geven, niet overnemen. Zodat het hun overwinning wordt",
   ],
   research: "Vygotsky (1978). Mind in Society; Wood, Bruner & Ross (1976). The role of tutoring in problem solving",
   quizQuestions: [
@@ -92,7 +99,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       question: "Nora (5) vraagt of je haar rits dichtdoet. Ze heeft het nog nooit zelf geprobeerd. Wat is de beste reactie?",
       options: [
         { text: "Tien seconden wachten en vragen: 'Wat is je plan?'", isCorrect: false },
-        { text: "De rits starten en haar de rest laten doen — scaffolding op maat", isCorrect: true },
+        { text: "De rits starten en haar de rest laten doen. Scaffolding op maat", isCorrect: true },
         { text: "Zeggen: 'Probeer het zelf, ik geloof in je!' en afwachten", isCorrect: false },
       ],
       explanation: "Als een kind iets nog nooit heeft geprobeerd, zit ze niet in de zone van naaste ontwikkeling maar erbuiten. 'Probeer het zelf' zonder enige steun leidt tot frustratie, niet tot groei. Scaffolding betekent: het moeilijkste deel overnemen zodat zij het haalbare deel zelf doet.",
@@ -110,10 +117,10 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       question: "Je dochter (8) maakt een werkstuk en vraagt om hulp bij de inleiding. Ze schrijft normaal prima maar vindt beginnen lastig. Wat doe je?",
       options: [
         { text: "Samen de eerste zin bedenken, daarna laat je haar verder gaan", isCorrect: true },
-        { text: "Handen in je zakken en tien seconden wachten — ze moet het zelf ontdekken", isCorrect: false },
+        { text: "Handen in je zakken en tien seconden wachten. Ze moet het zelf ontdekken", isCorrect: false },
         { text: "De hele inleiding voorzeggen zodat ze de rest zelf kan afmaken", isCorrect: false },
       ],
-      explanation: "Niet elk 'help me' is gewoonte — soms is het een gerichte vraag over een echt knelpunt. Een kind dat normaal prima schrijft maar bij de start vastloopt, heeft baat bij een klein duwtje op precies dat punt. Altijd weigeren te helpen is geen autonomieondersteuning maar verwaarlozing.",
+      explanation: "Niet elk 'help me' is gewoonte. Soms is het een gerichte vraag over een echt knelpunt. Een kind dat normaal prima schrijft maar bij de start vastloopt, heeft baat bij een klein duwtje op precies dat punt. Altijd weigeren te helpen is geen autonomieondersteuning maar verwaarlozing.",
     },
     {
       question: "Waarom werkt 'handen in je zakken' niet in elke situatie?",
@@ -143,12 +150,12 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Keuzes zijn brandstof",
-      text: "Kinderen willen maar één ding: een beetje controle over hun eigen leven. Dat is geen lastig gedrag. Dat is een basisbehoefte.\n\nElke keer dat je alles voor ze beslist — wat ze aantrekken, wat ze eten, wanneer ze stoppen — duw je tegen die behoefte in. En dan krijg je verzet. Logisch.\n\nDe oplossing is simpel. Niet alles loslaten. Maar binnen jouw grenzen ruimte maken voor hun keuze. Twee opties. Allebei oké voor jou. Maar voor je kind voelt het als: ik mag kiezen. Ik heb iets te zeggen.\n\nDie kleine keuze doet iets groots. Het verandert 'ik moet' in 'ik wil'. En een kind dat wil, hoef je niet te pushen.",
+      text: "Kinderen willen maar één ding: een beetje controle over hun eigen leven. Dat is geen lastig gedrag. Dat is een basisbehoefte.\n\nElke keer dat je alles voor ze beslist. Wat ze aantrekken, wat ze eten, wanneer ze stoppen. Duw je tegen die behoefte in. En dan krijg je verzet. Logisch.\n\nDe oplossing is simpel. Niet alles loslaten. Maar binnen jouw grenzen ruimte maken voor hun keuze. Twee opties. Allebei oké voor jou. Maar voor je kind voelt het als: ik mag kiezen. Ik heb iets te zeggen.\n\nDie kleine keuze doet iets groots. Het verandert 'ik moet' in 'ik wil'. En een kind dat wil, hoef je niet te pushen.",
     },
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Deci en Ryan ontdekten met hun zelfdeterminatietheorie dat mensen drie basisbehoeften hebben: autonomie, competentie en verbondenheid. Autonomie — het gevoel dat je invloed hebt op je eigen leven — is de sterkste motor van intrinsieke motivatie. Kinderen die keuzes krijgen, werken harder, zijn minder opstandig en voelen zich competenter.",
+      text: "Deci en Ryan ontdekten met hun zelfdeterminatietheorie dat mensen drie basisbehoeften hebben: autonomie, competentie en verbondenheid. Autonomie. Het gevoel dat je invloed hebt op je eigen leven. Is de sterkste motor van intrinsieke motivatie. Kinderen die keuzes krijgen, werken harder, zijn minder opstandig en voelen zich competenter.",
     },
     {
       type: "diagram" as const,
@@ -176,7 +183,14 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       situation: "Saar (4) moet zich aankleden voor school. Het is 7:45. Jullie moeten om 8:00 de deur uit. Ze staat in haar ondergoed en weigert alles wat je aanreikt.",
       wrongApproach: "BEVEL EN STRIJD:\n\nPapa: 'Saar, doe deze broek aan.'\nSaar: 'Nee! Ik wil mijn prinsessenjurk!'\nPapa: 'Het is winter. Doe die broek aan.'\nSaar: schreeuwt.\nPapa trekt de broek aan terwijl Saar huilt.\n\nKlaar. Maar de dag begint met tranen en frustratie. Voor allebei.",
       rightApproach: "KEUZE BINNEN GRENZEN:\n\nPapa legt twee broeken op bed. 'Saar, welke wil jij: de rode of de blauwe?'\nSaar: 'De rode!'\nPapa: 'Goeie keuze. Doe jij hem zelf aan of zal ik helpen?'\nSaar trekt de rode broek aan.\n\nZelfde tijdstip. Maar Saar had regie. Geen strijd nodig.",
-      explanation: "Papa bepaalde nog steeds de grenzen — het moest een broek zijn, geen prinsessenjurk in de winter. Maar binnen die grenzen had Saar een echte keuze. Dat veranderde het van een bevel in een uitnodiging.",
+      explanation: "Papa bepaalde nog steeds de grenzen. Het moest een broek zijn, geen prinsessenjurk in de winter. Maar binnen die grenzen had Saar een echte keuze. Dat veranderde het van een bevel in een uitnodiging.",
+    },
+    {
+      type: "example" as const,
+      situation: "Thijs (9) moet na het avondeten zijn huiswerk maken. Hij hangt op de bank en weigert te beginnen. Elke avond hetzelfde gevecht.",
+      wrongApproach: "❌ DWINGEN:\n\nPapa: 'Thijs, nu huiswerk. Aan tafel.'\nThijs: 'Straks...'\nPapa: 'Nee, nu. Ik tel tot drie.'\nThijs sloft naar de tafel. Staart naar zijn schrift.\nPapa staat erachter: 'Beginnen!'\n\nHuiswerk wordt een straf. Thijs leert: leren is iets dat je wordt opgedrongen.",
+      rightApproach: "✅ REGIE GEVEN:\n\nPapa: 'Thijs, je hebt huiswerk vanavond. Wil je het nu doen of na het toetje?'\nThijs: 'Na het toetje.'\nPapa: 'Prima. En waar wil je zitten, aan de keukentafel of op je kamer?'\nThijs: 'Op mijn kamer.'\nThijs gaat na het toetje uit zichzelf naar boven.\n\nZelfde huiswerk. Maar Thijs koos wanneer en waar. Geen strijd nodig.",
+      explanation: "Het huiswerk was niet optioneel. Maar het wanneer en het waar wel. Die twee keuzes gaven Thijs genoeg gevoel van regie om mee te werken in plaats van te vechten. De grens stond, de autonomie zat in de details.",
     },
     {
       type: "text" as const,
@@ -197,7 +211,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       type: "reflection" as const,
       questions: [
         "Op welke momenten voel je de meeste weerstand van je kind? Zou een keuze daar kunnen helpen?",
-        "Hoe vaak per dag beslis jij alles voor je kind — en hoe zou het voelen als iemand dat bij jou deed?",
+        "Hoe vaak per dag beslis jij alles voor je kind. En hoe zou het voelen als iemand dat bij jou deed?",
       ],
     },
     {
@@ -207,7 +221,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     },
   ],
   keyTakeaways: [
-    "Autonomie is een basisbehoefte — kinderen die keuzes krijgen zijn gemotiveerder en minder opstandig",
+    "Autonomie is een basisbehoefte. Kinderen die keuzes krijgen zijn gemotiveerder en minder opstandig",
     "Twee opties binnen jouw grenzen: jij bepaalt het kader, je kind kiest daarbinnen",
     "De vals-dilemma-techniek werkt als alles 'nee' is: beide opties leiden naar hetzelfde doel",
   ],
@@ -216,38 +230,38 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       question: "Je kind (4) weigert steeds groente te eten. Je biedt de keuze: 'Wil je broccoli of wortels?' Ze zegt: 'Nee! Ik wil chips!' Wat nu?",
       options: [
-        { text: "Toch chips geven — het gaat om haar gevoel van regie, niet om de inhoud", isCorrect: false },
-        { text: "De keuze herhalen: 'Chips is geen optie. Broccoli of wortels?' — het kader staat", isCorrect: true },
-        { text: "Helemaal geen keuze meer geven en broccoli op haar bord leggen — ze misbruikt de vrijheid", isCorrect: false },
+        { text: "Toch chips geven. Het gaat om haar gevoel van regie, niet om de inhoud", isCorrect: false },
+        { text: "De keuze herhalen: 'Chips is geen optie. Broccoli of wortels?'. Het kader staat", isCorrect: true },
+        { text: "Helemaal geen keuze meer geven en broccoli op haar bord leggen. Ze misbruikt de vrijheid", isCorrect: false },
       ],
       explanation: "Autonomie binnen grenzen betekent dat jij het kader bepaalt en je kind daarbinnen kiest. Toegeven op het kader ondermijnt je rol als ouder. Maar de keuze intrekken leert haar dat vragen om inspraak zinloos is. Rustig herhalen is de middenweg.",
     },
     {
       question: "Welke situatie is een voorbeeld van de vals-dilemma-techniek?",
       options: [
-        { text: "'Wil je je tanden poetsen of zal ik het doen?' — want beide opties leiden tot schone tanden", isCorrect: false },
-        { text: "'Wil je lopend of op de fiets naar school?' — want het kind kiest hoe, niet of", isCorrect: true },
-        { text: "'Wil je nu slapen of over tien minuten?' — want het kind krijgt uitstel", isCorrect: false },
+        { text: "'Wil je je tanden poetsen of zal ik het doen?'. Want beide opties leiden tot schone tanden", isCorrect: false },
+        { text: "'Wil je lopend of op de fiets naar school?'. Want het kind kiest hoe, niet of", isCorrect: true },
+        { text: "'Wil je nu slapen of over tien minuten?'. Want het kind krijgt uitstel", isCorrect: false },
       ],
       explanation: "Het vals dilemma werkt doordat beide opties naar hetzelfde doel leiden, maar het kind echt verschil ervaart in de keuze. 'Lopend of fiets' voelt als een echte keuze. 'Zal ik het doen of jij' is eerder dreiging dan autonomie, en 'nu of tien minuten' is uitstel geven, geen vals dilemma.",
     },
     {
       question: "Volgens onderzoek van Iyengar & Lepper kan te veel keuzevrijheid averechts werken. Wanneer is dat risico het grootst?",
       options: [
-        { text: "Bij tieners — zij overschatten hun eigen beslissingsvermogen", isCorrect: false },
-        { text: "Bij peuters en kleuters — zij raken overweldigd door meer dan twee opties", isCorrect: true },
-        { text: "Bij schoolkinderen — zij kiezen altijd de makkelijkste optie als er te veel keuze is", isCorrect: false },
+        { text: "Bij tieners. Zij overschatten hun eigen beslissingsvermogen", isCorrect: false },
+        { text: "Bij peuters en kleuters. Zij raken overweldigd door meer dan twee opties", isCorrect: true },
+        { text: "Bij schoolkinderen. Zij kiezen altijd de makkelijkste optie als er te veel keuze is", isCorrect: false },
       ],
       explanation: "De 'paradox of choice' treft jonge kinderen het sterkst omdat hun werkgeheugen en beslissingsvermogen nog in ontwikkeling zijn. Twee opties geven het gevoel van controle zonder cognitieve overbelasting. Tieners kunnen juist meer opties aan en hebben die ook nodig.",
     },
     {
       question: "Je zoon (12) wil zelf bepalen of hij naar het verjaardagsfeest van een klasgenoot gaat. Je vindt dat hij moet gaan. Wat is de beste aanpak?",
       options: [
-        { text: "Hem laten kiezen — op die leeftijd moet je sociale beslissingen respecteren", isCorrect: true },
-        { text: "Zeggen dat hij moet gaan — sommige sociale verplichtingen zijn niet optioneel", isCorrect: false },
+        { text: "Hem laten kiezen. Op die leeftijd moet je sociale beslissingen respecteren", isCorrect: true },
+        { text: "Zeggen dat hij moet gaan. Sommige sociale verplichtingen zijn niet optioneel", isCorrect: false },
         { text: "Een keuze binnen grenzen: 'Je gaat, maar je mag zelf weten hoe lang je blijft'", isCorrect: false },
       ],
-      explanation: "Bij een twaalfjarige zijn sociale beslissingen een belangrijk oefenterrein voor autonomie. Verplicht sturen ondermijnt zijn groeiende behoefte aan zelfbeschikking. 'Keuze binnen grenzen' klinkt redelijk maar is hier een verkapte verplichting — hij voelt dat hij geen echte keuze heeft.",
+      explanation: "Bij een twaalfjarige zijn sociale beslissingen een belangrijk oefenterrein voor autonomie. Verplicht sturen ondermijnt zijn groeiende behoefte aan zelfbeschikking. 'Keuze binnen grenzen' klinkt redelijk maar is hier een verkapte verplichting. Hij voelt dat hij geen echte keuze heeft.",
     },
   ],
 },
@@ -255,7 +269,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
   id: "au_mod_3",
   skill: "Autonomie" as Skill,
   title: "Laat Het Fout Gaan",
-  description: "Die toren gaat vallen. Jij ziet het. Maar falen is geen probleem — het is de grondstof van groei. Leer waarom je soms moet toekijken.",
+  description: "Die toren gaat vallen. Jij ziet het. Maar falen is geen probleem. Het is de grondstof van groei. Leer waarom je soms moet toekijken.",
   duration: "8-10 min",
   difficulty: "basis" as const,
   order: 3,
@@ -273,7 +287,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Carol Dweck toonde aan dat kinderen die leren dat fouten bij het proces horen — een 'growth mindset' — meer doorzetten, hogere prestaties leveren en minder faalangst ontwikkelen. Productief falen is een bewezen leerstrategie: kinderen die eerst zelf worstelen onthouden oplossingen beter dan kinderen die direct het antwoord krijgen.",
+      text: "Carol Dweck toonde aan dat kinderen die leren dat fouten bij het proces horen. Een 'growth mindset'. Meer doorzetten, hogere prestaties leveren en minder faalangst ontwikkelen. Productief falen is een bewezen leerstrategie: kinderen die eerst zelf worstelen onthouden oplossingen beter dan kinderen die direct het antwoord krijgen.",
     },
     {
       type: "diagram" as const,
@@ -301,12 +315,19 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       situation: "Daan (7) bouwt een hoge toren van blokken. Je ziet dat hij wiebelt en waarschijnlijk gaat vallen. Daan legt het volgende blok erop.",
       wrongApproach: "FALEN VOORKOMEN:\n\nPapa: 'Daan, niet zo hoog! Hij valt om!'\nDaan stopt. Kijkt teleurgesteld.\nPapa: 'Hier, als je hem breder maakt onderin...'\nPapa herbouwt de basis.\n\nDe toren staat. Maar het is papa's toren. En Daan heeft geleerd: ik kan het niet zonder hulp.",
       rightApproach: "FALEN BEGELEIDEN:\n\nPapa ziet de toren wiebelen. Zegt niks. Wacht.\nDe toren valt. Daan: 'Nee!'\nPapa: 'Balen. Wat denk je dat er gebeurde?'\nDaan: 'Hij was te hoog...'\nPapa: 'Hmm. Wat zou je anders kunnen doen?'\nDaan begint opnieuw. Bredere basis dit keer.\n\nDaan heeft nu iets geleerd over constructie dat geen uitleg hem had kunnen geven.",
-      explanation: "Door de val toe te laten en daarna procesgerichte vragen te stellen, transformeerde papa een mislukking in een leermoment. Daan ontdekte zelf het probleem en de oplossing — dat beklijft veel beter dan een instructie van buitenaf.",
+      explanation: "Door de val toe te laten en daarna procesgerichte vragen te stellen, transformeerde papa een mislukking in een leermoment. Daan ontdekte zelf het probleem en de oplossing. Dat beklijft veel beter dan een instructie van buitenaf.",
+    },
+    {
+      type: "example" as const,
+      situation: "Sophie (10) heeft morgen een spreekbeurt. Ze oefent in de woonkamer. Papa hoort dat ze haar tekst voorleest in plaats van vertelt, en dat de volgorde rommelig is. Het gaat waarschijnlijk niet goed zo.",
+      wrongApproach: "❌ REDDEN:\n\nPapa: 'Sophie, zo gaat het niet. Kom, we schrijven het opnieuw.'\nPapa herschrijft de spreekbeurt. Betere structuur, betere zinnen.\nSophie leest papa's versie voor op school. Een 7.\n\nMooi cijfer. Maar Sophie heeft geleerd: als het spannend wordt, fixt papa het.",
+      rightApproach: "✅ LATEN STRUIKELEN:\n\nPapa luistert. Zegt na afloop: 'Goed dat je oefent.'\nSophie houdt de spreekbeurt. Het gaat matig. Een 5.\nThuis. Sophie: 'Het ging niet zo goed...'\nPapa: 'Wat ging er mis denk je?'\nSophie: 'Ik las te veel voor. En het zat niet goed in mijn hoofd.'\nPapa: 'Wat zou je de volgende keer anders doen?'\n\nDie 5 leerde haar meer dan papa's 7 ooit had gedaan.",
+      explanation: "Papa zag het aankomen en greep niet in. De teleurstelling was echt, maar ook de les. Sophie analyseerde zelf wat er misging en had een plan voor de volgende keer. Dat is productief falen: de ervaring wordt pas leerzaam door de reflectie achteraf.",
     },
     {
       type: "text" as const,
       heading: "Je toolkit",
-      text: "1. Eén ding per dag laten mislukken. Kies bewust één moment waarop je niet ingrijpt. De melk die morst. De tekening die mislukt. De toren die valt. Laat het gebeuren.\n\n2. Procestaal, niet uitkomsttaal. Niet: 'Wat mooi!' Wel: 'Je hebt lang doorgewerkt.' Niet: 'Slim!' Wel: 'Je hebt een slimme manier bedacht.' Focus op de inspanning, niet het resultaat.\n\n3. De magische vraag na falen. 'Wat ga je anders proberen?' Geen oordeel. Geen oplossing. Alleen een uitnodiging om na te denken.\n\n4. Normaliseer fouten. 'Papa maakt ook fouten. Vandaag nog. Weet je wat ik deed?' Laat zien dat falen bij het leven hoort.\n\n5. Tiener-variant. Bij een puber (13+) worden de stakes groter: een slecht proefwerk, een mislukte auditie, een afwijzing. Dezelfde principes gelden — maar met meer ruimte. Niet: 'Volgende keer beter.' Wel: 'Balen. Wat heb je ervan geleerd?' Tieners willen serieus genomen worden, niet getroost als een kleuter.",
+      text: "1. Eén ding per dag laten mislukken. Kies bewust één moment waarop je niet ingrijpt. De melk die morst. De tekening die mislukt. De toren die valt. Laat het gebeuren.\n\n2. Procestaal, niet uitkomsttaal. Niet: 'Wat mooi!' Wel: 'Je hebt lang doorgewerkt.' Niet: 'Slim!' Wel: 'Je hebt een slimme manier bedacht.' Focus op de inspanning, niet het resultaat.\n\n3. De magische vraag na falen. 'Wat ga je anders proberen?' Geen oordeel. Geen oplossing. Alleen een uitnodiging om na te denken.\n\n4. Normaliseer fouten. 'Papa maakt ook fouten. Vandaag nog. Weet je wat ik deed?' Laat zien dat falen bij het leven hoort.\n\n5. Tiener-variant. Bij een puber (13+) worden de stakes groter: een slecht proefwerk, een mislukte auditie, een afwijzing. Dezelfde principes gelden. Maar met meer ruimte. Niet: 'Volgende keer beter.' Wel: 'Balen. Wat heb je ervan geleerd?' Tieners willen serieus genomen worden, niet getroost als een kleuter.",
     },
     {
       type: "exercise" as const,
@@ -314,7 +335,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       instructions: "Kies vandaag één moment waarop je normaal zou ingrijpen om een fout te voorkomen. Laat het gebeuren. Als het misgaat, stel één vraag: 'Wat denk je dat er gebeurde?' of 'Wat zou je anders doen?' Kijk hoe je kind reageert. Schrijf vanavond op wat je zag.",
       duration: 4,
       tips: [
-        "Begin klein en veilig. Morsen, omvallen, verkeerd tekenen — geen situaties waar echt gevaar bij komt kijken.",
+        "Begin klein en veilig. Morsen, omvallen, verkeerd tekenen. Geen situaties waar echt gevaar bij komt kijken.",
         "Let op je eigen reactie: voel je de neiging om te fixen? Dat is normaal. Adem. Wacht.",
       ],
     },
@@ -332,20 +353,20 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     },
   ],
   keyTakeaways: [
-    "Falen voorkomen voorkomt ook het leermoment — laat dingen misgaan in een veilige context",
+    "Falen voorkomen voorkomt ook het leermoment. Laat dingen misgaan in een veilige context",
     "Growth mindset: kinderen die leren dat fouten erbij horen, zetten meer door en hebben minder faalangst",
     "Gebruik procestaal ('je hebt hard gewerkt') in plaats van uitkomsttaal ('wat knap!')",
   ],
   research: "Dweck (2006). Mindset: The New Psychology of Success; Kapur (2008). Productive Failure",
   quizQuestions: [
     {
-      question: "Je kind (8) heeft twee uur aan een tekening gewerkt. Het resultaat is objectief slordig — ze heeft weinig moeite gedaan, vooral zitten kletsen. Ze laat het trots zien. Wat zeg je?",
+      question: "Je kind (8) heeft twee uur aan een tekening gewerkt. Het resultaat is objectief slordig. Ze heeft weinig moeite gedaan, vooral zitten kletsen. Ze laat het trots zien. Wat zeg je?",
       options: [
-        { text: "'Je hebt er lang aan gewerkt!' — procestaal is altijd goed", isCorrect: false },
-        { text: "'Vertel eens, wat vind je er zelf van?' — eerst haar eigen oordeel horen", isCorrect: true },
-        { text: "'Mooi! Ga zo door!' — positief blijven bouwt zelfvertrouwen", isCorrect: false },
+        { text: "'Je hebt er lang aan gewerkt!'. Procestaal is altijd goed", isCorrect: false },
+        { text: "'Vertel eens, wat vind je er zelf van?'. Eerst haar eigen oordeel horen", isCorrect: true },
+        { text: "'Mooi! Ga zo door!'. Positief blijven bouwt zelfvertrouwen", isCorrect: false },
       ],
-      explanation: "Procestaal werkt alleen als het eerlijk is. Zeggen 'je hebt er lang aan gewerkt' terwijl ze heeft zitten kletsen is onoprecht — kinderen prikken daardoorheen. Door te vragen wat zij ervan vindt, geef je haar de kans om zelf te reflecteren zonder dat jij oordeelt of vals complimenteert.",
+      explanation: "Procestaal werkt alleen als het eerlijk is. Zeggen 'je hebt er lang aan gewerkt' terwijl ze heeft zitten kletsen is onoprecht. Kinderen prikken daardoorheen. Door te vragen wat zij ervan vindt, geef je haar de kans om zelf te reflecteren zonder dat jij oordeelt of vals complimenteert.",
     },
     {
       question: "Welke uitspraak over een growth mindset is ONJUIST?",
@@ -354,16 +375,16 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
         { text: "Je bouwt een growth mindset door altijd te zeggen dat je kind hard heeft gewerkt", isCorrect: true },
         { text: "Een growth mindset helpt kinderen om na tegenslagen door te zetten", isCorrect: false },
       ],
-      explanation: "Dweck waarschuwt zelf voor 'vals procesprijs': als je altijd zegt 'je hebt hard gewerkt' — ook wanneer een kind dat niet heeft gedaan — wordt het een hol cliche. Kinderen merken dat het oneerlijk is en verliezen vertrouwen in je feedback. Growth mindset vereist eerlijke, specifieke terugkoppeling op het daadwerkelijke proces.",
+      explanation: "Dweck waarschuwt zelf voor 'vals procesprijs': als je altijd zegt 'je hebt hard gewerkt'. Ook wanneer een kind dat niet heeft gedaan. Wordt het een hol cliche. Kinderen merken dat het oneerlijk is en verliezen vertrouwen in je feedback. Growth mindset vereist eerlijke, specifieke terugkoppeling op het daadwerkelijke proces.",
     },
     {
       question: "Je zoon (11) heeft een slecht cijfer voor wiskunde. Hij zegt: 'Ik ben gewoon dom in wiskunde.' Wat is de meest effectieve reactie?",
       options: [
-        { text: "'Je bent helemaal niet dom! Je bent juist heel slim!' — zijn zelfbeeld herstellen", isCorrect: false },
-        { text: "'Balen. Laten we samen kijken welke sommen fout gingen en waarom' — concreet analyseren", isCorrect: true },
-        { text: "'Fouten horen erbij! Volgende keer beter!' — het normaliseren en doorgaan", isCorrect: false },
+        { text: "'Je bent helemaal niet dom! Je bent juist heel slim!'. Zijn zelfbeeld herstellen", isCorrect: false },
+        { text: "'Balen. Laten we samen kijken welke sommen fout gingen en waarom'. Concreet analyseren", isCorrect: true },
+        { text: "'Fouten horen erbij! Volgende keer beter!'. Het normaliseren en doorgaan", isCorrect: false },
       ],
-      explanation: "'Je bent slim' versterkt juist een fixed mindset — als hij dan weer faalt, klopt zijn wereldbeeld niet meer. 'Volgende keer beter' is te vaag om iets van te leren. Concreet samen kijken wat er misging geeft hem handvatten en laat zien dat fouten informatie bevatten, niet oordelen.",
+      explanation: "'Je bent slim' versterkt juist een fixed mindset. Als hij dan weer faalt, klopt zijn wereldbeeld niet meer. 'Volgende keer beter' is te vaag om iets van te leren. Concreet samen kijken wat er misging geeft hem handvatten en laat zien dat fouten informatie bevatten, niet oordelen.",
     },
     {
       question: "Wanneer is falen NIET productief?",
@@ -372,7 +393,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
         { text: "Als het kind gefrustreerd raakt en even huilt voordat het opnieuw probeert", isCorrect: false },
         { text: "Als het kind dezelfde fout twee keer achter elkaar maakt", isCorrect: false },
       ],
-      explanation: "Frustratie en herhaling zijn normaal onderdeel van leren. Maar falen zonder begrip is niet productief — het wordt pas leerzaam wanneer iemand helpt om de ervaring te duiden. Daarom is de vraag 'wat denk je dat er gebeurde?' zo belangrijk: zonder reflectie is falen gewoon falen.",
+      explanation: "Frustratie en herhaling zijn normaal onderdeel van leren. Maar falen zonder begrip is niet productief. Het wordt pas leerzaam wanneer iemand helpt om de ervaring te duiden. Daarom is de vraag 'wat denk je dat er gebeurde?' zo belangrijk: zonder reflectie is falen gewoon falen.",
     },
   ],
 },
@@ -393,12 +414,12 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Steun afbouwen, niet overnemen",
-      text: "Scaffolding is niet alleen hulp geven. Het is hulp afbouwen. Denk aan een steiger rond een gebouw: je zet hem neer terwijl je bouwt, en haalt hem weg als het gebouw zelf staat.\n\nHet probleem is dat wij vaders vaak blijven stutten. We helpen bij dingen die ons kind allang zelf kan. Niet omdat zij het niet kunnen, maar omdat wij het niet loslaten.\n\n'Papa doe het' is soms echt 'ik kan het niet.' Maar vaker is het 'het is makkelijker als jij het doet.' En elke keer dat je toegeeft, bevestig je: je hebt gelijk, je kunt het niet zonder mij.\n\nDe scaffolding-ladder werkt andersom. Je begint met veel hulp en bouwt stap voor stap af. Totdat je kind het zelf doet — en weet dat ze het zelf kan.",
+      text: "Scaffolding is niet alleen hulp geven. Het is hulp afbouwen. Denk aan een steiger rond een gebouw: je zet hem neer terwijl je bouwt, en haalt hem weg als het gebouw zelf staat.\n\nHet probleem is dat wij vaders vaak blijven stutten. We helpen bij dingen die ons kind allang zelf kan. Niet omdat zij het niet kunnen, maar omdat wij het niet loslaten.\n\n'Papa doe het' is soms echt 'ik kan het niet.' Maar vaker is het 'het is makkelijker als jij het doet.' En elke keer dat je toegeeft, bevestig je: je hebt gelijk, je kunt het niet zonder mij.\n\nDe scaffolding-ladder werkt andersom. Je begint met veel hulp en bouwt stap voor stap af. Totdat je kind het zelf doet. En weet dat ze het zelf kan.",
     },
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Albert Bandura bewees dat self-efficacy — het geloof dat je iets kunt — de belangrijkste voorspeller is van succes. Kinderen bouwen self-efficacy op door dingen zelf te doen en te slagen. Niet doordat jij ze vertelt dat ze het kunnen, maar doordat ze het ervaren. De geleidelijke overdracht van verantwoordelijkheid is een bewezen methode om dit stap voor stap op te bouwen.",
+      text: "Albert Bandura bewees dat self-efficacy. Het geloof dat je iets kunt. De belangrijkste voorspeller is van succes. Kinderen bouwen self-efficacy op door dingen zelf te doen en te slagen. Niet doordat jij ze vertelt dat ze het kunnen, maar doordat ze het ervaren. De geleidelijke overdracht van verantwoordelijkheid is een bewezen methode om dit stap voor stap op te bouwen.",
     },
     {
       type: "diagram" as const,
@@ -425,8 +446,15 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       type: "example" as const,
       situation: "Emma (6) kan al haar brood smeren maar zegt elke ochtend: 'Papa doe het!' Je weet dat ze het kan. Maar het is ochtend, je bent moe, en het gaat sneller als jij het doet.",
       wrongApproach: "ELKE KEER OVERNEMEN:\n\nEmma: 'Papa doe het!'\nPapa smeert het brood. Elke ochtend.\nEmma leert: als ik vraag, doet papa het.\n\nNa drie maanden smeert Emma nog steeds geen eigen brood. Haar zelfvertrouwen bij nieuwe taken: laag. Want waarom proberen als papa het toch doet?",
-      rightApproach: "SCAFFOLDING AFBOUWEN:\n\nMaandag — Papa: 'Ik doe het mes, jij smeert.'\nWoensdag — Papa: 'Jij mag het helemaal. Ik sta hier als je hulp nodig hebt.'\nVrijdag — Emma smeert haar eigen brood. Papa zit aan tafel.\nEmma, trots: 'Kijk papa! Helemaal zelf!'\n\nZelfde week. Maar nu weet Emma: ik kan dit.",
-      explanation: "Papa bouwde de hulp in drie stappen af. Van samen doen naar zelf doen in één week. Het geheim is niet het loslaten zelf — het is de geleidelijkheid. Elke stap gaf Emma net genoeg vertrouwen voor de volgende.",
+      rightApproach: "SCAFFOLDING AFBOUWEN:\n\nMaandag. Papa: 'Ik doe het mes, jij smeert.'\nWoensdag. Papa: 'Jij mag het helemaal. Ik sta hier als je hulp nodig hebt.'\nVrijdag. Emma smeert haar eigen brood. Papa zit aan tafel.\nEmma, trots: 'Kijk papa! Helemaal zelf!'\n\nZelfde week. Maar nu weet Emma: ik kan dit.",
+      explanation: "Papa bouwde de hulp in drie stappen af. Van samen doen naar zelf doen in één week. Het geheim is niet het loslaten zelf. Het is de geleidelijkheid. Elke stap gaf Emma net genoeg vertrouwen voor de volgende.",
+    },
+    {
+      type: "example" as const,
+      situation: "Sem (4) wil elke avond dat papa zijn tanden poetst. Hij kan het motorisch al, maar houdt zijn mond dicht zodra papa de tandenborstel geeft en zegt: 'Jij doen, papa!'",
+      wrongApproach: "❌ BLIJVEN OVERNEMEN:\n\nSem klempt zijn lippen op elkaar.\nPapa zucht. Pakt de tandenborstel. Poetst Sems tanden.\nElke avond hetzelfde ritueel.\n\nSem is inmiddels bijna vijf en heeft nog nooit zelf gepoetst. Niet omdat hij het niet kan, maar omdat hij weet dat papa het toch doet.",
+      rightApproach: "✅ STAP VOOR STAP LOSLATEN:\n\nPapa: 'Weet je wat, jij poetst de onderkant, ik doe de bovenkant.'\nSem poetst enthousiast de onderkant.\nVolgende avond: 'Jij doet onder en boven. Ik doe de kiezen.'\nWeek later: Sem poetst alles zelf. Papa kijkt even mee.\nSem: 'Papa, ik kan het al!'",
+      explanation: "Papa deelde de taak op in steeds kleinere stukjes hulp. Sem ervoer elke avond een beetje meer succes. De overgang was zo geleidelijk dat het geen strijd werd maar een avontuur. Dat is de scaffolding-ladder in actie: van samen doen naar zelf doen.",
     },
     {
       type: "text" as const,
@@ -457,18 +485,18 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     },
   ],
   keyTakeaways: [
-    "Self-efficacy — het geloof 'ik kan dit' — groeit alleen door het zelf te doen en te ervaren",
-    "De scaffolding-ladder: samen doen, samen proberen, zelf doen — bouw hulp geleidelijk af",
-    "Vier pogingen, niet alleen successen — dat normaliseert worsteling en bouwt doorzettingsvermogen",
+    "Self-efficacy. Het geloof 'ik kan dit'. Groeit alleen door het zelf te doen en te ervaren",
+    "De scaffolding-ladder: samen doen, samen proberen, zelf doen. Bouw hulp geleidelijk af",
+    "Vier pogingen, niet alleen successen. Dat normaliseert worsteling en bouwt doorzettingsvermogen",
   ],
   research: "Bandura (1997). Self-Efficacy: The Exercise of Control; Fisher & Frey (2013). Gradual Release of Responsibility",
   quizQuestions: [
     {
       question: "Emma (6) zegt al weken elke ochtend 'papa doe het!' bij haar brood smeren. Ze kan het bewezen zelf. Gisteren bood je stap 2 aan ('ik help met het begin'). Ze weigerde en bleef vragen. Wat is de volgende stap?",
       options: [
-        { text: "Vriendelijk maar duidelijk: 'Ik weet dat je dit kunt. Ik leg het mes klaar, jij begint' — en even wachten", isCorrect: true },
-        { text: "Toch haar brood smeren — de relatie is belangrijker dan de les", isCorrect: false },
-        { text: "Haar laten wachten tot ze honger heeft en het zelf doet — natuurlijke consequenties", isCorrect: false },
+        { text: "Vriendelijk maar duidelijk: 'Ik weet dat je dit kunt. Ik leg het mes klaar, jij begint'. En even wachten", isCorrect: true },
+        { text: "Toch haar brood smeren. De relatie is belangrijker dan de les", isCorrect: false },
+        { text: "Haar laten wachten tot ze honger heeft en het zelf doet. Natuurlijke consequenties", isCorrect: false },
       ],
       explanation: "Bij een kind dat bewezen kan wat het weigert, is steeds toegeven geen autonomieondersteuning maar een patroon bevestigen. Tegelijk is honger als drukmiddel te hard en beschadigt het de relatie. De middenweg: het verwachtingsniveau vasthouden, maar warm en met steun erbij blijven.",
     },
@@ -484,9 +512,9 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       question: "Je dochter (4) probeert voor het eerst zelf haar veters te strikken. Na twee pogingen begint ze te huilen en vraagt om hulp. Wat doe je?",
       options: [
-        { text: "Helpen — veters strikken op die leeftijd is motorisch te moeilijk voor de meeste kinderen", isCorrect: true },
-        { text: "Aanmoedigen en vragen: 'Wat is je plan?' — ze moet leren doorzetten", isCorrect: false },
-        { text: "Het voordoen en daarna haar het opnieuw laten proberen — scaffolding", isCorrect: false },
+        { text: "Helpen. Veters strikken op die leeftijd is motorisch te moeilijk voor de meeste kinderen", isCorrect: true },
+        { text: "Aanmoedigen en vragen: 'Wat is je plan?'. Ze moet leren doorzetten", isCorrect: false },
+        { text: "Het voordoen en daarna haar het opnieuw laten proberen. Scaffolding", isCorrect: false },
       ],
       explanation: "Veters strikken vereist fijne motoriek die de meeste kinderen pas rond 5-6 jaar ontwikkelen. Dit valt buiten de zone van naaste ontwikkeling voor een vierjarige. Aandringen op zelf proberen bij een taak die motorisch nog niet haalbaar is, leidt niet tot groei maar tot geleerde hulpeloosheid.",
     },
@@ -495,7 +523,7 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       options: [
         { text: "Het kind wordt overmoedig en overschat zichzelf bij moeilijke taken", isCorrect: false },
         { text: "Het kind leert niet om te gaan met tegenslag en ontwikkelt broze zelfzekerheid", isCorrect: true },
-        { text: "Makkelijke taken bouwen geen self-efficacy op — het kind voelt zich ondergewaardeerd", isCorrect: false },
+        { text: "Makkelijke taken bouwen geen self-efficacy op. Het kind voelt zich ondergewaardeerd", isCorrect: false },
       ],
       explanation: "Self-efficacy die alleen gebouwd is op makkelijke successen is fragiel. Het kind heeft geen ervaring met worstelen en toch slagen. Bij de eerste echte tegenslag stort het vertrouwen in. Echte self-efficacy ontstaat door gekalibreerde uitdagingen: taken die moeilijk genoeg zijn dat succes betekenisvol voelt.",
     },
@@ -518,12 +546,12 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Hun zone is groter dan de jouwe",
-      text: "Hier is een ongemakkelijke waarheid: je onderschat je kind. Niet omdat je een slechte vader bent. Maar omdat jouw comfortzone kleiner is dan hun capabele zone.\n\nJij ziet gevaar waar zij avontuur zien. Jij ziet rommel waar zij experimenteren. Jij ziet een mes waar zij brood smeren.\n\nKinderen kunnen meer dan wij denken. Een driejarige kan een tafel dekken. Een vijfjarige kan een eenvoudige maaltijd helpen bereiden. Een zevenjarige kan haar eigen rugzak inpakken voor school.\n\nMaar ze krijgen de kans niet. Want wij staan erboven. Controleren. Corrigeren. Beschermen tegen dingen die niet gevaarlijk zijn — alleen maar rommelig.\n\nDe vertrouwenssprong is niet je kind loslaten. Het is jezelf loslaten. Jouw angst voor imperfectie opzij zetten en zeggen: 'Jij kunt dit. En als het niet perfect is, is dat oké.'",
+      text: "Hier is een ongemakkelijke waarheid: je onderschat je kind. Niet omdat je een slechte vader bent. Maar omdat jouw comfortzone kleiner is dan hun capabele zone.\n\nJij ziet gevaar waar zij avontuur zien. Jij ziet rommel waar zij experimenteren. Jij ziet een mes waar zij brood smeren.\n\nKinderen kunnen meer dan wij denken. Een driejarige kan een tafel dekken. Een vijfjarige kan een eenvoudige maaltijd helpen bereiden. Een zevenjarige kan haar eigen rugzak inpakken voor school.\n\nMaar ze krijgen de kans niet. Want wij staan erboven. Controleren. Corrigeren. Beschermen tegen dingen die niet gevaarlijk zijn. Alleen maar rommelig.\n\nDe vertrouwenssprong is niet je kind loslaten. Het is jezelf loslaten. Jouw angst voor imperfectie opzij zetten en zeggen: 'Jij kunt dit. En als het niet perfect is, is dat oké.'",
     },
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Onderzoek naar ontwikkelingsmijlpalen toont dat kinderen fysiek en cognitief tot meer in staat zijn dan ouders verwachten. Overbescherming — ook wel 'helikopterouderschap' — leidt tot minder zelfvertrouwen, meer angst en slechtere probleemoplossingsvaardigheden. Kinderen die leeftijdsgerichte verantwoordelijkheden krijgen, ontwikkelen sneller competentie en zelfstandigheid.",
+      text: "Onderzoek naar ontwikkelingsmijlpalen toont dat kinderen fysiek en cognitief tot meer in staat zijn dan ouders verwachten. Overbescherming. Ook wel 'helikopterouderschap'. Leidt tot minder zelfvertrouwen, meer angst en slechtere probleemoplossingsvaardigheden. Kinderen die leeftijdsgerichte verantwoordelijkheden krijgen, ontwikkelen sneller competentie en zelfstandigheid.",
     },
     {
       type: "diagram" as const,
@@ -551,7 +579,14 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
       situation: "Mila (6) wil zelf haar brood smeren met pindakaas. Papa staat ernaast en ziet haar het mes scheef vasthouden en veel te veel pindakaas op het brood scheppen.",
       wrongApproach: "OVERBESCHERMING:\n\nPapa: 'Niet zo, schat. Hier, geef maar.'\nPapa neemt het mes over. Smeert perfect brood.\nPapa: 'Zo moet het. Kijk, mooi hè?'\nMila kijkt. Eet papa's brood.\n\nPerfect brood. Maar Mila heeft geleerd: ik doe het verkeerd. Papa doet het beter.",
       rightApproach: "VERTROUWEN GEVEN:\n\nPapa ziet de berg pindakaas. Ademt. Zegt niks over het mes.\nMila smeert. Het brood scheurt een beetje. Pindakaas overal.\nMila, breed lachend: 'Kijk papa! Zelf gemaakt!'\nPapa: 'Helemaal zelf. Hoe smaakt het?'\nMila: 'Lekker!'\n\nImperfect brood. Perfect leermoment. En Mila straalt.",
-      explanation: "Het brood was niet mooi. Maar dat was niet het punt. Het punt was dat Mila het zelf deed en trots was op het resultaat. Papa's taak was niet perfect brood — het was een kind dat gelooft dat ze het kan.",
+      explanation: "Het brood was niet mooi. Maar dat was niet het punt. Het punt was dat Mila het zelf deed en trots was op het resultaat. Papa's taak was niet perfect brood. Het was een kind dat gelooft dat ze het kan.",
+    },
+    {
+      type: "example" as const,
+      situation: "Luna (11) wil zelf met de trein naar haar vriendin twee stations verderop. Papa vindt haar te jong en heeft het tot nu toe altijd met de auto gebracht.",
+      wrongApproach: "❌ BLIJVEN BRENGEN:\n\nLuna: 'Papa, ik wil zelf met de trein.'\nPapa: 'Nee schat, dat is te gevaarlijk. Ik breng je wel.'\nLuna: 'Maar Jara mag het wel!'\nPapa: 'Wij doen het zo. Stap in de auto.'\n\nLuna stapt in. Maar denkt: papa vertrouwt me niet. Misschien kan ik het ook echt niet.",
+      rightApproach: "✅ VERTROUWEN MET VOORBEREIDING:\n\nPapa: 'Goed plan. Laten we het voorbereiden.'\nZaterdag: samen met de trein. Papa laat Luna de kaartjes kopen en het perron zoeken.\nWoensdag: Luna gaat alleen. Papa appt bij vertrek en aankomst.\nLuna stuurt een foto vanaf het perron: 'Ben er! Was makkelijk!'\n\nLuna kan meer dan papa dacht. Ze had alleen de kans nodig.",
+      explanation: "Papa's eerste reactie was nee. Maar hij realiseerde zich dat zijn angst niet Luna's beperking was. Door het samen voor te bereiden en daarna los te laten, gaf hij haar een succeservaring die haar zelfvertrouwen een enorme boost gaf. De vertrouwenssprong was voor papa net zo groot als voor Luna.",
     },
     {
       type: "text" as const,
@@ -561,29 +596,29 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "De Capability Audit",
-      instructions: "Loop een gewone dag door in je hoofd: ochtend, school, avondeten, bedtijd. Schrijf drie dingen op die je voor je kind doet maar die ze waarschijnlijk zelf zou kunnen. Kies er morgen één uit. Geef het helemaal uit handen. Geen instructies, geen correcties. Kijk wat er gebeurt. Schrijf op hoe het ging — en hoe het voor jou voelde.",
+      instructions: "Loop een gewone dag door in je hoofd: ochtend, school, avondeten, bedtijd. Schrijf drie dingen op die je voor je kind doet maar die ze waarschijnlijk zelf zou kunnen. Kies er morgen één uit. Geef het helemaal uit handen. Geen instructies, geen correcties. Kijk wat er gebeurt. Schrijf op hoe het ging. En hoe het voor jou voelde.",
       duration: 5,
       tips: [
-        "Het gaat niet om perfectie. Scheef brood, verkeerd gevouwen handdoeken — dat is bewijs dat je kind het probeert, niet dat het faalt.",
+        "Het gaat niet om perfectie. Scheef brood, verkeerd gevouwen handdoeken. Dat is bewijs dat je kind het probeert, niet dat het faalt.",
         "Let op je eigen neiging om te corrigeren. Dat is jouw comfortzone die spreekt, niet het belang van je kind.",
       ],
     },
     {
       type: "reflection" as const,
       questions: [
-        "Op welke momenten sta jij boven je kind terwijl het eigenlijk niet nodig is? Wat drijft dat — angst, ongeduld, gewoonte?",
-        "Wat zou er veranderen als je je kind één week lang dingen zelf liet doen — ook als het niet perfect ging?",
+        "Op welke momenten sta jij boven je kind terwijl het eigenlijk niet nodig is? Wat drijft dat. Angst, ongeduld, gewoonte?",
+        "Wat zou er veranderen als je je kind één week lang dingen zelf liet doen. Ook als het niet perfect ging?",
       ],
     },
     {
       type: "text" as const,
       heading: "Samenvatting",
-      text: "Je onderschat je kind. Hun capabele zone is groter dan jouw comfortzone. Doe de capability audit, geef leeftijdsgerichte verantwoordelijkheden en accepteer imperfectie. De vertrouwenssprong is niet je kind loslaten — het is jezelf loslaten.",
+      text: "Je onderschat je kind. Hun capabele zone is groter dan jouw comfortzone. Doe de capability audit, geef leeftijdsgerichte verantwoordelijkheden en accepteer imperfectie. De vertrouwenssprong is niet je kind loslaten. Het is jezelf loslaten.",
     },
   ],
   keyTakeaways: [
-    "Je onderschat je kind — hun capabele zone is groter dan jouw comfortzone toelaat",
-    "Overbescherming leidt tot minder zelfvertrouwen en meer angst — stap achteruit en geef vertrouwen",
+    "Je onderschat je kind. Hun capabele zone is groter dan jouw comfortzone toelaat",
+    "Overbescherming leidt tot minder zelfvertrouwen en meer angst. Stap achteruit en geef vertrouwen",
     "Accepteer imperfectie: scheef brood corrigeren zegt 'niet goed genoeg', laten staan zegt 'jij kunt dit'",
   ],
   research: "Schiffrin et al. (2014). Helping or Hovering? The Effects of Helicopter Parenting; Baumrind (1966). Authoritative Parenting",
@@ -591,36 +626,36 @@ export const AUTONOMIE_MODULES: LearningModule[] = [
     {
       question: "Een vader geeft zijn dochter (9) totale vrijheid: ze mag zelf weten wanneer ze naar bed gaat, wat ze eet, en of ze haar huiswerk maakt. Hij noemt dit 'autonomie geven'. Wat is het probleem?",
       options: [
-        { text: "Niets — op die leeftijd kunnen kinderen prima zelf deze beslissingen nemen", isCorrect: false },
-        { text: "Autonomie zonder kader is geen autonomie maar permissiviteit — kinderen hebben grenzen nodig om zich veilig te voelen", isCorrect: true },
-        { text: "Hij moet minder keuzes geven, niet meer — negen is te jong voor zulke beslissingen", isCorrect: false },
+        { text: "Niets. Op die leeftijd kunnen kinderen prima zelf deze beslissingen nemen", isCorrect: false },
+        { text: "Autonomie zonder kader is geen autonomie maar permissiviteit. Kinderen hebben grenzen nodig om zich veilig te voelen", isCorrect: true },
+        { text: "Hij moet minder keuzes geven, niet meer. Negen is te jong voor zulke beslissingen", isCorrect: false },
       ],
       explanation: "Autonomie is niet hetzelfde als alles mogen. Kinderen voelen zich juist onveilig zonder kader. Onderzoek van Baumrind laat zien dat autoritatief ouderschap (warmte plus grenzen) de beste uitkomsten geeft. Een kind dat alles zelf mag beslissen ervaart dat niet als vrijheid maar als: niemand let op mij.",
     },
     {
       question: "Je dochter (7) wil elke dag zelf kiezen wat ze aantrekt. Vandaag kiest ze een zomerjurk bij 5 graden. Wat doe je?",
       options: [
-        { text: "Haar de jurk laten aandoen — ze voelt zelf wel dat het koud is en leert ervan", isCorrect: false },
-        { text: "Zeggen dat het niet kan en een warme broek klaarzetten — gezondheid gaat voor", isCorrect: false },
-        { text: "Uitleggen dat het koud is en vragen of ze een maillot of legging eronder wil — keuze binnen grenzen", isCorrect: true },
+        { text: "Haar de jurk laten aandoen. Ze voelt zelf wel dat het koud is en leert ervan", isCorrect: false },
+        { text: "Zeggen dat het niet kan en een warme broek klaarzetten. Gezondheid gaat voor", isCorrect: false },
+        { text: "Uitleggen dat het koud is en vragen of ze een maillot of legging eronder wil. Keuze binnen grenzen", isCorrect: true },
       ],
-      explanation: "Puur laten ervaren klinkt leerzaam, maar een ziek kind is geen succesvol leermoment. Tegelijk: de keuze volledig afpakken ondermijnt haar autonomie over haar kleding. De middenweg respecteert haar keuze en beschermt haar gezondheid — zonder machtsstrijd.",
+      explanation: "Puur laten ervaren klinkt leerzaam, maar een ziek kind is geen succesvol leermoment. Tegelijk: de keuze volledig afpakken ondermijnt haar autonomie over haar kleding. De middenweg respecteert haar keuze en beschermt haar gezondheid. Zonder machtsstrijd.",
     },
     {
       question: "Op het spectrum van helikopterouder tot afwezige ouder, waar zit de 'sweet spot' voor autonomie-ontwikkeling?",
       options: [
-        { text: "Precies in het midden — niet te veel en niet te weinig bemoeienis", isCorrect: false },
+        { text: "Precies in het midden. Niet te veel en niet te weinig bemoeienis", isCorrect: false },
         { text: "De positie verschuift: dichter bij betrokken voor jonge kinderen, geleidelijk naar meer afstand bij oudere kinderen", isCorrect: true },
-        { text: "Zo dicht mogelijk bij de afwezige kant — kinderen leren het meest door het zelf uit te zoeken", isCorrect: false },
+        { text: "Zo dicht mogelijk bij de afwezige kant. Kinderen leren het meest door het zelf uit te zoeken", isCorrect: false },
       ],
       explanation: "Er is geen vaste 'sweet spot'. Een driejarige heeft veel meer begeleiding nodig dan een dertienjarige. De kunst is om je positie mee te laten schuiven met de ontwikkeling van je kind. Wat helikoptergedrag is bij een twaalfjarige, kan adequate zorg zijn bij een vierjarige.",
     },
     {
       question: "Je zoon (12) komt thuis met een onvoldoende. Hij zegt: 'Maakt me niet uit.' Je vermoedt dat het hem wel raakt. Wat is de meest effectieve reactie?",
       options: [
-        { text: "'Ik merk dat je zegt dat het je niet uitmaakt, maar ik denk dat het best balen is' — benoemen wat je ziet", isCorrect: false },
-        { text: "Er niet op ingaan en later die avond terloops vragen hoe school was — ruimte geven om zelf terug te komen", isCorrect: true },
-        { text: "Meteen vragen wat er misging en een plan maken voor het volgende proefwerk — proactief helpen", isCorrect: false },
+        { text: "'Ik merk dat je zegt dat het je niet uitmaakt, maar ik denk dat het best balen is'. Benoemen wat je ziet", isCorrect: false },
+        { text: "Er niet op ingaan en later die avond terloops vragen hoe school was. Ruimte geven om zelf terug te komen", isCorrect: true },
+        { text: "Meteen vragen wat er misging en een plan maken voor het volgende proefwerk. Proactief helpen", isCorrect: false },
       ],
       explanation: "Twaalfjarigen die zeggen 'maakt me niet uit' hebben vaak tijd nodig om hun emoties te verwerken. Direct doorvragen of benoemen voelt als confrontatie. Een plan maken voelt als controle. Door ruimte te geven en later terloops de deur open te zetten, respecteer je zijn autonomie en geef je hem de kans om er zelf mee te komen.",
     },

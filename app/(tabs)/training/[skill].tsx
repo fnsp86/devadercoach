@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLocalSearchParams, useRouter, useFocusEffect } from 'expo-router';
+import { useLocalSearchParams, useRouter, useNavigation, useFocusEffect } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
@@ -33,10 +33,23 @@ const DIFFICULTY_CONFIG: Record<string, { color: string; label: string }> = {
 export default function SkillTraining() {
   const { colors } = useTheme();
   const router = useRouter();
-  const { skill: rawSkill, part: rawPart } = useLocalSearchParams<{ skill: string; part?: string }>();
+  const { skill: rawSkill } = useLocalSearchParams<{ skill: string }>();
   const skill = decodeURIComponent(rawSkill || '') as Skill;
-  const part = rawPart ? parseInt(rawPart, 10) : undefined;
+  const navigation = useNavigation();
+  const [selectedPart, setSelectedPart] = useState<number | undefined>(undefined);
+  const part = selectedPart;
   const skillColor = SKILL_COLORS[skill] || colors.amber;
+
+  // Intercept system back gesture: quiz → deel selection instead of popping stack
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e: any) => {
+      if (selectedPart !== undefined) {
+        e.preventDefault();
+        setSelectedPart(undefined);
+      }
+    });
+    return unsubscribe;
+  }, [navigation, selectedPart]);
 
   const store = useStore();
   const activeThemes = useMemo(() => {
@@ -236,6 +249,31 @@ export default function SkillTraining() {
     setSessionXP(0);
   }
 
+  function goToPart(p: number) {
+    const mid = Math.ceil(allItems.length / 2);
+    const partItems = p === 1 ? allItems.slice(0, mid) : allItems.slice(mid);
+    const progress = store.getTrainingProgress(skill);
+    const completedInPart = partItems.filter((i) => progress.completedItems.includes(i.id)).length;
+    if (completedInPart >= partItems.length && partItems.length > 0) {
+      setShowCompletion(true);
+      setSessionCorrect(progress.correctAnswers);
+      setSessionIncorrect(progress.totalAttempts - progress.correctAnswers);
+      setCurrentIndex(0);
+    } else {
+      setShowCompletion(false);
+      setSessionCorrect(0);
+      setSessionIncorrect(0);
+      const nextIndex = partItems.findIndex((item) => !progress.completedItems.includes(item.id));
+      setCurrentIndex(nextIndex >= 0 ? nextIndex : 0);
+    }
+    setSelectedAnswer(null);
+    setIsAnswered(false);
+    setOefeningDone(false);
+    setSessionXP(0);
+    setStreak(0);
+    setSelectedPart(p);
+  }
+
   // -- Deel-selectie screen (when no part is selected) --
 
   if (!part && allItems.length > 0) {
@@ -258,10 +296,10 @@ export default function SkillTraining() {
     return (
       <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg }]}>
         <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
-          <Pressable onPress={() => router.back()} style={styles.backButton}>
+          <Pressable onPress={() => router.replace('/(tabs)/training/')} style={styles.backButton}>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
               <InlineIcon name="arrowLeft" size={16} color={colors.amber} />
-              <Text style={[styles.backText, { color: colors.amber }]}>Terug</Text>
+              <Text style={[styles.backText, { color: colors.amber }]}>Arena</Text>
             </View>
           </Pressable>
 
@@ -272,7 +310,7 @@ export default function SkillTraining() {
 
           {/* Part 1 Card */}
           <Pressable
-            onPress={() => router.push(`/(tabs)/training/${encodeURIComponent(skill)}?part=1` as any)}
+            onPress={() => goToPart(1)}
             style={[styles.partCard, { backgroundColor: colors.surface, borderColor: part1Done ? '#34D399' : colors.border }]}
           >
             <View style={styles.partCardHeader}>
@@ -302,7 +340,7 @@ export default function SkillTraining() {
 
           {/* Part 2 Card */}
           <Pressable
-            onPress={() => router.push(`/(tabs)/training/${encodeURIComponent(skill)}?part=2` as any)}
+            onPress={() => goToPart(2)}
             style={[styles.partCard, { backgroundColor: colors.surface, borderColor: part2Done ? '#34D399' : colors.border }]}
           >
             <View style={styles.partCardHeader}>
@@ -335,7 +373,6 @@ export default function SkillTraining() {
             <Pressable
               onPress={() => {
                 store.resetTraining(skill);
-                router.replace(`/(tabs)/training/${encodeURIComponent(skill)}` as any);
               }}
               style={[styles.partResetButton, { borderColor: colors.border }]}
             >
@@ -361,7 +398,7 @@ export default function SkillTraining() {
           <Pressable onPress={() => router.back()} style={styles.backButton}>
             <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
               <InlineIcon name="arrowLeft" size={16} color={colors.amber} />
-              <Text style={[styles.backText, { color: colors.amber }]}>Quiz</Text>
+              <Text style={[styles.backText, { color: colors.amber }]}>Terug</Text>
             </View>
           </Pressable>
           <View style={styles.emptyContainer}>
@@ -391,13 +428,10 @@ export default function SkillTraining() {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          <Pressable onPress={() => part
-            ? router.replace(`/(tabs)/training/${encodeURIComponent(skill)}` as any)
-            : router.back()
-          } style={styles.backButton}>
+          <Pressable onPress={() => setSelectedPart(undefined)} style={styles.backButton}>
             <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
               <InlineIcon name="arrowLeft" size={16} color={colors.amber} />
-              <Text style={[styles.backText, { color: colors.amber }]}>Quiz</Text>
+              <Text style={[styles.backText, { color: colors.amber }]}>Terug</Text>
             </View>
           </Pressable>
 
@@ -509,10 +543,7 @@ export default function SkillTraining() {
             </Pressable>
 
             <Pressable
-              onPress={() => part
-                ? router.replace(`/(tabs)/training/${encodeURIComponent(skill)}` as any)
-                : router.navigate('/(tabs)/training')
-              }
+              onPress={() => setSelectedPart(undefined)}
               style={[
                 styles.completionButton,
                 {
@@ -525,7 +556,7 @@ export default function SkillTraining() {
               <Text
                 style={[styles.completionButtonText, { color: colors.text }]}
               >
-                {part ? 'Terug naar overzicht' : 'Terug naar Quiz'}
+                {part ? 'Terug naar overzicht' : 'Terug'}
               </Text>
             </Pressable>
           </View>
@@ -544,38 +575,34 @@ export default function SkillTraining() {
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg }]}>
-      <ScrollView
-        style={styles.scroll}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Back link */}
-        <Pressable onPress={() => part
-          ? router.replace(`/(tabs)/training/${encodeURIComponent(skill)}` as any)
-          : router.back()
-        } style={styles.backButton}>
-          <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
-            <InlineIcon name="arrowLeft" size={16} color={colors.amber} />
-            <Text style={[styles.backText, { color: colors.amber }]}>Quiz</Text>
-          </View>
+      {/* Header bar with back + progress + count + close */}
+      <View style={[styles.headerBar, { borderBottomColor: colors.border }]}>
+        <Pressable onPress={() => setSelectedPart(undefined)} style={styles.headerBackButton}>
+          <InlineIcon name="arrowLeft" size={18} color={colors.text2} />
         </Pressable>
-
-        {/* Progress bar */}
-        <View style={styles.topProgressContainer}>
-          <View style={styles.topProgressLabelRow}>
-            <Text style={[styles.topProgressLabel, { color: colors.text2 }]}>
-              {skill}
-            </Text>
-            <Text style={[styles.topProgressCount, { color: skillColor }]}>
-              {currentIndex + 1}/{totalItems}
-            </Text>
-          </View>
+        <View style={styles.headerProgressTrack}>
           <ProgressBar
             progress={progressValue}
             color={skillColor}
             height={6}
           />
         </View>
+        <Text style={[styles.headerStepCount, { color: colors.text3 }]}>
+          {currentIndex + 1}/{totalItems}
+        </Text>
+        <Pressable
+          onPress={() => router.back()}
+          style={[styles.headerCloseButton, { backgroundColor: colors.surface2 }]}
+        >
+          <InlineIcon name="x" size={18} color={colors.text2} />
+        </Pressable>
+      </View>
+
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
 
         {/* Difficulty + type badges + streak */}
         <View style={styles.itemBadgeRow}>
@@ -939,6 +966,34 @@ export default function SkillTraining() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
+  },
+  headerBar: {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+  },
+  headerBackButton: {
+    paddingVertical: 4,
+    paddingRight: 12,
+  },
+  headerProgressTrack: {
+    flex: 1,
+  },
+  headerStepCount: {
+    fontSize: 13,
+    fontWeight: '700' as const,
+    minWidth: 36,
+    textAlign: 'right' as const,
+  },
+  headerCloseButton: {
+    marginLeft: 10,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
   },
   scroll: {
     flex: 1,

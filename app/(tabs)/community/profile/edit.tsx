@@ -53,9 +53,12 @@ export default function EditProfile() {
     }
   }
 
+  const [gpsCoords, setGpsCoords] = useState<{ latitude: number; longitude: number } | null>(null);
+
   async function handleUseGPS() {
     const loc = await getCurrentLocation();
     if (loc) {
+      setGpsCoords(loc);
       const city = await getCurrentCity();
       if (city) setStad(city);
     } else {
@@ -71,6 +74,7 @@ export default function EditProfile() {
         user_id: user.id,
         bio: bio.trim(),
         stad,
+        ...(gpsCoords ? { latitude: gpsCoords.latitude, longitude: gpsCoords.longitude } : {}),
       });
       setCommunityProfile(updated);
       router.back();

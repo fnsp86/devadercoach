@@ -5,7 +5,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
   id: "zr_mod_1",
   skill: "Zelfregulatie" as Skill,
   title: "Waarom Je Zo Moe Bent",
-  description: "Het is zes uur. Lange dag gehad. Je kind zeurt. En jij ontploft. Niet omdat je een slechte vader bent — maar omdat je tank leeg is.",
+  description: "Het is zes uur. Lange dag gehad. Je kind zeurt. En jij ontploft. Niet omdat je een slechte vader bent. Maar omdat je tank leeg is.",
   duration: "8-10 min",
   difficulty: "basis" as const,
   order: 1,
@@ -22,7 +22,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Psycholoog Roy Baumeister ontdekte dat zelfbeheersing een beperkte hulpbron is: 'ego depletion'. Na veel wilsinspanning presteer je slechter op de volgende taak. Je prefrontale cortex — het remmencentrum van je brein — raakt letterlijk uitgeput. Glucose, slaap en herstel vullen de tank weer aan.",
+      text: "Psycholoog Roy Baumeister ontdekte dat zelfbeheersing een beperkte hulpbron is: 'ego depletion'. Na veel wilsinspanning presteer je slechter op de volgende taak. Je prefrontale cortex. Het remmencentrum van je brein. Raakt letterlijk uitgeput. Glucose, slaap en herstel vullen de tank weer aan.",
     },
     {
       type: "diagram" as const,
@@ -41,16 +41,23 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
         {
           emoji: "🚨",
           label: "18:00+: rode zone",
-          description: "Kinderen, huishouden, emoties — maar geen brandstof meer. Hier ontplof je over gebroken koekjes.",
+          description: "Kinderen, huishouden, emoties. Maar geen brandstof meer. Hier ontplof je over gebroken koekjes.",
         },
       ],
     },
     {
       type: "example" as const,
       situation: "Het is 18:15. Emma (4) wil haar schoenen niet aan. Je hebt al drie keer rustig gevraagd. Ze gooit haar schoen door de gang.",
-      wrongApproach: "OP KARAKTER VERTROUWEN:\n\nPapa: 'EMMA! Schoenen aan! NU!'\nEmma schrikt. Huilt.\nPapa: 'Waarom luister je nooit?!'\n\nGeen slechte vader. Lege tank. Maar Emma weet dat niet — zij voelt alleen de schreeuw.",
+      wrongApproach: "OP KARAKTER VERTROUWEN:\n\nPapa: 'EMMA! Schoenen aan! NU!'\nEmma schrikt. Huilt.\nPapa: 'Waarom luister je nooit?!'\n\nGeen slechte vader. Lege tank. Maar Emma weet dat niet. Zij voelt alleen de schreeuw.",
       rightApproach: "TANKCHECK VOOR JE REAGEERT:\n\nPapa ziet de schoen vliegen. Denkt: 'Mijn tank is leeg.' Zegt tegen Emma: 'Wacht even.' Loopt naar de keuken. Drinkt een glas water. Drie ademhalingen.\n\nKomt terug: 'Oké, die schoen is ver gevlogen. Zullen we kijken wie hem het eerst vindt?'\n\nEmma lacht. Schoen aan in twee minuten.",
       explanation: "Het verschil is niet meer geduld. Het verschil is dat papa zijn lege tank herkende en even pauzeerde. Zelfregulatie begint met weten hoeveel er nog in de tank zit.",
+    },
+    {
+      type: "example" as const,
+      situation: "Finn (9) vraagt of papa wil helpen met zijn werkstuk over dieren. Het is 19:30, papa heeft net een uur in de file gestaan na een dag vol vergaderingen.",
+      wrongApproach: "❌ DOORDUWEN OP EEN LEGE TANK:\n\nPapa: 'Oké, laat maar zien.'\nFinn begint enthousiast te vertellen. Papa zucht. Kijkt op zijn telefoon.\nFinn: 'Papa, je luistert niet!'\nPapa: 'Ik luister wel! Schiet gewoon op, ik heb niet de hele avond!'\n\nFinn klapt zijn boek dicht. Doet het zelf wel. Papa voelt zich schuldig maar is te moe om het recht te zetten.",
+      rightApproach: "✅ EERLIJK ZIJN OVER JE TANK:\n\nPapa voelt hoe leeg hij is. Zegt: 'Finn, ik vind het heel leuk dat je dat vraagt. Maar ik ben nu zo moe dat ik niet goed kan helpen. Geef me een halfuurtje om bij te komen, dan doe ik het écht goed met je.'\n\nPapa eet iets, zit even stil. Om acht uur gaat hij naast Finn zitten. Geeft hem volle aandacht.\n\nFinn: 'Papa, kijk, het gaat over wolven!'\nPapa luistert. Echt.",
+      explanation: "Halfhartig helpen op een lege tank eindigt in frustratie voor allebei. Een eerlijke pauze van dertig minuten levert een halfuur échte aandacht op. Je kind leert: papa kent zijn grenzen en komt zijn belofte na.",
     },
     {
       type: "text" as const,
@@ -63,7 +70,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
       instructions: "1. Stel nu een alarm op je telefoon om 17:00.\n2. Als het afgaat: geef jezelf een score van 1-10 voor hoeveel energie je nog hebt.\n3. Schrijf het op in je telefoon (notities of een simpel lijstje).\n4. Doe dit vijf dagen achter elkaar.\n5. Na vijf dagen: lees je scores terug. Zie je het patroon? Welke dagen scoor je laag?\n6. Plan iets om bij te tanken op je laagste dagen.",
       duration: 3,
       tips: [
-        "Onder de 4? Plan iets om bij te tanken voor je thuiskomt — vijf minuten in de auto met ogen dicht telt ook",
+        "Onder de 4? Plan iets om bij te tanken voor je thuiskomt. Vijf minuten in de auto met ogen dicht telt ook",
         "Deel je score met je partner zodat zij weet wat ze kan verwachten",
       ],
     },
@@ -71,7 +78,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
       type: "reflection" as const,
       questions: [
         "Op welk moment van de dag merk je dat je geduld opraakt? Is er een patroon?",
-        "Wat doe jij om bij te tanken — en is dat genoeg?",
+        "Wat doe jij om bij te tanken. En is dat genoeg?",
       ],
     },
     {
@@ -81,7 +88,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     },
   ],
   keyTakeaways: [
-    "Wilskracht is een beperkte hulpbron die opraakt — 's avonds is je tank bijna leeg",
+    "Wilskracht is een beperkte hulpbron die opraakt. 's avonds is je tank bijna leeg",
     "Herken je tankniveau voor je reageert: de dagelijkse tankcheck om 17:00 voorkomt uitbarstingen",
     "Preventieve regulatie (eten, rust, mini-pauze) werkt beter dan achteraf spijt hebben",
   ],
@@ -94,32 +101,32 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
         { text: "Je had minder ego depletion dan normaal, dus dit wijst op een dieper emotioneel probleem", isCorrect: true },
         { text: "Ook sociale interacties en je inhouden bij kleine irritaties kosten wilskracht", isCorrect: false },
       ],
-      explanation: "Ego depletion gaat niet alleen over zware dagen. Elke beslissing, elke keer je inhouden en elk sociaal moment kost energie — ook op 'rustige' dagen. Een uitbarsting na zo'n dag hoeft geen teken van een dieper probleem te zijn.",
+      explanation: "Ego depletion gaat niet alleen over zware dagen. Elke beslissing, elke keer je inhouden en elk sociaal moment kost energie. Ook op 'rustige' dagen. Een uitbarsting na zo'n dag hoeft geen teken van een dieper probleem te zijn.",
     },
     {
       question: "Je tankniveau is een 3 van de 10. Je kind wil dat je helpt met een lastig bouwwerk. Wat doe je?",
       options: [
         { text: "Vijf minuten alleen nemen om bij te tanken, dan pas helpen", isCorrect: true },
-        { text: "Direct helpen — je kind afwijzen is schadelijker dan moe zijn", isCorrect: false },
-        { text: "Jezelf dwingen om geduldig te zijn — als je het maar hard genoeg probeert lukt het", isCorrect: false },
+        { text: "Direct helpen. Je kind afwijzen is schadelijker dan moe zijn", isCorrect: false },
+        { text: "Jezelf dwingen om geduldig te zijn. Als je het maar hard genoeg probeert lukt het", isCorrect: false },
       ],
-      explanation: "Met een tank op 3 werkt doorzetten niet — je prefrontale cortex is uitgeput en de kans op een uitbarsting is groot. Even bijtanken is geen afwijzing maar een investering: vijf minuten pauze levert een halfuur geduldig vaderschap op.",
+      explanation: "Met een tank op 3 werkt doorzetten niet. Je prefrontale cortex is uitgeput en de kans op een uitbarsting is groot. Even bijtanken is geen afwijzing maar een investering: vijf minuten pauze levert een halfuur geduldig vaderschap op.",
     },
     {
       question: "Wat is het risico als je elke avond je partner de zware opvoedtaken laat overnemen?",
       options: [
-        { text: "Er is geen risico — taakverdeling op basis van energie is de beste strategie", isCorrect: false },
+        { text: "Er is geen risico. Taakverdeling op basis van energie is de beste strategie", isCorrect: false },
         { text: "Je bouwt afhankelijkheid op en traint je eigen regulatiecapaciteit niet", isCorrect: true },
         { text: "Je kind raakt gehecht aan alleen de partner en verliest de band met jou", isCorrect: false },
       ],
-      explanation: "Verdelen is tijdelijk prima, maar structurele afhankelijkheid betekent dat je nooit leert je eigen tank te managen. Bovendien schept het spanning bij je partner. Preventieve regulatie — eten, rust, mini-resets — maakt je zelfstandiger.",
+      explanation: "Verdelen is tijdelijk prima, maar structurele afhankelijkheid betekent dat je nooit leert je eigen tank te managen. Bovendien schept het spanning bij je partner. Preventieve regulatie. Eten, rust, mini-resets. Maakt je zelfstandiger.",
     },
     {
       question: "Waarom werkt een simpel glas water en drie ademhalingen als je tank bijna leeg is?",
       options: [
-        { text: "Het is een placebo-effect — het water en de ademhaling doen fysiologisch niks", isCorrect: false },
+        { text: "Het is een placebo-effect. Het water en de ademhaling doen fysiologisch niks", isCorrect: false },
         { text: "Glucose uit het water voedt de prefrontale cortex en de ademhaling activeert het parasympathisch zenuwstelsel", isCorrect: true },
-        { text: "Het werkt eigenlijk niet — je moet minstens 20 minuten rust nemen voor echt herstel", isCorrect: false },
+        { text: "Het werkt eigenlijk niet. Je moet minstens 20 minuten rust nemen voor echt herstel", isCorrect: false },
       ],
       explanation: "Je prefrontale cortex verbruikt glucose als brandstof, en diepe ademhaling schakelt je zenuwstelsel van fight-or-flight naar rust. Het is geen volledige reset, maar genoeg om de ergste ontregeling te doorbreken en weer bewust te kiezen.",
     },
@@ -136,17 +143,17 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
   content: [
     {
       type: "text" as const,
-      text: "Daan (5) morst zijn melk. Over tafel, over zijn broek, op de grond. En jij — rustige, redelijke vader — schreeuwt alsof hij de auto in de sloot heeft gereden. Over een glas melk.",
+      text: "Daan (5) morst zijn melk. Over tafel, over zijn broek, op de grond. En jij. Rustige, redelijke vader. Schreeuwt alsof hij de auto in de sloot heeft gereden. Over een glas melk.",
     },
     {
       type: "text" as const,
       heading: "Het gaat nooit over de melk",
-      text: "Die woede voelt buitenproportioneel. Dat is hij ook. Want die reactie gaat niet over dit glas melk. Die gaat over alles wat daarvoor kwam.\n\nDe file vanmorgen. Die ene opmerking van je baas. Het feit dat je al drie keer hebt opgeruimd vandaag. De was die nog draait. De rekening die je vergeten bent.\n\nElke irritatie die je wegslikte, werd opgestapeld. Daans melk was gewoon de druppel. Letterlijk.\n\nJe amygdala — het alarmcentrum in je brein — houdt een onzichtbare boekhouding bij. Elke kleine stress telt mee. Tot het alarm afgaat bij iets kleins.",
+      text: "Die woede voelt buitenproportioneel. Dat is hij ook. Want die reactie gaat niet over dit glas melk. Die gaat over alles wat daarvoor kwam.\n\nDe file vanmorgen. Die ene opmerking van je baas. Het feit dat je al drie keer hebt opgeruimd vandaag. De was die nog draait. De rekening die je vergeten bent.\n\nElke irritatie die je wegslikte, werd opgestapeld. Daans melk was gewoon de druppel. Letterlijk.\n\nJe amygdala. Het alarmcentrum in je brein. Houdt een onzichtbare boekhouding bij. Elke kleine stress telt mee. Tot het alarm afgaat bij iets kleins.",
     },
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Bij stress neemt de amygdala het over van de prefrontale cortex — een 'amygdala hijack'. Onderzoek toont dat opgestapelde microstressors cumulatief werken. Je reageert niet op de trigger zelf, maar op de totale stresslading. Trigger mapping — het in kaart brengen van je triggers — is de eerste stap naar controle.",
+      text: "Bij stress neemt de amygdala het over van de prefrontale cortex. Een 'amygdala hijack'. Onderzoek toont dat opgestapelde microstressors cumulatief werken. Je reageert niet op de trigger zelf, maar op de totale stresslading. Trigger mapping. Het in kaart brengen van je triggers. Is de eerste stap naar controle.",
     },
     {
       type: "diagram" as const,
@@ -155,12 +162,12 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
         {
           emoji: "📦",
           label: "De stapel",
-          description: "Elke irritatie, elke ingehouden frustratie wordt een blokje op de stapel. Je merkt het niet bewust — maar je brein telt alles mee.",
+          description: "Elke irritatie, elke ingehouden frustratie wordt een blokje op de stapel. Je merkt het niet bewust. Maar je brein telt alles mee.",
         },
         {
           emoji: "💥",
           label: "De druppel",
-          description: "Een klein ding — gemorste melk, een sok op de grond — duwt de stapel om. De reactie past niet bij de trigger. Dat is het signaal.",
+          description: "Een klein ding. Gemorste melk, een sok op de grond. Duwt de stapel om. De reactie past niet bij de trigger. Dat is het signaal.",
         },
         {
           emoji: "🔍",
@@ -177,6 +184,13 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
       explanation: "Als je reactie niet past bij de situatie, is de situatie niet het probleem. Door de echte bron te herkennen, bescherm je je kind tegen emoties die niet van hen zijn.",
     },
     {
+      type: "example" as const,
+      situation: "Jasmijn (3) laat haar beker vallen bij het avondeten. Er zit alleen water in. Papa springt op en schreeuwt: 'Kun je niet ÉÉN keer normaal aan tafel zitten?!'",
+      wrongApproach: "❌ DE STAPEL OP JE KIND DUMPEN:\n\nPapa rukt de beker weg. 'Zo, geen beker meer.'\nJasmijn begint te huilen. Mama kijkt verbaasd.\nPapa: 'Wat?! Ik ben het gewoon zat dat alles hier een puinhoop is!'\n\nHet gaat niet over de beker. Het gaat over de deadline die papa niet haalde, het telefoontje met zijn moeder, en de parkeerboete van vanmiddag. Maar Jasmijn krijgt de volle lading.",
+      rightApproach: "✅ DE PROPORTIECHECK DOEN:\n\nPapa voelt de woede opkomen. Denkt: 'Dit is een beker water. Waarom ben ik zo boos?'\nZegt: 'Oeps, dat geeft niks. Pak maar een doekje.'\n\nNa het eten, tegen mama: 'Ik reageerde heel heftig op die beker. Ik denk dat het door die deadline zit. En dat gedoe met mijn moeder. Ik merk dat ik alles opspaar.'\n\nDe volgende dag schrijft papa voor het eerst drie dingen op die hem dwarszitten. Het helpt.",
+      explanation: "Een beker water rechtvaardigt geen uitbarsting. De proportiecheck ('past mijn reactie bij wat er net gebeurde?') helpt je herkennen dat de woede niet van je kind komt maar van je eigen stapel. Benoemen wat er écht speelt haalt de druk van de ketel.",
+    },
+    {
       type: "text" as const,
       heading: "Je toolkit",
       text: "1. Het trigger-dagboek. Schrijf na elke uitbarsting op: wat was de trigger? Hoe groot was mijn reactie (1-10)? Wat was er eerder op de dag gebeurd? Na een week zie je patronen.\n\n2. De proportiecheck. Vraag jezelf: past mijn reactie bij wat er net gebeurde? Nee? Dan gaat het niet hierover.\n\n3. Pre-trigger signalen. Leer je eigen waarschuwingen kennen: kaakspanning, snellere ademhaling, korte antwoorden. Dit zijn je vijf-seconden-waarschuwingen.\n\n4. Emotionele boekhouding. Check twee keer per dag: wat zit er op mijn stapel? Benoem het. Dat alleen al haalt de druk eraf.",
@@ -184,18 +198,18 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       type: "exercise" as const,
       title: "Het Trigger-Dagboek",
-      instructions: "1. Open je telefoon. Maak een notitie met de titel 'Triggers'.\n2. Na elke boze reactie deze week, schrijf drie dingen op:\n   - Wat was de trigger?\n   - Hoe groot was mijn reactie? (schaal 1-10)\n   - Wat was er eerder op de dag gebeurd?\n3. Doe het direct na het moment — anders vergeet je de details.\n4. Na vijf dagen: lees alles terug.\n5. Zoek het patroon. Zelfde tijdstip? Zelfde type situatie? Altijd na een lange werkdag?\n6. Dat patroon is je trigger-map.",
+      instructions: "1. Open je telefoon. Maak een notitie met de titel 'Triggers'.\n2. Na elke boze reactie deze week, schrijf drie dingen op:\n   - Wat was de trigger?\n   - Hoe groot was mijn reactie? (schaal 1-10)\n   - Wat was er eerder op de dag gebeurd?\n3. Doe het direct na het moment. Anders vergeet je de details.\n4. Na vijf dagen: lees alles terug.\n5. Zoek het patroon. Zelfde tijdstip? Zelfde type situatie? Altijd na een lange werkdag?\n6. Dat patroon is je trigger-map.",
       duration: 5,
       tips: [
-        "Gebruik steekwoorden als je weinig tijd hebt — drie woorden zijn genoeg om het later terug te halen",
-        "Oordeel niet over jezelf — je bent een onderzoeker, geen verdachte",
+        "Gebruik steekwoorden als je weinig tijd hebt. Drie woorden zijn genoeg om het later terug te halen",
+        "Oordeel niet over jezelf. Je bent een onderzoeker, geen verdachte",
       ],
     },
     {
       type: "reflection" as const,
       questions: [
         "Wanneer was de laatste keer dat je buitenproportioneel reageerde? Wat zat er onder die reactie?",
-        "Welke terugkerende situaties triggeren je het meest — en wat hebben ze gemeen?",
+        "Welke terugkerende situaties triggeren je het meest. En wat hebben ze gemeen?",
       ],
     },
     {
@@ -205,8 +219,8 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     },
   ],
   keyTakeaways: [
-    "Een buitenproportionele reactie is een signaal — het gaat niet over de trigger maar over de stapeling eronder",
-    "Je amygdala houdt een onzichtbare boekhouding bij van alle stress — tot het alarm afgaat bij iets kleins",
+    "Een buitenproportionele reactie is een signaal. Het gaat niet over de trigger maar over de stapeling eronder",
+    "Je amygdala houdt een onzichtbare boekhouding bij van alle stress. Tot het alarm afgaat bij iets kleins",
     "Een trigger-dagboek helpt je patronen herkennen zodat je voorkomt in plaats van achteraf repareert",
   ],
   research: "Goleman (1995). Emotional Intelligence; Sapolsky (2004). Why Zebras Don't Get Ulcers; LeDoux (1996). The Emotional Brain.",
@@ -215,7 +229,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
       question: "Je trigger-dagboek laat zien dat je altijd op dinsdag ontploft. Wat is de beste volgende stap?",
       options: [
         { text: "Op dinsdag extra je best doen om kalm te blijven", isCorrect: false },
-        { text: "Onderzoeken wat er op dinsdag anders is — vergadering, slaaptekort, alleen koken?", isCorrect: true },
+        { text: "Onderzoeken wat er op dinsdag anders is. Vergadering, slaaptekort, alleen koken?", isCorrect: true },
         { text: "Op dinsdag de opvoedtaken aan je partner overdragen", isCorrect: false },
       ],
       explanation: "Harder je best doen werkt niet als je tank leeg is, en overdragen is een pleister. Het trigger-dagboek is een onderzoekstool: het patroon vertelt je waar de echte stressor zit. Pas als je die kent, kun je structureel iets veranderen.",
@@ -245,7 +259,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
         { text: "Je kunt de situatie verlaten zodat je kind je woede niet ziet", isCorrect: false },
         { text: "Je kunt jezelf trainen om die lichamelijke signalen niet meer te voelen", isCorrect: false },
       ],
-      explanation: "Pre-trigger signalen zijn je vijf-seconden-waarschuwing: het moment waarop je prefrontale cortex nog online is. Weglopen kan soms helpen, maar het doel is ingrijpen, niet vluchten. En de signalen uitschakelen is onmogelijk en onwenselijk — ze zijn je ingebouwde alarmsysteem.",
+      explanation: "Pre-trigger signalen zijn je vijf-seconden-waarschuwing: het moment waarop je prefrontale cortex nog online is. Weglopen kan soms helpen, maar het doel is ingrijpen, niet vluchten. En de signalen uitschakelen is onmogelijk en onwenselijk. Ze zijn je ingebouwde alarmsysteem.",
     },
   ],
 },
@@ -270,7 +284,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Viktor Frankl schreef: 'Tussen prikkel en reactie is er ruimte. In die ruimte ligt je vrijheid.' Neurowetenschapper Andrew Huberman toonde aan dat een 'fysiologische zucht' — dubbele inademing door de neus, lange uitademing door de mond — je zenuwstelsel binnen seconden kalmeert. Dit activeert de prefrontale cortex en geeft je weer keuzevrijheid.",
+      text: "Viktor Frankl schreef: 'Tussen prikkel en reactie is er ruimte. In die ruimte ligt je vrijheid.' Neurowetenschapper Andrew Huberman toonde aan dat een 'fysiologische zucht'. Dubbele inademing door de neus, lange uitademing door de mond. Je zenuwstelsel binnen seconden kalmeert. Dit activeert de prefrontale cortex en geeft je weer keuzevrijheid.",
     },
     {
       type: "diagram" as const,
@@ -289,7 +303,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
         {
           emoji: "🧠",
           label: "Seconde 7-10: De keuze",
-          description: "Je kunt weer nadenken. Je kiest wat je zegt. Niet perfect — maar bewust. Dat maakt het verschil.",
+          description: "Je kunt weer nadenken. Je kiest wat je zegt. Niet perfect. Maar bewust. Dat maakt het verschil.",
         },
       ],
     },
@@ -301,35 +315,42 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
       explanation: "Papa voelde dezelfde woede. Het verschil: hij gaf zichzelf tien seconden. De fysiologische zucht bracht zijn prefrontale cortex terug online. Hij kon een grens stellen zonder te schreeuwen.",
     },
     {
+      type: "example" as const,
+      situation: "Thijs (10) heeft stiekem een uur op papa's iPad gespeeld terwijl hij huiswerk moest maken. Papa ontdekt het als hij de zoekgeschiedenis ziet. Hij voelt zijn vuisten ballen.",
+      wrongApproach: "❌ ONTPLOFFEN BIJ DE ONTDEKKING:\n\nPapa: 'Thijs! Geef die iPad hier! Je hebt GELOGEN!'\nThijs: 'Ik was bijna klaar met—'\nPapa: 'Geen iPad meer. Een week lang! En geen voetbal zaterdag!'\n\nDrie straffen in vijf seconden. Geen ervan doordacht. Thijs loopt boos naar zijn kamer. Papa beseft dat hij veel te ver ging maar kan niet meer terug.",
+      rightApproach: "✅ TIEN SECONDEN VOOR JE STRAFT:\n\nPapa ziet de iPad. Voelt de woede. Balt zijn vuisten.\nDenkt: 'Stop. Tien seconden.'\nDoet zijn handen open. Dubbele inademing. Lange uitademing.\n\nRustig: 'Thijs, ik zie dat je op de iPad hebt gezeten in plaats van huiswerk. Ik ben daar niet blij mee.'\nThijs: 'Sorry papa...'\nPapa: 'We praten er zo over. Maak eerst je huiswerk af. Dan bespreken we samen wat de consequentie is.'",
+      explanation: "Bij ontdekking van 'stout' gedrag wil je direct straffen. Maar straffen in woede zijn bijna altijd te zwaar en niet doordacht. Tien seconden nemen geeft je de ruimte om een passende consequentie te kiezen in plaats van drie straffen over elkaar heen te stapelen.",
+    },
+    {
       type: "text" as const,
       heading: "Je toolkit",
-      text: "1. De fysiologische zucht. Dubbele inademing door je neus (kort-kort). Lange uitademing door je mond. Eén keer is genoeg. Werkt binnen vijf seconden.\n\n2. Achteruit tellen. Tel van tien naar nul. Niet hardop — in je hoofd. Geeft je brein iets om mee bezig te zijn terwijl de amygdala afkoelt.\n\n3. Fysieke reset. Verander iets aan je houding. Ga zitten als je staat. Doe je handen open als je ze balt. Je lichaam stuurt je brein.",
+      text: "1. De fysiologische zucht. Dubbele inademing door je neus (kort-kort). Lange uitademing door je mond. Eén keer is genoeg. Werkt binnen vijf seconden.\n\n2. Achteruit tellen. Tel van tien naar nul. Niet hardop. In je hoofd. Geeft je brein iets om mee bezig te zijn terwijl de amygdala afkoelt.\n\n3. Fysieke reset. Verander iets aan je houding. Ga zitten als je staat. Doe je handen open als je ze balt. Je lichaam stuurt je brein.",
     },
     {
       type: "exercise" as const,
       title: "De Fysiologische Zucht Oefenen",
-      instructions: "1. Oefen nu: dubbele inademing door je neus (kort-kort), dan lange uitademing door je mond.\n2. Doe het drie keer achter elkaar. Merk op hoe je lichaam reageert.\n3. Vanavond in bed: doe het nog drie keer. Het wordt een gewoonte.\n4. Morgen: gebruik hem één keer bij een echt moment.\n5. Het hoeft niet met je kind — in het verkeer of op werk telt ook.\n6. Dagelijks doel: één bewust moment per dag waarop je pauzeert voor je reageert.",
+      instructions: "1. Oefen nu: dubbele inademing door je neus (kort-kort), dan lange uitademing door je mond.\n2. Doe het drie keer achter elkaar. Merk op hoe je lichaam reageert.\n3. Vanavond in bed: doe het nog drie keer. Het wordt een gewoonte.\n4. Morgen: gebruik hem één keer bij een echt moment.\n5. Het hoeft niet met je kind. In het verkeer of op werk telt ook.\n6. Dagelijks doel: één bewust moment per dag waarop je pauzeert voor je reageert.",
       duration: 3,
       tips: [
-        "De uitademing is het belangrijkste — maak hem twee keer zo lang als de inademing",
+        "De uitademing is het belangrijkste. Maak hem twee keer zo lang als de inademing",
         "Oefen hem als je NIET gestrest bent, dan is hij beschikbaar als je hem nodig hebt",
       ],
     },
     {
       type: "reflection" as const,
       questions: [
-        "Wanneer was de laatste keer dat je reageerde in seconde nul — en hoe voelde dat achteraf?",
+        "Wanneer was de laatste keer dat je reageerde in seconde nul. En hoe voelde dat achteraf?",
         "In welke terugkerende situatie met je kind zou die tien seconden het meeste verschil maken?",
       ],
     },
     {
       type: "text" as const,
       heading: "Samenvatting",
-      text: "Tussen trigger en reactie zit ruimte — tien seconden is genoeg. De fysiologische zucht kalmeert je zenuwstelsel direct. Je hoeft niet te veranderen wie je bent. Je hoeft alleen te leren pauzeren voor je reageert.",
+      text: "Tussen trigger en reactie zit ruimte. Tien seconden is genoeg. De fysiologische zucht kalmeert je zenuwstelsel direct. Je hoeft niet te veranderen wie je bent. Je hoeft alleen te leren pauzeren voor je reageert.",
     },
   ],
   keyTakeaways: [
-    "Tussen prikkel en reactie zit altijd ruimte — die ruimte is je vrijheid als vader",
+    "Tussen prikkel en reactie zit altijd ruimte. Die ruimte is je vrijheid als vader",
     "De fysiologische zucht (dubbel inademen, lang uitademen) kalmeert je zenuwstelsel binnen vijf seconden",
     "Oefen de pauze als je NIET gestrest bent, zodat hij beschikbaar is als je hem nodig hebt",
   ],
@@ -338,7 +359,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       question: "Neurowetenschapper Jill Bolte Taylor beschreef de '90 seconden-regel'. Wat houdt die in?",
       options: [
-        { text: "Een emotionele reactie in je lichaam duurt chemisch maximaal 90 seconden — daarna kies je zelf of je het gevoel in stand houdt", isCorrect: true },
+        { text: "Een emotionele reactie in je lichaam duurt chemisch maximaal 90 seconden. Daarna kies je zelf of je het gevoel in stand houdt", isCorrect: true },
         { text: "Je moet altijd 90 seconden wachten voor je reageert op je kind, anders is het per definitie een impulsreactie", isCorrect: false },
         { text: "Na 90 seconden vergeet je brein de trigger en kun je niet meer boos worden over hetzelfde voorval", isCorrect: false },
       ],
@@ -347,29 +368,29 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       question: "Waarom faalt 'tot 10 tellen' soms als regulatiestrategie?",
       options: [
-        { text: "Het is een cognitieve strategie, maar bij hoge stress is je prefrontale cortex offline — je hebt eerst een fysiologische ingreep nodig", isCorrect: true },
-        { text: "Tien seconden is te kort — je hebt minstens 30 seconden nodig om te kalmeren", isCorrect: false },
+        { text: "Het is een cognitieve strategie, maar bij hoge stress is je prefrontale cortex offline. Je hebt eerst een fysiologische ingreep nodig", isCorrect: true },
+        { text: "Tien seconden is te kort. Je hebt minstens 30 seconden nodig om te kalmeren", isCorrect: false },
         { text: "Het werkt alleen bij kinderen, niet bij volwassenen met een volgroeid brein", isCorrect: false },
       ],
-      explanation: "Bij een amygdala hijack is je denkbrein letterlijk uitgeschakeld. Tellen is een cognitieve taak die je prefrontale cortex nodig heeft. De fysiologische zucht werkt via je zenuwstelsel en omzeilt dat probleem — die brengt je prefrontale cortex weer online zodat cognitieve strategieen daarna wél werken.",
+      explanation: "Bij een amygdala hijack is je denkbrein letterlijk uitgeschakeld. Tellen is een cognitieve taak die je prefrontale cortex nodig heeft. De fysiologische zucht werkt via je zenuwstelsel en omzeilt dat probleem. Die brengt je prefrontale cortex weer online zodat cognitieve strategieën daarna wél werken.",
     },
     {
       question: "Sem kijkt je recht aan terwijl hij op de bank springt. Je denkt: 'Hij daagt me uit.' Wat is het risico van die gedachte?",
       options: [
         { text: "Je interpreteert gedrag als intentie, waardoor je emotionele reactie escaleert en je minder ruimte hebt om te kiezen", isCorrect: true },
-        { text: "De gedachte is waarschijnlijk correct — kinderen van 7 testen bewust grenzen en je moet daar stevig op reageren", isCorrect: false },
-        { text: "Er is geen risico — het herkennen van uitdagend gedrag helpt je een passende consequentie te kiezen", isCorrect: false },
+        { text: "De gedachte is waarschijnlijk correct. Kinderen van 7 testen bewust grenzen en je moet daar stevig op reageren", isCorrect: false },
+        { text: "Er is geen risico. Het herkennen van uitdagend gedrag helpt je een passende consequentie te kiezen", isCorrect: false },
       ],
-      explanation: "De interpretatie 'hij daagt me uit' is een cognitieve versterker die je woede opschroeft. Kinderen testen grenzen, maar niet uit minachting — uit ontwikkelingsbehoefte. Zodra je intentie toeschrijft, wordt het persoonlijk en verlies je de ruimte tussen trigger en reactie.",
+      explanation: "De interpretatie 'hij daagt me uit' is een cognitieve versterker die je woede opschroeft. Kinderen testen grenzen, maar niet uit minachting. Uit ontwikkelingsbehoefte. Zodra je intentie toeschrijft, wordt het persoonlijk en verlies je de ruimte tussen trigger en reactie.",
     },
     {
       question: "Wat is het verschil tussen fysiologische en cognitieve regulatie?",
       options: [
         { text: "Fysiologisch werkt via het lichaam (ademhaling, houding) en is snel inzetbaar; cognitief werkt via denken (herevalueren, perspectief nemen) en vereist een functionerende prefrontale cortex", isCorrect: true },
-        { text: "Fysiologische regulatie is voor het lichaam en cognitieve voor de geest — je hebt altijd allebei tegelijk nodig", isCorrect: false },
+        { text: "Fysiologische regulatie is voor het lichaam en cognitieve voor de geest. Je hebt altijd allebei tegelijk nodig", isCorrect: false },
         { text: "Cognitieve regulatie is altijd effectiever omdat je de oorzaak aanpakt in plaats van het symptoom", isCorrect: false },
       ],
-      explanation: "Bij hoge stress is fysiologische regulatie (ademhaling, houding veranderen) je enige optie omdat je denkbrein offline is. Cognitieve strategieen zoals herkaderen zijn krachtig maar werken alleen als je prefrontale cortex actief is. De volgorde is cruciaal: eerst lichaam, dan hoofd.",
+      explanation: "Bij hoge stress is fysiologische regulatie (ademhaling, houding veranderen) je enige optie omdat je denkbrein offline is. Cognitieve strategieën zoals herkaderen zijn krachtig maar werken alleen als je prefrontale cortex actief is. De volgorde is cruciaal: eerst lichaam, dan hoofd.",
     },
   ],
 },
@@ -413,7 +434,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
         {
           emoji: "💪",
           label: "Herstel: 'Dit is wat ik nu doe'",
-          description: "Je kind leert: papa maakt fouten, maar hij komt terug. Dat is veiligheid. Niet perfectie — maar betrouwbaar herstel.",
+          description: "Je kind leert: papa maakt fouten, maar hij komt terug. Dat is veiligheid. Niet perfectie. Maar betrouwbaar herstel.",
         },
       ],
     },
@@ -423,6 +444,13 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
       wrongApproach: "IN SCHAAMTE BLIJVEN:\n\nPapa blijft op de bank. Denkt: 'Morgen is ze het vergeten.'\nOf gaat naar boven met een koekje: 'Hier. Sorry hè.'\n\nSophie leert: als papa boos is, verdwijnt hij. Of: boosheid wordt afgekocht. Geen van beide helpt.",
       rightApproach: "HET RECOVERY-SCRIPT:\n\nPapa wacht tot hij zelf rustig is. Gaat naar Sophie's kamer. Knielt.\n\n'Sophie, ik heb geschreeuwd. Dat was niet oké. Jij deed niks fout waardoor ik zo boos moest worden. Ik was moe en ik reageerde het op jou af. Dat had ik anders moeten doen. Sorry.'\n\nSophie: 'Ik schrok ervan.'\nPapa: 'Dat snap ik. Ik ga mijn best doen om het anders te doen. En als het weer gebeurt, mag je het tegen me zeggen.'\n\nSophie leert: fouten horen erbij. Maar herstellen ook.",
       explanation: "Het recovery-script heeft vier stappen: (1) benoem wat je deed, (2) neem verantwoordelijkheid, (3) erken het effect op je kind, (4) vertel wat je anders gaat doen. Geen excuses, geen 'maar'. Dat is echte kracht.",
+    },
+    {
+      type: "example" as const,
+      situation: "Ties (8) liet per ongeluk verf op het nieuwe tapijt vallen terwijl hij aan een knutselproject werkte. Papa werd woedend, griste het project uit zijn handen en gooide het in de prullenbak. Nu zit Ties stil aan tafel en kijkt naar zijn lege handen.",
+      wrongApproach: "❌ DOEN ALSOF ER NIKS GEBEURD IS:\n\nPapa ruimt de verf op. Zegt niks. Gaat tv kijken.\nBij het eten: 'Ties, wil je aardappels?'\n\nAlsof het niet is gebeurd. Maar Ties zit de hele avond stil. Zijn project is weg. Papa heeft niks gezegd. Ties leert: als papa boos is, doet hij daarna alsof je niet bestaat.",
+      rightApproach: "✅ TERUGGAAN EN HERSTELLEN:\n\nPapa wacht tot de schaamte zakt. Gaat naar Ties.\n\n'Ties, ik heb je knutselwerk weggegooid. Dat was gemeen. Jij maakte iets moois en ik vernielde het omdat ik boos was over het tapijt. Dat had ik niet mogen doen.'\n\nTies: 'Ik vond het een mooi project...'\nPapa: 'Dat was het ook. Zullen we morgen samen een nieuw project maken? En ik leg voortaan plastic neer. Dat is mijn verantwoordelijkheid, niet die van jou.'",
+      explanation: "Papa deed iets concreet fout: hij vernietigde het werk van zijn kind. Herstellen betekent hier niet alleen sorry zeggen maar ook de schade erkennen en actief iets doen om het goed te maken. Ties leert: papa maakt fouten, maar hij komt terug en maakt het recht.",
     },
     {
       type: "text" as const,
@@ -435,25 +463,25 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
       instructions: "Denk aan de laatste keer dat je te hard reageerde. Schrijf nu je recovery-script op: (1) Wat deed ik? (2) Waarom was dat niet oké? (3) Wat was het effect op mijn kind? (4) Wat ga ik anders doen? Lees het hardop voor. Als je kind nog wakker is: overweeg om vanavond nog even langs te gaan.",
       duration: 5,
       tips: [
-        "Je hoeft niet te wachten tot het perfect is — een onvolmaakt sorry is beter dan geen sorry",
+        "Je hoeft niet te wachten tot het perfect is. Een onvolmaakt sorry is beter dan geen sorry",
         "Het gaat niet om de woorden maar om de intentie: je kind voelt of je het meent",
       ],
     },
     {
       type: "reflection" as const,
       questions: [
-        "Hoe ga jij normaal om met het gevoel na een uitbarsting — trek je je terug of ga je naar je kind?",
+        "Hoe ga jij normaal om met het gevoel na een uitbarsting. Trek je je terug of ga je naar je kind?",
         "Wat zou je tegen een vriend zeggen die zichzelf een slechte vader noemt na het schreeuwen?",
       ],
     },
     {
       type: "text" as const,
       heading: "Samenvatting",
-      text: "Het moment na het schreeuwen is belangrijker dan het schreeuwen zelf. Schaamte verlamt, schuld motiveert herstel. Gebruik het recovery-script: benoem, neem verantwoordelijkheid, erken het effect, zeg wat je anders doet. Je kind heeft geen perfecte vader nodig — maar eentje die terugkomt.",
+      text: "Het moment na het schreeuwen is belangrijker dan het schreeuwen zelf. Schaamte verlamt, schuld motiveert herstel. Gebruik het recovery-script: benoem, neem verantwoordelijkheid, erken het effect, zeg wat je anders doet. Je kind heeft geen perfecte vader nodig. Maar eentje die terugkomt.",
     },
   ],
   keyTakeaways: [
-    "Wat je doet na het schreeuwen telt meer dan het feit dat je schreeuwde — herstel is de echte les",
+    "Wat je doet na het schreeuwen telt meer dan het feit dat je schreeuwde. Herstel is de echte les",
     "Schaamte ('ik ben slecht') verlamt; schuld ('dit past niet bij mij') motiveert actie en herstel",
     "Het recovery-script (benoem, verantwoordelijkheid, effect, anders doen) leert je kind dat fouten hersteld worden",
   ],
@@ -462,26 +490,26 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       question: "Na het schreeuwen voel je je schuldig. Je wilt het goedmaken met een cadeautje. Waarom is dat problematisch?",
       options: [
-        { text: "Een cadeau koopt de emotie af zonder het effect te erkennen — je kind leert dat spullen boosheid oplossen", isCorrect: true },
-        { text: "Er is niks mis mee — een klein gebaar laat zien dat je om je kind geeft", isCorrect: false },
+        { text: "Een cadeau koopt de emotie af zonder het effect te erkennen. Je kind leert dat spullen boosheid oplossen", isCorrect: true },
+        { text: "Er is niks mis mee. Een klein gebaar laat zien dat je om je kind geeft", isCorrect: false },
         { text: "Je moet eerst minstens een uur wachten voordat je contact maakt, anders is de emotie nog te rauw", isCorrect: false },
       ],
-      explanation: "Compenseren met cadeaus leert je kind een ongezond patroon: woede wordt afgekocht. Het recovery-script — benoemen, verantwoordelijkheid nemen, effect erkennen — is minder comfortabel maar leert je kind dat fouten hersteld worden door eerlijkheid, niet door spullen.",
+      explanation: "Compenseren met cadeaus leert je kind een ongezond patroon: woede wordt afgekocht. Het recovery-script. Benoemen, verantwoordelijkheid nemen, effect erkennen. Is minder comfortabel maar leert je kind dat fouten hersteld worden door eerlijkheid, niet door spullen.",
     },
     {
       question: "Je hebt geschreeuwd. Je denkt: 'Ik ben een slechte vader.' Wat gebeurt er als je in die gedachte blijft hangen?",
       options: [
-        { text: "Het motiveert je om het beter te doen — schaamte is een krachtige drijfveer voor verandering", isCorrect: false },
+        { text: "Het motiveert je om het beter te doen. Schaamte is een krachtige drijfveer voor verandering", isCorrect: false },
         { text: "Schaamte verlamt: je trekt je terug, vermijdt je kind, en het herstelmoment gaat verloren", isCorrect: true },
-        { text: "Het is een gezonde realiteitscheck — soms moet je accepteren dat je gefaald hebt", isCorrect: false },
+        { text: "Het is een gezonde realiteitscheck. Soms moet je accepteren dat je gefaald hebt", isCorrect: false },
       ],
-      explanation: "Schaamte richt zich op je identiteit ('ik BEN slecht') en maakt je klein. Schuld richt zich op gedrag ('ik DEED iets dat niet past bij mij') en zet je in beweging. Het verschil is niet semantisch — het bepaalt of je naar je kind gaat of op de bank blijft liggen.",
+      explanation: "Schaamte richt zich op je identiteit ('ik BEN slecht') en maakt je klein. Schuld richt zich op gedrag ('ik DEED iets dat niet past bij mij') en zet je in beweging. Het verschil is niet semantisch. Het bepaalt of je naar je kind gaat of op de bank blijft liggen.",
     },
     {
       question: "Sophie zegt na je excuses: 'Het geeft niet, papa.' Wat is de beste reactie?",
       options: [
-        { text: "Doorvragen: 'Weet je het zeker? Je mag best boos zijn.' — druk haar om haar emoties te tonen", isCorrect: false },
-        { text: "Accepteer het en ga verder — als ze zegt dat het oké is, moet je dat respecteren", isCorrect: false },
+        { text: "Doorvragen: 'Weet je het zeker? Je mag best boos zijn.'. Druk haar om haar emoties te tonen", isCorrect: false },
+        { text: "Accepteer het en ga verder. Als ze zegt dat het oké is, moet je dat respecteren", isCorrect: false },
         { text: "Erken haar woorden maar bevestig de impact: 'Lief dat je dat zegt. Maar het was niet oké en ik ga het anders doen.'", isCorrect: true },
       ],
       explanation: "Kinderen zeggen vaak 'het geeft niet' om spanning weg te nemen of om jou te pleasen. Doorvragen legt druk, negeren valideert de minimalisering. De middenweg: haar woorden serieus nemen en tegelijk de impact erkennen zonder er een verhoor van te maken.",
@@ -489,11 +517,11 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       question: "Je gebruikt het recovery-script nu drie keer per week. Is dat een goed teken?",
       options: [
-        { text: "Ja — het laat zien dat je goed bent in herstellen en dat is het belangrijkste", isCorrect: false },
-        { text: "Nee — frequent herstellen is goed, maar het wijst erop dat je pre-trigger strategieen niet werken en je eerder in de keten moet ingrijpen", isCorrect: true },
-        { text: "Nee — als je zo vaak schreeuwt heb je professionele hulp nodig", isCorrect: false },
+        { text: "Ja. Het laat zien dat je goed bent in herstellen en dat is het belangrijkste", isCorrect: false },
+        { text: "Nee. Frequent herstellen is goed, maar het wijst erop dat je pre-trigger strategieën niet werken en je eerder in de keten moet ingrijpen", isCorrect: true },
+        { text: "Nee. Als je zo vaak schreeuwt heb je professionele hulp nodig", isCorrect: false },
       ],
-      explanation: "Het recovery-script is een post-trigger strategie: essentieel maar niet de oplossing. Als je het vaak nodig hebt, is dat een signaal om eerder in te grijpen — bij de tankcheck, de pre-trigger signalen of de fysiologische zucht. Herstel is waardevol, maar voorkomen is beter.",
+      explanation: "Het recovery-script is een post-trigger strategie: essentieel maar niet de oplossing. Als je het vaak nodig hebt, is dat een signaal om eerder in te grijpen. Bij de tankcheck, de pre-trigger signalen of de fysiologische zucht. Herstel is waardevol, maar voorkomen is beter.",
     },
   ],
 },
@@ -513,12 +541,12 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       type: "text" as const,
       heading: "Autopilot is geen vaderschap",
-      text: "De meeste avonden staan op automatisch. Binnenkomen. Eten. Chaos. Bedtijd. Herhalen. Je reageert op wat er komt — maar je kiest niks bewust.\n\nDat is overlevingsmodus. En het is begrijpelijk. Je bent moe. Er is altijd meer te doen dan tijd. Dus schakelt je brein over op automatisch.\n\nMaar hier is het probleem: op autopilot maak je geen herinneringen. Niet voor jou en niet voor je kind. Lucas (8) gaat zich niet herinneren dat je de vaatwasser inruimde. Hij gaat zich herinneren hoe je keek toen hij je iets vertelde.\n\nJe hoeft niet elke avond een superheld te zijn. Je hoeft maar één moment per avond bewust te kiezen. Dat is genoeg om van overleven naar vaderschap te gaan.",
+      text: "De meeste avonden staan op automatisch. Binnenkomen. Eten. Chaos. Bedtijd. Herhalen. Je reageert op wat er komt. Maar je kiest niks bewust.\n\nDat is overlevingsmodus. En het is begrijpelijk. Je bent moe. Er is altijd meer te doen dan tijd. Dus schakelt je brein over op automatisch.\n\nMaar hier is het probleem: op autopilot maak je geen herinneringen. Niet voor jou en niet voor je kind. Lucas (8) gaat zich niet herinneren dat je de vaatwasser inruimde. Hij gaat zich herinneren hoe je keek toen hij je iets vertelde.\n\nJe hoeft niet elke avond een superheld te zijn. Je hoeft maar één moment per avond bewust te kiezen. Dat is genoeg om van overleven naar vaderschap te gaan.",
     },
     {
       type: "text" as const,
       heading: "De wetenschap",
-      text: "Onderzoek naar 'default mode' versus 'intentional mode' laat zien dat ons brein standaard op autopilot staat — efficiënt maar onbewust. Door één bewuste intentie te stellen activeer je de prefrontale cortex en schakel je naar intentional mode. James Clear toont dat identiteitsgebonden gewoontes krachtiger zijn dan doelgebonden: 'ik ben een bewuste vader' werkt beter dan 'ik moet geduldiger zijn'.",
+      text: "Onderzoek naar 'default mode' versus 'intentional mode' laat zien dat ons brein standaard op autopilot staat. Efficiënt maar onbewust. Door één bewuste intentie te stellen activeer je de prefrontale cortex en schakel je naar intentional mode. James Clear toont dat identiteitsgebonden gewoontes krachtiger zijn dan doelgebonden: 'ik ben een bewuste vader' werkt beter dan 'ik moet geduldiger zijn'.",
     },
     {
       type: "diagram" as const,
@@ -532,7 +560,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
         {
           emoji: "🎯",
           label: "Intentionele modus",
-          description: "Eén bewuste keuze per avond. Niet meer. Niet alles hoeft perfect — maar één moment is echt. Dat maakt het verschil.",
+          description: "Eén bewuste keuze per avond. Niet meer. Niet alles hoeft perfect. Maar één moment is echt. Dat maakt het verschil.",
         },
         {
           emoji: "🪪",
@@ -546,7 +574,14 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
       situation: "Het is 17:55. Je rijdt naar huis. Over vijf minuten begin je aan het avondprogramma met Lucas (8) en Noor (5). Je voelt de bekende automatische piloot aankomen.",
       wrongApproach: "OP AUTOPILOT NAAR BINNEN:\n\nPapa komt binnen. Jas uit. 'Wat eten we?' Telefoon op tafel. Koken. 'Lucas, huiswerk!' 'Noor, niet rennen!' Bedtijd. Bank. Herhalen.\n\nNiks fout gegaan. Maar ook niks bijzonders. Morgen dezelfde film. Lucas en Noor herinneren zich: papa was er. Maar niet echt.",
       rightApproach: "EEN INTENTIE STELLEN:\n\nPapa zit in de auto. Denkt: 'Vanavond wil ik één ding bewust doen. Ik ga Lucas in zijn ogen kijken als hij iets vertelt.'\n\nBinnen. Zelfde chaos. Maar als Lucas vertelt over school, legt papa zijn telefoon neer. Kijkt hem aan. Luistert echt. Dertig seconden.\n\nLucas praat door. Stralend. Die dertig seconden worden het moment van de avond.\n\nDe rest? Gewoon overleven. Maar dat ene moment was echt.",
-      explanation: "Je hoeft niet de hele avond bewust te zijn — dat is onmogelijk. Eén intentie, één moment, dertig seconden echt. Dat is het verschil tussen overleven en vaderschap.",
+      explanation: "Je hoeft niet de hele avond bewust te zijn. Dat is onmogelijk. Eén intentie, één moment, dertig seconden echt. Dat is het verschil tussen overleven en vaderschap.",
+    },
+    {
+      type: "example" as const,
+      situation: "Roos (6) zit op de grond met een tekening. Papa loopt langs op weg naar de keuken om de vaatwasser in te ruimen. Roos zegt: 'Papa, kijk!' Papa zegt 'Mooi!' zonder te kijken.",
+      wrongApproach: "❌ AUTOMATISCH REAGEREN ZONDER TE KIJKEN:\n\nRoos: 'Papa, kijk wat ik gemaakt heb!'\nPapa (lopend, telefoon in hand): 'Heel mooi, schat.'\nRoos: 'Je hebt niet eens gekeken!'\nPapa: 'Jawel. Mooie tekening. Ik moet even de keuken doen.'\n\nRoos legt haar tekening weg. Stopt met tekenen. Papa merkt het niet eens. De vaatwasser was belangrijker dan dertig seconden stilstaan.",
+      rightApproach: "✅ HET MOMENT KIEZEN:\n\nRoos: 'Papa, kijk wat ik gemaakt heb!'\nPapa stopt. Denkt: 'Dit is mijn moment.'\nGaat op zijn hurken. Kijkt echt naar de tekening.\n\n'Roos, is dat een paard met vleugels?'\nRoos: 'Ja! Het is een magisch paard dat kan vliegen!'\nPapa: 'Waar vliegt het naartoe?'\n\nDertig seconden. De vaatwasser kan wachten. Roos straalt de hele avond.",
+      explanation: "De vaatwasser is over een uur vergeten. Maar het moment dat papa op zijn hurken ging zitten en echt keek? Dat onthoudt Roos. Bewust vaderschap is niet meer doen. Het is de juiste momenten herkennen en daar even stoppen.",
     },
     {
       type: "text" as const,
@@ -566,7 +601,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       type: "reflection" as const,
       questions: [
-        "Hoeveel van je avonden staan op autopilot? En wat kost dat je — als vader, als mens?",
+        "Hoeveel van je avonden staan op autopilot? En wat kost dat je. Als vader, als mens?",
         "Als je kind over tien jaar terugkijkt, welk moment van gisteren zou het zich herinneren?",
       ],
     },
@@ -577,7 +612,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     },
   ],
   keyTakeaways: [
-    "Overlevingsmodus is efficiënt maar leeg — je bent er wel maar niet echt aanwezig voor je kind",
+    "Overlevingsmodus is efficiënt maar leeg. Je bent er wel maar niet echt aanwezig voor je kind",
     "Eén bewuste intentie per avond is genoeg om van reactief overleven naar bewust vaderschap te gaan",
     "Identiteitsgebonden gewoontes ('ik ben een bewuste vader') zijn krachtiger dan doelen ('ik moet geduldiger zijn')",
   ],
@@ -587,37 +622,37 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
       question: "Je probeert een negatieve gedachte te onderdrukken: 'Ik mag niet boos worden.' Wat gebeurt er volgens de paradox van suppressie?",
       options: [
         { text: "De gedachte verdwijnt na een paar minuten als je volhoudt", isCorrect: false },
-        { text: "De gedachte komt juist vaker en sterker terug — actief onderdrukken werkt averechts", isCorrect: true },
+        { text: "De gedachte komt juist vaker en sterker terug. Actief onderdrukken werkt averechts", isCorrect: true },
         { text: "Het werkt, maar alleen als je tegelijk een alternatieve gedachte formuleert", isCorrect: false },
       ],
-      explanation: "Wegner's 'ironic process theory' laat zien dat actief proberen iets niet te denken een monitorproces activeert dat juist naar die gedachte zoekt. Accepteren dat de boosheid er is ('ik ben boos en dat mag') werkt beter dan onderdrukken. De emotie mag er zijn — het gedrag is je keuze.",
+      explanation: "Wegner's 'ironic process theory' laat zien dat actief proberen iets niet te denken een monitorproces activeert dat juist naar die gedachte zoekt. Accepteren dat de boosheid er is ('ik ben boos en dat mag') werkt beter dan onderdrukken. De emotie mag er zijn. Het gedrag is je keuze.",
     },
     {
       question: "Wat is het verschil tussen een pre-trigger en een post-trigger strategie?",
       options: [
         { text: "Pre-trigger verlaagt de kans op ontregeling (tankcheck, slaap, eten); post-trigger beperkt de schade nadat je al bent ontregeld (recovery-script, herstel)", isCorrect: true },
         { text: "Pre-trigger is voor lichte stress en post-trigger is voor zware stress", isCorrect: false },
-        { text: "Pre-trigger strategieen werken preventief en zijn altijd effectiever dan post-trigger strategieen", isCorrect: false },
+        { text: "Pre-trigger strategieën werken preventief en zijn altijd effectiever dan post-trigger strategieën", isCorrect: false },
       ],
-      explanation: "Pre-trigger strategieen (tankcheck, preventieve regulatie, energiemanagement) verkleinen de kans dat je ontregelt. Post-trigger strategieen (fysiologische zucht, recovery-script) beperken de schade als het toch gebeurt. Je hebt beide nodig — pre-trigger is niet 'beter', het zit eerder in de keten.",
+      explanation: "Pre-trigger strategieën (tankcheck, preventieve regulatie, energiemanagement) verkleinen de kans dat je ontregelt. Post-trigger strategieën (fysiologische zucht, recovery-script) beperken de schade als het toch gebeurt. Je hebt beide nodig. Pre-trigger is niet 'beter', het zit eerder in de keten.",
     },
     {
       question: "Je stelt elke avond een intentie maar het lukt je bijna nooit om die uit te voeren. Wat is de meest waarschijnlijke oorzaak?",
       options: [
-        { text: "Je intentie is te groot of te vaag — 'een betere vader zijn' werkt niet, 'Lucas aankijken als hij praat' wel", isCorrect: true },
-        { text: "Je bent niet gemotiveerd genoeg — je moet het belang van bewust vaderschap dieper voelen", isCorrect: false },
-        { text: "Intenties stellen werkt niet voor jouw persoonlijkheid — probeer een andere methode", isCorrect: false },
+        { text: "Je intentie is te groot of te vaag. 'een betere vader zijn' werkt niet, 'Lucas aankijken als hij praat' wel", isCorrect: true },
+        { text: "Je bent niet gemotiveerd genoeg. Je moet het belang van bewust vaderschap dieper voelen", isCorrect: false },
+        { text: "Intenties stellen werkt niet voor jouw persoonlijkheid. Probeer een andere methode", isCorrect: false },
       ],
       explanation: "Gedragswetenschap laat zien dat vaag geformuleerde intenties zelden tot actie leiden. 'Ik ga bewuster zijn' activeert geen specifiek gedrag. 'Ik leg mijn telefoon neer als Lucas over school vertelt' is concreet, klein en haalbaar. De intentie moet zo specifiek zijn dat je brein precies weet wanneer en hoe.",
     },
     {
       question: "Na een week bewust oefenen merk je dat je vaker ontploft dan voorheen. Hoe kan dat?",
       options: [
-        { text: "Je bewustzijn is verhoogd — je merkt nu uitbarstingen op die je eerder op autopilot niet registreerde", isCorrect: true },
+        { text: "Je bewustzijn is verhoogd. Je merkt nu uitbarstingen op die je eerder op autopilot niet registreerde", isCorrect: true },
         { text: "De oefeningen werken niet en je moet stoppen voordat het erger wordt", isCorrect: false },
         { text: "Je stelt te hoge eisen aan jezelf waardoor de druk om perfect te zijn juist meer stress veroorzaakt", isCorrect: false },
       ],
-      explanation: "Dit is een bekend paradoxaal effect bij bewustwording: je gedrag is waarschijnlijk niet verslechterd, maar je detectiesysteem is verbeterd. Op autopilot registreer je je eigen uitbarstingen nauwelijks. Het gevoel dat het erger wordt is vaak juist een teken van vooruitgang — je ziet nu wat er altijd al was.",
+      explanation: "Dit is een bekend paradoxaal effect bij bewustwording: je gedrag is waarschijnlijk niet verslechterd, maar je detectiesysteem is verbeterd. Op autopilot registreer je je eigen uitbarstingen nauwelijks. Het gevoel dat het erger wordt is vaak juist een teken van vooruitgang. Je ziet nu wat er altijd al was.",
     },
   ],
 },

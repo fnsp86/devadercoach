@@ -347,20 +347,19 @@ export async function deleteStoryComment(commentId: string, storyId?: string) {
   if (error) throw error;
   // Decrement comments_count on the story
   if (storyId) {
-    supabase
-      .from('stories')
-      .select('comments_count')
-      .eq('id', storyId)
-      .single()
-      .then(({ data: story }) => {
-        if (story) {
-          supabase
-            .from('stories')
-            .update({ comments_count: Math.max(0, (story.comments_count ?? 0) - 1) })
-            .eq('id', storyId)
-            .then(() => {});
-        }
-      });
+    try {
+      const { data: story } = await supabase
+        .from('stories')
+        .select('comments_count')
+        .eq('id', storyId)
+        .single();
+      if (story) {
+        await supabase
+          .from('stories')
+          .update({ comments_count: Math.max(0, (story.comments_count ?? 0) - 1) })
+          .eq('id', storyId);
+      }
+    } catch { /* count update is best-effort */ }
   }
 }
 
@@ -394,7 +393,7 @@ export async function getOrCreateConversation(userId: string, otherUserId: strin
     .or(
       `and(participant1_id.eq.${userId},participant2_id.eq.${otherUserId}),and(participant1_id.eq.${otherUserId},participant2_id.eq.${userId})`
     )
-    .single();
+    .maybeSingle();
 
   if (existing) return existing as Conversation;
 
@@ -467,7 +466,8 @@ export async function getGroups(userId?: string) {
 }
 
 export async function joinGroup(groupId: string, userId: string) {
-  await supabase.from('group_members').insert({ group_id: groupId, user_id: userId });
+  const { error } = await supabase.from('group_members').insert({ group_id: groupId, user_id: userId });
+  if (error) throw error;
 }
 
 export async function leaveGroup(groupId: string, userId: string) {
@@ -681,12 +681,13 @@ export async function declineDuel(duelId: string, userId?: string): Promise<void
     .from('arena_duels')
     .select('challenger_id, opponent_id, skill')
     .eq('id', duelId)
-    .single();
+    .maybeSingle();
 
-  await supabase
+  const { error } = await supabase
     .from('arena_duels')
     .update({ status: 'declined' })
     .eq('id', duelId);
+  if (error) throw error;
 
   // Notify challenger via DM (triggers push notification)
   if (duel && userId) {
@@ -720,11 +721,13 @@ export async function reportContent(report: {
   content_id: string;
   reason: string;
 }) {
-  await supabase.from('reports').insert(report);
+  const { error } = await supabase.from('reports').insert(report);
+  if (error) throw error;
 }
 
 export async function blockUser(userId: string, blockedUserId: string) {
-  await supabase.from('blocks').insert({ user_id: userId, blocked_user_id: blockedUserId });
+  const { error } = await supabase.from('blocks').insert({ user_id: userId, blocked_user_id: blockedUserId });
+  if (error) throw error;
 }
 
 export async function unblockUser(userId: string, blockedUserId: string) {

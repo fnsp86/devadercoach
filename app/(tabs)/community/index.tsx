@@ -234,13 +234,14 @@ export default function SocialFeed() {
 
   const loadMyGroups = useCallback(async () => {
     if (!user) return;
-    setGroupsLoading(true);
+    // Only show loading spinner if we have no groups yet (first load)
+    if (myGroups.length === 0) setGroupsLoading(true);
     try {
       const groups = await getGroups(user.id);
       setMyGroups(groups);
     } catch { /* silent */ }
     setGroupsLoading(false);
-  }, [user]);
+  }, [user, myGroups.length]);
 
   // Sorted + filtered stories
   const sortedAndFiltered = useMemo(() => {
@@ -268,15 +269,22 @@ export default function SocialFeed() {
   }, [stories]);
 
   const hasLoadedOnce = useRef(false);
+  const lastFetchTime = useRef(0);
+  const REFETCH_THROTTLE_MS = 60_000; // Only re-fetch every 60s on focus
 
   useFocusEffect(
     useCallback(() => {
+      const now = Date.now();
       if (hasLoadedOnce.current) {
+        // Only re-fetch if enough time has passed since last load
+        if (now - lastFetchTime.current < REFETCH_THROTTLE_MS) return;
+        lastFetchTime.current = now;
         // Already have data — refresh silently in background (no spinner)
         loadStories(undefined, true);
       } else {
         // First load — show spinner
         hasLoadedOnce.current = true;
+        lastFetchTime.current = now;
         loadStories();
       }
       loadNearby();
@@ -287,6 +295,7 @@ export default function SocialFeed() {
 
   const handleRefresh = useCallback(() => {
     setRefreshing(true);
+    lastFetchTime.current = Date.now(); // Reset throttle on manual refresh
     loadStories();
     loadNearby();
     loadChallengeStories();
@@ -1158,6 +1167,6 @@ const styles = StyleSheet.create({
   groupIcon: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
   groupName: { fontSize: 15, fontWeight: '700' },
   groupSub: { fontSize: 13, marginTop: 2 },
-  discoverGroupsBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderWidth: 1, borderRadius: 12, paddingVertical: 14, marginBottom: 16 },
+  discoverGroupsBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderWidth: 1, borderRadius: 12, paddingVertical: 14, marginTop: 12, marginBottom: 16 },
   discoverGroupsBtnText: { fontSize: 14, fontWeight: '700' },
 });

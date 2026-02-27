@@ -94,7 +94,7 @@ export default function GroupChatScreen() {
         }
       });
 
-    pollingRef.current = setInterval(loadMessages, 5000);
+    // Don't start polling unconditionally — only use fallback polling from subscribe() callback
 
     return () => {
       supabase.removeChannel(channel);

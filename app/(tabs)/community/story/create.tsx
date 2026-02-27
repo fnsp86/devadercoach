@@ -31,7 +31,7 @@ export default function CreateStory() {
   const { colors } = useTheme();
   const { user } = useAuth();
   const router = useRouter();
-  const { prefill, prefillCategory, prefillSkill, challengeWeek } = useLocalSearchParams<{ prefill?: string; prefillCategory?: string; prefillSkill?: string; challengeWeek?: string }>();
+  const { prefill, prefillCategory, prefillSkill, challengeWeek, returnTo } = useLocalSearchParams<{ prefill?: string; prefillCategory?: string; prefillSkill?: string; challengeWeek?: string; returnTo?: string }>();
 
   const [content, setContent] = useState(prefill ?? '');
   const [category, setCategory] = useState<Category>((prefillCategory as Category) ?? 'ervaring');
@@ -70,7 +70,7 @@ export default function CreateStory() {
       >
         {/* Header */}
         <View style={[styles.header, { borderColor: colors.border }]}>
-          <Pressable onPress={() => router.back()}>
+          <Pressable onPress={() => returnTo ? router.navigate(returnTo as any) : router.back()}>
             <Text style={[styles.cancelText, { color: colors.text2 }]}>Annuleer</Text>
           </Pressable>
           <Text style={[styles.headerTitle, { color: colors.text }]}>Nieuw verhaal</Text>

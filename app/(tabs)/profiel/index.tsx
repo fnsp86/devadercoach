@@ -24,10 +24,12 @@ import { getLevelFromXP, getProgressToNextLevel, ALL_BADGES } from '@/lib/gamifi
 import { rarityColors, SKILL_COLORS } from '@/lib/colors';
 import { DOEL_SKILL_MAP } from '@/lib/task-selector';
 import type { Skill } from '@/lib/types';
+import { scheduleDailyQuoteNotifications, cancelDailyQuoteNotifications, scheduleTaskReminderNotifications, cancelTaskReminderNotifications } from '@/lib/notifications';
 
 const NOTIFICATIONS_KEY = 'vc-notifications';
 
 interface NotificationSettings {
+  dagelijksQuote: boolean;
   taakReminder: boolean;
   pulseReminder: boolean;
   lerenReminder: boolean;
@@ -37,6 +39,7 @@ interface NotificationSettings {
 }
 
 const DEFAULT_NOTIFICATIONS: NotificationSettings = {
+  dagelijksQuote: true,
   taakReminder: true,
   pulseReminder: true,
   lerenReminder: true,
@@ -115,6 +118,44 @@ export default function ProfielScreen() {
     setNotifications((prev) => {
       const updated = { ...prev, [key]: value };
       AsyncStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(updated)).catch(() => {});
+
+      // Schedule/cancel quote notifications
+      if (key === 'dagelijksQuote') {
+        if (value) {
+          scheduleDailyQuoteNotifications().catch(() => {});
+        } else {
+          cancelDailyQuoteNotifications().catch(() => {});
+        }
+      }
+
+      // Schedule/cancel task reminder notifications
+      if (key === 'taakReminder') {
+        if (value) {
+          // Calculate incomplete tasks and schedule
+          (async () => {
+            try {
+              const cacheStr = await AsyncStorage.getItem('vc-week-tasks-cache');
+              const completionsStr = await AsyncStorage.getItem('vc-week-task-completions');
+              if (cacheStr) {
+                const cache = JSON.parse(cacheStr);
+                const completions = completionsStr ? JSON.parse(completionsStr) : [];
+                const completedIds = new Set(
+                  completions
+                    .filter((c: any) => c.weekKey === cache.weekKey)
+                    .map((c: any) => c.taskId),
+                );
+                const incomplete = (cache.taskIds as string[]).filter((id: string) => !completedIds.has(id)).length;
+                if (incomplete > 0) {
+                  await scheduleTaskReminderNotifications(incomplete);
+                }
+              }
+            } catch {}
+          })();
+        } else {
+          cancelTaskReminderNotifications().catch(() => {});
+        }
+      }
+
       return updated;
     });
   }, []);
@@ -197,8 +238,8 @@ export default function ProfielScreen() {
             {totalXP - currentLevel.minXP} / {currentLevel.maxXP - currentLevel.minXP} XP naar Lv.{currentLevel.level + 1}
           </Text>
 
-          {/* Stats row */}
-          <View style={styles.statsRow}>
+          {/* Stats grid 2×2 */}
+          <View style={styles.statsGrid}>
             <Pressable
               style={[styles.statBox, { backgroundColor: colors.surface2 }]}
               onPress={() => router.push('/(tabs)/profiel/taken' as any)}
@@ -206,6 +247,14 @@ export default function ProfielScreen() {
               <InlineIcon name="checkCircle" size={20} color={colors.amber} />
               <Text style={[styles.statValue, { color: colors.text }]}>{taskCompletions.length}</Text>
               <Text style={[styles.statLabel, { color: colors.text3 }]}>Taken</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.statBox, { backgroundColor: colors.surface2 }]}
+              onPress={() => router.push('/(tabs)/profiel/pulse' as any)}
+            >
+              <InlineIcon name="compass" size={20} color="#22C55E" />
+              <Text style={[styles.statValue, { color: colors.text }]}>{pulseCheckIns.length}</Text>
+              <Text style={[styles.statLabel, { color: colors.text3 }]}>Pulse</Text>
             </Pressable>
             <Pressable
               style={[styles.statBox, { backgroundColor: colors.surface2 }]}
@@ -301,6 +350,26 @@ export default function ProfielScreen() {
           </View>
           <Text style={[styles.emptyText, { color: colors.text3 }]}>
             Schrijf je wins en reflecties op. +5 XP per entry.
+          </Text>
+        </Card>
+
+        {/* Vader Pulse */}
+        <Card style={{ marginTop: 16 }}>
+          <View style={styles.cardHeaderRow}>
+            <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 0 }]}>Vader Pulse</Text>
+            <Pressable
+              onPress={() => router.push('/(tabs)/profiel/pulse' as any)}
+              style={[styles.manageButton, { backgroundColor: colors.amberDim }]}
+            >
+              <Text style={[styles.manageButtonText, { color: colors.amber }]}>
+                {pulseCheckIns.length > 0 ? `Alle ${pulseCheckIns.length} →` : 'Bekijk →'}
+              </Text>
+            </Pressable>
+          </View>
+          <Text style={[styles.emptyText, { color: colors.text3 }]}>
+            {pulseCheckIns.length > 0
+              ? 'Bekijk je dagelijkse check-ins en inzichten.'
+              : 'Je hebt nog geen Vader Pulse check-ins gedaan.'}
           </Text>
         </Card>
 
@@ -407,6 +476,13 @@ export default function ProfielScreen() {
             Ontvang meldingen als je de app niet gebruikt, zodat je op koers blijft.
           </Text>
 
+          <Toggle
+            label="Dagelijkse wijsheid"
+            description="Elke ochtend om 08:00 een inspirerende vader-quote"
+            value={notifications.dagelijksQuote}
+            onToggle={(val) => updateNotification('dagelijksQuote', val)}
+          />
+          <View style={[styles.divider, { backgroundColor: colors.border }]} />
           <Toggle
             label="Taak herinnering"
             description="Herinnering als je deze week nog geen taak hebt gedaan"
@@ -611,14 +687,15 @@ const styles = StyleSheet.create({
   xpBarFill: { height: '100%', borderRadius: 4 },
   xpBarLabel: { fontSize: 12, fontWeight: '500', marginBottom: 16 },
 
-  // Stats row
-  statsRow: { flexDirection: 'row', gap: 10 },
+  // Stats grid 2×2
+  statsGrid: { flexDirection: 'row' as const, flexWrap: 'wrap' as const, gap: 10 },
   statBox: {
-    flex: 1,
     borderRadius: 12,
     padding: 12,
-    alignItems: 'center',
+    alignItems: 'center' as const,
     gap: 4,
+    flexGrow: 1,
+    flexBasis: '45%' as any,
   },
   statValue: { fontSize: 22, fontWeight: '800' },
   statLabel: { fontSize: 12, fontWeight: '600' },
@@ -675,6 +752,7 @@ const styles = StyleSheet.create({
   doelSkills: { flexDirection: 'row' as const, gap: 4 },
   doelSkillChip: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 5 },
   doelSkillText: { fontSize: 10, fontWeight: '700' as const },
+
 
   dangerDescription: { fontSize: 14, lineHeight: 20, marginBottom: 16, marginTop: -4 },
   dangerButtonContainer: { alignSelf: 'flex-start' as const },

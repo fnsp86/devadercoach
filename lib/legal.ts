@@ -47,7 +47,11 @@ Locatiegegevens worden uitsluitend gebruikt om vaders in de buurt te tonen. Je k
 • Directe berichten aan andere gebruikers
 • Reacties op verhalen
 
-2.6 Technische gegevens
+2.6 Push-notificatiegegevens
+• Push-token (apparaatgebonden token voor het verzenden van meldingen)
+Push-tokens worden alleen opgeslagen als je toestemming geeft voor notificaties. Ze worden gebruikt om je dagelijkse herinneringen, community-berichten en andere meldingen te sturen.
+
+2.7 Technische gegevens
 • Apparaattype en besturingssysteem
 • App-versie
 • Foutmeldingen (crash logs)
@@ -62,6 +66,7 @@ Locatiegegevens worden uitsluitend gebruikt om vaders in de buurt te tonen. Je k
 | Locatiegegevens | Vaders in de buurt tonen | Toestemming |
 | Gebruiksgegevens (XP, taken) | App-functionaliteit, voortgang bijhouden | Uitvoering overeenkomst |
 | Verhalen, berichten | Community-functies mogelijk maken | Uitvoering overeenkomst |
+| Push-token | Notificaties verzenden (herinneringen, berichten, dagelijkse quotes) | Toestemming |
 | Technische gegevens | App verbeteren, fouten oplossen | Gerechtvaardigd belang |
 | E-mailadres | Nieuwsbrieven, updates en aanbiedingen van De Vadercoach | Gerechtvaardigd belang (soft opt-in) |
 
@@ -70,7 +75,7 @@ Locatiegegevens worden uitsluitend gebruikt om vaders in de buurt te tonen. Je k
 Wij delen jouw gegevens alleen met de volgende partijen, uitsluitend voor zover noodzakelijk:
 
 • Supabase Inc. — Database en authenticatie (hosting in de EU, Frankfurt). Verwerkersovereenkomst is afgesloten.
-• Expo / React Native — App-framework (geen persoonsgegevens gedeeld)
+• Expo (Expo Application Services) — App-framework en push-notificatieservice. Push-tokens worden via Expo's servers verzonden naar Apple (APNs) en Google (FCM) om notificaties af te leveren. Expo verwerkt hierbij het push-token en de notificatie-inhoud.
 • Apple / Google — App-distributie via App Store en Google Play
 
 Wij verkopen jouw gegevens NOOIT aan derden. Wij gebruiken geen advertentienetwerken of tracking voor marketingdoeleinden.
@@ -89,6 +94,7 @@ Onze primaire database wordt gehost in de EU (Frankfurt, Duitsland) via Supabase
 | Gebruiksgegevens | Tot je account verwijdert |
 | Verhalen/berichten | Tot je ze verwijdert of je account verwijdert |
 | Directe berichten | Tot je account verwijdert |
+| Push-tokens | Tot je notificaties uitschakelt of je account verwijdert |
 | Technische logs | Maximaal 90 dagen |
 
 Na verwijdering van je account worden alle gegevens binnen 30 dagen definitief gewist, inclusief back-ups.
@@ -180,6 +186,7 @@ Door het aanmaken van een account of het gebruiken van De Vadercoach app ga je a
 • Een sociale community waar vaders tips, ervaringen en vragen kunnen delen
 • Directe berichten tussen gebruikers
 • Locatie-gebaseerde ontdekking van andere vaders in de buurt (optioneel)
+• Push-notificaties met dagelijkse wijsheden, herinneringen en community-meldingen (optioneel, in te stellen via je profiel)
 
 3.2 BELANGRIJK: De Vadercoach biedt algemene opvoedinformatie en -coaching. De App is GEEN vervanging voor professioneel advies van een pedagoog, psycholoog, arts of andere zorgprofessional. Bij zorgen over de ontwikkeling of het welzijn van je kind, raadpleeg altijd een professional.
 

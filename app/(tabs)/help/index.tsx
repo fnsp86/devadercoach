@@ -80,7 +80,7 @@ function getThemeLabel(situation: HelpSituation): string | null {
 export default function HelpPage() {
   const { colors } = useTheme();
   const router = useRouter();
-  const { profile, helpFavorites, isHelpFavorite, helpHistory } = useStore();
+  const { profile, helpFavorites, isHelpFavorite, helpHistory, removeHelpHistory } = useStore();
 
   const [selectedAge, setSelectedAge] = useState<HelpAgeGroup>('4-7');
   const [searchQuery, setSearchQuery] = useState('');
@@ -254,6 +254,13 @@ export default function HelpPage() {
         onPress={() => router.push(`/(tabs)/help/${situation.id}`)}
         style={[styles.miniCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
       >
+        <Pressable
+          onPress={(e) => { e.stopPropagation(); removeHelpHistory(situation.id); }}
+          style={styles.miniDeleteBtn}
+          hitSlop={6}
+        >
+          <InlineIcon name="x" size={12} color={colors.text3} />
+        </Pressable>
         <View style={[styles.miniIconWrap, { backgroundColor: skillColor + '14' }]}>
           <AppIcon name={emojiToIcon(situation.icon)} size="sm" variant="compact" color={skillColor} />
         </View>
@@ -639,6 +646,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  miniDeleteBtn: {
+    position: 'absolute' as const,
+    top: 6,
+    right: 6,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+    zIndex: 1,
   },
   miniTitle: { fontSize: 12, fontWeight: '600', lineHeight: 16 },
 

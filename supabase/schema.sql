@@ -335,9 +335,19 @@ CREATE POLICY "Story images are publicly readable"
 CREATE OR REPLACE FUNCTION delete_own_account()
 RETURNS void AS $$
 BEGIN
-  -- Delete storage objects
+  -- Delete all social content explicitly
+  DELETE FROM group_messages WHERE sender_id = auth.uid();
+  DELETE FROM group_members WHERE user_id = auth.uid();
+  DELETE FROM messages WHERE sender_id = auth.uid();
+  DELETE FROM conversations WHERE participant1_id = auth.uid() OR participant2_id = auth.uid();
+  DELETE FROM story_likes WHERE user_id = auth.uid();
+  DELETE FROM story_comments WHERE author_id = auth.uid();
+  DELETE FROM stories WHERE author_id = auth.uid();
+  DELETE FROM reports WHERE reporter_id = auth.uid();
+  DELETE FROM blocks WHERE user_id = auth.uid() OR blocked_user_id = auth.uid();
+  -- Delete storage objects (avatars, story images)
   DELETE FROM storage.objects WHERE owner = auth.uid();
-  -- Delete profile (cascades to stories, comments, etc.)
+  -- Delete profile
   DELETE FROM profiles WHERE user_id = auth.uid();
   -- Delete auth user
   DELETE FROM auth.users WHERE id = auth.uid();

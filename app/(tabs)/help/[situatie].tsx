@@ -296,8 +296,9 @@ export default function HelpDetailPage() {
         <Pressable
           onPress={() => {
             const prefillText = `Hoe gaan jullie om met: "${situation.situatie}"?\n\nIk las net de tips in de app en vroeg me af hoe andere vaders dit aanpakken.`;
+            const returnTo = `/(tabs)/help/${situation.id}`;
             router.push(
-              `/(tabs)/community/story/create?prefill=${encodeURIComponent(prefillText)}&prefillCategory=vraag`
+              `/(tabs)/community/story/create?prefill=${encodeURIComponent(prefillText)}&prefillCategory=vraag&returnTo=${encodeURIComponent(returnTo)}`
             );
           }}
           style={[styles.shareBtn, {

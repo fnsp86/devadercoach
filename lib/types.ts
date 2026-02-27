@@ -385,7 +385,17 @@ export type StageType =
   | "quiz"
   | "video"
   | "mission"
-  | "reflection";
+  | "reflection"
+  // Ontdekkaarten types
+  | "herken"
+  | "inzicht"
+  | "wist_je_dat"
+  | "diagram"
+  | "keuze"
+  | "strategie"
+  | "uitdaging"
+  | "spiegel"
+  | "samenvatting";
 
 export interface InsightCard {
   title: string;
@@ -436,6 +446,19 @@ export interface Stage {
   reflectionQuestion?: string;
   allQuestions?: string[];
   summaryCard?: { title: string; body: string };
+  // ontdekkaarten
+  herkenText?: string;
+  factText?: string;
+  factSource?: string;
+  facts?: { text: string; source?: string }[];
+  strategieTitle?: string;
+  strategieText?: string;
+  takeaways?: string[];
+  readMoreText?: string;
+  diagramIntro?: string;
+  diagramItems?: { emoji: string; label: string; description: string }[];
+  spiegelContext?: string;
+  researchRef?: string;
 }
 
 export interface ModuleStages {

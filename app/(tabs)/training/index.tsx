@@ -110,6 +110,42 @@ export default function TrainingOverview() {
           </View>
         </LinearGradient>
 
+        {/* ── "Ga verder" card for in-progress quiz ── */}
+        {(() => {
+          const inProgress = skillData.find(
+            (s) => s.completedCount > 0 && s.completedCount < s.totalItems && s.hasTraining,
+          );
+          if (!inProgress) return null;
+          const ipColor = SKILL_COLORS[inProgress.label] || colors.amber;
+          const ipPct = Math.round((inProgress.completedCount / inProgress.totalItems) * 100);
+          return (
+            <Pressable
+              onPress={() => handleNavigate(inProgress.label)}
+              style={[styles.continueCard, { backgroundColor: colors.surface, borderColor: ipColor + '60' }]}
+            >
+              <View style={styles.continueTop}>
+                <View style={[styles.continueBadge, { backgroundColor: ipColor + '18' }]}>
+                  <InlineIcon name="play" size={14} color={ipColor} />
+                  <Text style={[styles.continueBadgeText, { color: ipColor }]}>Ga verder</Text>
+                </View>
+                <Text style={[styles.continueProgress, { color: colors.text3 }]}>
+                  {inProgress.completedCount}/{inProgress.totalItems} vragen
+                </Text>
+              </View>
+              <Text style={[styles.continueTitle, { color: colors.text }]} numberOfLines={1}>
+                {inProgress.label}
+              </Text>
+              <View style={[styles.continueBarTrack, { backgroundColor: colors.surface2 }]}>
+                <View style={[styles.continueBarFill, { width: `${ipPct}%`, backgroundColor: ipColor }]} />
+              </View>
+              <View style={[styles.continueButton, { backgroundColor: ipColor }]}>
+                <Text style={styles.continueButtonText}>Hervat</Text>
+                <InlineIcon name="arrowRight" size={16} color="#FFFFFF" />
+              </View>
+            </Pressable>
+          );
+        })()}
+
         {/* ── Skill Grid ── */}
         <View style={styles.grid}>
           {skillData.map((skill) => {
@@ -325,6 +361,65 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
+  // Continue card
+  continueCard: {
+    marginHorizontal: 20,
+    marginBottom: 16,
+    borderRadius: 16,
+    borderWidth: 2,
+    padding: 16,
+  },
+  continueTop: {
+    flexDirection: 'row' as const,
+    justifyContent: 'space-between' as const,
+    alignItems: 'center' as const,
+    marginBottom: 8,
+  },
+  continueBadge: {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  continueBadgeText: {
+    fontSize: 13,
+    fontWeight: '700' as const,
+  },
+  continueProgress: {
+    fontSize: 13,
+    fontWeight: '600' as const,
+  },
+  continueTitle: {
+    fontSize: 18,
+    fontWeight: '700' as const,
+    marginBottom: 10,
+  },
+  continueBarTrack: {
+    height: 6,
+    borderRadius: 3,
+    overflow: 'hidden' as const,
+    marginBottom: 14,
+  },
+  continueBarFill: {
+    height: '100%' as const,
+    borderRadius: 3,
+  },
+  continueButton: {
+    flexDirection: 'row' as const,
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const,
+    gap: 6,
+    paddingVertical: 12,
+    borderRadius: 12,
+  },
+  continueButtonText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '700' as const,
+  },
+
   bottomSpacer: {
     height: 20,
   },
