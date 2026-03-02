@@ -319,14 +319,27 @@ export function transformModuleToStages(mod: LearningModule): ModuleStages {
 
 // ── Ontdekkaarten transformatie ──────────────────────────────────────────────
 
-/** Split tekst in zinnen, groepeer in blokken van ~3-5 zinnen */
-function splitIntoChunks(text: string, maxSentences: number = 4): string[] {
-  const sentences = text.match(/[^.!?]+[.!?]+/g) ?? [text];
+/** Split tekst in stukken, respecteer alinea-grenzen zodat verhalen niet midden in een zin worden geknipt */
+function splitIntoChunks(text: string, _maxSentences: number = 4): string[] {
+  // Splits eerst op alinea's (dubbele newline)
+  const paragraphs = text.split(/\n\n+/).map((p) => p.trim()).filter((p) => p.length > 0);
+
+  // Als de tekst kort genoeg is (1-2 alinea's), houd het bij elkaar
+  if (paragraphs.length <= 2) return [text.trim()];
+
+  // Groepeer alinea's in chunks die niet te lang zijn (~800 tekens per chunk)
   const chunks: string[] = [];
-  for (let i = 0; i < sentences.length; i += maxSentences) {
-    const chunk = sentences.slice(i, i + maxSentences).join(' ').trim();
-    if (chunk.length > 20) chunks.push(chunk);
+  let current = '';
+  for (const para of paragraphs) {
+    if (current && (current.length + para.length) > 800) {
+      chunks.push(current.trim());
+      current = para;
+    } else {
+      current = current ? `${current}\n\n${para}` : para;
+    }
   }
+  if (current.trim().length > 20) chunks.push(current.trim());
+
   return chunks;
 }
 
@@ -554,7 +567,9 @@ export function transformModuleToDiscoveryCards(mod: LearningModule): ModuleStag
   }
 
   // ── 9. Extra INZICHT na keuze — waarom de goede aanpak werkt ──
-  if (example?.explanation && example.explanation.length > 40) {
+  // Gebruik de uitleg van het keuze-voorbeeld (niet example[0]) zodat namen kloppen
+  const keuzeExplanation = keuzeExample?.explanation ?? example?.explanation;
+  if (keuzeExplanation && keuzeExplanation.length > 40) {
     stages.push({
       id: stageId('inzicht'),
       type: 'inzicht',
@@ -562,8 +577,8 @@ export function transformModuleToDiscoveryCards(mod: LearningModule): ModuleStag
       stageLabel: 'WAAROM DIT WERKT',
       cards: [{
         title: 'Waarom dit werkt',
-        body: example.explanation,
-        highlight: extractHighlight(example.explanation),
+        body: keuzeExplanation,
+        highlight: extractHighlight(keuzeExplanation),
       }],
     });
   }
