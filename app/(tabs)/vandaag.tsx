@@ -1496,6 +1496,7 @@ export default function WeekScreen() {
                     </Pressable>
                     {isExpanded && (
                       <View style={[s.reflExpanded, { backgroundColor: colors.surface2 }]}>
+                        <Text style={{ fontSize: 15, lineHeight: 22, fontWeight: '600', color: colors.text }}>{r.question}</Text>
                         <View style={s.reflMeta}>
                           <View style={[s.reflSkillBadge, { backgroundColor: '#A78BFA22' }]}>
                             <Text style={[s.reflSkillText, { color: '#A78BFA' }]}>{r.skill}</Text>
