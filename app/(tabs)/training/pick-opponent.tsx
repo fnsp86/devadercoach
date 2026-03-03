@@ -14,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
+import { useStore } from '@/lib/store';
 import {
   getNearbyFathers,
   searchFathersByCity,
@@ -32,6 +33,11 @@ export default function PickOpponentScreen() {
   const { colors } = useTheme();
   const { user, communityProfile } = useAuth();
   const router = useRouter();
+  const { weekTaskCompletions } = useStore();
+
+  // Lock if community not yet unlocked
+  const totalTasksDone = weekTaskCompletions.filter((c) => !/^refl_\d{4}-/.test(c.taskId)).length;
+  const socialUnlocked = totalTasksDone > 3;
 
   const [results, setResults] = useState<FatherResult[]>([]);
   const [loading, setLoading] = useState(false);
@@ -181,6 +187,12 @@ export default function PickOpponentScreen() {
         </View>
       </View>
     );
+  }
+
+  if (!socialUnlocked) {
+    // Redirect to duels screen which shows the lock UI
+    router.navigate('/(tabs)/training/duels');
+    return null;
   }
 
   return (

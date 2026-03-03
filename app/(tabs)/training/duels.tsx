@@ -15,6 +15,7 @@ import { useRouter, useFocusEffect } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
+import { useStore } from '@/lib/store';
 import { InlineIcon } from '@/lib/icons';
 import { SKILL_COLORS } from '@/lib/colors';
 import { calculateDuelXP } from '@/lib/duel-arena';
@@ -32,6 +33,11 @@ export default function DuelsScreen() {
   const { colors } = useTheme();
   const router = useRouter();
   const { user } = useAuth();
+  const { weekTaskCompletions } = useStore();
+
+  // Lock duels until community is unlocked (same logic as community/index.tsx)
+  const totalTasksDone = weekTaskCompletions.filter((c) => !/^refl_\d{4}-/.test(c.taskId)).length;
+  const socialUnlocked = totalTasksDone > 3;
 
   const [pendingDuels, setPendingDuels] = useState<ArenaDuel[]>([]);
   const [history, setHistory] = useState<ArenaDuel[]>([]);
@@ -447,6 +453,41 @@ export default function DuelsScreen() {
   }
 
   // ── Main Render ──
+
+  if (!socialUnlocked) {
+    const progress = Math.min(totalTasksDone, 3);
+    return (
+      <SafeAreaView style={[s.safe, { backgroundColor: colors.bg }]}>
+        <View style={[s.header, { borderBottomColor: colors.border }]}>
+          <Pressable onPress={() => router.navigate('/(tabs)/leren')} style={s.headerBtn}>
+            <InlineIcon name="arrowLeft" size={22} color={colors.text} />
+          </Pressable>
+          <Text style={[s.headerTitle, { color: colors.text }]}>Skill Duels</Text>
+          <View style={s.headerBtn} />
+        </View>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 }}>
+          <View style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: colors.amberDim, alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
+            <InlineIcon name="lock" size={36} color={colors.amber} />
+          </View>
+          <Text style={{ fontSize: 22, fontWeight: '800', color: colors.text, textAlign: 'center', marginBottom: 8 }}>
+            Duels ontgrendelen
+          </Text>
+          <Text style={{ fontSize: 15, color: colors.text2, textAlign: 'center', lineHeight: 22, marginBottom: 24 }}>
+            Rond je eerste week af om skill duels te spelen. Vanaf week 2 kun je andere vaders uitdagen!
+          </Text>
+          <View style={{ backgroundColor: colors.surface, borderRadius: 14, padding: 16, width: '100%', borderWidth: 1, borderColor: colors.border }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Text style={{ fontSize: 14, fontWeight: '600', color: colors.text }}>Week 1 taken</Text>
+              <Text style={{ fontSize: 14, fontWeight: '800', color: colors.amber }}>{progress}/3</Text>
+            </View>
+            <View style={{ height: 8, borderRadius: 4, backgroundColor: colors.border, marginTop: 10, overflow: 'hidden' }}>
+              <View style={{ height: '100%', width: `${(progress / 3) * 100}%`, backgroundColor: colors.amber, borderRadius: 4 }} />
+            </View>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={[s.safe, { backgroundColor: colors.bg }]}>

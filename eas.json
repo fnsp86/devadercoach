@@ -24,12 +24,9 @@
   "submit": {
     "production": {
       "ios": {
-        "appleId": "",
-        "ascAppId": "",
-        "appleTeamId": ""
-      },
-      "android": {
-        "serviceAccountKeyPath": ""
+        "appleId": "drijfzand8629@icloud.com",
+        "appleTeamId": "S44992LZLP",
+        "ascAppId": ""
       }
     }
   }

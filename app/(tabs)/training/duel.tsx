@@ -43,6 +43,13 @@ export default function DuelScreen() {
   const { duelId, skill, seed, opponentName } = params;
   const skillColor = SKILL_COLORS[skill ?? ''] || colors.amber;
 
+  // Lock if community not yet unlocked
+  const totalTasksDone = store.weekTaskCompletions.filter((c) => !/^refl_\d{4}-/.test(c.taskId)).length;
+  const socialUnlocked = totalTasksDone > 3;
+  useEffect(() => {
+    if (!socialUnlocked) router.navigate('/(tabs)/training/duels');
+  }, [socialUnlocked]);
+
   // Generate questions deterministically from the seed
   const questions = React.useMemo<TrainingItem[]>(() => {
     if (!skill || !seed) return [];
