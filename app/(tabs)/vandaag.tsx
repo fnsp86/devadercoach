@@ -940,6 +940,7 @@ export default function WeekScreen() {
   const [toast, setToast] = useState<ToastInfo | null>(null);
   const [gamificationEvent, setGamificationEvent] = useState<GamificationEvent | null>(null);
   const [expandedReflection, setExpandedReflection] = useState<string | null>(null);
+  const [reflectionNotes, setReflectionNotes] = useState<Record<string, string>>({});
   const [sharePrompt, setSharePrompt] = useState<{ task: InteractiveTask; outcome: CompletionStatus; note?: string } | null>(null);
   const [shareText, setShareText] = useState('');
   const [sharePosting, setSharePosting] = useState(false);
@@ -1131,7 +1132,8 @@ export default function WeekScreen() {
   const handleReflectionComplete = useCallback((r: WeeklyReflection) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const xp = Math.round(r.xpReward * combo.multiplier);
-    completeWeekTask(r.id, weekKey, xp);
+    const note = reflectionNotes[r.id];
+    completeWeekTask(r.id, weekKey, xp, note);
     recordActiveDay();
     setToast({
       title: 'Reflectie afgerond!',
@@ -1500,18 +1502,51 @@ export default function WeekScreen() {
                           </View>
                           <Text style={[s.reflSource, { color: colors.text3 }]}>{r.sourceModuleTitle}</Text>
                         </View>
-                        {!done && (
-                          <Pressable
-                            onPress={() => handleReflectionComplete(r)}
-                            style={[s.reflDoneBtn, { backgroundColor: '#A78BFA' }]}
-                          >
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'center' }}>
-                              <Text style={s.reflDoneBtnText}>Afgerond</Text>
-                              <InlineIcon name="check" size={14} color="#fff" />
-                              <Text style={s.reflDoneBtnText}> +{r.xpReward} XP</Text>
+                        {!done ? (
+                          <>
+                            <TextInput
+                              style={{
+                                minHeight: 80,
+                                borderRadius: 12,
+                                borderWidth: 1,
+                                borderColor: colors.border,
+                                backgroundColor: colors.surface,
+                                color: colors.text,
+                                fontSize: 14,
+                                lineHeight: 20,
+                                padding: 12,
+                                marginBottom: 8,
+                              }}
+                              placeholder="Schrijf hier je gedachten... (optioneel)"
+                              placeholderTextColor={colors.text3}
+                              multiline
+                              textAlignVertical="top"
+                              value={reflectionNotes[r.id] || ''}
+                              onChangeText={(text) => setReflectionNotes((prev) => ({ ...prev, [r.id]: text }))}
+                            />
+                            <Pressable
+                              onPress={() => handleReflectionComplete(r)}
+                              style={[s.reflDoneBtn, { backgroundColor: '#A78BFA' }]}
+                            >
+                              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'center' }}>
+                                <Text style={s.reflDoneBtnText}>Afgerond</Text>
+                                <InlineIcon name="check" size={14} color="#fff" />
+                                <Text style={s.reflDoneBtnText}> +{r.xpReward} XP</Text>
+                              </View>
+                            </Pressable>
+                          </>
+                        ) : (() => {
+                          const savedNote = weekTaskCompletions.find((c) => c.taskId === r.id && c.weekKey === weekKey)?.note;
+                          return savedNote ? (
+                            <View style={{ gap: 4 }}>
+                              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+                                <InlineIcon name="penLine" size={13} color={colors.amber} />
+                                <Text style={{ fontSize: 11, fontWeight: '700', color: colors.amber, textTransform: 'uppercase', letterSpacing: 0.5 }}>Jouw notitie</Text>
+                              </View>
+                              <Text style={{ fontSize: 14, lineHeight: 20, color: colors.text }}>{savedNote}</Text>
                             </View>
-                          </Pressable>
-                        )}
+                          ) : null;
+                        })()}
                       </View>
                     )}
                   </View>

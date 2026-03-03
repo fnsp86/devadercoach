@@ -48,6 +48,7 @@ interface WeeklyReflectionItem {
   sourceModuleTitle: string;
   completedAt: string;
   weekKey: string;
+  note?: string;
 }
 
 type Tab = 'modules' | 'weekly';
@@ -160,6 +161,12 @@ function WeeklyCard({ item, expanded, onToggle }: {
             <View style={[st.skillPill, { backgroundColor: skillColor + '18' }]}>
               <Text style={[st.skillPillText, { color: skillColor }]}>{item.skill}</Text>
             </View>
+            {item.note ? (
+              <View style={[st.skillPill, { backgroundColor: colors.amber + '18' }]}>
+                <InlineIcon name="penLine" size={10} color={colors.amber} />
+                <Text style={[st.skillPillText, { color: colors.amber }]}>Notitie</Text>
+              </View>
+            ) : null}
             <View style={[st.skillPill, { backgroundColor: '#22C55E18' }]}>
               <InlineIcon name="checkCircle" size={10} color="#22C55E" />
               <Text style={[st.skillPillText, { color: '#22C55E' }]}>Afgerond</Text>
@@ -184,6 +191,23 @@ function WeeklyCard({ item, expanded, onToggle }: {
             <InlineIcon name="brain" size={16} color="#A78BFA" />
             <Text style={[st.questionText, { color: colors.text }]}>{item.question}</Text>
           </View>
+
+          {item.note ? (
+            <View style={st.expandedSection}>
+              <View style={st.labelRow}>
+                <InlineIcon name="penLine" size={13} color={colors.amber} />
+                <Text style={[st.expandedLabel, { color: colors.amber }]}>JOUW NOTITIE</Text>
+              </View>
+              <Text style={[st.noteText, { color: colors.text }]}>{item.note}</Text>
+            </View>
+          ) : (
+            <View style={[st.noNoteBox, { backgroundColor: colors.surface2 }]}>
+              <InlineIcon name="penLine" size={16} color={colors.text3} />
+              <Text style={[st.noNoteBoxText, { color: colors.text3 }]}>
+                Geen notitie geschreven - je hebt er wel over nagedacht!
+              </Text>
+            </View>
+          )}
 
           <View style={[st.infoBox, { backgroundColor: colors.surface2 }]}>
             <InlineIcon name="lightbulb" size={15} color={colors.amber} />
@@ -299,6 +323,7 @@ export default function ReflectiesScreen() {
             sourceModuleTitle: q.sourceModuleTitle,
             completedAt: c.completedAt,
             weekKey,
+            note: c.note,
           });
         }
       }

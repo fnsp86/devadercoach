@@ -125,6 +125,7 @@ export interface WeekTaskCompletion {
   weekKey: string;   // YYYY-MM-DD van de maandag van die week
   completedAt: string; // ISO timestamp
   points: number;
+  note?: string;     // optionele reflectienotitie
 }
 
 // -- Store context ----------------------------------------------------------
@@ -142,7 +143,7 @@ interface StoreState {
 
   // Weektaken
   weekTaskCompletions: WeekTaskCompletion[];
-  completeWeekTask: (taskId: string, weekKey: string, points: number) => void;
+  completeWeekTask: (taskId: string, weekKey: string, points: number, note?: string) => void;
   undoWeekTask: (taskId: string, weekKey: string) => void;
   isWeekTaskDone: (taskId: string, weekKey: string) => boolean;
   getWeekTasksDone: (weekKey: string) => WeekTaskCompletion[];
@@ -746,10 +747,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }
 
   // -- Weektaken ------------------------------------------------------------
-  function completeWeekTaskFn(taskId: string, weekKey: string, points: number) {
+  function completeWeekTaskFn(taskId: string, weekKey: string, points: number, note?: string) {
     setWeekTaskCompletions((prev) => {
       if (prev.some((c) => c.taskId === taskId && c.weekKey === weekKey)) return prev;
-      const updated = [...prev, { taskId, weekKey, completedAt: new Date().toISOString(), points }];
+      const entry: WeekTaskCompletion = { taskId, weekKey, completedAt: new Date().toISOString(), points };
+      if (note?.trim()) entry.note = note.trim();
+      const updated = [...prev, entry];
       save(KEYS.WEEK_TASK_COMPLETIONS, updated);
       return updated;
     });
