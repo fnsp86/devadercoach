@@ -1,9 +1,22 @@
+import { useEffect, useState, useCallback } from 'react';
 import { Tabs } from 'expo-router';
-import { View, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from '@/lib/theme';
+import { useAuth } from '@/lib/auth';
 import { AppIcon, type IconName } from '@/lib/icons';
+import { getUnreadCount, subscribeToNewMessages } from '@/lib/unread';
 
-function TabIcon({ icon, focused, activeColor }: { icon: IconName; focused: boolean; activeColor: string }) {
+function TabIcon({
+  icon,
+  focused,
+  activeColor,
+  badge,
+}: {
+  icon: IconName;
+  focused: boolean;
+  activeColor: string;
+  badge?: number;
+}) {
   return (
     <View style={styles.iconContainer}>
       <AppIcon
@@ -15,12 +28,47 @@ function TabIcon({ icon, focused, activeColor }: { icon: IconName; focused: bool
       {focused && (
         <View style={[styles.activeIndicator, { backgroundColor: activeColor }]} />
       )}
+      {badge != null && badge > 0 && (
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>{badge > 9 ? '9+' : badge}</Text>
+        </View>
+      )}
     </View>
   );
 }
 
 export default function TabLayout() {
   const { colors } = useTheme();
+  const { user } = useAuth();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  const refreshUnread = useCallback(async () => {
+    if (!user) return;
+    try {
+      const count = await getUnreadCount(user.id);
+      setUnreadCount(count);
+    } catch {
+      // Silent
+    }
+  }, [user]);
+
+  useEffect(() => {
+    refreshUnread();
+
+    // Subscribe to realtime conversation updates
+    if (!user) return;
+    const unsubscribe = subscribeToNewMessages(user.id, () => {
+      refreshUnread();
+    });
+
+    // Poll every 30 seconds as fallback
+    const interval = setInterval(refreshUnread, 30_000);
+
+    return () => {
+      unsubscribe();
+      clearInterval(interval);
+    };
+  }, [user, refreshUnread]);
 
   return (
     <Tabs
@@ -68,7 +116,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="help"
         options={{
-          title: 'Help',
+          title: 'Hulp',
           tabBarIcon: ({ focused }) => (
             <TabIcon icon="lightbulb" focused={focused} activeColor={colors.amber} />
           ),
@@ -79,7 +127,12 @@ export default function TabLayout() {
         options={{
           title: 'Social',
           tabBarIcon: ({ focused }) => (
-            <TabIcon icon="users" focused={focused} activeColor={colors.amber} />
+            <TabIcon
+              icon="users"
+              focused={focused}
+              activeColor={colors.amber}
+              badge={unreadCount}
+            />
           ),
         }}
       />
@@ -93,8 +146,8 @@ export default function TabLayout() {
         }}
       />
       {/* Hidden routes - still accessible via deep link/push */}
-      <Tabs.Screen name="training" options={{ href: null }} />
       <Tabs.Screen name="voortgang" options={{ href: null }} />
+      <Tabs.Screen name="training" options={{ href: null }} />
     </Tabs>
   );
 }
@@ -112,5 +165,23 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
+  },
+  badge: {
+    position: 'absolute',
+    top: -4,
+    right: -8,
+    backgroundColor: '#EF4444',
+    borderRadius: 9,
+    minWidth: 18,
+    height: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  badgeText: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: '800',
+    lineHeight: 12,
   },
 });

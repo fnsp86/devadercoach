@@ -32,6 +32,9 @@ export default function Toggle({ value, onToggle, label, description }: TogglePr
     <Pressable
       onPress={() => onToggle(!value)}
       style={styles.container}
+      accessibilityRole="switch"
+      accessibilityLabel={label}
+      accessibilityState={{ checked: value }}
     >
       <View style={styles.labelContainer}>
         <Text style={[styles.label, { color: colors.text }]}>{label}</Text>

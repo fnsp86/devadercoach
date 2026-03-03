@@ -84,7 +84,7 @@ export default function HelpPage() {
 
   const [selectedAge, setSelectedAge] = useState<HelpAgeGroup>('4-7');
   const [searchQuery, setSearchQuery] = useState('');
-  const [sosExpanded, setSosExpanded] = useState(false);
+  const [sosExpanded, setSosExpanded] = useState(true);
   const [showFavorites, setShowFavorites] = useState(false);
   const [collapsedSkills, setCollapsedSkills] = useState<Set<string>>(new Set());
 
@@ -435,7 +435,7 @@ export default function HelpPage() {
         {/* Skill-grouped situations (all open by default, tap header to collapse) */}
         {skillGroups.map(({ skill, situations }) => {
           const skillColor = SKILL_COLORS[skill] || colors.amber;
-          const isExpanded = isSearching || collapsedSkills.has(skill);
+          const isExpanded = isSearching || !collapsedSkills.has(skill);
           const skillIconName = getSkillIcon(skill);
 
           return (

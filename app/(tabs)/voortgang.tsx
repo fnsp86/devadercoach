@@ -3,10 +3,12 @@ import {
   View,
   Text,
   ScrollView,
+  Pressable,
   StyleSheet,
   Animated,
   Easing,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import { AppIcon, InlineIcon, getSkillIcon, emojiToIcon } from '@/lib/icons';
 import BadgeIcon from '@/components/BadgeIcon';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,6 +17,8 @@ import { useStore } from '@/lib/store';
 import {
   ALL_BADGES,
   XP_LEVELS,
+  XP_PER_TASK,
+  XP_WEEK_BONUS,
   MILESTONES,
   getLevelFromXP,
   getProgressToNextLevel,
@@ -57,10 +61,6 @@ const BADGE_CATEGORIES = [
 const DAY_LABELS = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
 
 // SKILL_EMOJI replaced by getSkillIcon() from @/lib/icons
-
-// XP per completed task
-const XP_PER_TASK = 15;
-const XP_WEEK_BONUS = 50;
 
 // ── Helper: get week key (Monday YYYY-MM-DD) ─────────────────────
 function getCurrentWeekKey(): string {
@@ -125,6 +125,7 @@ function QuickStat({
 // ── Component ────────────────────────────────────────────────────
 export default function VoortgangScreen() {
   const { colors } = useTheme();
+  const router = useRouter();
   const { weekTaskCompletions, pulseCheckIns, hydrated, unlockedBadges, badgeUnlockDates, taskOutcomes, profile, stageProgress } = useStore();
 
   // ── Animations ────────────────────────────────────────────────
@@ -304,6 +305,15 @@ export default function VoortgangScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
+        {/* Back to profile */}
+        <Pressable
+          onPress={() => router.back()}
+          style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginBottom: 8 }}
+        >
+          <InlineIcon name="arrowLeft" size={18} color={colors.text3} />
+          <Text style={{ fontSize: 14, fontWeight: '600', color: colors.text3 }}>Profiel</Text>
+        </Pressable>
+
         <Header title="Voortgang" subtitle="Bekijk je groei als vader" />
 
         <Animated.View
@@ -465,6 +475,25 @@ export default function VoortgangScreen() {
               textColor={colors.orange}
               labelColor={colors.text3}
             />
+          </View>
+
+          {/* ── Quick links (verplaatst uit Profiel) ──────────── */}
+          <View style={{ flexDirection: 'row', gap: 8, marginBottom: 20 }}>
+            {[
+              { icon: 'brain' as const, label: 'Reflecties', route: '/(tabs)/profiel/reflecties', color: '#A78BFA' },
+              { icon: 'fileText' as const, label: 'Dagboek', route: '/(tabs)/profiel/dagboek', color: colors.amber },
+              { icon: 'compass' as const, label: 'Pulse', route: '/(tabs)/profiel/pulse', color: '#22C55E' },
+              { icon: 'gift' as const, label: 'Beloningen', route: '/(tabs)/profiel/beloningen', color: '#F59E0B' },
+            ].map((item) => (
+              <Pressable
+                key={item.label}
+                onPress={() => router.push(item.route as any)}
+                style={{ flex: 1, alignItems: 'center', paddingVertical: 12, borderRadius: 12, backgroundColor: item.color + '12' }}
+              >
+                <InlineIcon name={item.icon} size={18} color={item.color} />
+                <Text style={{ fontSize: 11, fontWeight: '600', color: colors.text, marginTop: 4 }}>{item.label}</Text>
+              </Pressable>
+            ))}
           </View>
 
           {/* ── OUTCOME STATS ──────────────────────────────────── */}

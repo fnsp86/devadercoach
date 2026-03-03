@@ -133,7 +133,7 @@ export default function StreaksScreen() {
                 </View>
                 <Text style={[s.periodDates, { color: colors.text3 }]}>
                   {formatDate(item.startDate)}
-                  {item.startDate !== item.endDate ? ` — ${formatDate(item.endDate)}` : ''}
+                  {item.startDate !== item.endDate ? ` - ${formatDate(item.endDate)}` : ''}
                 </Text>
               </View>
             </View>

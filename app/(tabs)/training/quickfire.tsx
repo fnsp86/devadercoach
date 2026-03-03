@@ -20,6 +20,8 @@ import {
   QUICKFIRE_BONUS_EVERY,
 } from '@/lib/quickfire';
 import { checkAndUnlockBadges } from '@/lib/badge-checker';
+import { processBadgeRewards } from '@/lib/badge-rewards';
+import { useAuth } from '@/lib/auth';
 import GamificationPopup from '@/components/GamificationPopup';
 import type { GamificationEvent } from '@/components/GamificationPopup';
 import { SKILL_COLORS } from '@/lib/colors';
@@ -36,6 +38,7 @@ export default function QuickFireScreen() {
   const { colors } = useTheme();
   const router = useRouter();
   const store = useStore();
+  const { user } = useAuth();
 
   // Game state
   const [lives, setLives] = useState(QUICKFIRE_START_LIVES);
@@ -104,7 +107,7 @@ export default function QuickFireScreen() {
       setLives(newLives);
 
       if (newLives <= 0) {
-        // Game over — handled in handleNext
+        // Game over - handled in handleNext
       }
     }
   }
@@ -141,7 +144,9 @@ export default function QuickFireScreen() {
       quickFireScore: totalAnswered,
     });
     if (newBadges.length > 0) {
-      setGamificationEvent({ type: 'badge', badge: newBadges[0] });
+      processBadgeRewards(newBadges, user?.email).then((evt) => {
+        if (evt) setGamificationEvent(evt);
+      });
     }
   }
 

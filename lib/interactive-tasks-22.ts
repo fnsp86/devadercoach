@@ -2,7 +2,7 @@ import type { InteractiveTask } from './types';
 
 export const INTERACTIVE_TASKS_22: InteractiveTask[] = [
   // ═══════════════════════════════════════════════════════════════════════
-  // LEEFTIJD 0-2 — Sensory bonding, non-verbale communicatie, ritme & routine
+  // LEEFTIJD 0-2 - Sensory bonding, non-verbale communicatie, ritme & routine
   // ═══════════════════════════════════════════════════════════════════════
 
   {
@@ -187,7 +187,7 @@ export const INTERACTIVE_TASKS_22: InteractiveTask[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════════════
-  // LEEFTIJD 3-5 — Verbeeldingsspel, emoties benoemen via verhalen, eerste zelfstandigheid
+  // LEEFTIJD 3-5 - Verbeeldingsspel, emoties benoemen via verhalen, eerste zelfstandigheid
   // ═══════════════════════════════════════════════════════════════════════
 
   {
@@ -372,7 +372,7 @@ export const INTERACTIVE_TASKS_22: InteractiveTask[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════════════
-  // LEEFTIJD 6-9 — Schooltransities, vriendschapscoaching, growth mindset
+  // LEEFTIJD 6-9 - Schooltransities, vriendschapscoaching, growth mindset
   // ═══════════════════════════════════════════════════════════════════════
 
   {
@@ -557,7 +557,7 @@ export const INTERACTIVE_TASKS_22: InteractiveTask[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════════════
-  // LEEFTIJD 10-12 — Pre-puberteit, digitale wereld, moreel redeneren
+  // LEEFTIJD 10-12 - Pre-puberteit, digitale wereld, moreel redeneren
   // ═══════════════════════════════════════════════════════════════════════
 
   {
@@ -742,7 +742,7 @@ export const INTERACTIVE_TASKS_22: InteractiveTask[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════════════
-  // LEEFTIJD 13-16 — Identiteit, autonomie-onderhandeling, groepsdruk
+  // LEEFTIJD 13-16 - Identiteit, autonomie-onderhandeling, groepsdruk
   // ═══════════════════════════════════════════════════════════════════════
 
   {

@@ -20,7 +20,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#111318"
+        "backgroundColor": "#F59E0B"
       },
       "edgeToEdgeEnabled": true,
       "package": "nl.vadercoach.app"

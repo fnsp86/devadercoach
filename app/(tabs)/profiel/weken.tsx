@@ -13,9 +13,7 @@ import { useStore } from '@/lib/store';
 import { getWeekNumber } from '@/lib/week-selector';
 import { InlineIcon } from '@/lib/icons';
 import WeeklyRecapModal from '@/components/WeeklyRecapModal';
-
-const XP_PER_TASK = 15;
-const XP_WEEK_BONUS = 50;
+import { XP_WEEK_BONUS } from '@/lib/gamification-types';
 
 function formatWeekRange(weekKey: string): string {
   const monday = new Date(weekKey + 'T00:00:00');
@@ -36,7 +34,7 @@ export default function WekenScreen() {
     const perWeek: Record<string, { count: number; xp: number }> = {};
     weekTaskCompletions.forEach((c) => {
       if (!perWeek[c.weekKey]) perWeek[c.weekKey] = { count: 0, xp: 0 };
-      if (!/^refl_\d{4}-/.test(c.taskId)) perWeek[c.weekKey].count++;
+      perWeek[c.weekKey].count++;
       perWeek[c.weekKey].xp += c.points;
     });
 

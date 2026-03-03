@@ -19,8 +19,7 @@ import { SKILL_COLORS } from '@/lib/colors';
 import { ALL_SKILLS } from '@/lib/skills';
 import type { InteractiveTask, Skill } from '@/lib/types';
 import { getModuleForTask } from '@/lib/task-module-map';
-
-const XP_WEEK_BONUS = 50;
+import { XP_WEEK_BONUS } from '@/lib/gamification-types';
 
 function formatWeekRange(weekKey: string): string {
   const monday = new Date(weekKey + 'T00:00:00');
@@ -56,7 +55,7 @@ export default function WeekDetailScreen() {
       .sort((a, b) => a.completedAt.localeCompare(b.completedAt));
   }, [weekTaskCompletions, weekKey]);
 
-  const taskCount = completions.filter((c) => !/^refl_\d{4}-/.test(c.taskId)).length;
+  const taskCount = completions.length;
   const isComplete = taskCount >= 7;
   const totalXP = completions.reduce((sum, c) => sum + c.points, 0) + (isComplete ? XP_WEEK_BONUS : 0);
   const weekNum = profile?.startDate && weekKey ? getWeekNumber(weekKey, profile.startDate) : 1;

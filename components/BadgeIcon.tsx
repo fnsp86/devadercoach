@@ -62,12 +62,14 @@ export default function BadgeIcon({ emoji, rarity, size = 'md', locked = false }
 
   useEffect(() => {
     if ((rarity === 'epic' || rarity === 'legendary') && !locked) {
-      Animated.loop(
+      const loop = Animated.loop(
         Animated.sequence([
           Animated.timing(shimmerAnim, { toValue: 1, duration: 2200, useNativeDriver: true }),
           Animated.timing(shimmerAnim, { toValue: 0, duration: 2200, useNativeDriver: true }),
         ]),
-      ).start();
+      );
+      loop.start();
+      return () => loop.stop();
     }
   }, [rarity, locked, shimmerAnim]);
 

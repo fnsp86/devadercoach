@@ -154,6 +154,9 @@ export default function InteractiveTaskCard({
         onPress={toggleExpanded}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
+        accessibilityRole="button"
+        accessibilityLabel={`${task.title}, ${task.skill}, ${completed ? 'afgerond' : 'nog te doen'}`}
+        accessibilityHint={expanded ? 'Tik om in te klappen' : 'Tik om details te zien'}
         style={[
           styles.card,
           {
@@ -166,7 +169,7 @@ export default function InteractiveTaskCard({
         {/* ── Collapsed header ──────────────────────────────── */}
         <View style={styles.header}>
           {/* Checkbox */}
-          <Pressable onPress={handleComplete} hitSlop={8}>
+          <Pressable onPress={handleComplete} hitSlop={8} accessibilityRole="checkbox" accessibilityLabel={`${task.title} afronden`} accessibilityState={{ checked: completed }}>
             <Animated.View
               style={[
                 styles.checkbox,
@@ -288,6 +291,9 @@ export default function InteractiveTaskCard({
             <Pressable
               onPress={handleComplete}
               disabled={completed}
+              accessibilityRole="button"
+              accessibilityLabel={completed ? 'Taak afgerond' : 'Taak afronden'}
+              accessibilityState={{ disabled: completed }}
               style={[
                 styles.completeButton,
                 {
@@ -301,10 +307,10 @@ export default function InteractiveTaskCard({
                 <Text
                   style={[
                     styles.completeButtonText,
-                    { color: completed ? c.text3 : '#1A1F2B' },
+                    { color: completed ? c.text3 : '#000000' },
                   ]}
                 >
-                  {completed ? 'Voltooid' : 'Voltooid'}
+                  {completed ? 'Afgerond' : 'Afronden'}
                 </Text>
               </View>
             </Pressable>

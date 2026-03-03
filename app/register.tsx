@@ -55,10 +55,10 @@ const ALL_DOELEN: AppDoel[] = [
 ];
 
 const EXPECT_ITEMS: { icon: IconName; text: string }[] = [
-  { icon: 'calendarDays', text: '7 weektaken op jouw niveau' },
-  { icon: 'bookOpen', text: 'Interactieve leermodules' },
-  { icon: 'brain', text: "Scenario's en quiz-vragen" },
-  { icon: 'trophy', text: 'XP, badges en levels' },
+  { icon: 'calendarDays', text: 'Week 1: 3 taken om rustig te starten' },
+  { icon: 'arrowRight', text: 'Geleidelijk meer: 5 en dan 7 taken per week' },
+  { icon: 'bookOpen', text: 'Leermodules, scenario\'s en quiz-vragen' },
+  { icon: 'trophy', text: 'XP, badges en levels om je groei te zien' },
   { icon: 'waves', text: 'Dagelijkse Vader Pulse check-in' },
 ];
 
@@ -326,7 +326,7 @@ export default function RegisterScreen() {
         });
         setCommunityProfile(communityProf);
       } catch {
-        // Silent fail — profile can be created later from Social tab
+        // Silent fail - profile can be created later from Social tab
       }
     }
 
@@ -760,7 +760,7 @@ export default function RegisterScreen() {
             <View style={s.header}>
               <Text style={[s.stepLabel, { color: colors.text3 }]}>Stap 5 van 6</Text>
               <Text style={[s.title, { color: colors.text }]}>Social profiel</Text>
-              <Text style={[s.subtitle, { color: colors.text2 }]}>Optioneel — sla over als je wilt.</Text>
+              <Text style={[s.subtitle, { color: colors.text2 }]}>Optioneel - sla over als je wilt.</Text>
             </View>
             <ProgBar />
 
@@ -853,7 +853,7 @@ export default function RegisterScreen() {
               </View>
 
               <Pressable onPress={() => setStep('welkom')} style={s.linkRow}>
-                <Text style={[s.linkText, { color: colors.text3 }]}>Overslaan — later instellen</Text>
+                <Text style={[s.linkText, { color: colors.text3 }]}>Overslaan - later instellen</Text>
               </Pressable>
             </View>
           </ScrollView>
@@ -871,13 +871,14 @@ export default function RegisterScreen() {
         <View style={s.header}>
           <Text style={[s.stepLabel, { color: colors.text3 }]}>Stap 6 van 6</Text>
           <Text style={[s.title, { color: colors.text }]}>Welkom, {naam}!</Text>
-          <Text style={[s.subtitle, { color: colors.text2 }]}>Je bent klaar om te beginnen.</Text>
+          <Text style={[s.subtitle, { color: colors.text2 }]}>Je ontwikkelreis begint hier.</Text>
         </View>
         <ProgBar />
 
         <Text style={[s.instructions, { color: colors.text2 }]}>
-          Je gaat aan de slag met alle 8 opvoedvaardigheden. Elke week krijg je
-          taken, inzichten en oefeningen op maat van jouw kinderen.
+          Je begint met 3 taken per week - rustig en op jouw tempo. Naarmate je groeit,
+          bouw je op naar 5 en uiteindelijk 7 taken per week. Elke taak is afgestemd op
+          jouw kinderen en helpt je stap voor stap een betere vader te worden.
         </Text>
 
         <Card style={{ marginBottom: 12, backgroundColor: colors.amberDim, borderColor: colors.amber + '30' }}>
@@ -904,7 +905,7 @@ export default function RegisterScreen() {
         <Card style={{ marginBottom: 24 }}>
           <View style={s.cardTitleRow}>
             <InlineIcon name="fileText" size={16} color={colors.text} />
-            <Text style={[s.cardTitle, { color: colors.text }]}>Wat je kunt verwachten</Text>
+            <Text style={[s.cardTitle, { color: colors.text }]}>Jouw reis in stappen</Text>
           </View>
           <View style={s.expectList}>
             {EXPECT_ITEMS.map((item, index) => (

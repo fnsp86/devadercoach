@@ -68,7 +68,7 @@ export default function DiscoverFathers() {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
     if (text.trim().length === 0) {
-      // Cleared search — return to nearby mode
+      // Cleared search - return to nearby mode
       if (hasLocation) loadNearby();
       else setResults([]);
       return;
@@ -265,7 +265,7 @@ export default function DiscoverFathers() {
         </View>
       </View>
 
-      {/* Radius chips — only shown when not searching by city */}
+      {/* Radius chips - only shown when not searching by city */}
       {!isSearching && hasLocation && (
         <View style={styles.chipsContainer}>
           {RADIUS_OPTIONS.map((radius) => {

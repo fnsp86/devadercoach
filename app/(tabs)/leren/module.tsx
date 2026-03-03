@@ -29,16 +29,18 @@ import SkillCompletionPopup from '@/components/SkillCompletionPopup';
 import { SKILLS } from '@/lib/skills';
 import { SKILL_MASTERY_BONUS_XP, checkModuleMilestone } from '@/lib/gamification-types';
 import { checkAndUnlockBadges } from '@/lib/badge-checker';
+import { processBadgeRewards } from '@/lib/badge-rewards';
 import type { GamificationEvent } from '@/components/GamificationPopup';
 import GamificationPopup from '@/components/GamificationPopup';
 import { SKILL_COLORS } from '@/lib/colors';
 import { AppIcon, InlineIcon } from '@/lib/icons';
 import { getTasksForModule } from '@/lib/task-module-map';
+import { useAuth } from '@/lib/auth';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ProgressBar — smooth bar bovenaan (i.p.v. dots, want 12-15 stages is teveel)
+// ProgressBar - smooth bar bovenaan (i.p.v. dots, want 12-15 stages is teveel)
 // ─────────────────────────────────────────────────────────────────────────────
 
 function ProgressBar({
@@ -80,7 +82,7 @@ const progressStyles = StyleSheet.create({
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// XPPopup — zwevende "+15 XP" animatie
+// XPPopup - zwevende "+15 XP" animatie
 // ─────────────────────────────────────────────────────────────────────────────
 
 function XPPopup({ xp, visible }: { xp: number; visible: boolean }) {
@@ -528,7 +530,7 @@ function DiagramCard({
             const isNext = i === visibleCount;
 
             if (!isRevealed) {
-              // Hidden/next item — tappable
+              // Hidden/next item - tappable
               return (
                 <Pressable
                   key={i}
@@ -722,7 +724,7 @@ function KeuzeCard({
               </View>
             )}
 
-            {/* Foute aanpak bij goed antwoord — zodat papa het verschil ziet */}
+            {/* Foute aanpak bij goed antwoord - zodat papa het verschil ziet */}
             {isCorrect && wrongChoice && (
               <View style={[keuzeStyles.approachCard, {
                 backgroundColor: colors.surface,
@@ -925,7 +927,7 @@ function UitdagingCard({
         )}
 
         {stage.missionTips && stage.missionTips.length > 0 && (
-          <View>
+          <View style={{ alignSelf: 'stretch' }}>
             <Pressable
               onPress={() => {
                 LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -991,10 +993,10 @@ const uitdagingStyles = StyleSheet.create({
     marginBottom: 16,
   },
   durationText: { fontSize: 14, fontWeight: '700' },
-  instructionsCard: { borderRadius: 14, borderWidth: 1, padding: 20, marginBottom: 8 },
+  instructionsCard: { borderRadius: 14, borderWidth: 1, padding: 20, marginBottom: 8, alignSelf: 'stretch' as const },
   tipsToggle: { alignSelf: 'center', paddingVertical: 8 },
   tipsToggleText: { fontSize: 14, fontWeight: '700' },
-  tipsCard: { borderRadius: 12, borderWidth: 1, padding: 16, marginTop: 8 },
+  tipsCard: { borderRadius: 12, borderWidth: 1, padding: 16, marginTop: 8, alignSelf: 'stretch' as const },
   tipRow: { flexDirection: 'row', gap: 10, marginBottom: 8 },
   tipBullet: { fontSize: 16, marginTop: 1 },
   tipText: { fontSize: 14, lineHeight: 21, flex: 1 },
@@ -1473,7 +1475,7 @@ const completeStyles = StyleSheet.create({
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Stage renderer — dispatches to the right card component
+// Stage renderer - dispatches to the right card component
 // ─────────────────────────────────────────────────────────────────────────────
 
 function renderStage(
@@ -1537,13 +1539,14 @@ function renderStage(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ModulePlayer — Main component
+// ModulePlayer - Main component
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function ModulePlayer() {
   const { colors } = useTheme();
   const router = useRouter();
   const store = useStore();
+  const { user } = useAuth();
   const { completeStage, getStageProgress, awardBonusXP } = store;
   const { skill: rawSkill, moduleId } = useLocalSearchParams<{ skill: string; moduleId: string }>();
   const skill = decodeURIComponent(rawSkill || '') as Skill;
@@ -1681,12 +1684,12 @@ export default function ModulePlayer() {
 
       // Check if all modules of this skill are now complete
       const allMods = getLearningModulesForSkill(skill, activeThemes);
-      if (completed.length >= allMods.length) {
+      const isSkillComplete = completed.length >= allMods.length;
+      if (isSkillComplete) {
         awardBonusXP(SKILL_MASTERY_BONUS_XP, skill);
-        setTimeout(() => setShowSkillCompletion(true), 1200);
       }
 
-      // Check for module milestone
+      // Count total completed modules across all skills
       const allSkills = ['Aanwezigheid', 'Emotiecoaching', 'Zelfregulatie', 'Grenzen', 'Autonomie', 'Herstel', 'Verbinding', 'Reflectie'];
       let totalCompleted = 0;
       for (const sk of allSkills) {
@@ -1694,19 +1697,29 @@ export default function ModulePlayer() {
         const raw = await AsyncStorage.getItem(key);
         totalCompleted += raw ? (JSON.parse(raw) as string[]).length : 0;
       }
+
+      // Queue events sequentially instead of firing overlapping timers
+      let delay = 1200;
+
+      if (isSkillComplete) {
+        setTimeout(() => setShowSkillCompletion(true), delay);
+        delay += 4000; // Wait for skill completion popup to finish
+      }
+
       const milestone = checkModuleMilestone(totalCompleted);
       if (milestone) {
         setTimeout(() => {
           setMilestoneEvent({ type: 'milestone', emoji: milestone.emoji, title: milestone.title, message: milestone.message });
-        }, completed.length >= allMods.length ? 5000 : 1500);
+        }, delay);
+        delay += 3500;
       }
 
-      // Check for learn badges
       const newBadges = checkAndUnlockBadges(store, { source: 'module', skill }, totalCompleted);
       if (newBadges.length > 0) {
-        const delay = milestone ? 4000 : (completed.length >= allMods.length ? 6000 : 2000);
         setTimeout(() => {
-          setMilestoneEvent({ type: 'badge', badge: newBadges[0] });
+          processBadgeRewards(newBadges, user?.email).then((evt) => {
+            if (evt) setMilestoneEvent(evt);
+          });
         }, delay);
       }
     } catch {}

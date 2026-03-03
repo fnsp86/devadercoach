@@ -317,7 +317,7 @@ export const ZELFREGULATIE_MODULES: LearningModule[] = [
     {
       type: "example" as const,
       situation: "Thijs (10) heeft stiekem een uur op papa's iPad gespeeld terwijl hij huiswerk moest maken. Papa ontdekt het als hij de zoekgeschiedenis ziet. Hij voelt zijn vuisten ballen.",
-      wrongApproach: "❌ ONTPLOFFEN BIJ DE ONTDEKKING:\n\nPapa: 'Thijs! Geef die iPad hier! Je hebt GELOGEN!'\nThijs: 'Ik was bijna klaar met—'\nPapa: 'Geen iPad meer. Een week lang! En geen voetbal zaterdag!'\n\nDrie straffen in vijf seconden. Geen ervan doordacht. Thijs loopt boos naar zijn kamer. Papa beseft dat hij veel te ver ging maar kan niet meer terug.",
+      wrongApproach: "❌ ONTPLOFFEN BIJ DE ONTDEKKING:\n\nPapa: 'Thijs! Geef die iPad hier! Je hebt GELOGEN!'\nThijs: 'Ik was bijna klaar met...'\nPapa: 'Geen iPad meer. Een week lang! En geen voetbal zaterdag!'\n\nDrie straffen in vijf seconden. Geen ervan doordacht. Thijs loopt boos naar zijn kamer. Papa beseft dat hij veel te ver ging maar kan niet meer terug.",
       rightApproach: "✅ TIEN SECONDEN VOOR JE STRAFT:\n\nPapa ziet de iPad. Voelt de woede. Balt zijn vuisten.\nDenkt: 'Stop. Tien seconden.'\nDoet zijn handen open. Dubbele inademing. Lange uitademing.\n\nRustig: 'Thijs, ik zie dat je op de iPad hebt gezeten in plaats van huiswerk. Ik ben daar niet blij mee.'\nThijs: 'Sorry papa...'\nPapa: 'We praten er zo over. Maak eerst je huiswerk af. Dan bespreken we samen wat de consequentie is.'",
       explanation: "Bij ontdekking van 'stout' gedrag wil je direct straffen. Maar straffen in woede zijn bijna altijd te zwaar en niet doordacht. Tien seconden nemen geeft je de ruimte om een passende consequentie te kiezen in plaats van drie straffen over elkaar heen te stapelen.",
     },

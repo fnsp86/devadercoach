@@ -30,7 +30,8 @@ const RARITY_LABELS: Record<string, string> = {
 export type GamificationEvent =
   | { type: 'levelup'; level: number; title: string }
   | { type: 'badge'; badge: Badge }
-  | { type: 'milestone'; emoji: string; title: string; message: string };
+  | { type: 'milestone'; emoji: string; title: string; message: string }
+  | { type: 'discount'; badge: Badge; code: string; percentOff: number };
 
 interface Props {
   event: GamificationEvent | null;
@@ -77,22 +78,25 @@ export default function GamificationPopup({ event, onDismiss }: Props) {
       ]).start();
     });
 
-    Animated.loop(
+    const glowLoop = Animated.loop(
       Animated.sequence([
         Animated.timing(glowAnim, { toValue: 1,   duration: 900, useNativeDriver: true }),
         Animated.timing(glowAnim, { toValue: 0.2, duration: 900, useNativeDriver: true }),
       ]),
-    ).start();
+    );
+    glowLoop.start();
 
-    Animated.loop(
+    const starLoop = Animated.loop(
       Animated.sequence([
         Animated.timing(starAnim, { toValue: 1, duration: 600, useNativeDriver: true }),
         Animated.timing(starAnim, { toValue: 0, duration: 600, useNativeDriver: true }),
       ]),
-    ).start();
+    );
+    starLoop.start();
 
-    const timer = setTimeout(dismissWithAnimation, 3500);
-    return () => clearTimeout(timer);
+    const dismissDelay = event.type === 'discount' ? 6000 : 3500;
+    const timer = setTimeout(dismissWithAnimation, dismissDelay);
+    return () => { clearTimeout(timer); glowLoop.stop(); starLoop.stop(); };
   }, [event]);
 
   function dismissWithAnimation() {
@@ -106,9 +110,12 @@ export default function GamificationPopup({ event, onDismiss }: Props) {
 
   const isLevelUp = event.type === 'levelup';
   const isMilestone = event.type === 'milestone';
+  const isDiscount = event.type === 'discount';
   const accentColor = isLevelUp || isMilestone
     ? colors.amber
-    : RARITY_COLORS[(event as { type: 'badge'; badge: Badge }).badge.rarity] ?? RARITY_COLORS.common;
+    : isDiscount
+      ? '#34D399' // green for discount rewards
+      : RARITY_COLORS[(event as { type: 'badge'; badge: Badge }).badge.rarity] ?? RARITY_COLORS.common;
 
   const glowOpacity = glowAnim.interpolate({ inputRange: [0, 1], outputRange: [0.15, 0.45] });
 
@@ -151,6 +158,13 @@ export default function GamificationPopup({ event, onDismiss }: Props) {
           ) : isMilestone ? (
             <MilestoneContent
               event={event as { type: 'milestone'; emoji: string; title: string; message: string }}
+              colors={colors}
+              accentColor={accentColor}
+              starAnim={starAnim}
+            />
+          ) : isDiscount ? (
+            <DiscountContent
+              event={event as { type: 'discount'; badge: Badge; code: string; percentOff: number }}
               colors={colors}
               accentColor={accentColor}
               starAnim={starAnim}
@@ -312,6 +326,55 @@ function MilestoneContent({
   );
 }
 
+function DiscountContent({
+  event,
+  colors,
+  accentColor,
+  starAnim,
+}: {
+  event: { type: 'discount'; badge: Badge; code: string; percentOff: number };
+  colors: any;
+  accentColor: string;
+  starAnim: Animated.Value;
+}) {
+  const { badge } = event;
+  const sparkleOpacity = starAnim.interpolate({ inputRange: [0, 1], outputRange: [0.4, 1] });
+
+  return (
+    <View style={styles.content}>
+      <View style={[styles.nieuwBadge, { backgroundColor: accentColor }]}>
+        <Text style={styles.nieuwText}>BELONING</Text>
+      </View>
+
+      <Text style={[styles.eventLabel, { color: accentColor }]}>KORTINGSCODE VERDIEND!</Text>
+
+      <BadgeIcon emoji={badge.emoji} rarity={badge.rarity} size="lg" />
+
+      <View style={styles.sparkleRow}>
+        {[0, 1, 2].map((i) => (
+          <Animated.View key={i} style={{ opacity: sparkleOpacity }}>
+            <InlineIcon name={i === 1 ? 'star' : 'zap'} size={16} color={accentColor} />
+          </Animated.View>
+        ))}
+      </View>
+
+      <Text style={[styles.badgeName, { color: colors.text }]}>{badge.name}</Text>
+
+      <View style={[styles.discountPercentBox, { backgroundColor: accentColor + '1A', borderColor: accentColor }]}>
+        <Text style={[styles.discountPercentText, { color: accentColor }]}>{event.percentOff}% KORTING</Text>
+      </View>
+
+      <View style={[styles.discountCodeBox, { backgroundColor: colors.surface2, borderColor: colors.border }]}>
+        <Text style={[styles.discountCodeText, { color: colors.amber }]}>{event.code}</Text>
+      </View>
+
+      <Text style={[styles.eventSubtitle, { color: colors.text3 }]}>
+        Bekijk in Profiel → Beloningen
+      </Text>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
@@ -437,5 +500,30 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: 20,
     opacity: 0.55,
+  },
+  discountPercentBox: {
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 12,
+    borderWidth: 2,
+    marginBottom: 14,
+  },
+  discountPercentText: {
+    fontSize: 20,
+    fontWeight: '900',
+    letterSpacing: 1.5,
+  },
+  discountCodeBox: {
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    marginBottom: 10,
+  },
+  discountCodeText: {
+    fontSize: 17,
+    fontWeight: '800',
+    letterSpacing: 2,
+    textAlign: 'center',
   },
 });

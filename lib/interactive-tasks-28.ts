@@ -2,7 +2,7 @@ import type { InteractiveTask } from './types';
 
 export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
   // ═══════════════════════════════════════════════════════════════
-  // AANWEZIGHEID — Bonuskind (10 taken)
+  // AANWEZIGHEID - Bonuskind (10 taken)
   // ═══════════════════════════════════════════════════════════════
   {
     id: "bonus_aanw_01",
@@ -166,7 +166,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // EMOTIECOACHING — Bonuskind (10 taken)
+  // EMOTIECOACHING - Bonuskind (10 taken)
   // ═══════════════════════════════════════════════════════════════
   {
     id: "bonus_emot_01",
@@ -259,7 +259,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     points: 15,
     psychologie: "Jaloezie in samengestelde gezinnen is onvermijdelijk en wijst op een behoefte aan zekerheid. Het kind wil weten: 'Is er ook plek voor mij?' Benoemen van jaloezie maakt het hanteerbaar.",
     skillTip: "Zeg: 'Ik merk dat het misschien lastig is als ik veel aandacht aan [naam] geef. Jij bent ook heel belangrijk voor mij.' Plan daarna bewust een-op-eentijd.",
-    vermijd: "Zeggen 'doe niet zo jaloers' of doen alsof je alle kinderen precies gelijk behandelt — kinderen prikken daar doorheen.",
+    vermijd: "Zeggen 'doe niet zo jaloers' of doen alsof je alle kinderen precies gelijk behandelt - kinderen prikken daar doorheen.",
     leerdoel: "Je leert jaloezie te erkennen als een signaal van behoefte aan verbinding, niet als lastig gedrag.",
     bron: "Ganong & Coleman (2017) - Stepfamily Relationships: Development, Dynamics, and Interventions",
     themes: ["bonuskind", "samengesteld_gezin"],
@@ -305,7 +305,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     ageGroups: ["3-5", "6-9", "10-12"],
     difficulty: "expert",
     points: 20,
-    psychologie: "Bonuskinderen huilen soms om dingen die ze niet kunnen of durven benoemen — gemis, verwarring, loyaliteitsconflict. De reden is minder belangrijk dan de ervaring van getroost worden door een veilige volwassene.",
+    psychologie: "Bonuskinderen huilen soms om dingen die ze niet kunnen of durven benoemen - gemis, verwarring, loyaliteitsconflict. De reden is minder belangrijk dan de ervaring van getroost worden door een veilige volwassene.",
     skillTip: "Bied fysiek comfort aan als het kind dat accepteert: een hand op de schouder, een arm om hen heen. Respecteer het als ze afstand willen. Zeg: 'Ik ga niet weg.'",
     vermijd: "Meteen vragen 'wat is er?' of 'is er iets gebeurd bij je moeder/vader?' Dat kan voelen als een verhoor.",
     leerdoel: "Je leert onvoorwaardelijke troost te bieden, ongeacht of je de reden van het verdriet kent.",
@@ -322,7 +322,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     difficulty: "expert",
     points: 20,
     psychologie: "Expressief schrijven helpt kinderen emoties te verwerken. Een dagboek dat meegaat tussen twee huizen kan een rode draad zijn in een leven dat constant wisselt.",
-    skillTip: "Stel voor dat het schriftje van het kind is — niet van jou. Zeg: 'Als je wilt delen wat erin staat, dan luister ik graag. Maar het is van jou.' Respecteer privacy volledig.",
+    skillTip: "Stel voor dat het schriftje van het kind is - niet van jou. Zeg: 'Als je wilt delen wat erin staat, dan luister ik graag. Maar het is van jou.' Respecteer privacy volledig.",
     vermijd: "Stiekem lezen of het kind onder druk zetten om te delen. Het dagboek is van het kind, niet voor jouw geruststelling.",
     leerdoel: "Je leert je bonuskind een veilig hulpmiddel te geven voor emotionele verwerking.",
     bron: "Pennebaker (1997) - Opening Up: The Healing Power of Expressing Emotions",
@@ -330,7 +330,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // ZELFREGULATIE — Bonuskind (10 taken)
+  // ZELFREGULATIE - Bonuskind (10 taken)
   // ═══════════════════════════════════════════════════════════════
   {
     id: "bonus_zelfreg_01",
@@ -464,7 +464,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     id: "bonus_zelfreg_09",
     title: "Zelfzorg zonder schuldgevoel",
     skill: "Zelfregulatie",
-    description: "Plan vandaag 20 minuten voor jezelf in. Bonusouderschap is emotioneel zwaar werk — je kunt alleen geven wat je hebt.",
+    description: "Plan vandaag 20 minuten voor jezelf in. Bonusouderschap is emotioneel zwaar werk - je kunt alleen geven wat je hebt.",
     duration: "20 min",
     ageGroups: ["0-2", "3-5", "6-9", "10-12", "13-16"],
     difficulty: "basis",
@@ -487,14 +487,14 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     points: 15,
     psychologie: "Gratitude-oefeningen herstructureren letterlijk de neurale paden in je brein. Voor bonusvaders die vaak focussen op afwijzing en frustratie, is dit een krachtige tegenkracht.",
     skillTip: "Wees specifiek: niet 'ik ben dankbaar voor mijn bonuskind' maar 'ik ben dankbaar dat [naam] gisteren spontaan naast me kwam zitten.' Specificiteit versterkt het effect.",
-    vermijd: "Toxic positivity — je hoeft niet te doen alsof alles geweldig is. Het gaat om het vinden van lichtpuntjes naast de uitdagingen.",
+    vermijd: "Toxic positivity - je hoeft niet te doen alsof alles geweldig is. Het gaat om het vinden van lichtpuntjes naast de uitdagingen.",
     leerdoel: "Je leert dankbaarheid te gebruiken als regulatiestrategie voor de uitdagingen van bonusouderschap.",
     bron: "Emmons (2007) - Thanks! How the New Science of Gratitude Can Make You Happier",
     themes: ["bonuskind", "samengesteld_gezin"],
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // GRENZEN — Bonuskind (10 taken)
+  // GRENZEN - Bonuskind (10 taken)
   // ═══════════════════════════════════════════════════════════════
   {
     id: "bonus_grenz_01",
@@ -505,7 +505,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     ageGroups: ["3-5", "6-9", "10-12"],
     difficulty: "basis",
     points: 10,
-    psychologie: "In samengestelde gezinnen botsen vaak twee opvoedstijlen. Kinderen hebben baat bij duidelijke, gedeelde regels die voor iedereen gelden — dit voorkomt het gevoel van ongelijke behandeling.",
+    psychologie: "In samengestelde gezinnen botsen vaak twee opvoedstijlen. Kinderen hebben baat bij duidelijke, gedeelde regels die voor iedereen gelden - dit voorkomt het gevoel van ongelijke behandeling.",
     skillTip: "Betrek de kinderen erbij: 'We maken samen regels voor ons huis.' Beperk het tot 5-7 regels die iedereen kan onthouden. Hang ze zichtbaar op.",
     vermijd: "Regels opleggen als bonusvader zonder overleg. Dit moet samen met je partner komen, en bij voorkeur met input van de kinderen.",
     leerdoel: "Je leert gezamenlijke grenzen te creëren die voor alle kinderen in het samengesteld gezin gelden.",
@@ -569,7 +569,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     ageGroups: ["6-9", "10-12", "13-16"],
     difficulty: "gevorderd",
     points: 15,
-    psychologie: "In samengestelde gezinnen is 'respect' een gedeelde waarde die boven individuele relaties uitstijgt. Het hoeft niet over liefde te gaan — respect is realistischer en toch krachtig.",
+    psychologie: "In samengestelde gezinnen is 'respect' een gedeelde waarde die boven individuele relaties uitstijgt. Het hoeft niet over liefde te gaan - respect is realistischer en toch krachtig.",
     skillTip: "Zeg: 'We hoeven niet altijd alles leuk te vinden aan elkaar, maar we behandelen iedereen hier met respect. Wat betekent dat voor jullie?' Laat kinderen meedenken.",
     vermijd: "Respect afdwingen met autoriteit. Dat is een contradictie. Modelleer het zelf.",
     leerdoel: "Je leert respect als gedeelde waarde te introduceren die ruimte laat voor verschillende gevoelens.",
@@ -601,7 +601,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     ageGroups: ["6-9", "10-12", "13-16"],
     difficulty: "expert",
     points: 20,
-    psychologie: "Bonusvaders vergeten soms dat zij ook grenzen mogen hebben. Door zelf grenzen te modelleren, leert het kind dat grenzen normaal en gezond zijn — niet persoonlijk.",
+    psychologie: "Bonusvaders vergeten soms dat zij ook grenzen mogen hebben. Door zelf grenzen te modelleren, leert het kind dat grenzen normaal en gezond zijn - niet persoonlijk.",
     skillTip: "Formuleer het als een 'ik'-boodschap: 'Ik heb soms even stilte nodig om goed voor jullie te kunnen zorgen.' Dit normaliseert grenzen voor iedereen.",
     vermijd: "Grenzen stellen alsof het kind iets fout doet. Het gaat om jouw behoefte, niet om hun gedrag.",
     leerdoel: "Je leert dat het modelleren van eigen grenzen een krachtig opvoedkundig voorbeeld is.",
@@ -658,7 +658,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // AUTONOMIE — Bonuskind (10 taken)
+  // AUTONOMIE - Bonuskind (10 taken)
   // ═══════════════════════════════════════════════════════════════
   {
     id: "bonus_auto_01",
@@ -671,7 +671,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     points: 10,
     psychologie: "Bonuskinderen hebben al veel verlies van controle meegemaakt door de scheiding. Hen het tempo laten bepalen herstelt hun gevoel van agency en vermindert weerstand.",
     skillTip: "Zeg: 'Ik ben hier als je zin hebt om samen iets te doen. Je mag ook lekker je eigen ding doen.' Wacht geduldig af.",
-    vermijd: "Meerdere keren aanbieden als het kind nee zegt. Eén keer aanbieden is genoeg — meer wordt druk.",
+    vermijd: "Meerdere keren aanbieden als het kind nee zegt. Eén keer aanbieden is genoeg - meer wordt druk.",
     leerdoel: "Je leert de autonomie van je bonuskind te respecteren als basis voor vrijwillige toenadering.",
     bron: "Papernow (2013) - Surviving and Thriving in Stepfamily Relationships",
     themes: ["bonuskind"],
@@ -733,7 +733,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     ageGroups: ["6-9", "10-12", "13-16"],
     difficulty: "gevorderd",
     points: 15,
-    psychologie: "Kinderen die zelf contact kunnen opnemen met hun andere ouder, ervaren minder loyaliteitsconflict. Ze hoeven niet te kiezen — ze kunnen verbonden blijven met beide werelden.",
+    psychologie: "Kinderen die zelf contact kunnen opnemen met hun andere ouder, ervaren minder loyaliteitsconflict. Ze hoeven niet te kiezen - ze kunnen verbonden blijven met beide werelden.",
     skillTip: "Zorg dat het kind de biologische ouder kan bellen of appen wanneer het wil. Zeg: 'Als je mama/papa wilt bellen, pak gerust de telefoon.' Laat het kind dit privé doen.",
     vermijd: "Meeluisteren, vragen wat er besproken is, of het contact beperken tenzij er echte zorgen zijn.",
     leerdoel: "Je leert de autonome band van het kind met de andere ouder actief te faciliteren.",
@@ -782,7 +782,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     difficulty: "expert",
     points: 20,
     psychologie: "Tieners in samengestelde gezinnen worden vaak bestookt met goedbedoelde vragen over hun gevoelens. De vrijheid om niet te praten is paradoxaal genoeg vaak de opening naar praten.",
-    skillTip: "Spreek het uit en laat het dan los. Geen follow-up, geen herinnering. Het aanbod is geplant. Tieners komen terug als ze er klaar voor zijn — soms weken later.",
+    skillTip: "Spreek het uit en laat het dan los. Geen follow-up, geen herinnering. Het aanbod is geplant. Tieners komen terug als ze er klaar voor zijn - soms weken later.",
     vermijd: "Na het aanbod toch vragen stellen of hints geven. Laat het echt los.",
     leerdoel: "Je leert dat de krachtigste uitnodiging tot communicatie een uitnodiging zonder druk is.",
     bron: "Faber & Mazlish (2012) - How to Talk So Teens Will Listen",
@@ -822,7 +822,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // HERSTEL — Bonuskind (10 taken)
+  // HERSTEL - Bonuskind (10 taken)
   // ═══════════════════════════════════════════════════════════════
   {
     id: "bonus_herst_01",
@@ -898,7 +898,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     difficulty: "gevorderd",
     points: 15,
     psychologie: "Perioden van afstand zijn normaal in bonusrelaties. De kunst is om na zo'n periode de eerste stap te zetten zonder de afstand te benoemen. Een klein gebaar kan de deur weer openen.",
-    skillTip: "Maak hun lievelingseten, leg een briefje neer, of stel voor samen iets te doen dat ze leuk vinden. Geen groot gesprek nodig — het gebaar spreekt.",
+    skillTip: "Maak hun lievelingseten, leg een briefje neer, of stel voor samen iets te doen dat ze leuk vinden. Geen groot gesprek nodig - het gebaar spreekt.",
     vermijd: "Zeggen: 'We hebben het de laatste tijd niet zo gezellig gehad, hè?' Dat legt druk op het kind.",
     leerdoel: "Je leert kleine, drukvrije gebaren te maken om de verbinding te herstellen na afstand.",
     bron: "Papernow (2013) - Surviving and Thriving in Stepfamily Relationships",
@@ -914,7 +914,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     difficulty: "expert",
     points: 20,
     psychologie: "Kwetsbaarheid van een volwassene is voor tieners ontzettend krachtig. Het doorbreekt het beeld dat volwassenen alles onder controle hebben en geeft toestemming om ook zelf imperfect te zijn.",
-    skillTip: "Kies een rustig moment, niet na een conflict. Zeg het simpel en kort. Verwacht geen reactie — het kind heeft tijd nodig om dit te verwerken.",
+    skillTip: "Kies een rustig moment, niet na een conflict. Zeg het simpel en kort. Verwacht geen reactie - het kind heeft tijd nodig om dit te verwerken.",
     vermijd: "Dit gebruiken als emotionele manipulatie ('Ik doe zo mijn best en jij waardeert het niet'). Het gaat om kwetsbaarheid, niet om schuldgevoel.",
     leerdoel: "Je leert kwetsbaarheid te tonen als kracht, wat de emotionele veiligheid in de relatie vergroot.",
     bron: "Brown (2012) - Daring Greatly",
@@ -986,7 +986,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // VERBINDING — Bonuskind (10 taken)
+  // VERBINDING - Bonuskind (10 taken)
   // ═══════════════════════════════════════════════════════════════
   {
     id: "bonus_verb_01",
@@ -1062,7 +1062,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     difficulty: "basis",
     points: 10,
     psychologie: "Buitenactiviteiten verlagen de emotionele intensiteit van face-to-face contact. Side-by-side activiteiten zijn voor bonusrelaties effectiever dan oog-in-oog situaties.",
-    skillTip: "Kies iets fysiek en simpel. Niet te ambitieus — het gaat om samen bewegen en er zijn. Geen prestatie, geen competitie.",
+    skillTip: "Kies iets fysiek en simpel. Niet te ambitieus - het gaat om samen bewegen en er zijn. Geen prestatie, geen competitie.",
     vermijd: "Er een hele uitstap van maken met verwachtingen. Een rondje om het blok kan genoeg zijn.",
     leerdoel: "Je leert laagdrempelige buitenactiviteiten te gebruiken als verbindingstool.",
     bron: "Louv (2005) - Last Child in the Woods",
@@ -1120,7 +1120,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     id: "bonus_verb_09",
     title: "Brieven heen en weer",
     skill: "Verbinding",
-    description: "Leg een notitieboekje neer waarin jij en je bonuskind naar elkaar kunnen schrijven. Berichten, tekeningen, grapjes — alles mag.",
+    description: "Leg een notitieboekje neer waarin jij en je bonuskind naar elkaar kunnen schrijven. Berichten, tekeningen, grapjes - alles mag.",
     duration: "10 min",
     ageGroups: ["6-9", "10-12", "13-16"],
     difficulty: "expert",
@@ -1150,7 +1150,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // REFLECTIE — Bonuskind (10 taken)
+  // REFLECTIE - Bonuskind (10 taken)
   // ═══════════════════════════════════════════════════════════════
   {
     id: "bonus_refl_01",
@@ -1227,7 +1227,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     points: 15,
     psychologie: "Onderzoek toont dat de meeste problemen in samengestelde gezinnen ontstaan door ongelijke verwachtingen tussen de partners. Eén denkt dat de bonusvader een volwaardige ouder wordt, de ander ziet meer een ondersteunende rol.",
     skillTip: "Vraag open: 'Hoe zie jij mijn rol over vijf jaar? Verwacht je dat ik een ouder word, of meer een betrokken volwassene?' Luister zonder oordeel naar het antwoord.",
-    vermijd: "Defensief reageren als de visie van je partner verschilt. Verschil in verwachting is normaal — het niet bespreken is het probleem.",
+    vermijd: "Defensief reageren als de visie van je partner verschilt. Verschil in verwachting is normaal - het niet bespreken is het probleem.",
     leerdoel: "Je leert verwachtingen over jouw rol expliciet te bespreken met je partner.",
     bron: "Ganong & Coleman (2017) - Stepfamily Relationships: Development, Dynamics, and Interventions",
     themes: ["samengesteld_gezin", "bonuskind"],
@@ -1241,7 +1241,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     ageGroups: ["0-2", "3-5", "6-9", "10-12", "13-16"],
     difficulty: "expert",
     points: 20,
-    psychologie: "Bonusvaders dragen een unieke emotionele last die zelden erkend wordt — niet door de maatschappij, niet door het kind, soms niet eens door de partner. Het benoemen van deze last is de eerste stap naar verlichting.",
+    psychologie: "Bonusvaders dragen een unieke emotionele last die zelden erkend wordt - niet door de maatschappij, niet door het kind, soms niet eens door de partner. Het benoemen van deze last is de eerste stap naar verlichting.",
     skillTip: "Wees radicaal eerlijk: 'Ik voel me soms onzichtbaar / overbodig / buitengesloten.' Deze gevoelens zijn niet een teken van falen maar van betrokkenheid.",
     vermijd: "Je gevoelens wegrationaliseren ('Ik zou hier niet over moeten klagen'). Je gevoelens zijn valide.",
     leerdoel: "Je leert de specifieke emotionele uitdagingen van bonusvaderschap te erkennen en te verwoorden.",
@@ -1258,7 +1258,7 @@ export const INTERACTIVE_TASKS_28: InteractiveTask[] = [
     difficulty: "expert",
     points: 20,
     psychologie: "De relatie tussen bonusvader en biologische vader is een van de minst besproken maar meest impactvolle dynamieken. Jouw houding beïnvloedt direct hoe veilig het kind zich voelt om van alle volwassenen te houden.",
-    skillTip: "Vraag jezelf: 'Ben ik jaloers op de biologische vader? Heb ik respect voor zijn rol? Praat ik respectvol over hem?' Wees eerlijk — dit is voor jou, niet voor publiek.",
+    skillTip: "Vraag jezelf: 'Ben ik jaloers op de biologische vader? Heb ik respect voor zijn rol? Praat ik respectvol over hem?' Wees eerlijk - dit is voor jou, niet voor publiek.",
     vermijd: "Jezelf veroordelen voor negatieve gevoelens. Het is menselijk om te worstelen met deze dynamiek.",
     leerdoel: "Je leert je eigen rol in de co-ouderschapsdynamiek eerlijk te evalueren.",
     bron: "Emery (2004) - The Truth About Children and Divorce",

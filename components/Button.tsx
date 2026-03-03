@@ -57,7 +57,7 @@ export default function Button({
         backgroundColor: colors.amber,
       },
       text: {
-        color: '#1A1F2B',
+        color: '#000000',
         fontWeight: '700',
       },
     },
@@ -90,6 +90,9 @@ export default function Button({
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         disabled={disabled}
+        accessibilityRole="button"
+        accessibilityLabel={title}
+        accessibilityState={{ disabled }}
         style={[
           styles.base,
           sizeStyles[size].container,

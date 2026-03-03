@@ -168,7 +168,7 @@ export function selectWeekTasks(
 
 /**
  * Selecteert 7 interactieve taken per week.
- * Leermodules zitten niet meer in weektaken — die hebben een eigen tab.
+ * Leermodules zitten niet meer in weektaken - die hebben een eigen tab.
  *
  * @param completedTaskIds - IDs van eerder voltooide taken die uitgesloten
  *   worden. Als de pool daardoor te klein wordt (<7), worden de oudste

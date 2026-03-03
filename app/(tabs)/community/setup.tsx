@@ -33,7 +33,7 @@ export default function CommunitySetup() {
   const [step, setStep] = useState<Step>('profile');
   const [loading, setLoading] = useState(false);
 
-  // Profile — pre-fill from existing community profile
+  // Profile - pre-fill from existing community profile
   const [bio, setBio] = useState(communityProfile?.bio ?? '');
 
   // Location

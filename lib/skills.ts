@@ -19,7 +19,7 @@ export const SKILLS: Record<Skill, SkillInfo> = {
   },
   Emotiecoaching: {
     label: "Emotiecoaching",
-    omschrijving: "Gevoelens herkennen, benoemen en begeleiden — bij je kind én jezelf.",
+    omschrijving: "Gevoelens herkennen, benoemen en begeleiden - bij je kind en jezelf.",
     microTip: "Labelen kalmeert. Zeg gewoon wat je ziet: 'je bent boos.'",
     emoji: "❤️",
     icon: "heart",
@@ -41,14 +41,14 @@ export const SKILLS: Record<Skill, SkillInfo> = {
   Autonomie: {
     label: "Autonomie",
     omschrijving: "Je kind laten groeien door zelf te doen, kiezen en leren van fouten.",
-    microTip: "Vraag 'wat is je plan?' — dat ene zinnetje bouwt meer dan een uur uitleggen.",
+    microTip: "Vraag 'wat is je plan?' - dat ene zinnetje bouwt meer dan een uur uitleggen.",
     emoji: "🚀",
     icon: "sprout",
   },
   Herstel: {
     label: "Herstel",
     omschrijving: "Na een conflict de relatie herstellen en verbinding terugbrengen.",
-    microTip: "Sorry zeggen als vader is geen zwakte — het is het sterkste wat je kunt doen.",
+    microTip: "Sorry zeggen als vader is geen zwakte - het is het sterkste wat je kunt doen.",
     emoji: "🔧",
     icon: "refreshCw",
   },

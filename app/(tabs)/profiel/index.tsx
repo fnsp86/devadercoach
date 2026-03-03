@@ -13,6 +13,7 @@ import BadgeIcon from '@/components/BadgeIcon';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Haptics from 'expo-haptics';
 import { useTheme } from '@/lib/theme';
 import { useStore } from '@/lib/store';
 import { useAuth } from '@/lib/auth';
@@ -20,7 +21,7 @@ import { deleteOwnAccount } from '@/lib/supabase';
 import Card from '@/components/Card';
 import Toggle from '@/components/Toggle';
 import Button from '@/components/Button';
-import { getLevelFromXP, getProgressToNextLevel, ALL_BADGES } from '@/lib/gamification-types';
+import { getLevelFromXP, getProgressToNextLevel, ALL_BADGES, XP_WEEK_BONUS } from '@/lib/gamification-types';
 import { rarityColors, SKILL_COLORS } from '@/lib/colors';
 import { DOEL_SKILL_MAP } from '@/lib/task-selector';
 import type { Skill } from '@/lib/types';
@@ -36,6 +37,8 @@ interface NotificationSettings {
   quizReminder: boolean;
   weekCompleteReminder: boolean;
   streakReminder: boolean;
+  quoteHour: number;
+  reminderHour: number;
 }
 
 const DEFAULT_NOTIFICATIONS: NotificationSettings = {
@@ -46,13 +49,13 @@ const DEFAULT_NOTIFICATIONS: NotificationSettings = {
   quizReminder: true,
   weekCompleteReminder: true,
   streakReminder: true,
+  quoteHour: 8,
+  reminderHour: 18,
 };
-
-const XP_WEEK_BONUS = 50;
 
 export default function ProfielScreen() {
   const { colors, isDark, toggleTheme } = useTheme();
-  const { profile, clearAll, saveForUser, weekTaskCompletions, unlockedBadges, badgeUnlockDates, pulseCheckIns, journalEntries } = useStore();
+  const { profile, clearAll, saveForUser, weekTaskCompletions, unlockedBadges, badgeUnlockDates, pulseCheckIns, isPaused, setPaused } = useStore();
   const { signOut, user, communityProfile } = useAuth();
   const router = useRouter();
 
@@ -60,7 +63,6 @@ export default function ProfielScreen() {
 
   // Echte taken (excl. wekelijkse reflectievragen) voor teller
   // Reflectievragen hebben IDs als refl_2026-02-23_0 (met datum)
-  // Reflectie-skill taken hebben IDs als refl_02_5 (zonder datum)
   const taskCompletions = useMemo(
     () => weekTaskCompletions.filter((c) => !/^refl_\d{4}-/.test(c.taskId)),
     [weekTaskCompletions],
@@ -110,28 +112,27 @@ export default function ProfielScreen() {
       try {
         const stored = await AsyncStorage.getItem(NOTIFICATIONS_KEY);
         if (stored) setNotifications(JSON.parse(stored));
-      } catch {}
+      } catch (e) { console.error('[profiel] Failed to load notification settings:', e); }
     })();
   }, []);
 
-  const updateNotification = useCallback((key: keyof NotificationSettings, value: boolean) => {
+  const updateNotification = useCallback((key: keyof NotificationSettings, value: boolean | number) => {
     setNotifications((prev) => {
       const updated = { ...prev, [key]: value };
-      AsyncStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(updated)).catch(() => {});
+      AsyncStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(updated)).catch((e) => console.error('[profiel] Failed to save notification settings:', e));
 
       // Schedule/cancel quote notifications
-      if (key === 'dagelijksQuote') {
-        if (value) {
-          scheduleDailyQuoteNotifications().catch(() => {});
+      if (key === 'dagelijksQuote' || key === 'quoteHour') {
+        if (updated.dagelijksQuote) {
+          scheduleDailyQuoteNotifications(updated.quoteHour).catch(() => {});
         } else {
           cancelDailyQuoteNotifications().catch(() => {});
         }
       }
 
       // Schedule/cancel task reminder notifications
-      if (key === 'taakReminder') {
-        if (value) {
-          // Calculate incomplete tasks and schedule
+      if (key === 'taakReminder' || key === 'reminderHour') {
+        if (updated.taakReminder) {
           (async () => {
             try {
               const cacheStr = await AsyncStorage.getItem('vc-week-tasks-cache');
@@ -146,7 +147,7 @@ export default function ProfielScreen() {
                 );
                 const incomplete = (cache.taskIds as string[]).filter((id: string) => !completedIds.has(id)).length;
                 if (incomplete > 0) {
-                  await scheduleTaskReminderNotifications(incomplete);
+                  await scheduleTaskReminderNotifications(incomplete, updated.reminderHour);
                 }
               }
             } catch {}
@@ -193,37 +194,49 @@ export default function ProfielScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Avatar + Level header — tap to edit */}
-        <Pressable
-          onPress={() => router.push('/(tabs)/profiel/edit' as any)}
-          style={styles.profileHeader}
-        >
-          {communityProfile?.avatar_url ? (
-            <Image source={{ uri: communityProfile.avatar_url }} style={styles.avatar} />
-          ) : (
-            <View style={[styles.avatar, { backgroundColor: colors.amber }]}>
-              <Text style={styles.avatarText}>{initials}</Text>
-            </View>
-          )}
-          <View style={styles.profileHeaderText}>
-            <Text style={[styles.profileName, { color: colors.text }]}>
+        {/* Avatar + Name (tap → edit) | Level + XP (tap → voortgang) */}
+        <View style={styles.profileHeader}>
+          <Pressable
+            onPress={() => router.push('/(tabs)/profiel/edit' as any)}
+            style={styles.profileHeaderLeft}
+          >
+            {communityProfile?.avatar_url ? (
+              <Image source={{ uri: communityProfile.avatar_url }} style={styles.avatar} />
+            ) : (
+              <View style={[styles.avatar, { backgroundColor: colors.amber }]}>
+                <Text style={styles.avatarText}>{initials}</Text>
+              </View>
+            )}
+            <Text style={[styles.profileName, { color: colors.text }]} numberOfLines={1}>
               {profile?.naam || 'Profiel'}
             </Text>
-            <View style={styles.levelRow}>
-              <Text style={[styles.levelBadge, { color: colors.amber }]}>
-                Lv.{currentLevel.level} · {currentLevel.title}
-              </Text>
-              <Text style={[styles.xpCount, { color: colors.text3 }]}>
-                {totalXP} XP
-              </Text>
-            </View>
-          </View>
-          <InlineIcon name="arrowRight" size={16} color={colors.text3} />
-        </Pressable>
+          </Pressable>
+          <Pressable
+            onPress={() => router.push('/(tabs)/voortgang' as any)}
+            style={[styles.levelTapTarget, { backgroundColor: colors.amberDim, borderColor: colors.amber + '30' }]}
+          >
+            <Text style={[styles.levelBadge, { color: colors.amber }]}>
+              Lv.{currentLevel.level}
+            </Text>
+            <Text style={[styles.xpCount, { color: colors.text3 }]}>
+              {totalXP} XP
+            </Text>
+            <InlineIcon name="arrowRight" size={12} color={colors.text3} />
+          </Pressable>
+        </View>
 
         {/* Score overview */}
         <Card style={{ marginTop: 16 }}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Score</Text>
+          <Pressable
+            onPress={() => router.push('/(tabs)/voortgang' as any)}
+            style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}
+          >
+            <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 0 }]}>Score</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+              <Text style={{ fontSize: 12, fontWeight: '600', color: colors.text3 }}>Voortgang</Text>
+              <InlineIcon name="arrowRight" size={12} color={colors.text3} />
+            </View>
+          </Pressable>
 
           {/* XP progress bar */}
           <View style={[styles.xpBarTrack, { backgroundColor: colors.border }]}>
@@ -319,59 +332,22 @@ export default function ProfielScreen() {
           )}
         </Card>
 
-        {/* Reflecties */}
-        <Card style={{ marginTop: 16 }}>
-          <View style={styles.cardHeaderRow}>
-            <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 0 }]}>Mijn Reflecties</Text>
-            <Pressable
-              onPress={() => router.push('/(tabs)/profiel/reflecties' as any)}
-              style={[styles.manageButton, { backgroundColor: colors.amberDim }]}
-            >
-              <Text style={[styles.manageButtonText, { color: colors.amber }]}>Bekijk alle →</Text>
-            </Pressable>
-          </View>
-          <Text style={[styles.emptyText, { color: colors.text3 }]}>
-            Je reflectie-notities uit leermodules vind je hier terug.
-          </Text>
-        </Card>
-
-        {/* Vader Dagboek */}
-        <Card style={{ marginTop: 16 }}>
-          <View style={styles.cardHeaderRow}>
-            <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 0 }]}>Vader Dagboek</Text>
-            <Pressable
-              onPress={() => router.push('/(tabs)/profiel/dagboek' as any)}
-              style={[styles.manageButton, { backgroundColor: colors.amberDim }]}
-            >
-              <Text style={[styles.manageButtonText, { color: colors.amber }]}>
-                {journalEntries.length > 0 ? `${journalEntries.length} notities →` : 'Bekijk →'}
-              </Text>
-            </Pressable>
-          </View>
-          <Text style={[styles.emptyText, { color: colors.text3 }]}>
-            Schrijf je wins en reflecties op. +5 XP per entry.
-          </Text>
-        </Card>
-
-        {/* Vader Pulse */}
-        <Card style={{ marginTop: 16 }}>
-          <View style={styles.cardHeaderRow}>
-            <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 0 }]}>Vader Pulse</Text>
-            <Pressable
-              onPress={() => router.push('/(tabs)/profiel/pulse' as any)}
-              style={[styles.manageButton, { backgroundColor: colors.amberDim }]}
-            >
-              <Text style={[styles.manageButtonText, { color: colors.amber }]}>
-                {pulseCheckIns.length > 0 ? `Alle ${pulseCheckIns.length} →` : 'Bekijk →'}
-              </Text>
-            </Pressable>
-          </View>
-          <Text style={[styles.emptyText, { color: colors.text3 }]}>
-            {pulseCheckIns.length > 0
-              ? 'Bekijk je dagelijkse check-ins en inzichten.'
-              : 'Je hebt nog geen Vader Pulse check-ins gedaan.'}
-          </Text>
-        </Card>
+        {/* Beloningen */}
+        <Pressable
+          onPress={() => router.push('/(tabs)/profiel/beloningen' as any)}
+          style={{ marginTop: 16 }}
+        >
+          <Card>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+              <InlineIcon name="gift" size={20} color={colors.amber} />
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 0 }]}>Beloningen</Text>
+                <Text style={{ fontSize: 12, color: colors.text3, marginTop: 2 }}>Kortingscodes voor cursussen</Text>
+              </View>
+              <InlineIcon name="arrowRight" size={16} color={colors.text3} />
+            </View>
+          </Card>
+        </Pressable>
 
         {/* Mijn Doelen */}
         <Card style={{ marginTop: 16 }}>
@@ -409,8 +385,13 @@ export default function ProfielScreen() {
           )}
         </Card>
 
+        {/* ── INSTELLINGEN ──────────────────────────────────────────── */}
+        <Text style={{ fontSize: 12, fontWeight: '700', letterSpacing: 1.5, color: colors.text3, marginTop: 24, marginBottom: 8, paddingHorizontal: 4 }}>
+          INSTELLINGEN
+        </Text>
+
         {/* Account */}
-        <Card style={{ marginTop: 16 }}>
+        <Card>
           <View style={styles.cardHeaderRow}>
             <Text style={[styles.sectionTitle, { color: colors.text, marginBottom: 0 }]}>Account</Text>
             <Pressable
@@ -422,12 +403,12 @@ export default function ProfielScreen() {
           </View>
           <View style={styles.infoRow}>
             <Text style={[styles.infoLabel, { color: colors.text3 }]}>Naam</Text>
-            <Text style={[styles.infoValue, { color: colors.text }]}>{profile?.naam || '—'}</Text>
+            <Text style={[styles.infoValue, { color: colors.text }]}>{profile?.naam || ' - '}</Text>
           </View>
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
           <View style={styles.infoRow}>
             <Text style={[styles.infoLabel, { color: colors.text3 }]}>Email</Text>
-            <Text style={[styles.infoValue, { color: colors.text }]}>{profile?.email || user?.email || '—'}</Text>
+            <Text style={[styles.infoValue, { color: colors.text }]}>{profile?.email || user?.email || ' - '}</Text>
           </View>
         </Card>
 
@@ -469,6 +450,35 @@ export default function ProfielScreen() {
           )}
         </Card>
 
+        {/* Pauze modus */}
+        <Card style={{ marginTop: 16 }}>
+          <Toggle
+            label="Pauze modus"
+            description={isPaused
+              ? 'Je streak is bevroren. Zet uit om verder te gaan.'
+              : 'Op vakantie? Zet aan om je streak te bevriezen.'}
+            value={isPaused}
+            onToggle={(val) => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              setPaused(val);
+              if (val) {
+                cancelDailyQuoteNotifications().catch(() => {});
+                cancelTaskReminderNotifications().catch(() => {});
+              } else if (notifications.dagelijksQuote) {
+                scheduleDailyQuoteNotifications(notifications.quoteHour).catch(() => {});
+              }
+            }}
+          />
+          {isPaused && (
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: colors.amberDim, borderRadius: 10, padding: 12, marginTop: 8 }}>
+              <InlineIcon name="pause" size={16} color={colors.amber} />
+              <Text style={{ fontSize: 13, color: colors.amber, fontWeight: '600', flex: 1 }}>
+                Streak bevroren. Geen taken of herinneringen tot je weer aanzet.
+              </Text>
+            </View>
+          )}
+        </Card>
+
         {/* Notifications */}
         <Card style={{ marginTop: 16 }}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Meldingen</Text>
@@ -478,17 +488,59 @@ export default function ProfielScreen() {
 
           <Toggle
             label="Dagelijkse wijsheid"
-            description="Elke ochtend om 08:00 een inspirerende vader-quote"
+            description={`Elke ochtend om ${String(notifications.quoteHour).padStart(2, '0')}:00 een inspirerende vader-quote`}
             value={notifications.dagelijksQuote}
             onToggle={(val) => updateNotification('dagelijksQuote', val)}
           />
+          {notifications.dagelijksQuote && (
+            <View style={styles.timeRow}>
+              {[7, 8, 9].map((h) => (
+                <Pressable
+                  key={h}
+                  onPress={() => updateNotification('quoteHour', h)}
+                  style={[
+                    styles.timeChip,
+                    {
+                      backgroundColor: notifications.quoteHour === h ? colors.amber : colors.surface2,
+                      borderColor: notifications.quoteHour === h ? colors.amber : colors.border,
+                    },
+                  ]}
+                >
+                  <Text style={{ fontSize: 13, fontWeight: '600', color: notifications.quoteHour === h ? '#000' : colors.text2 }}>
+                    {String(h).padStart(2, '0')}:00
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          )}
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
           <Toggle
             label="Taak herinnering"
-            description="Herinnering als je deze week nog geen taak hebt gedaan"
+            description={`Om ${String(notifications.reminderHour).padStart(2, '0')}:00 als je nog taken open hebt`}
             value={notifications.taakReminder}
             onToggle={(val) => updateNotification('taakReminder', val)}
           />
+          {notifications.taakReminder && (
+            <View style={styles.timeRow}>
+              {[17, 18, 19, 20].map((h) => (
+                <Pressable
+                  key={h}
+                  onPress={() => updateNotification('reminderHour', h)}
+                  style={[
+                    styles.timeChip,
+                    {
+                      backgroundColor: notifications.reminderHour === h ? colors.amber : colors.surface2,
+                      borderColor: notifications.reminderHour === h ? colors.amber : colors.border,
+                    },
+                  ]}
+                >
+                  <Text style={{ fontSize: 13, fontWeight: '600', color: notifications.reminderHour === h ? '#000' : colors.text2 }}>
+                    {String(h).padStart(2, '0')}:00
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          )}
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
           <Toggle
             label="Vader Pulse reminder"
@@ -671,11 +723,13 @@ const styles = StyleSheet.create({
   scroll: { flex: 1 },
   scrollContent: { padding: 20, paddingBottom: 40 },
 
-  profileHeader: { flexDirection: 'row', alignItems: 'center', gap: 16, marginBottom: 8 },
+  profileHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 8 },
+  profileHeaderLeft: { flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1, minWidth: 0 },
   avatar: { width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center' },
   avatarText: { color: '#000', fontSize: 20, fontWeight: '800' },
   profileHeaderText: { flex: 1 },
-  profileName: { fontSize: 22, fontWeight: '800', marginBottom: 4 },
+  profileName: { fontSize: 22, fontWeight: '800' },
+  levelTapTarget: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, borderWidth: 1 },
   levelRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   levelBadge: { fontSize: 13, fontWeight: '700' },
   xpCount: { fontSize: 13, fontWeight: '600' },
@@ -757,4 +811,6 @@ const styles = StyleSheet.create({
   dangerDescription: { fontSize: 14, lineHeight: 20, marginBottom: 16, marginTop: -4 },
   dangerButtonContainer: { alignSelf: 'flex-start' as const },
   bottomSpacer: { height: 20 },
+  timeRow: { flexDirection: 'row' as const, gap: 8, paddingLeft: 52, paddingTop: 4, paddingBottom: 8 },
+  timeChip: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, borderWidth: 1 },
 });

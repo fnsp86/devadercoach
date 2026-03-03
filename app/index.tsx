@@ -65,7 +65,7 @@ export default function IndexScreen() {
     );
   }
 
-  // Logged out but profile exists — welcome back
+  // Logged out but profile exists - welcome back
   if (profile && !session) {
     const initials = profile.naam ? profile.naam.slice(0, 2).toUpperCase() : '?';
     return (

@@ -21,11 +21,12 @@ function RootLayoutContent() {
     responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
       const data = response.notification.request.content.data;
       if (data?.type === 'daily_quote' || data?.type === 'task_reminder') {
-        router.push('/(tabs)/vandaag' as any);
+        router.navigate('/(tabs)/vandaag' as any);
       } else if (data?.type === 'duel' && data?.duelId) {
-        router.push('/(tabs)/training/duels' as any);
+        // Use navigate instead of push to prevent interrupting active training screens
+        router.navigate('/(tabs)/training/duels' as any);
       } else if (data?.conversationId) {
-        router.push(`/(tabs)/community/chat/${data.conversationId}` as any);
+        router.navigate(`/(tabs)/community/chat/${data.conversationId}` as any);
       }
     });
 

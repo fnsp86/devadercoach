@@ -119,7 +119,7 @@ export function getSkillRecommendations({
   const completedModuleSkills = new Set<Skill>();
   for (const [moduleId, progress] of Object.entries(stageProgress)) {
     if (progress.completedAt) {
-      // Module is volledig afgerond — zoek de skill
+      // Module is volledig afgerond - zoek de skill
       for (const sk of ALL_SKILLS) {
         const modules = getLearningModulesForSkill(sk);
         if (modules.some((m) => m.id === moduleId)) {

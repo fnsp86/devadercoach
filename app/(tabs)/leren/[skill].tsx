@@ -189,7 +189,7 @@ export default function SkillLearningModules() {
   const totalCount = modules.length;
   const pct = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
-  // Find "continue" module — first in_progress module
+  // Find "continue" module - first in_progress module
   const continueModule = moduleStatuses.find((m) => m.status === 'in_progress');
 
   // Estimated remaining time
@@ -460,7 +460,7 @@ export default function SkillLearningModules() {
               "{inzicht.quote}"
             </Text>
             <Text style={[styles.inzichtBron, { color: colors.text3 }]}>
-              — {inzicht.bron}
+              - {inzicht.bron}
             </Text>
           </View>
         )}

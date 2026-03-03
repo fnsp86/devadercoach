@@ -15,7 +15,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     instructions: [
       'Haal je baby rustig uit bed en maak oogcontact voordat je iets anders doet.',
       'Benoem zacht wat je ziet: "Goedemorgen, je bent wakker, wat fijn om je te zien."',
-      'Neem minstens twee minuten om je baby vast te houden zonder afleiding — geen telefoon.',
+      'Neem minstens twee minuten om je baby vast te houden zonder afleiding - geen telefoon.',
       'Let op de signalen van je baby: rekt hij zich uit, kijkt hij rond, maakt hij geluidjes?',
     ],
     reflection: 'Hoe voelde het om de dag te beginnen zonder haast? Merkte je iets nieuws aan je kind?',
@@ -55,7 +55,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
       'Sluit af met een korte buikknuffel en benoem: "Zo, lekker schoon, klaar voor het volgende avontuur."',
     ],
     reflection: 'Hoe vaak verschoon je op de automatische piloot? Wat veranderde er toen je bewust ademhaalde?',
-    scienceNote: 'Mindful parenting — bewust aanwezig zijn bij routinehandelingen — vermindert ouderlijke stress en verhoogt sensitieve responsiviteit (Duncan, Coatsworth & Greenberg, 2009, Clinical Child and Family Psychology Review).',
+    scienceNote: 'Mindful parenting - bewust aanwezig zijn bij routinehandelingen - vermindert ouderlijke stress en verhoogt sensitieve responsiviteit (Duncan, Coatsworth & Greenberg, 2009, Clinical Child and Family Psychology Review).',
     durationMin: 5,
   },
   {
@@ -70,7 +70,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
       'Wacht tot je peuter iets pakt of doet dat niet mag (bijv. aan het fornuis komen).',
       'Zeg rustig en kort "Nee, dat is heet" terwijl je het kind zachtjes weghaalt.',
       'Bied direct een alternatief aan: "Je mag wél met deze pan spelen" of leid af met een ander voorwerp.',
-      'Herhaal maximaal drie keer dezelfde boodschap — consistentie is belangrijker dan uitleg op deze leeftijd.',
+      'Herhaal maximaal drie keer dezelfde boodschap - consistentie is belangrijker dan uitleg op deze leeftijd.',
     ],
     reflection: 'Hoe reageerde je peuter op de grens? Voelde het natuurlijk om meteen een alternatief te bieden?',
     scienceNote: 'Zachte grenzen met herdirectie ondersteunen de ontwikkeling van internalisatie van regels bij peuters (Kochanska, 2002, Developmental Psychology).',
@@ -87,7 +87,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     instructions: [
       'Bereid fingerfood voor dat je peuter zelf kan pakken: stukjes banaan, brood, zachte groenten.',
       'Laat je peuter zelf pakken, voelen en proeven zonder het over te nemen.',
-      'Weersta de neiging om schoon te vegen tijdens het eten — rommel hoort erbij.',
+      'Weersta de neiging om schoon te vegen tijdens het eten - rommel hoort erbij.',
       'Benoem positief wat je ziet: "Jij pakt zelf de banaan, wat knap!" en sluit het eten samen af.',
     ],
     reflection: 'Hoe moeilijk was het om de controle los te laten? Wat liet je peuter je zien over zijn kunnen?',
@@ -103,13 +103,13 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     title: 'Herstel na ongeduldmoment',
     description: 'Herstel de verbinding nadat je per ongeluk te scherp reageerde op je baby.',
     instructions: [
-      'Erken bij jezelf dat je net te kortaf of ongeduldig was — dat is menselijk.',
+      'Erken bij jezelf dat je net te kortaf of ongeduldig was - dat is menselijk.',
       'Pak je baby op of ga op ooghoogte en zeg zacht: "Sorry lieverd, papa was even niet lief."',
       'Geef een knuffel of aai en laat je stem weer warm en rustig klinken.',
       'Neem een moment om te reflecteren: wat had je nodig om geduldiger te zijn?',
     ],
     reflection: 'Hoe voelde het om sorry te zeggen tegen je baby, ook al begrijpt hij de woorden nog niet?',
-    scienceNote: 'Herstelmomenten na interactiebreuken zijn cruciaal voor veilige gehechtheid — het gaat niet om perfectie maar om "good enough" ouderschap (Tronick & Gianino, 1986, Zero to Three).',
+    scienceNote: 'Herstelmomenten na interactiebreuken zijn cruciaal voor veilige gehechtheid - het gaat niet om perfectie maar om "good enough" ouderschap (Tronick & Gianino, 1986, Zero to Three).',
     durationMin: 5,
   },
   {
@@ -145,7 +145,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
       'Pas je aanpak aan op basis van wat je hebt geleerd en schrijf op wat er veranderde.',
     ],
     reflection: 'Welk patroon verraste je het meest? Hoe heeft observeren je begrip van je baby vergroot?',
-    scienceNote: 'Reflectief functioneren — het vermogen om het innerlijk van je kind te begrijpen — is een sterke voorspeller van veilige gehechtheid (Slade, 2005, Attachment & Human Development).',
+    scienceNote: 'Reflectief functioneren - het vermogen om het innerlijk van je kind te begrijpen - is een sterke voorspeller van veilige gehechtheid (Slade, 2005, Attachment & Human Development).',
     durationMin: 15,
   },
   {
@@ -176,7 +176,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     description: 'Creëer een vast ritueel voor het moment dat je thuiskomt van werk.',
     instructions: [
       'Spreek met je partner af dat je de eerste twee minuten volledig voor je baby bent als je thuiskomt.',
-      'Leg je tas en telefoon neer voordat je je baby begroet — wees er helemaal.',
+      'Leg je tas en telefoon neer voordat je je baby begroet - wees er helemaal.',
       'Gebruik elke keer dezelfde begroeting: "Papa is er weer! Wat heb ik je gemist!"',
       'Til je baby op, maak oogcontact en geef een knuffel voordat je iets anders doet.',
     ],
@@ -198,7 +198,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     description: 'Ga elke dag vijf minuten op de grond zitten en volg het spel van je kleuter.',
     instructions: [
       'Zet een timer op vijf minuten en ga naast je kind op de grond zitten.',
-      'Laat je kind bepalen wat jullie doen — volg zonder te sturen of suggesties te geven.',
+      'Laat je kind bepalen wat jullie doen - volg zonder te sturen of suggesties te geven.',
       'Benoem hardop wat je kind doet: "Jij bouwt een hoge toren met rode blokken."',
       'Als de timer gaat, sluit positief af: "Dat was leuk samen. Dankjewel dat ik mocht meespelen."',
     ],
@@ -236,7 +236,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
       'Geef een vooraankondiging: "Over vijf minuten gaan we tanden poetsen en naar bed."',
       'Bij de grens, wees duidelijk en warm: "Het is nu bedtijd. Welk boekje wil je vanavond?"',
       'Als je kind protesteert, erken het gevoel en houd de grens: "Je wilt nog spelen, dat snap ik. En het is bedtijd."',
-      'Houd het consequent — dezelfde drie stappen, elke avond, zonder uitzonderingen.',
+      'Houd het consequent - dezelfde drie stappen, elke avond, zonder uitzonderingen.',
     ],
     reflection: 'Hoe reageerde je kind op de voorspelbaarheid? Was het makkelijker of moeilijker dan je dacht?',
     scienceNote: 'Warme maar consistente grenzen bij bedtijdrituelen leiden tot minder slaapverzet en betere slaapkwaliteit bij peuters en kleuters (Mindell et al., 2006, Sleep).',
@@ -251,7 +251,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     title: 'Kleding kiezen met twee opties',
     description: 'Geef je kleuter elke ochtend een keuze uit twee outfits.',
     instructions: [
-      'Leg de avond ervoor twee geschikte outfits klaar — allebei "goed" zodat elke keuze oké is.',
+      'Leg de avond ervoor twee geschikte outfits klaar - allebei "goed" zodat elke keuze oké is.',
       "Laat je kind 's ochtends kiezen: 'Wil je het rode shirt of het blauwe shirt?'",
       'Accepteer de keuze zonder commentaar, ook als de combinatie niet matcht.',
       'Benoem de autonomie: "Jij hebt zelf gekozen, wat fijn dat je dat kunt!"',
@@ -269,12 +269,12 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     title: 'Sorry-ritueel na schreeuwen',
     description: 'Maak een vast herstelritueel voor momenten waarop je je stem verhief.',
     instructions: [
-      'Wacht tot je zelf weer rustig bent — herstel werkt niet vanuit activatie.',
+      'Wacht tot je zelf weer rustig bent - herstel werkt niet vanuit activatie.',
       'Ga op ooghoogte bij je kind zitten en zeg: "Papa heeft net geschreeuwd. Dat was niet fijn voor jou."',
       'Benoem wat er bij jou speelde: "Ik was gestrest en dat is niet jouw schuld."',
       'Maak een vast herstelgebaar samen: een speciale knuffel, een high five, of handen op elkaars hart.',
     ],
-    reflection: 'Hoe reageerde je kind op je excuses? Merkte je opluchting — bij jezelf of bij je kind?',
+    reflection: 'Hoe reageerde je kind op je excuses? Merkte je opluchting - bij jezelf of bij je kind?',
     scienceNote: 'Herstel na interactiebreuken leert kinderen dat relaties bestand zijn tegen conflict en versterkt het vertrouwen (Siegel & Bryson, 2012, The Whole-Brain Child).',
     durationMin: 10,
   },
@@ -289,7 +289,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     instructions: [
       'Begin zelf met het noemen van een hoogtepunt van jouw dag in eenvoudige woorden.',
       'Vraag je kind: "Wat was het leukste dat je vandaag hebt gedaan?"',
-      'Luister zonder te corrigeren of door te vragen — accepteer wat je kind deelt.',
+      'Luister zonder te corrigeren of door te vragen - accepteer wat je kind deelt.',
       'Sluit af met samen iets te benoemen waar jullie morgen naar uitkijken.',
     ],
     reflection: 'Wat deelde je kind dat je verraste? Hoe veranderde het de sfeer aan tafel?',
@@ -311,7 +311,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
       'Bedenk één concrete aanpassing die je volgende week gaat proberen.',
     ],
     reflection: 'Welk patroon ontdekte je? Herken je iets van je eigen opvoeding in je triggers?',
-    scienceNote: 'Reflective functioning bij ouders — het vermogen eigen gedragspatronen te herkennen — vermindert intergenerationele overdracht van onveilige gehechtheid (Fonagy et al., 2002, Affect Regulation, Mentalization and the Development of the Self).',
+    scienceNote: 'Reflective functioning bij ouders - het vermogen eigen gedragspatronen te herkennen - vermindert intergenerationele overdracht van onveilige gehechtheid (Fonagy et al., 2002, Affect Regulation, Mentalization and the Development of the Self).',
     durationMin: 15,
   },
   {
@@ -325,7 +325,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     instructions: [
       'Leg na school vier kleuren klaar: rood (boos), blauw (verdrietig), geel (blij), groen (rustig).',
       'Vraag: "Welke kleur past bij hoe je je voelt na school vandaag?"',
-      'Laat je kind tekenen of kleuren terwijl je erbij zit — je hoeft niets te zeggen.',
+      'Laat je kind tekenen of kleuren terwijl je erbij zit - je hoeft niets te zeggen.',
       'Als je kind wil praten, luister dan en benoem: "Dus je voelt je een beetje blauw. Dat mag."',
     ],
     reflection: 'Welke kleur koos je kind het vaakst? Leerde je iets nieuws over hoe de schooldag voelt voor je kind?',
@@ -341,13 +341,13 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     title: 'Telefoonvrij avonduur',
     description: 'Creëer een dagelijks telefoonvrij uur tussen avondeten en bedtijd.',
     instructions: [
-      'Leg je telefoon op een vaste plek buiten de woonkamer — op stil, scherm naar beneden.',
+      'Leg je telefoon op een vaste plek buiten de woonkamer - op stil, scherm naar beneden.',
       'Vertel je kind: "De telefoon gaat slapen. Nu is het papa-en-jij-tijd."',
       'Vul het uur met wat er organisch komt: spelen, voorlezen, kletsen, samen opruimen.',
       'Evalueer na een week: hoe voelde dit voor jou en wat merkte je bij je kind?',
     ],
     reflection: 'Hoe vaak greep je automatisch naar je telefoon? Wat veranderde er in het contact met je kind?',
-    scienceNote: 'Technoference — onderbrekingen door technologie — is negatief geassocieerd met de kwaliteit van ouder-kindinteractie en kindgedrag (McDaniel & Radesky, 2018, Pediatric Research).',
+    scienceNote: 'Technoference - onderbrekingen door technologie - is negatief geassocieerd met de kwaliteit van ouder-kindinteractie en kindgedrag (McDaniel & Radesky, 2018, Pediatric Research).',
     durationMin: 15,
   },
   {
@@ -381,10 +381,10 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     title: 'Wandel-en-praat na school',
     description: 'Loop een vast rondje met je kind na school en luister naar zijn verhaal.',
     instructions: [
-      'Plan een kort wandelrondje van tien minuten na school — maak het een gewoonte.',
+      'Plan een kort wandelrondje van tien minuten na school - maak het een gewoonte.',
       'Begin niet met vragen over school. Zeg: "Vertel maar, wat wil je kwijt?"',
       'Luister actief: knik, herhaal kort wat je kind zegt, stel geen doorvragen.',
-      'Als je kind niets wil vertellen, loop dan samen in stilte — dat is ook verbinding.',
+      'Als je kind niets wil vertellen, loop dan samen in stilte - dat is ook verbinding.',
     ],
     reflection: 'Vertelde je kind meer tijdens het lopen dan wanneer je thuis vraagt? Waarom zou dat zo zijn?',
     scienceNote: 'Side-by-side activiteiten zoals wandelen verlagen de drempel voor emotionele communicatie bij kinderen, vooral bij jongens (Kindlon & Thompson, 1999, Raising Cain).',
@@ -437,7 +437,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     instructions: [
       'Geef je kind een karton en stiften en vraag: "Wat moet je allemaal doen voor school?"',
       'Laat je kind de stappen tekenen in de volgorde die hij logisch vindt.',
-      'Hang het bord op een plek die je kind zelf kiest — zijn kamer, de badkamer, de gang.',
+      'Hang het bord op een plek die je kind zelf kiest - zijn kamer, de badkamer, de gang.',
       'Verwijs de komende week naar het bord in plaats van te commanderen: "Kijk eens op jouw planbord."',
     ],
     reflection: 'Had je kind een andere volgorde gekozen dan jij zou doen? Ging de ochtend soepeler met het bord?',
@@ -453,7 +453,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     title: 'Hersteloefening na ruzie',
     description: 'Gebruik een vast herstelgesprek na een conflict over huiswerk of taken.',
     instructions: [
-      'Wacht tot jullie allebei rustig zijn — minimaal twintig minuten na het conflict.',
+      'Wacht tot jullie allebei rustig zijn - minimaal twintig minuten na het conflict.',
       'Begin met je eigen aandeel: "Ik was gefrustreerd en ik had rustiger kunnen praten."',
       'Vraag je kind: "Hoe voelde dat voor jou? Wat had je liever gehad?"',
       'Maak samen een plan: "Hoe gaan we het volgende keer anders doen?" en schrijf het op.',
@@ -489,7 +489,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     title: 'Instopritueel met aandacht',
     description: 'Maak van het instoppen een bewust moment van aandacht en verbinding.',
     instructions: [
-      'Zit elke avond minstens vijf minuten op de bedrand — niet staand, niet gehaast.',
+      'Zit elke avond minstens vijf minuten op de bedrand - niet staand, niet gehaast.',
       'Stel één open vraag: "Waar denk je aan vanavond?" of "Wat zit er in je hoofd?"',
       'Luister zonder advies te geven. Zeg dingen als: "Dat klinkt belangrijk" of "Dank je dat je dat deelt."',
       'Sluit af met een vast ritueel: een zin, een gebaar, een liedje dat van jullie samen is.',
@@ -513,7 +513,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
       'Zeg bij terugkomst: "Bedankt voor het wachten. Nu ben ik er weer helemaal."',
     ],
     reflection: 'Hoe reageerde je kind op het signaalwoord? Voelde het als zwakte of juist als kracht?',
-    scienceNote: 'Ouders die emotieregulatie modelleren — inclusief het nemen van pauzes — leren kinderen dat gevoelens beheersbaar zijn (Morris et al., 2007, Clinical Psychology Review).',
+    scienceNote: 'Ouders die emotieregulatie modelleren - inclusief het nemen van pauzes - leren kinderen dat gevoelens beheersbaar zijn (Morris et al., 2007, Clinical Psychology Review).',
     durationMin: 5,
   },
   {
@@ -566,7 +566,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     description: 'Laat je kind zelf een weekplanning maken voor huiswerk en toetsen.',
     instructions: [
       'Geef je kind een weekplanner (papier of digitaal) en vraag: "Hoe wil jij je huiswerk deze week verdelen?"',
-      'Laat je kind zelf invullen zonder te corrigeren — ook als jij het anders zou doen.',
+      'Laat je kind zelf invullen zonder te corrigeren - ook als jij het anders zou doen.',
       'Spreek af dat je aan het eind van de week samen evalueert: "Wat werkte goed, wat wil je aanpassen?"',
       'Bied hulp aan als je kind erom vraagt, maar neem het niet over: "Ik help je denken, niet doen."',
     ],
@@ -619,7 +619,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     title: 'Eerlijk over fout als vader',
     description: 'Deel een moment waarop je als vader een fout maakte en wat je ervan leerde.',
     instructions: [
-      'Kies een geschikt moment — niet als reactie op iets dat je kind fout deed.',
+      'Kies een geschikt moment - niet als reactie op iets dat je kind fout deed.',
       'Vertel eerlijk: "Weet je, gister toen ik [situatie], had ik dat beter kunnen doen."',
       'Leg uit wat je anders had gewild en waarom: "Ik had beter eerst kunnen luisteren."',
       'Vraag je kind: "Hoe voelde dat voor jou? Is er iets dat je wilt dat ik weet?"',
@@ -639,7 +639,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     instructions: [
       'Zet tijdens de autorit de radio uit en je telefoon op niet-storen.',
       'Begin niet met directe vragen maar met een observatie: "Ik hoorde dat jullie een nieuw project hebben op school."',
-      'Laat stiltes vallen — je kind hoeft niet meteen te praten.',
+      'Laat stiltes vallen - je kind hoeft niet meteen te praten.',
       'Als het gesprek op gang komt, luister meer dan je praat. De auto is een veilige plek omdat er geen oogcontact nodig is.',
     ],
     reflection: 'Vertelde je kind meer dan gebruikelijk? Wat maakt de auto anders dan de eettafel?',
@@ -675,7 +675,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     instructions: [
       'Laat je kind een recept kiezen dat jullie samen gaan maken.',
       'Verdeel de taken eerlijk en geef je kind echte verantwoordelijkheid: snijden, roeren, kruiden.',
-      'Praat tijdens het koken over van alles — het hoeft niet diep te zijn, gezelligheid telt.',
+      'Praat tijdens het koken over van alles - het hoeft niet diep te zijn, gezelligheid telt.',
       'Eet samen op wat jullie gemaakt hebben en benoem: "Dit hebben wij samen gemaakt. Lekker hè?"',
     ],
     reflection: 'Hoe was de sfeer tijdens het koken? Merkte je een ander soort gesprek dan aan de eettafel?',
@@ -749,7 +749,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     title: 'Beschikbaar zijn zonder druk',
     description: 'Wees fysiek aanwezig in de buurt van je tiener zonder iets te verwachten.',
     instructions: [
-      'Ga in dezelfde ruimte zitten als je tiener — lees een boek, werk aan iets.',
+      'Ga in dezelfde ruimte zitten als je tiener - lees een boek, werk aan iets.',
       'Zeg niets speciaals, stel geen vragen. Wees er gewoon.',
       'Als je tiener een opmerking maakt of iets deelt, reageer warm maar kort.',
       'Doe dit minstens drie avonden deze week en merk op wat er verandert.',
@@ -767,7 +767,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     title: 'Luisteren zonder oordeel',
     description: 'Oefen met luisteren naar je tiener zonder te oordelen of te adviseren.',
     instructions: [
-      'Wacht tot je tiener iets deelt — over school, vrienden, sociale media, wat dan ook.',
+      'Wacht tot je tiener iets deelt - over school, vrienden, sociale media, wat dan ook.',
       'Luister volledig: geen telefoon, geen onderbreking, geen "in mijn tijd...".',
       'Reflecteer terug wat je hoort: "Dus je voelt je [gevoel] omdat [situatie]. Klopt dat?"',
       'Vraag alleen: "Wil je dat ik meedenk of wil je dat ik luister?" en respecteer het antwoord.',
@@ -822,7 +822,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     description: 'Laat je tiener zelf het weekendprogramma invullen, inclusief verantwoordelijkheden.',
     instructions: [
       'Bespreek op vrijdagavond samen het weekend: "Wat wil je dit weekend doen? Welke taken pakken we aan?"',
-      'Laat je tiener zelf kiezen wanneer hij taken doet — respecteer zijn planning.',
+      'Laat je tiener zelf kiezen wanneer hij taken doet - respecteer zijn planning.',
       'Spreek alleen het eindresultaat af, niet de route: "Zondag voor 17:00 moet je kamer opgeruimd zijn."',
       'Geef zondag feedback: "Je hebt het gedaan op jouw manier. Hoe vond je dat gaan?"',
     ],
@@ -839,7 +839,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     title: 'Doorbreken van de koude muur',
     description: 'Neem het initiatief na een langere periode van afstand of stilte met je tiener.',
     instructions: [
-      'Erken bij jezelf dat er afstand is gegroeid — dat is pijnlijk maar normaal.',
+      'Erken bij jezelf dat er afstand is gegroeid - dat is pijnlijk maar normaal.',
       'Zoek een laagdrempelig moment (in de auto, bij het eten) en zeg: "Ik merk dat het minder makkelijk gaat tussen ons. Dat vind ik jammer."',
       'Neem verantwoordelijkheid voor je eigen aandeel: "Misschien heb ik te veel geduwd of te weinig geluisterd."',
       'Stel een klein, concreet voorstel: "Zullen we dit weekend iets samen doen? Jij mag kiezen wat."',
@@ -857,7 +857,7 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     title: 'Meedoen in hun wereld',
     description: 'Toon oprechte interesse in iets waar je tiener enthousiast over is.',
     instructions: [
-      'Vraag je tiener: "Vertel eens over [game/muziek/sport/serie] — ik wil het begrijpen."',
+      'Vraag je tiener: "Vertel eens over [game/muziek/sport/serie] - ik wil het begrijpen."',
       'Luister alsof je een nieuw vak leert. Stel nieuwsgierige vragen, geen oordelende.',
       'Probeer het zelf: kijk een aflevering, luister naar een nummer, speel een potje mee.',
       'Deel je eerlijke ervaring: "Ik snap nu beter waarom je dit leuk vindt, ook al is het niet mijn ding."',
@@ -893,13 +893,13 @@ export const INTERACTIVE_TASKS_24: InteractiveTask[] = [
     title: 'Ochtendroutine zonder strijd',
     description: 'Laat je tiener zelf de gevolgen ervaren van een slechte ochtendroutine.',
     instructions: [
-      'Stop met wekken, aanjagen en waarschuwen — laat je tiener zelf verantwoordelijk zijn.',
+      'Stop met wekken, aanjagen en waarschuwen - laat je tiener zelf verantwoordelijk zijn.',
       'Leg van tevoren uit: "Vanaf nu is de ochtend jouw verantwoordelijkheid. Ik vertrouw erop dat je het kunt."',
       'Als het misgaat (te laat, ontbijt vergeten), reageer neutraal: "Dat is vervelend. Hoe ga je het morgen anders doen?"',
       'Geef een compliment als het goed gaat: "Je hebt het zelf geregeld. Knap."',
     ],
     reflection: 'Hoe moeilijk was het om niet in te grijpen? Wat leerde je tiener van de natuurlijke gevolgen?',
-    scienceNote: 'Natuurlijke gevolgen laten ervaren — binnen veilige grenzen — bevordert zelfverantwoordelijkheid en executieve functies bij adolescenten (Steinberg, 2004, The 10 Basic Principles of Good Parenting).',
+    scienceNote: 'Natuurlijke gevolgen laten ervaren - binnen veilige grenzen - bevordert zelfverantwoordelijkheid en executieve functies bij adolescenten (Steinberg, 2004, The 10 Basic Principles of Good Parenting).',
     durationMin: 5,
   },
   {

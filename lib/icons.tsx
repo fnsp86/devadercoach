@@ -10,7 +10,7 @@ import {
   EllipsisVertical,
   BookMarked, X, ShoppingCart, BedDouble, UtensilsCrossed, Baby,
   Shirt, Smartphone, Gamepad2, TreePine, Dog, Car, Moon, Users,
-  Volume2, Ban, Hand, Bike, Footprints, Snowflake, Mail, PenLine, Trash2, type LucideIcon,
+  Volume2, Ban, Hand, Bike, Footprints, Snowflake, Mail, PenLine, Trash2, Gift, Copy, type LucideIcon,
 } from 'lucide-react-native';
 
 // ─── Icon Registry ──────────────────────────────────────────────
@@ -89,6 +89,8 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   mail: Mail,
   penLine: PenLine,
   trash: Trash2,
+  gift: Gift,
+  copy: Copy,
 };
 
 export type IconName = keyof typeof ICON_MAP;
@@ -111,7 +113,7 @@ interface AppIconProps {
   size?: IconSize;
   /** 'compact' = icon only, 'featured' = icon + background circle */
   variant?: 'compact' | 'featured';
-  /** Icon color — overrides default */
+  /** Icon color - overrides default */
   color?: string;
   /** Background color for 'featured' variant */
   bgColor?: string;

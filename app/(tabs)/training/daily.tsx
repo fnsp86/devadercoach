@@ -20,6 +20,7 @@ import {
 } from '@/lib/daily-arena';
 import { submitDailyArenaScore } from '@/lib/supabase';
 import { checkAndUnlockBadges } from '@/lib/badge-checker';
+import { processBadgeRewards } from '@/lib/badge-rewards';
 import GamificationPopup from '@/components/GamificationPopup';
 import type { GamificationEvent } from '@/components/GamificationPopup';
 import { SKILL_COLORS } from '@/lib/colors';
@@ -65,6 +66,10 @@ export default function DailyArenaScreen() {
 
   // ── Timer logic ──
 
+  // Use ref so the interval always sees the latest isAnswered value
+  const isAnsweredRef = useRef(isAnswered);
+  isAnsweredRef.current = isAnswered;
+
   const stopTimer = useCallback(() => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
@@ -90,7 +95,12 @@ export default function DailyArenaScreen() {
       setTimeLeft(Math.ceil(remaining));
       if (remaining <= 0) {
         stopTimer();
-        handleTimeout();
+        // Check ref to avoid stale closure
+        if (!isAnsweredRef.current) {
+          setIsAnswered(true);
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+          setResults((prev) => [...prev, { correct: false, xp: 0, timeMs: TIMER_SECONDS * 1000 }]);
+        }
       }
     }, 100);
   }, [stopTimer]);
@@ -100,16 +110,7 @@ export default function DailyArenaScreen() {
       startTimer();
     }
     return stopTimer;
-  }, [currentIndex, showCompletion]);
-
-  // ── Answer handling ──
-
-  function handleTimeout() {
-    if (isAnswered) return;
-    setIsAnswered(true);
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-    setResults((prev) => [...prev, { correct: false, xp: 0, timeMs: TIMER_SECONDS * 1000 }]);
-  }
+  }, [currentIndex, showCompletion, startTimer]);
 
   function handleSelectOption(optionId: string) {
     if (isAnswered || !currentItem) return;
@@ -158,8 +159,10 @@ export default function DailyArenaScreen() {
   }
 
   async function handleQuizComplete() {
-    setShowCompletion(true);
     stopTimer();
+    // Set completion FIRST so the completion screen shows before
+    // alreadyPlayed guard can kick in from the store update
+    setShowCompletion(true);
 
     const correctCount = results.length > 0
       ? results.filter((r) => r.correct).length
@@ -167,18 +170,22 @@ export default function DailyArenaScreen() {
     const totalTimeMs = results.reduce((sum, r) => sum + r.timeMs, 0);
     const score = totalXP;
 
-    // Update daily arena streak
-    store.updateDailyArena(todayStr);
-
-    // Check for new badges
+    // Check for new badges (before store update changes streak)
     const newBadges = checkAndUnlockBadges(store, {
       source: 'daily_duel',
-      dailyArenaStreak: store.dailyArenaStreak,
+      dailyArenaStreak: store.dailyArenaStreak + 1,
       dailyArenaCorrect: correctCount,
     });
     if (newBadges.length > 0) {
-      setGamificationEvent({ type: 'badge', badge: newBadges[0] });
+      processBadgeRewards(newBadges, user?.email).then((evt) => {
+        if (evt) setGamificationEvent(evt);
+      });
     }
+
+    // Delay store update to next tick so React flushes showCompletion first
+    setTimeout(() => {
+      store.updateDailyArena(todayStr);
+    }, 0);
 
     // Submit to leaderboard
     if (user?.id) {

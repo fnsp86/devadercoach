@@ -36,6 +36,7 @@ import type { ThemeTag, CompletionStatus } from '@/lib/types';
 import { getLevelFromXP, getComboMultiplier } from '@/lib/gamification-types';
 import { getWijsheidVanDeDag } from '@/lib/vader-wijsheid';
 import { checkAndUnlockBadges } from '@/lib/badge-checker';
+import { processBadgeRewards } from '@/lib/badge-rewards';
 import GamificationPopup from '@/components/GamificationPopup';
 import type { GamificationEvent } from '@/components/GamificationPopup';
 import { ALL_SKILLS } from '@/lib/skills';
@@ -169,6 +170,19 @@ function TaskCard({
   const diffColor = DIFFICULTY_COLOR[task.difficulty] ?? '#FBBF24';
   const xp = (task as any).points ?? (task as any).xpReward ?? 10;
 
+  // Klap in zodra taak is afgevinkt (alleen bij overgang naar done)
+  const prevDone = useRef(done);
+  useEffect(() => {
+    if (done && !prevDone.current && expanded) {
+      const handle = InteractionManager.runAfterInteractions(() => {
+        setExpanded(false);
+      });
+      prevDone.current = done;
+      return () => handle.cancel();
+    }
+    prevDone.current = done;
+  }, [done, expanded]);
+
   // Afgeronde taken zijn standaard ingeklapt
   const toggle = () => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); setExpanded((e) => !e); };
 
@@ -211,7 +225,7 @@ function TaskCard({
         },
       ]}
     >
-      {/* Pills row — expandable header */}
+      {/* Pills row - expandable header */}
       <Pressable onPress={toggle} style={[tcStyles.topRow, { backgroundColor: expanded ? skillColor + '08' : 'transparent', borderRadius: 10, marginHorizontal: -8, paddingHorizontal: 8 }]}>
         <View style={tcStyles.pills}>
           <View style={[tcStyles.pill, { backgroundColor: skillColor + '22' }]}>
@@ -411,7 +425,7 @@ function PulseModal({
   const skillColor = SKILL_COLOR[question.skill] ?? '#667eea';
 
   function handleAnswer(i: number) {
-    if (showInsight) return;
+    if (selected === i) return;
     setSelected(i);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setShowInsight(true);
@@ -467,11 +481,11 @@ function PulseModal({
                       backgroundColor: isSelected ? skillColor + '22' : colors.surface,
                       borderColor: isSelected ? skillColor : colors.border,
                       borderWidth: isSelected ? 2 : 1,
-                      opacity: showInsight && !isSelected ? 0.45 : 1,
+                      opacity: showInsight && !isSelected ? 0.6 : 1,
                     },
                   ]}
                 >
-                  <Text style={pmStyles.bullet}>{isSelected ? '●' : isLast ? '—' : '○'}</Text>
+                  <Text style={pmStyles.bullet}>{isSelected ? '●' : isLast ? ' - ' : '○'}</Text>
                   <Text
                     style={[
                       pmStyles.answerText,
@@ -629,7 +643,7 @@ function OutcomeModal({
             Hoe is deze oefening gegaan?
           </Text>
           <Text style={[omStyles.honesty, { color: colors.text3 }]}>
-            Eerlijkheid levert +2 XP op — ongeacht het resultaat
+            Eerlijkheid levert +2 XP op - ongeacht het resultaat
           </Text>
 
           {/* Opties */}
@@ -913,6 +927,8 @@ export default function WeekScreen() {
     taskOutcomes,
     pulseCheckIns,
     stageProgress,
+    isPaused,
+    setPaused,
   } = store;
 
   const [pulseVisible, setPulseVisible] = useState(false);
@@ -956,13 +972,13 @@ export default function WeekScreen() {
     return resolveActiveThemes(profile);
   }, [profile]);
 
-  // Skills afgeleid van doelen — voor taak-boosting
+  // Skills afgeleid van doelen - voor taak-boosting
   const doelSkills = useMemo(() => {
     if (!profile?.doelen || profile.doelen.length === 0) return [];
     return doelenToSkills(profile.doelen);
   }, [profile?.doelen]);
 
-  // Skill aanbeveling — subtiele tip in hero area
+  // Skill aanbeveling - subtiele tip in hero area
   const topRec = useMemo(() => {
     const recs = getTopRecommendedSkills({
       doelen: profile?.doelen,
@@ -980,6 +996,14 @@ export default function WeekScreen() {
     return getWeekNumber(weekKey, profile.startDate);
   }, [weekKey, profile]);
 
+  // Gefaseerde introductie: bouw het programma geleidelijk op
+  const disclosure = useMemo(() => ({
+    maxTasks: weekNumber <= 1 ? 3 : weekNumber <= 2 ? 5 : 7,
+    maxReflections: weekNumber <= 1 ? 1 : weekNumber <= 2 ? 2 : 99,
+    showJournal: weekNumber >= 2,
+    showLearnBanner: weekNumber >= 2,
+  }), [weekNumber]);
+
   // Verzamel alle voltooide taak-IDs (excl. reflecties en huidige week)
   const completedTaskIds = useMemo(() => {
     return weekTaskCompletions
@@ -987,7 +1011,7 @@ export default function WeekScreen() {
       .map((c) => c.taskId);
   }, [weekTaskCompletions, weekKey]);
 
-  // 7 taken per week — gecached per weekKey zodat ze niet mid-week wijzigen
+  // 7 taken per week - gecached per weekKey zodat ze niet mid-week wijzigen
   // bij profielwijzigingen (bijv. gedragsproblemen toevoegen).
   // Nieuwe themes gaan pas in bij de volgende weekselectie.
   const WEEK_TASKS_CACHE_KEY = 'vc-week-tasks-cache';
@@ -1003,7 +1027,7 @@ export default function WeekScreen() {
         if (raw) {
           const cached: { weekKey: string; taskIds: string[] } = JSON.parse(raw);
           if (cached.weekKey === weekKey && cached.taskIds.length > 0) {
-            // Zelfde week — gebruik gecachede taken
+            // Zelfde week - gebruik gecachede taken
             const taskMap = new Map(ALL_INTERACTIVE_TASKS.map((t) => [t.id, t]));
             const restored = cached.taskIds.map((id) => taskMap.get(id)).filter(Boolean) as typeof ALL_INTERACTIVE_TASKS;
             if (restored.length > 0) {
@@ -1015,7 +1039,7 @@ export default function WeekScreen() {
         }
       } catch {}
 
-      // Geen cache of nieuwe week — bereken en sla op
+      // Geen cache of nieuwe week - bereken en sla op
       const computed = selectMixedWeekTasks(
         ALL_INTERACTIVE_TASKS, ageGroups, skills, weekKey, weekNumber, completedTaskIds, activeThemes, doelSkills, topRec?.skill,
       ).tasks;
@@ -1037,10 +1061,10 @@ export default function WeekScreen() {
     let targetWeek: string | null = null;
 
     if (dayOfWeek === 0) {
-      // Zondag — recap huidige week
+      // Zondag - recap huidige week
       targetWeek = weekKey;
     } else if (dayOfWeek === 1) {
-      // Maandag — recap vorige week
+      // Maandag - recap vorige week
       const prevMonday = new Date(today);
       prevMonday.setDate(prevMonday.getDate() - 7);
       const y = prevMonday.getFullYear();
@@ -1060,19 +1084,35 @@ export default function WeekScreen() {
 
   const weekTaskIds = useMemo(() => new Set(weekTasks.map(t => t.id)), [weekTasks]);
 
-  // Open taken bovenaan, afgeronde taken onderaan
+  // Zichtbare taken (beperkt door gefaseerde introductie)
+  const visibleTaskIds = useMemo(() => new Set(weekTasks.slice(0, disclosure.maxTasks).map(t => t.id)), [weekTasks, disclosure.maxTasks]);
+
+  // Top 2-3 skills van deze week voor de focus-lijn
+  const weekSkillFocus = useMemo(() => {
+    const counts: Record<string, number> = {};
+    weekTasks.forEach(t => { counts[t.skill] = (counts[t.skill] || 0) + 1; });
+    return Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([skill]) => skill);
+  }, [weekTasks]);
+
+  // Zichtbare taken gesorteerd: open bovenaan, afgerond onderaan
   const sortedTasks = useMemo(() => {
-    return [...weekTasks].sort((a, b) => {
+    const visible = weekTasks.slice(0, disclosure.maxTasks);
+    return [...visible].sort((a, b) => {
       const aDone = isWeekTaskDone(a.id, weekKey) ? 1 : 0;
       const bDone = isWeekTaskDone(b.id, weekKey) ? 1 : 0;
       return aDone - bDone;
     });
-  }, [weekTasks, weekTaskCompletions, weekKey]);
+  }, [weekTasks, disclosure.maxTasks, weekTaskCompletions, weekKey]);
 
-  const doneTasks = getWeekTasksDone(weekKey).filter(c => weekTaskIds.has(c.taskId));
+  const doneTasks = getWeekTasksDone(weekKey).filter(c => visibleTaskIds.has(c.taskId));
+  const allDoneTasks = getWeekTasksDone(weekKey).filter(c => weekTaskIds.has(c.taskId));
   const doneCount = doneTasks.length;
-  const weekComplete = doneCount >= 7;
-  const weekXP = doneTasks.reduce((sum, c) => sum + c.points, 0);
+  const weekTarget = disclosure.maxTasks;
+  const weekComplete = doneCount >= weekTarget;
+  const weekXP = allDoneTasks.reduce((sum, c) => sum + c.points, 0);
   const bonusXP = weekComplete ? 50 : 0;
 
   // Combo multiplier
@@ -1106,7 +1146,9 @@ export default function WeekScreen() {
       setTimeout(() => {
         const newBadges = checkAndUnlockBadges(store, { source: 'task' });
         if (newBadges.length > 0) {
-          setGamificationEvent({ type: 'badge', badge: newBadges[0] });
+          processBadgeRewards(newBadges, user?.email).then((evt) => {
+            if (evt) setGamificationEvent(evt);
+          });
         }
       }, 500);
     });
@@ -1144,29 +1186,31 @@ export default function WeekScreen() {
     });
 
     // Compute XP before and after to detect level-up
-    const completionsBefore = getWeekTasksDone(weekKey).filter(c => weekTaskIds.has(c.taskId));
-    const xpBefore = completionsBefore.reduce((s, c) => s + c.points, 0);
+    const allCompletionsBefore = getWeekTasksDone(weekKey).filter(c => weekTaskIds.has(c.taskId));
+    const xpBefore = allCompletionsBefore.reduce((s, c) => s + c.points, 0);
 
     const tasksPerWeekBefore: Record<string, number> = {};
-    completionsBefore.forEach((c) => {
+    allCompletionsBefore.forEach((c) => {
       tasksPerWeekBefore[c.weekKey] = (tasksPerWeekBefore[c.weekKey] || 0) + 1;
     });
-    const completedWeeksBefore = Object.values(tasksPerWeekBefore).filter((n) => n >= 7).length;
+    const completedWeeksBefore = Object.values(tasksPerWeekBefore).filter((n) => n >= weekTarget).length;
     const weekBonusBefore = completedWeeksBefore * 50;
     const totalXpBefore = xpBefore + weekBonusBefore;
 
     completeWeekTask(task.id, weekKey, xp);
 
-    const newDoneCount = completionsBefore.length + 1;
+    // newDoneCount telt alleen zichtbare taken (consistent met UI)
+    const visibleCompletionsBefore = allCompletionsBefore.filter(c => visibleTaskIds.has(c.taskId));
+    const newDoneCount = visibleCompletionsBefore.length + 1;
     const skillColor = SKILL_COLOR[task.skill] ?? '#667eea';
 
     // Toast met outcome feedback
     const outcomeEmoji = outcome === 'Gelukt' ? 'Goed bezig!' : outcome === 'Deels' ? 'Sterk!' : 'Eerlijk!';
-    if (newDoneCount >= 7) {
+    if (newDoneCount >= weekTarget) {
       setToast({ title: 'Week voltooid!', sub: `Weekbonus verdiend · Geweldig gedaan!`, color: '#D97706', icon: 'trophy', xp: 50 });
     } else {
       const celebration = TASK_CELEBRATIONS[newDoneCount % TASK_CELEBRATIONS.length];
-      setToast({ title: outcomeEmoji, sub: `${celebration.sub} · nog ${7 - newDoneCount} te gaan`, color: skillColor, icon: celebration.icon, xp });
+      setToast({ title: outcomeEmoji, sub: `${celebration.sub} · nog ${weekTarget - newDoneCount} te gaan`, color: skillColor, icon: celebration.icon, xp });
     }
 
     // Detect level-up or badge unlock after UI has settled
@@ -1174,7 +1218,7 @@ export default function WeekScreen() {
     InteractionManager.runAfterInteractions(() => {
       pendingTimers.current.push(
         setTimeout(() => {
-          const weekBonus = newDoneCount >= 7 ? 50 : 0;
+          const weekBonus = newDoneCount >= weekTarget ? 50 : 0;
           const totalXpAfter = xpBefore + xp + weekBonusBefore + weekBonus;
           const levelBefore = getLevelFromXP(totalXpBefore);
           const levelAfter = getLevelFromXP(totalXpAfter);
@@ -1186,13 +1230,15 @@ export default function WeekScreen() {
 
           const newBadges = checkAndUnlockBadges(store, { source: 'task' });
           if (newBadges.length > 0) {
-            setGamificationEvent({ type: 'badge', badge: newBadges[0] });
+            processBadgeRewards(newBadges, user?.email).then((evt) => {
+              if (evt) setGamificationEvent(evt);
+            });
           }
         }, 500),
       );
 
-      // Show share prompt only on 1st and 7th (last) task of the week
-      if (newDoneCount === 1 || newDoneCount >= 7) {
+      // Show share prompt only from week 2+ (community locked in week 1)
+      if (weekNumber >= 2 && newDoneCount >= weekTarget) {
         pendingTimers.current.push(
           setTimeout(() => {
             setSharePrompt({ task, outcome, note });
@@ -1200,7 +1246,7 @@ export default function WeekScreen() {
         );
       }
     });
-  }, [outcomeTask, completeWeekTask, addTaskOutcome, weekKey, getWeekTasksDone, weekTaskIds, combo.multiplier, recordActiveDay, store, clearPendingTimers]);
+  }, [outcomeTask, completeWeekTask, addTaskOutcome, weekKey, getWeekTasksDone, weekTaskIds, visibleTaskIds, combo.multiplier, recordActiveDay, store, clearPendingTimers, weekTarget, weekNumber]);
 
   return (
     <SafeAreaView style={[s.safe, { backgroundColor: colors.bg }]}>
@@ -1226,7 +1272,7 @@ export default function WeekScreen() {
               <Text style={[s.heroTitle, { color: colors.text }]}>Week voltooid!</Text>
             </View>
           ) : (
-            <Text style={[s.heroTitle, { color: colors.text }]}>{doneCount} van 7 taken gedaan</Text>
+            <Text style={[s.heroTitle, { color: colors.text }]}>{doneCount} van {weekTarget} taken gedaan</Text>
           )}
 
           {combo.multiplier > 1 && (
@@ -1238,7 +1284,19 @@ export default function WeekScreen() {
             </View>
           )}
 
-          <WeekProgressBar done={doneCount} total={7} color={colors.amber} />
+          <WeekProgressBar done={doneCount} total={weekTarget} color={colors.amber} />
+
+          {weekSkillFocus.length > 0 && (
+            <Text style={{ fontSize: 12, fontWeight: '600', color: colors.text3, marginTop: 6 }}>
+              Focus:{' '}
+              {weekSkillFocus.map((skill, i) => (
+                <Text key={skill}>
+                  {i > 0 ? ' \u00B7 ' : ''}
+                  <Text style={{ fontWeight: '700', color: SKILL_COLOR[skill as Skill] ?? '#667eea' }}>{skill}</Text>
+                </Text>
+              ))}
+            </Text>
+          )}
 
           {topRec && (
             <View style={[s.skillTip, { backgroundColor: SKILL_COLOR[topRec.skill] + '12' }]}>
@@ -1252,11 +1310,30 @@ export default function WeekScreen() {
 
           <View style={s.heroBottom}>
             <Text style={[s.heroBottomText, { color: colors.text3 }]}>
-              {weekComplete ? 'Alle taken afgerond!' : `Nog ${7 - doneCount} te gaan · doe ze in je eigen tempo`}
+              {weekComplete ? 'Alle taken afgerond!' : `Nog ${weekTarget - doneCount} te gaan · doe ze in je eigen tempo`}
             </Text>
             {weekComplete && <Text style={[s.heroBonus, { color: colors.amber }]}>+{bonusXP} XP weekbonus</Text>}
           </View>
         </LinearGradient>
+
+        {/* ── Pauze banner ─────────────────────────────────────────── */}
+        {isPaused && (
+          <View style={[s.pauseBanner, { backgroundColor: colors.amberDim, borderColor: colors.amber + '30' }]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+              <InlineIcon name="pause" size={20} color={colors.amber} />
+              <Text style={{ fontSize: 16, fontWeight: '700', color: colors.text }}>App staat op pauze</Text>
+            </View>
+            <Text style={{ fontSize: 14, color: colors.text2, lineHeight: 20, marginBottom: 12 }}>
+              Je streak is bevroren en je krijgt geen herinneringen. Geniet van je vrije tijd!
+            </Text>
+            <Pressable
+              onPress={() => setPaused(false)}
+              style={{ backgroundColor: colors.amber, borderRadius: 10, paddingVertical: 10, alignItems: 'center' }}
+            >
+              <Text style={{ fontSize: 14, fontWeight: '700', color: '#000' }}>Weer aan de slag</Text>
+            </Pressable>
+          </View>
+        )}
 
         {/* ── Vader Wijsheid (Level 2+) ──────────────────────────────── */}
         {wijsheid && (
@@ -1264,7 +1341,7 @@ export default function WeekScreen() {
             <InlineIcon name="messageCircle" size={14} color={colors.amber} />
             <Text style={[s.wijsheidText, { color: colors.text }]}>"{wijsheid.text}"</Text>
             {wijsheid.bron && (
-              <Text style={[s.wijsheidBron, { color: colors.text3 }]}>— {wijsheid.bron}</Text>
+              <Text style={[s.wijsheidBron, { color: colors.text3 }]}> -  {wijsheid.bron}</Text>
             )}
           </View>
         )}
@@ -1307,6 +1384,43 @@ export default function WeekScreen() {
           )}
         </Pressable>
 
+        {/* ── Week intro (week 1-2) ────────────────────────────────── */}
+        {weekNumber === 1 && (
+          <View style={[s.infoCard, { backgroundColor: colors.amber + '08', borderColor: colors.amber + '30' }]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+              <InlineIcon name="info" size={14} color={colors.amber} />
+              <Text style={[s.infoTitle, { color: colors.amber, marginBottom: 0 }]}>Je eerste week</Text>
+            </View>
+            <Text style={[s.infoText, { color: colors.text2 }]}>
+              Start rustig: 3 taken en een dagelijkse Vader Pulse check-in. Volgende week krijg je er meer bij.
+            </Text>
+          </View>
+        )}
+        {weekNumber === 2 && (
+          <View style={{ gap: 8 }}>
+            <Pressable
+              onPress={() => router.push('/(tabs)/community' as any)}
+              style={[s.infoCard, { backgroundColor: '#34D39910', borderColor: '#34D39930', flexDirection: 'row', alignItems: 'center', gap: 12 }]}
+            >
+              <InlineIcon name="users" size={20} color="#34D399" />
+              <View style={{ flex: 1 }}>
+                <Text style={[s.infoTitle, { color: '#34D399', marginBottom: 2 }]}>Community ontgrendeld!</Text>
+                <Text style={{ fontSize: 12, color: colors.text3 }}>Deel ervaringen met andere vaders</Text>
+              </View>
+              <InlineIcon name="arrowRight" size={14} color="#34D399" />
+            </Pressable>
+            <View style={[s.infoCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                <InlineIcon name="info" size={14} color={colors.text3} />
+                <Text style={[s.infoTitle, { color: colors.text, marginBottom: 0 }]}>Week 2</Text>
+              </View>
+              <Text style={[s.infoText, { color: colors.text2 }]}>
+                5 taken + de Win van de Dag. Vanaf week 3 krijg je het volledige programma met 7 taken, reflecties en meer.
+              </Text>
+            </View>
+          </View>
+        )}
+
         {/* ── Taken ────────────────────────────────────────────────────── */}
         <View style={s.tasksSection}>
           <Text style={[s.tasksSectionTitle, { color: colors.text }]}>Jouw weektaken</Text>
@@ -1330,7 +1444,15 @@ export default function WeekScreen() {
             );
           })}
 
-          {/* Reflectie van de week */}
+          {weekTasks.length > weekTarget && (
+            <View style={[s.infoCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <Text style={{ fontSize: 13, color: colors.text2, textAlign: 'center' }}>
+                +{weekTasks.length - weekTarget} extra taken worden ontgrendeld in week {weekNumber <= 1 ? 2 : 3}
+              </Text>
+            </View>
+          )}
+
+          {/* Reflectie van de week (geleidelijk: 1 in week 1, 2 in week 2, alles vanaf week 3) */}
           {weeklyReflections.length > 0 && (
             <View style={[s.bonusCard, { backgroundColor: colors.surface, borderColor: '#A78BFA20' }]}>
               <View style={s.bonusHeader}>
@@ -1340,7 +1462,7 @@ export default function WeekScreen() {
                   <Text style={s.bonusXpBadgeText}>+{totalReflectionXP} XP</Text>
                 </View>
               </View>
-              {weeklyReflections.map((r) => {
+              {weeklyReflections.slice(0, disclosure.maxReflections).map((r) => {
                 const done = isWeekTaskDone(r.id, weekKey);
                 const isExpanded = expandedReflection === r.id;
                 return (
@@ -1399,69 +1521,60 @@ export default function WeekScreen() {
             </View>
           )}
 
-          {/* Leer-reminder banner */}
-          <Pressable
-            onPress={() => router.push('/(tabs)/leren' as any)}
-            style={[s.learnBanner, { backgroundColor: colors.amber + '15', borderColor: colors.amber + '40' }]}
-          >
-            <InlineIcon name="bookMarked" size={28} color={colors.amber} />
-            <View style={s.learnBannerTextWrap}>
-              <Text style={[s.learnBannerTitle, { color: colors.text }]}>Leer je vaardigheden</Text>
-              <Text style={[s.learnBannerSub, { color: colors.text3 }]}>
-                Ontdek modules met inzichten, scenario's en oefeningen
-              </Text>
-            </View>
-            <InlineIcon name="arrowRight" size={20} color={colors.amber} />
-          </Pressable>
-        </View>
-
-        {/* ── Week complete banner ─────────────────────────────────────── */}
-        {weekComplete && (
-          <Pressable
-            onPress={() => router.push('/(tabs)/profiel/weken')}
-            style={[s.completeBanner, { backgroundColor: colors.amber + '20', borderColor: colors.amber }]}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-              <InlineIcon name="trophy" size={30} color={colors.amber} />
-              <View>
-                <Text style={[s.completeBannerTitle, { color: colors.amber }]}>Week voltooid!</Text>
-                <Text style={[s.completeBannerSub, { color: colors.text2 }]}>
-                  +{bonusXP} XP bonus · Bekijk weekoverzicht
+          {/* Leer-reminder banner (vanaf week 2) */}
+          {disclosure.showLearnBanner && (
+            <Pressable
+              onPress={() => router.push('/(tabs)/leren' as any)}
+              style={[s.learnBanner, { backgroundColor: colors.amber + '15', borderColor: colors.amber + '40' }]}
+            >
+              <InlineIcon name="bookMarked" size={28} color={colors.amber} />
+              <View style={s.learnBannerTextWrap}>
+                <Text style={[s.learnBannerTitle, { color: colors.text }]}>Leer je vaardigheden</Text>
+                <Text style={[s.learnBannerSub, { color: colors.text3 }]}>
+                  Ontdek modules met inzichten, scenario's en oefeningen
                 </Text>
               </View>
+              <InlineIcon name="arrowRight" size={20} color={colors.amber} />
+            </Pressable>
+          )}
+        </View>
+
+        {/* ── Voortgang banner ─────────────────────────────────────── */}
+        <Pressable
+          onPress={() => router.push('/(tabs)/voortgang')}
+          style={[s.completeBanner, { backgroundColor: weekComplete ? colors.amber + '20' : colors.surface, borderColor: weekComplete ? colors.amber : colors.border }]}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            <InlineIcon name={weekComplete ? 'trophy' : 'barChart'} size={24} color={weekComplete ? colors.amber : colors.text3} />
+            <View>
+              <Text style={[s.completeBannerTitle, { color: weekComplete ? colors.amber : colors.text }]}>
+                {weekComplete ? 'Week voltooid!' : 'Jouw voortgang'}
+              </Text>
+              <Text style={[s.completeBannerSub, { color: colors.text2 }]}>
+                {weekComplete ? `+${bonusXP} XP bonus · ` : ''}Bekijk je totale voortgang
+              </Text>
             </View>
-            <InlineIcon name="arrowRight" size={20} color={colors.amber} />
+          </View>
+          <InlineIcon name="arrowRight" size={16} color={weekComplete ? colors.amber : colors.text3} />
+        </Pressable>
+
+        {/* ── Win van de dag (vanaf week 2) ──────────────────────────── */}
+        {disclosure.showJournal && (
+          <Pressable
+            onPress={() => setJournalVisible(true)}
+            style={[s.journalCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
+          >
+            <View style={[s.journalIcon, { backgroundColor: colors.amberDim }]}>
+              <InlineIcon name="fileText" size={18} color={colors.amber} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={[s.journalTitle, { color: colors.text }]}>Win van de dag</Text>
+              <Text style={[s.journalSub, { color: colors.text3 }]}>Schrijf op wat goed ging · +5 XP</Text>
+            </View>
+            <InlineIcon name="chevronRight" size={16} color={colors.text3} />
           </Pressable>
         )}
 
-        {/* ── Win van de dag ─────────────────────────────────────────── */}
-        <Pressable
-          onPress={() => setJournalVisible(true)}
-          style={[s.journalCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
-        >
-          <View style={[s.journalIcon, { backgroundColor: colors.amberDim }]}>
-            <InlineIcon name="fileText" size={18} color={colors.amber} />
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text style={[s.journalTitle, { color: colors.text }]}>Win van de dag</Text>
-            <Text style={[s.journalSub, { color: colors.text3 }]}>Schrijf op wat goed ging · +5 XP</Text>
-          </View>
-          <InlineIcon name="chevronRight" size={16} color={colors.text3} />
-        </Pressable>
-
-        {/* ── Info (verberg na week 2) ─────────────────────────────── */}
-        {weekNumber <= 2 && <View style={[s.infoCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-            <InlineIcon name="info" size={14} color={colors.text} />
-            <Text style={[s.infoTitle, { color: colors.text, marginBottom: 0 }]}>Hoe werkt dit?</Text>
-          </View>
-          <Text style={[s.infoText, { color: colors.text2 }]}>
-            7 taken per week, te doen wanneer het jou uitkomt. De moeilijkheid bouwt op: 2 basis, 3 gevorderd, 2 expert. Elke week nieuwe taken passend bij jouw kinderen en vaardigheden.
-          </Text>
-          <Text style={[s.infoText, { color: colors.text2, marginTop: 8 }]}>
-            Doe elke dag de Vader Pulse check-in (20 sec) om je streak te bewaren en dagelijks een nieuw inzicht te leren.
-          </Text>
-        </View>}
 
       </ScrollView>
 
@@ -1492,7 +1605,7 @@ export default function WeekScreen() {
           onRequestClose={() => { setSharePrompt(null); setShareText(''); }}
           onShow={() => {
             const outcomeLabel = sharePrompt.outcome === 'Gelukt' ? 'Gelukt' : sharePrompt.outcome === 'Deels' ? 'Deels gelukt' : 'Lastig';
-            setShareText(`${sharePrompt.task.title} — ${outcomeLabel}${sharePrompt.note ? `\n\n${sharePrompt.note}` : ''}`);
+            setShareText(`${sharePrompt.task.title} - ${outcomeLabel}${sharePrompt.note ? `\n\n${sharePrompt.note}` : ''}`);
           }}
         >
           <Pressable style={s.shareOverlay} onPress={() => { setSharePrompt(null); setShareText(''); }}>
@@ -1601,6 +1714,13 @@ const s = StyleSheet.create({
   skillTipText: { fontSize: 12, fontWeight: '500', flex: 1, lineHeight: 17 },
 
   // Wijsheid card
+  pauseBanner: {
+    marginHorizontal: 16,
+    marginBottom: 16,
+    padding: 16,
+    borderRadius: 14,
+    borderWidth: 1,
+  },
   wijsheidCard: {
     marginHorizontal: 16,
     marginBottom: 16,

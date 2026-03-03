@@ -16,7 +16,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Zet je telefoon op stil en leg hem in een andere kamer voordat je je kind begroet.',
       'Ga op ooghoogte van je baby en maak oogcontact terwijl je zacht praat.',
       'Besteed de eerste 10 minuten uitsluitend aan fysiek contact: tillen, knuffelen, samen op de grond zitten.',
-      'Merk op hoe je baby reageert op jouw volledige aanwezigheid — kijk naar lachjes, brabbelen of ontspanning.',
+      'Merk op hoe je baby reageert op jouw volledige aanwezigheid - kijk naar lachjes, brabbelen of ontspanning.',
     ],
     reflection: 'Hoe voelde het om de overgang van werk naar thuis bewust te markeren? Merkte je verschil in de reactie van je baby?',
     scienceNote: 'Onderzoek van Feldman (2007) toont aan dat vaderlijke aanwezigheid en sensitieve responsiviteit in het eerste levensjaar de oxytocineproductie bij zowel vader als kind verhoogt, wat de hechtingsband versterkt.',
@@ -49,7 +49,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
     title: 'Slaapgebrek-check',
     description: 'Ontwikkel een bewuste strategie om met slaapgebrek om te gaan zonder je frustratie op je gezin te richten.',
     instructions: [
-      'Houd een week lang bij hoe je slaapkwaliteit je stemming en geduld beïnvloedt — noteer elke ochtend kort je energieniveau (1-10).',
+      'Houd een week lang bij hoe je slaapkwaliteit je stemming en geduld beïnvloedt - noteer elke ochtend kort je energieniveau (1-10).',
       'Identificeer je "rode zone": bij welk energieniveau merk je dat je sneller geïrriteerd raakt?',
       'Maak een concreet plan met je partner: wie neemt welke nacht? Kun je een powernap van 20 minuten inplannen?',
       'Oefen een "reset-ritueel" voor moeilijke momenten: 5 seconden inademen, 7 seconden uitademen, herhaal 3 keer.',
@@ -69,7 +69,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
     instructions: [
       'Kies een fysieke handeling die het einde van je werkdag markeert: jas uit, handen wassen, of een kort blokje om.',
       'Zeg in gedachten of hardop: "Nu ben ik papa" terwijl je dit ritueel uitvoert.',
-      'Laat werkgerelateerde gedachten bewust los — schrijf ze eventueel op een briefje voor morgen.',
+      'Laat werkgerelateerde gedachten bewust los - schrijf ze eventueel op een briefje voor morgen.',
       'Begroet je baby met een warm ritueel: een specifiek liedje, knuffel of begroetingszin.',
     ],
     reflection: 'Hoe helpt een fysiek overgangsritueel je om mentaal aanwezig te zijn? Merkte je dat het makkelijker werd om werk los te laten?',
@@ -86,7 +86,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
     description: 'Plan een bewust huid-op-huidmoment met je baby om je eigen hechtingsgevoelens te versterken.',
     instructions: [
       'Kies een rustig moment en trek je shirt uit. Leg je baby in alleen een luier op je borst.',
-      'Adem rustig en focus op het fysieke contact — voel de warmte, de ademhaling van je baby.',
+      'Adem rustig en focus op het fysieke contact - voel de warmte, de ademhaling van je baby.',
       'Praat zacht of zing een liedje. Merk op welke gevoelens er bij jou opkomen.',
       'Blijf minstens 10 minuten zo zitten. Sta jezelf toe om geraakt te worden door dit moment.',
     ],
@@ -124,7 +124,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Neem 15 minuten rustige tijd. Pak pen en papier (geen telefoon).',
       'Schrijf een brief aan je eigen vader. Begin met wat je waardeert aan hoe hij er was (of niet was).',
       'Beschrijf vervolgens wat je anders wilt doen. Wees eerlijk maar niet veroordelend.',
-      'Sluit af met een belofte aan jezelf als vader. Je hoeft de brief niet te versturen — hij is voor jou.',
+      'Sluit af met een belofte aan jezelf als vader. Je hoeft de brief niet te versturen - hij is voor jou.',
     ],
     reflection: 'Welke patronen uit je eigen opvoeding herken je al bij jezelf? Welk patroon wil je bewust doorbreken?',
     scienceNote: 'Siegel & Hartzell (2003) benadrukken dat ouders die een "coherent narratief" over hun eigen jeugd ontwikkelen, significant betere hechtingsrelaties met hun kinderen opbouwen.',
@@ -141,7 +141,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
     instructions: [
       'Kies een vast verzorgmoment: bad geven, verschonen of naar bed brengen.',
       'Doe dit volledig zelfstandig, zonder je partner om hulp te vragen (tenzij onveilig).',
-      'Doe het op jouw manier — het hoeft niet precies zoals je partner het doet. Jouw manier is ook goed.',
+      'Doe het op jouw manier - het hoeft niet precies zoals je partner het doet. Jouw manier is ook goed.',
       'Geniet van het gevoel van competentie: jij kunt dit. Je baby heeft jou ook nodig.',
     ],
     reflection: 'Hoe voelde het om dit zelfstandig te doen? Merkte je bij jezelf onzekerheid of juist trots?',
@@ -158,7 +158,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
     description: 'Houd drie dagen een kort emotiedagboek bij over je gevoelens als nieuwe vader.',
     instructions: [
       'Schrijf elke avond drie dingen op: het mooiste moment, het moeilijkste moment, en je overheersende gevoel van de dag.',
-      'Wees eerlijk — ook gevoelens als verveling, spijt of overweldiging mogen er zijn.',
+      'Wees eerlijk - ook gevoelens als verveling, spijt of overweldiging mogen er zijn.',
       'Lees na drie dagen terug. Zie je patronen? Welke situaties roepen welke emoties op?',
       'Deel (als je wilt) één observatie met je partner of een vertrouwenspersoon.',
     ],
@@ -181,7 +181,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Maak voor je top-trigger een "als-dan"-plan: "Als [trigger], dan [rustige reactie]."',
     ],
     reflection: 'Onze triggers komen vaak uit ons eigen verleden. Herken je in je triggers iets van hoe je zelf bent opgevoed?',
-    scienceNote: 'Siegel (2012) beschrijft hoe onverwerkte ervaringen uit de eigen jeugd als "triggers" fungeren die automatische, ongereguleerde reacties uitlokken bij ouders — bewustwording is de eerste stap naar verandering.',
+    scienceNote: 'Siegel (2012) beschrijft hoe onverwerkte ervaringen uit de eigen jeugd als "triggers" fungeren die automatische, ongereguleerde reacties uitlokken bij ouders - bewustwording is de eerste stap naar verandering.',
     durationMin: 15,
   },
 
@@ -293,7 +293,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Bied een alternatief: "Je mag kiezen: een stukje komkommer of een stukje paprika."',
     ],
     reflection: 'Hoe voelt het om grenzen te stellen zonder boos te worden? Kun je kordaat én warm tegelijk zijn?',
-    scienceNote: 'Baumrind (1991) beschrijft hoe "autoritatief" opvoeden — warm maar met duidelijke grenzen — de beste uitkomsten geeft voor kinderen. Het gaat om structuur met respect.',
+    scienceNote: 'Baumrind (1991) beschrijft hoe "autoritatief" opvoeden - warm maar met duidelijke grenzen - de beste uitkomsten geeft voor kinderen. Het gaat om structuur met respect.',
     durationMin: 5,
   },
   {
@@ -311,7 +311,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Kom na 5 minuten terug en zeg: "Ik voel me weer lekker! Zullen we iets leuks doen?"',
     ],
     reflection: 'Voel je je schuldig als je even rust neemt? Waar komt dat gevoel vandaan? Zelfzorg is geen egoïsme.',
-    scienceNote: 'Holt-Lunstad et al. (2010) tonen aan dat zelfzorg bij ouders niet alleen hun eigen welzijn verbetert, maar ook de kwaliteit van de ouder-kindrelatie — uitgeputte ouders zijn minder sensitief.',
+    scienceNote: 'Holt-Lunstad et al. (2010) tonen aan dat zelfzorg bij ouders niet alleen hun eigen welzijn verbetert, maar ook de kwaliteit van de ouder-kindrelatie - uitgeputte ouders zijn minder sensitief.',
     durationMin: 5,
   },
   {
@@ -329,7 +329,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Bedank je partner oprecht waar je kind het kan zien en horen.',
     ],
     reflection: 'Je kind leert over relaties door te kijken hoe jij met je partner omgaat. Wat leert je kind van jullie interacties?',
-    scienceNote: 'Cummings & Davies (2010) tonen uitgebreid aan dat de kwaliteit van de partnerrelatie de belangrijkste voorspeller is van het welzijn van kinderen — zelfs belangrijker dan individuele opvoedstijl.',
+    scienceNote: 'Cummings & Davies (2010) tonen uitgebreid aan dat de kwaliteit van de partnerrelatie de belangrijkste voorspeller is van het welzijn van kinderen - zelfs belangrijker dan individuele opvoedstijl.',
     durationMin: 10,
   },
   {
@@ -441,7 +441,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Kom je belofte na. Als je zegt "over 10 minuten", zorg dan dat je er over 10 minuten bent.',
     ],
     reflection: 'Hoe kun je eerlijk grenzen stellen zonder dat je kind zich afgewezen voelt? Je belofte nakomen is hier de sleutel.',
-    scienceNote: 'Bowlby (1988) benadrukt dat betrouwbaarheid — het nakomen van beloftes — de basis vormt van veilige gehechtheid. Kinderen hoeven niet altijd "ja" te horen, maar wel eerlijkheid en betrouwbaarheid.',
+    scienceNote: 'Bowlby (1988) benadrukt dat betrouwbaarheid - het nakomen van beloftes - de basis vormt van veilige gehechtheid. Kinderen hoeven niet altijd "ja" te horen, maar wel eerlijkheid en betrouwbaarheid.',
     durationMin: 5,
   },
   {
@@ -491,7 +491,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
     instructions: [
       'Kies een vast moment in de week (bijv. zondagavond) voor 15 minuten zelfreflectie.',
       'Beantwoord drie vragen: 1) Waar was ik deze week trots op als vader? 2) Wat had ik anders willen doen? 3) Wat neem ik mee naar volgende week?',
-      'Schrijf je antwoorden kort op in een notitieboekje — zo kun je je groei over tijd volgen.',
+      'Schrijf je antwoorden kort op in een notitieboekje - zo kun je je groei over tijd volgen.',
       'Wees mild voor jezelf: groei gaat niet lineair. Elke week dat je reflecteert, ben je al bezig met bewust vaderschap.',
     ],
     reflection: 'Hoe voelt het om structureel te reflecteren? Zie je al patronen na een paar weken?',
@@ -563,7 +563,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
     difficulty: 'basis',
     xpReward: 10,
     title: 'Aanwezig zonder agenda',
-    description: 'Breng tijd door met je kind zonder doel of activiteit — gewoon samen zijn.',
+    description: 'Breng tijd door met je kind zonder doel of activiteit - gewoon samen zijn.',
     instructions: [
       'Ga in dezelfde ruimte zitten als je kind zonder een specifieke activiteit voor te stellen.',
       'Wees beschikbaar maar niet opdringerig. Lees een boek, doe een puzzel, of zit gewoon.',
@@ -604,7 +604,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Check je schermtijd-statistieken op je telefoon. Wees eerlijk: hoeveel uur per dag zit je op je scherm?',
       'Bespreek dit openlijk met je kind: "Papa kijkt ook te veel op zijn telefoon. Dat wil ik veranderen."',
       'Maak samen gezinsregels die voor iedereen gelden: geen telefoon aan tafel, geen schermen na 21:00, etc.',
-      'Houd je er zelf aan — je kind zal het onmiddellijk opmerken als je vals speelt.',
+      'Houd je er zelf aan - je kind zal het onmiddellijk opmerken als je vals speelt.',
     ],
     reflection: 'Hoe voelt het om dezelfde regels als je kind te volgen? Wat leert dit je over hoe moeilijk zelfregulatie ook voor volwassenen is?',
     scienceNote: 'Coyne et al. (2017) tonen aan dat ouderschermgebruik direct correleert met kinderschermgebruik, en dat gedeelde gezinsregels effectiever zijn dan regels die alleen voor kinderen gelden.',
@@ -621,11 +621,11 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
     instructions: [
       'Wanneer je de mogelijkheid hebt om extra werk aan te nemen dat ten koste gaat van gezinstijd, kies dan bewust voor je gezin.',
       'Vertel je kind wat je deed: "Er was een vergadering vanavond, maar ik heb gezegd dat ik niet kon. Ik wilde bij jullie zijn."',
-      'Praat niet negatief over je werk — het gaat om de bewuste keuze, niet om klagen.',
+      'Praat niet negatief over je werk - het gaat om de bewuste keuze, niet om klagen.',
       'Vraag je kind: "Merk je het als ik er ben? Wat vind je het fijnst als we samen zijn?"',
     ],
     reflection: 'Hoe voelde het om werk te laten voor wat het was? Welke boodschap geef je je kind over prioriteiten?',
-    scienceNote: 'Greenhaus & Powell (2006) beschrijven hoe bewuste "work-family enrichment" niet alleen de gezinsrelatie verbetert, maar ook de werktevredenheid — het is geen zero-sum game.',
+    scienceNote: 'Greenhaus & Powell (2006) beschrijven hoe bewuste "work-family enrichment" niet alleen de gezinsrelatie verbetert, maar ook de werktevredenheid - het is geen zero-sum game.',
     durationMin: 10,
   },
   {
@@ -643,7 +643,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Vraag je kind om tips of aanmoediging. Wissel de rollen om: laat je kind de leraar zijn.',
     ],
     reflection: 'Hoe reageerde je kind op het zien van jou als leerling? Wat leer je door jezelf kwetsbaar op te stellen?',
-    scienceNote: 'Bandura (1986) toont met de sociale leertheorie aan dat kinderen niet leren van perfecte modellen, maar van modellen die moeite doen, falen, en doorzetten — zogenaamd "coping modeling".',
+    scienceNote: 'Bandura (1986) toont met de sociale leertheorie aan dat kinderen niet leren van perfecte modellen, maar van modellen die moeite doen, falen, en doorzetten - zogenaamd "coping modeling".',
     durationMin: 15,
   },
   {
@@ -661,7 +661,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Vraag niet om vergeving, maar bied het aan: "Ik werk eraan om dit te veranderen. Je mag altijd zeggen als je vindt dat het niet lukt."',
     ],
     reflection: 'Hoe voelde het om iets te erkennen zonder het goed te praten? Herstel gaat niet over gelijk krijgen maar over verbinding herstellen.',
-    scienceNote: 'Hughes (2009) beschrijft hoe het erkennen van eerdere fouten door ouders het vertrouwen herstelt en kinderen leert dat relaties bestand zijn tegen imperfectie — een kernprincipe van PACE-therapie.',
+    scienceNote: 'Hughes (2009) beschrijft hoe het erkennen van eerdere fouten door ouders het vertrouwen herstelt en kinderen leert dat relaties bestand zijn tegen imperfectie - een kernprincipe van PACE-therapie.',
     durationMin: 15,
   },
   {
@@ -679,7 +679,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Maak één concreet voornemen voor de komende week om die kloof te verkleinen.',
     ],
     reflection: 'Is er een verschil tussen de vader die je wilt zijn en de vader die je bent? Dat verschil is je groeimarge.',
-    scienceNote: 'Deci & Ryan (2000) tonen met de zelfdeterminatietheorie aan dat handelen in lijn met je kernwaarden de intrinsieke motivatie en het welzijn verhoogt — dit geldt ook voor de vaderrol.',
+    scienceNote: 'Deci & Ryan (2000) tonen met de zelfdeterminatietheorie aan dat handelen in lijn met je kernwaarden de intrinsieke motivatie en het welzijn verhoogt - dit geldt ook voor de vaderrol.',
     durationMin: 15,
   },
   {
@@ -715,7 +715,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Als je kind ongemakkelijk reageert, normaliseer: "Het is gezond om te voelen. Dat geldt voor iedereen, ook voor mannen."',
     ],
     reflection: 'Hoe comfortabel ben je met het tonen van kwetsbaarheid? Waar heb je geleerd dat mannen niet mogen huilen?',
-    scienceNote: 'Levant & Kopecky (1995) beschrijven "normative male alexithymia" — de culturele conditionering van mannen om emoties te onderdrukken. Onderzoek toont dat vaders die emoties tonen, zonen opvoeden met betere emotionele intelligentie.',
+    scienceNote: 'Levant & Kopecky (1995) beschrijven "normative male alexithymia" - de culturele conditionering van mannen om emoties te onderdrukken. Onderzoek toont dat vaders die emoties tonen, zonen opvoeden met betere emotionele intelligentie.',
     durationMin: 5,
   },
   {
@@ -751,7 +751,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
     instructions: [
       'Kies een fout uit je tienerjaren die relevant kan zijn: spieken, liegen, een vriend laten vallen, groepsdruk.',
       'Vertel het verhaal eerlijk, zonder het te romantiseren of te bagatelliseren.',
-      'Deel wat je er destijds van voelde en wat je er nu — als volwassene — van hebt geleerd.',
+      'Deel wat je er destijds van voelde en wat je er nu - als volwassene - van hebt geleerd.',
       'Zeg niet "jij moet dit niet doen" maar: "Ik deel dit zodat je weet dat ik snap hoe lastig het soms is."',
     ],
     reflection: 'Hoe reageerde je tiener op je eerlijkheid? Merkte je dat authenticiteit meer impact heeft dan preken?',
@@ -773,7 +773,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Laat je tiener weten: "Ik ben er als je me nodig hebt. Je hoeft niet te praten, maar ik luister altijd."',
     ],
     reflection: 'Hoe balanceer je betrokkenheid en ruimte geven? Merk je wanneer je tiener toenadering zoekt?',
-    scienceNote: 'Allen & Manning (2007) beschrijven hoe adolescenten een "veilige basis" nodig hebben — ouders die beschikbaar zijn zonder te controleren. Dit bevordert zowel autonomie als gehechtheid.',
+    scienceNote: 'Allen & Manning (2007) beschrijven hoe adolescenten een "veilige basis" nodig hebben - ouders die beschikbaar zijn zonder te controleren. Dit bevordert zowel autonomie als gehechtheid.',
     durationMin: 10,
   },
   {
@@ -845,7 +845,7 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Bedank oprecht: "Dat is een goed punt, daar had ik niet aan gedacht." En volg het advies op als het goed is.',
     ],
     reflection: 'Hoe reageerde je tiener op het gevraagd worden om advies? Wat doet het met de machtsbalans in jullie relatie?',
-    scienceNote: 'Soenens & Vansteenkiste (2010) tonen aan dat het ondersteunen van de autonomie en competentie van adolescenten — ook door hen serieus te nemen — de intrinsieke motivatie en het zelfvertrouwen versterkt.',
+    scienceNote: 'Soenens & Vansteenkiste (2010) tonen aan dat het ondersteunen van de autonomie en competentie van adolescenten - ook door hen serieus te nemen - de intrinsieke motivatie en het zelfvertrouwen versterkt.',
     durationMin: 10,
   },
   {
@@ -898,8 +898,8 @@ export const INTERACTIVE_TASKS_27: InteractiveTask[] = [
       'Wees eerlijk over je angsten: waar ben je bang voor? Wat zou je betreuren als je niets verandert?',
       'Sluit af met één concreet ding dat je vanaf vandaag anders gaat doen. Bewaar de brief en lees hem over een jaar terug.',
     ],
-    reflection: 'Is de vader in je brief dezelfde als de vader die je nu bent? Het verschil is niet iets om je voor te schamen — het is je kompas.',
-    scienceNote: 'Hershfield (2011) toont aan dat het schrijven aan je toekomstige zelf de verbinding met die toekomstige identiteit versterkt, wat leidt tot betere beslissingen in het heden — ook in de ouderrol.',
+    reflection: 'Is de vader in je brief dezelfde als de vader die je nu bent? Het verschil is niet iets om je voor te schamen - het is je kompas.',
+    scienceNote: 'Hershfield (2011) toont aan dat het schrijven aan je toekomstige zelf de verbinding met die toekomstige identiteit versterkt, wat leidt tot betere beslissingen in het heden - ook in de ouderrol.',
     durationMin: 15,
   },
   {

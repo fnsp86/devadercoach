@@ -70,12 +70,12 @@ export default function EditProfileScreen() {
     const needsAvatarUpload = user && avatarUri && avatarUri !== currentAvatarUrl && !avatarUri.startsWith('http');
 
     if (needsAvatarUpload) {
-      // Avatar upload — stay on screen with loading indicator
+      // Avatar upload - stay on screen with loading indicator
       setLoading(true);
       try {
         const uploadPromise = uploadAvatar(user!.id, avatarUri!);
         const timeoutPromise = new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('Upload timeout')), 30000)
+          setTimeout(() => reject(new Error('Upload timeout')), 15000)
         );
         const uploadedUrl = await Promise.race([uploadPromise, timeoutPromise]);
         console.log('[avatar-upload] success, url:', uploadedUrl);
@@ -100,7 +100,7 @@ export default function EditProfileScreen() {
       return;
     }
 
-    // 3. No avatar upload — navigate back immediately, sync in background
+    // 3. No avatar upload - navigate back immediately, sync in background
     router.back();
 
     if (user) {
@@ -212,7 +212,13 @@ export default function EditProfileScreen() {
         <View style={s.loadingOverlay}>
           <View style={[s.loadingBox, { backgroundColor: colors.surface }]}>
             <ActivityIndicator size="large" color={colors.amber} />
-            <Text style={[s.loadingText, { color: colors.text }]}>Profiel opslaan...</Text>
+            <Text style={[s.loadingText, { color: colors.text }]}>Foto uploaden...</Text>
+            <Pressable
+              onPress={() => { setLoading(false); }}
+              style={{ marginTop: 12, paddingVertical: 8, paddingHorizontal: 20 }}
+            >
+              <Text style={{ fontSize: 14, fontWeight: '600', color: colors.text3 }}>Annuleren</Text>
+            </Pressable>
           </View>
         </View>
       )}

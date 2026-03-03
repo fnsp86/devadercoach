@@ -1,6 +1,6 @@
-// Dagelijkse wijsheden voor vaders — unlock bij Level 2+
+// Dagelijkse wijsheden voor vaders - unlock bij Level 2+
 // Getoond op het Vandaag-scherm als inspiratie
-// 365 unieke quotes — één voor elke dag van het jaar
+// 365 unieke quotes - een voor elke dag van het jaar
 
 export interface VaderWijsheid {
   text: string;
@@ -14,7 +14,7 @@ export const VADER_WIJSHEDEN: VaderWijsheid[] = [
   { text: "Kinderen onthouden niet wat je zei. Ze onthouden hoe je ze liet voelen.", bron: "Maya Angelou" },
   { text: "Elke dag is een nieuwe kans om de vader te zijn die je had willen hebben." },
   { text: "Je kind test je niet om je gek te maken. Ze checken of jij stevig genoeg staat." },
-  { text: "Schreeuwen is een signaal dat jij even pauze nodig hebt — niet je kind." },
+  { text: "Schreeuwen is een signaal dat jij even pauze nodig hebt - niet je kind." },
   { text: "Vijf minuten volledige aandacht doet meer dan een hele dag halve aanwezigheid." },
   { text: "De beste opvoedtip? Rustig ademen voordat je reageert." },
   { text: "Je kind leert niet van je woorden. Het leert van je voorbeeld." },
@@ -60,7 +60,7 @@ export const VADER_WIJSHEDEN: VaderWijsheid[] = [
   { text: "Je kind wil geen superheld. Het wil een vader die echt is." },
   { text: "Wacht tien seconden. Die tien seconden zijn het verschil tussen reageren en kiezen." },
   { text: "Je bent hier. Je leert. Je groeit. Je kind heeft geluk met jou." },
-  { text: "Het denkbrein van je kind is pas af rond hun 25e. Geduld is geen luxe — het is biologie.", bron: "Siegel" },
+  { text: "Het denkbrein van je kind is pas af rond hun 25e. Geduld is geen luxe - het is biologie.", bron: "Siegel" },
   { text: "Valideren is niet goedkeuren. 'Ik snap dat je boos bent' betekent niet 'je hebt gelijk'." },
   { text: "De kracht van een vader zit niet in zijn spierballen. Het zit in zijn geduld." },
   { text: "Vandaag is een nieuwe dag om het anders te doen." },

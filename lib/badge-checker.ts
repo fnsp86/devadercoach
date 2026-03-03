@@ -115,7 +115,9 @@ function checkSpecialBadge(
       return hour >= 4 && hour < 7;
     }
     case 'speed_demon': {
-      const today = new Date().toISOString().split('T')[0];
+      // Use local date (consistent with getTodayKey in store)
+      const d = new Date();
+      const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       const todayCount = store.weekTaskCompletions.filter((c) => c.completedAt.startsWith(today)).length;
       return todayCount >= 5;
     }
@@ -234,8 +236,8 @@ function checkSpecialBadge(
     }
     case 'module_marathon': {
       if (context.source !== 'module') return false;
-      const today = new Date().toISOString().split('T')[0];
-      // Count modules completed today from weekTaskCompletions (modules log as tasks too)
+      const d = new Date();
+      const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       const modulesToday = store.weekTaskCompletions.filter(
         (c) => c.completedAt.startsWith(today) && c.taskId.includes('_mod_'),
       ).length;

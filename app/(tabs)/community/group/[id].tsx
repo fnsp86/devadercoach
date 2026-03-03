@@ -94,7 +94,7 @@ export default function GroupChatScreen() {
         }
       });
 
-    // Don't start polling unconditionally — only use fallback polling from subscribe() callback
+    // Don't start polling unconditionally - only use fallback polling from subscribe() callback
 
     return () => {
       supabase.removeChannel(channel);

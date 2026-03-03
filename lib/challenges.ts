@@ -589,7 +589,7 @@ export const challenges: Challenge[] = [
     say: "Ik ben beschikbaar als je wil praten. Geen druk.",
     avoid: "Blijven prikken/vragen.",
   },
-  // ── A2) Aanwezigheid — extra 6 ───────────────────────────────
+  // ── A2) Aanwezigheid - extra 6 ───────────────────────────────
   {
     id: "a7",
     title: "Stilte samen verdragen",
@@ -597,7 +597,7 @@ export const challenges: Challenge[] = [
     ageGroups: ["6-9", "10-12", "13-16"],
     durationMin: 5,
     goal: "Aanwezig zijn zonder altijd te praten.",
-    why: "Comfortabele stilte vergroot vertrouwen — je kind hoeft niet altijd \'on\' te zijn.",
+    why: "Comfortabele stilte vergroot vertrouwen - je kind hoeft niet altijd \'on\' te zijn.",
     steps: [
       "Zit naast je kind zonder gesprek te starten.",
       "Doe iets rustig samen (lezen, puzzel, buiten zitten).",
@@ -629,7 +629,7 @@ export const challenges: Challenge[] = [
     ageGroups: ["3-5", "6-9", "10-12", "13-16"],
     durationMin: 2,
     goal: "Eerlijk zijn over afleiding in plaats van het te verbergen.",
-    why: "Kinderen merken toch dat je er met je hoofd niet bij bent — eerlijkheid bouwt vertrouwen.",
+    why: "Kinderen merken toch dat je er met je hoofd niet bij bent - eerlijkheid bouwt vertrouwen.",
     steps: [
       "Als je afgeleid bent: zeg het.",
       "Leg uit wat je nodig hebt (\'5 min\').",
@@ -652,7 +652,7 @@ export const challenges: Challenge[] = [
       "Benoem wat je ziet: \'je bent lekker druk bezig!\'",
     ],
     say: "Jij hebt echt veel energie vandaag!",
-    avoid: "Overdreven nadoen — dat voelt raar.",
+    avoid: "Overdreven nadoen - dat voelt raar.",
   },
   {
     id: "a11",
@@ -661,7 +661,7 @@ export const challenges: Challenge[] = [
     ageGroups: ["6-9", "10-12", "13-16"],
     durationMin: 5,
     goal: "Nieuwsgierig zijn zonder een punt te willen maken.",
-    why: "Vragen met een verborgen agenda sluiten kinderen af — echte nieuwsgierigheid opent.",
+    why: "Vragen met een verborgen agenda sluiten kinderen af - echte nieuwsgierigheid opent.",
     steps: [
       "Stel een vraag waarop je het antwoord echt niet weet.",
       "Luister zonder te sturen.",
@@ -679,14 +679,14 @@ export const challenges: Challenge[] = [
     goal: "De tafel als verbindingsmoment gebruiken.",
     why: "Schermen bij eten halveren de kwaliteit van gesprek en contact aantoonbaar.",
     steps: [
-      "Alle schermen van tafel — ook de jouwe.",
+      "Alle schermen van tafel - ook de jouwe.",
       "Stel 1 tafelgespreksvraag (bv. best/worst moment vandaag).",
       "Laat iedereen om beurten antwoorden.",
     ],
     say: "Vandaag eten we samen, zonder telefoon.",
     avoid: "Zelf je telefoon erbij houden voor noodgevallen.",
   },
-  // ── E2) Emotiecoaching — extra 6 ──────────────────────────────
+  // ── E2) Emotiecoaching - extra 6 ──────────────────────────────
   {
     id: "e7",
     title: "Gevoelswoordenschat uitbreiden",
@@ -726,7 +726,7 @@ export const challenges: Challenge[] = [
     ageGroups: ["3-5", "6-9", "10-12"],
     durationMin: 5,
     goal: "Kind helpen gevoelens te herkennen via het lichaam.",
-    why: "Gevoelens beginnen in het lichaam — dat herkennen is stap 1 van zelfregulatie.",
+    why: "Gevoelens beginnen in het lichaam - dat herkennen is stap 1 van zelfregulatie.",
     steps: [
       "Vraag: \'Wat voel je in je buik of borst?\'",
       "Koppel het aan een gevoel: \'dat klinkt als spanning\'.",
@@ -742,7 +742,7 @@ export const challenges: Challenge[] = [
     ageGroups: ["0-2", "3-5", "6-9", "10-12", "13-16"],
     durationMin: 2,
     goal: "Positieve emoties ook actief benoemen.",
-    why: "Emotiecoaching gaat niet alleen over moeilijke gevoelens — ook vreugde benoemen versterkt het.",
+    why: "Emotiecoaching gaat niet alleen over moeilijke gevoelens - ook vreugde benoemen versterkt het.",
     steps: [
       "Noem een positief gevoel als je het ziet.",
       "Verbind het aan wat er gebeurde.",
@@ -783,7 +783,7 @@ export const challenges: Challenge[] = [
     say: "De beer was ook boos toen hij zijn beurt miste. Ken jij dat gevoel?",
     avoid: "Het verhaal te letterlijk maken.",
   },
-  // ── Z2) Zelfregulatie — extra 6 ───────────────────────────────
+  // ── Z2) Zelfregulatie - extra 6 ───────────────────────────────
   {
     id: "z7",
     title: "5-4-3-2-1 gronden",
@@ -807,7 +807,7 @@ export const challenges: Challenge[] = [
     ageGroups: ["0-2", "3-5", "6-9", "10-12", "13-16"],
     durationMin: 2,
     goal: "Spanning in het lichaam ontladen voor je reageert.",
-    why: "Boosheid is energie — bewegen is sneller dan praten om het kwijt te raken.",
+    why: "Boosheid is energie - bewegen is sneller dan praten om het kwijt te raken.",
     steps: [
       "Loop even weg (fysiek afstand).",
       "Beweeg 30 seconden (trap op/af, rekken, schudden).",
@@ -823,7 +823,7 @@ export const challenges: Challenge[] = [
     ageGroups: ["3-5", "6-9", "10-12", "13-16"],
     durationMin: 5,
     goal: "Vooraf een alternatief gedrag bedenken voor lastige momenten.",
-    why: "In het moment zelf is het brein minder beschikbaar — voorbereiding helpt echt.",
+    why: "In het moment zelf is het brein minder beschikbaar - voorbereiding helpt echt.",
     steps: [
       "Identificeer 1 terugkerend lastig moment.",
       "Bedenk wat je dan anders wil doen.",
@@ -839,11 +839,11 @@ export const challenges: Challenge[] = [
     ageGroups: ["6-9", "10-12", "13-16"],
     durationMin: 2,
     goal: "Spanning doorbreken met luchtigheid.",
-    why: "Humor ontspant beiden — maar alleen als het niet sarcastisch of ten koste van het kind is.",
+    why: "Humor ontspant beiden - maar alleen als het niet sarcastisch of ten koste van het kind is.",
     steps: [
       "Zoek iets absurds in de situatie.",
       "Maak een lichte opmerking over de situatie, niet het kind.",
-      "Lach samen — maar vang het gevoel daarna nog op.",
+      "Lach samen - maar vang het gevoel daarna nog op.",
     ],
     say: "Dit is echt een Oscar-waardige driftbui. Indrukwekkend.",
     avoid: "Humor gebruiken om het echte gevoel te vermijden.",
@@ -878,9 +878,9 @@ export const challenges: Challenge[] = [
       "Kom er 's avonds op terug: is het gelukt?",
     ],
     say: "Vandaag kies ik voor: rustig blijven, ook als het druk wordt.",
-    avoid: "Te veel intenties tegelijk — 1 is genoeg.",
+    avoid: "Te veel intenties tegelijk - 1 is genoeg.",
   },
-  // ── G2) Grenzen — extra 6 ─────────────────────────────────────
+  // ── G2) Grenzen - extra 6 ─────────────────────────────────────
   {
     id: "g7",
     title: "Grens uitleggen op kindniveau",
@@ -904,7 +904,7 @@ export const challenges: Challenge[] = [
     ageGroups: ["3-5", "6-9", "10-12", "13-16"],
     durationMin: 5,
     goal: "Terugkomen op een grens die je liet vallen.",
-    why: "Inconsistentie is normaal — je kunt altijd resetten zonder gezichtsverlies.",
+    why: "Inconsistentie is normaal - je kunt altijd resetten zonder gezichtsverlies.",
     steps: [
       "Erken dat je vorige keer toegaf.",
       "Leg rustig uit wat nu geldt.",
@@ -926,7 +926,7 @@ export const challenges: Challenge[] = [
       "Zeg nee op dit gedrag.",
       "Bied een alternatief aan dat tegemoetkomt aan de behoefte.",
     ],
-    say: "Je wil aandacht — ja! Niet nu schreeuwen. Kom, we doen dit samen.",
+    say: "Je wil aandacht - ja! Niet nu schreeuwen. Kom, we doen dit samen.",
     avoid: "Alleen de nee geven zonder de behoefte te zien.",
   },
   {
@@ -943,7 +943,7 @@ export const challenges: Challenge[] = [
       "Schud langzaam het hoofd of leg hand op de schouder.",
     ],
     say: "(stil, rustig hoofdschudden met oogcontact)",
-    avoid: "Van een afstand roepen — dat heeft geen autoriteit.",
+    avoid: "Van een afstand roepen - dat heeft geen autoriteit.",
   },
   {
     id: "g11",
@@ -977,7 +977,7 @@ export const challenges: Challenge[] = [
     say: "Wat vind jij een eerlijke regel voor schermtijd in het weekend?",
     avoid: "Doen alsof je onderhandelt maar toch je eigen regel opleggen.",
   },
-  // ── AU2) Autonomie — extra 6 ──────────────────────────────────
+  // ── AU2) Autonomie - extra 6 ──────────────────────────────────
   {
     id: "au7",
     title: "Fout laten maken",
@@ -991,7 +991,7 @@ export const challenges: Challenge[] = [
       "Check: is het echt gevaarlijk of alleen niet ideaal?",
       "Als het niet gevaarlijk is: laat het gaan.",
     ],
-    say: "Ik zie dat dit misschien niet werkt. Probeer maar — je leert ervan.",
+    say: "Ik zie dat dit misschien niet werkt. Probeer maar - je leert ervan.",
     avoid: "Elke fout vermijden om frustratie te voorkomen.",
   },
   {
@@ -1055,7 +1055,7 @@ export const challenges: Challenge[] = [
       "Laat het toe terwijl je in de buurt blijft.",
       "Benoem het nadien: \'je deed dat zelf!\'",
     ],
-    say: "Ik zie je — ga maar. Ik ben hier als je me nodig hebt.",
+    say: "Ik zie je - ga maar. Ik ben hier als je me nodig hebt.",
     avoid: "Constant roepen pas op als het niet nodig is.",
   },
   {
@@ -1065,7 +1065,7 @@ export const challenges: Challenge[] = [
     ageGroups: ["6-9", "10-12", "13-16"],
     durationMin: 10,
     goal: "Kind leren plannen en prioriteren.",
-    why: "Plannen is een vaardigheid — het oefenen verhoogt zelfstandigheid.",
+    why: "Plannen is een vaardigheid - het oefenen verhoogt zelfstandigheid.",
     steps: [
       "Geef 1 vrije ochtend of middag.",
       "Vraag kind om 3 dingen op te schrijven die hij wil doen.",
@@ -1074,7 +1074,7 @@ export const challenges: Challenge[] = [
     say: "Dit is jouw tijd. Wat ga jij doen vandaag?",
     avoid: "Achteraf beoordelen of het een goede planning was.",
   },
-  // ── H2) Herstel — extra 6 ─────────────────────────────────────
+  // ── H2) Herstel - extra 6 ─────────────────────────────────────
   {
     id: "h7",
     title: "Verhaal herframen",
@@ -1102,7 +1102,7 @@ export const challenges: Challenge[] = [
     steps: [
       "Ga rustig naast je kind zitten.",
       "Vraag of je een arm om hem mag slaan.",
-      "Zeg niets — laat de aanraking spreken.",
+      "Zeg niets - laat de aanraking spreken.",
     ],
     say: "Mag ik even naast je zitten?",
     avoid: "Woorden stapelen terwijl het lichaam al genoeg zegt.",
@@ -1118,7 +1118,7 @@ export const challenges: Challenge[] = [
     steps: [
       "Bedenk samen een herstelafsluiter (handdruk, zin, teken).",
       "Gebruik hem consequent na conflicten.",
-      "Houd het licht — het mag ook grappig zijn.",
+      "Houd het licht - het mag ook grappig zijn.",
     ],
     say: "Herstel-handdruk? Dan is het klaar tussen ons.",
     avoid: "Herstel afhankelijk maken van excuses of toegeven.",
@@ -1146,11 +1146,11 @@ export const challenges: Challenge[] = [
     ageGroups: ["3-5", "6-9", "10-12", "13-16"],
     durationMin: 2,
     goal: "Pijn erkennen zonder te rechtvaardigen.",
-    why: "Verklaringen horen soms als excuses — erkenning alleen is krachtiger.",
+    why: "Verklaringen horen soms als excuses - erkenning alleen is krachtiger.",
     steps: [
       "Zeg wat je deed.",
       "Zeg dat het niet oké was.",
-      "Stop daar — geen maar of omdat.",
+      "Stop daar - geen maar of omdat.",
     ],
     say: "Ik schreeuwde. Dat was niet oké. Punt.",
     avoid: "Excuses toevoegen die de verantwoordelijkheid verdunnen.",
@@ -1173,14 +1173,14 @@ export const challenges: Challenge[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // EXTRA CHALLENGES — set 3 (voor een vol jaar)
+  // EXTRA CHALLENGES - set 3 (voor een vol jaar)
   // ═══════════════════════════════════════════════════════════════
 
-  // ── Aanwezigheid — extra 12 ───────────────────────────────────
+  // ── Aanwezigheid - extra 12 ───────────────────────────────────
   { id:"a13", title:"Verhaaltje zonder boek", skill:"Aanwezigheid", ageGroups:["0-2","3-5","6-9"], durationMin:10,
     goal:"Verbinding via verbeelding zonder extern hulpmiddel.",
     why:"Zelfverzonnen verhalen creëren unieke vader-kind herinneringen die boeken niet kunnen geven.",
-    steps:["Vraag: wat voor held wil je in het verhaal?","Verzon samen een avontuur — laat kind details bepalen.","Laat het kind het einde kiezen."],
+    steps:["Vraag: wat voor held wil je in het verhaal?","Verzon samen een avontuur - laat kind details bepalen.","Laat het kind het einde kiezen."],
     say:"Jij bent de hoofdpersoon. Wat gebeurt er als eerste?", avoid:"Verhaal zelf helemaal sturen." },
 
   { id:"a14", title:"Ochtend samen starten", skill:"Aanwezigheid", ageGroups:["3-5","6-9","10-12","13-16"], durationMin:5,
@@ -1192,7 +1192,7 @@ export const challenges: Challenge[] = [
   { id:"a15", title:"Tekening samen maken", skill:"Aanwezigheid", ageGroups:["3-5","6-9"], durationMin:10,
     goal:"Samen iets creëren zonder resultaat als doel.",
     why:"Creatief samendoen activeert spiegelneuroenen en verhoogt gevoel van verbondenheid.",
-    steps:["Pak papier en stiften.","Jij begint, kind maakt af — of andersom.","Geen commentaar op het resultaat."],
+    steps:["Pak papier en stiften.","Jij begint, kind maakt af - of andersom.","Geen commentaar op het resultaat."],
     say:"Jij mag verder tekenen waar ik ben gestopt.", avoid:"Corrigeren of het 'mooier' maken." },
 
   { id:"a16", title:"Buiten wandelen zonder doel", skill:"Aanwezigheid", ageGroups:["0-2","3-5","6-9","10-12","13-16"], durationMin:10,
@@ -1204,7 +1204,7 @@ export const challenges: Challenge[] = [
   { id:"a17", title:"Interesse oprecht verkennen", skill:"Aanwezigheid", ageGroups:["6-9","10-12","13-16"], durationMin:10,
     goal:"Leren wat je kind echt bezighoudt.",
     why:"Kennis van de echte interesses van je kind is de basis van elke goede relatie.",
-    steps:["Vraag je kind je iets te leren over zijn/haar hobby.","Luister als leerling — stel vragen.","Complimenteer het kennen, niet het resultaat."],
+    steps:["Vraag je kind je iets te leren over zijn/haar hobby.","Luister als leerling - stel vragen.","Complimenteer het kennen, niet het resultaat."],
     say:"Leg mij eens uit hoe dat werkt. Ik wil het echt begrijpen.", avoid:"Doen alsof je het al weet." },
 
   { id:"a18", title:"Bedtijd check-in", skill:"Aanwezigheid", ageGroups:["6-9","10-12","13-16"], durationMin:5,
@@ -1217,7 +1217,7 @@ export const challenges: Challenge[] = [
     goal:"Alledaagse taak als verbindingsmoment gebruiken.",
     why:"Naast-elkaar-doen met een gemeenschappelijk doel versterkt gevoel van samenwerking.",
     steps:["Geef kind een echte taak (roeren, afwegen, snijden met veilig mes).","Vertel wat je doet terwijl je het doet.","Eet het resultaat samen op met trots."],
-    say:"Jij mag dit gedeelte doen — het is echt belangrijk voor het recept.", avoid:"Alles zelf doen omdat het sneller gaat." },
+    say:"Jij mag dit gedeelte doen - het is echt belangrijk voor het recept.", avoid:"Alles zelf doen omdat het sneller gaat." },
 
   { id:"a20", title:"Foto van vandaag", skill:"Aanwezigheid", ageGroups:["3-5","6-9","10-12","13-16"], durationMin:2,
     goal:"Een bewust moment van de dag vastleggen samen.",
@@ -1228,7 +1228,7 @@ export const challenges: Challenge[] = [
   { id:"a21", title:"Verrassingsbezoek op school", skill:"Aanwezigheid", ageGroups:["3-5","6-9","10-12"], durationMin:10,
     goal:"Laten zien dat je er voor hem/haar bent buiten de thuisroutine.",
     why:"Onverwachte aanwezigheid versterkt het basisgevoel van veiligheid: 'papa is er voor mij'.",
-    steps:["Plan een kleine surprise (lunch brengen, samen naar school lopen).","Maak het gewoon — geen groot vertoon.","Geniet van zijn/haar reactie."],
+    steps:["Plan een kleine surprise (lunch brengen, samen naar school lopen).","Maak het gewoon - geen groot vertoon.","Geniet van zijn/haar reactie."],
     say:"Ik dacht: ik kom even langs. Gewoon omdat ik je wilde zien.", avoid:"Er van tevoren te veel over praten." },
 
   { id:"a22", title:"Lied van vroeger delen", skill:"Aanwezigheid", ageGroups:["3-5","6-9","10-12","13-16"], durationMin:5,
@@ -1249,7 +1249,7 @@ export const challenges: Challenge[] = [
     steps:["Koppel goed gedrag aan samen-tijd: 'omdat je dat fijn deed, doen we iets samen'.","Laat kind kiezen wat.","Wees er écht bij."],
     say:"Omdat jij dat zo goed deed, doe ik vandaag iets met jou alleen.", avoid:"Altijd materiële beloningen geven." },
 
-  // ── Emotiecoaching — extra 12 ─────────────────────────────────
+  // ── Emotiecoaching - extra 12 ─────────────────────────────────
   { id:"e13", title:"Emotiekaart maken", skill:"Emotiecoaching", ageGroups:["3-5","6-9"], durationMin:10,
     goal:"Emotievocabulaire uitbreiden via creatieve oefening.",
     why:"Visuele representatie van gevoelens helpt kinderen die moeilijk verbaal zijn.",
@@ -1260,12 +1260,12 @@ export const challenges: Challenge[] = [
     goal:"Intensiteit van emoties leren inschatten.",
     why:"Gradatie begrijpen (een beetje boos vs. razend) helpt vroeg de-escaleren.",
     steps:["Bespreek: van 1 (beetje) tot 10 (max).","Vraag hoe hoog de thermometer nu staat.","Bespreek wat helpt op niveau 4 vs. niveau 9."],
-    say:"Op een schaal van 1 tot 10 — hoe boos ben je nu?", avoid:"Altijd reageren alsof elk gevoel op niveau 10 zit." },
+    say:"Op een schaal van 1 tot 10 - hoe boos ben je nu?", avoid:"Altijd reageren alsof elk gevoel op niveau 10 zit." },
 
   { id:"e15", title:"Boze brief schrijven (niet sturen)", skill:"Emotiecoaching", ageGroups:["10-12","13-16"], durationMin:10,
     goal:"Emotionele ontlading via schrijven zonder schade.",
     why:"Expressief schrijven verlaagt emotionele intensiteit en verhoogt zelfbegrip.",
-    steps:["Stel voor: schrijf alles op wat je voelt — niemand leest het.","Laat hem/haar schrijven zonder te kijken.","Daarna: verbranden/scheuren of bewaren — eigen keuze."],
+    steps:["Stel voor: schrijf alles op wat je voelt - niemand leest het.","Laat hem/haar schrijven zonder te kijken.","Daarna: verbranden/scheuren of bewaren - eigen keuze."],
     say:"Schrijf alles op wat je wil zeggen. Je hoeft het niet te sturen. Het is voor jou.", avoid:"Stiekem lezen of vragen wat erin staat." },
 
   { id:"e16", title:"Vader vertelt eigen mislukkingen", skill:"Emotiecoaching", ageGroups:["6-9","10-12","13-16"], durationMin:5,
@@ -1276,21 +1276,21 @@ export const challenges: Challenge[] = [
 
   { id:"e17", title:"Emoties in films bespreken", skill:"Emotiecoaching", ageGroups:["6-9","10-12","13-16"], durationMin:10,
     goal:"Veilige afstand creëren om over gevoelens te praten.",
-    why:"Personages bespreken verlaagt de drempel — het gaat 'niet over jou'.",
+    why:"Personages bespreken verlaagt de drempel - het gaat 'niet over jou'.",
     steps:["Kies een moment in een film waar een personage sterk iets voelt.","Vraag: wat denk je dat hij/zij voelt?","Verbind zachtjes: 'Ken jij dat?'"],
     say:"Wat denk jij dat die jongen/dat meisje nu voelde?", avoid:"Meteen je eigen moraal koppelen aan de scène." },
 
   { id:"e18", title:"Boosheid in het lichaam voelen", skill:"Emotiecoaching", ageGroups:["6-9","10-12"], durationMin:5,
     goal:"Lichaamssignalen koppelen aan de emotie boosheid.",
-    why:"Body awareness is de eerste stap in zelfregulatie — het hoofd volgt het lichaam.",
+    why:"Body awareness is de eerste stap in zelfregulatie - het hoofd volgt het lichaam.",
     steps:["Vraag: waar voel jij boosheid in je lijf?","Benoem jouw eigen plek (borst, kaken, schouders).","Oefen: span die plek aan en laat dan los."],
     say:"Ik voel boosheid altijd eerst in mijn kaken. Waar jij?", avoid:"Alleen over het gevoel praten, het lichaam vergeten." },
 
   { id:"e19", title:"Angst kleiner maken", skill:"Emotiecoaching", ageGroups:["6-9","10-12"], durationMin:10,
     goal:"Angst calibreren via realiteitstoets zonder bagatelliseren.",
-    why:"Het brein vergroot dreigingen — bewust kalibreren activeert het rationele deel.",
+    why:"Het brein vergroot dreigingen - bewust kalibreren activeert het rationele deel.",
     steps:["Vraag: wat is precies het ergste dat kan gebeuren?","Vraag: hoe groot is de kans dat dat echt gebeurt?","Vraag: wat zou jij dan doen?"],
-    say:"Laten we de angst even bekijken. Wat is precies wat je bang voor bent?", avoid:"'Er is niks om bang voor te zijn' — dat sluit de angst op." },
+    say:"Laten we de angst even bekijken. Wat is precies wat je bang voor bent?", avoid:"'Er is niks om bang voor te zijn' - dat sluit de angst op." },
 
   { id:"e20", title:"Verdriet ruimte geven", skill:"Emotiecoaching", ageGroups:["0-2","3-5","6-9","10-12","13-16"], durationMin:5,
     goal:"Verdriet toelaten zonder te repareren.",
@@ -1300,29 +1300,29 @@ export const challenges: Challenge[] = [
 
   { id:"e21", title:"Tevredenheid benoemen", skill:"Emotiecoaching", ageGroups:["3-5","6-9","10-12","13-16"], durationMin:2,
     goal:"Positieve emoties bewust verlengen.",
-    why:"Positieve emoties zijn vluchtig — bewust aandacht geven aan tevreden momenten vergroot welzijn.",
-    steps:["Merk op wanneer je kind tevreden/content is.","Benoem het: 'Ik zie een blije jou.'","Laat het even zin — geen nieuwe activiteit starten."],
+    why:"Positieve emoties zijn vluchtig - bewust aandacht geven aan tevreden momenten vergroot welzijn.",
+    steps:["Merk op wanneer je kind tevreden/content is.","Benoem het: 'Ik zie een blije jou.'","Laat het even zin - geen nieuwe activiteit starten."],
     say:"Ik zie dat je tevreden bent nu. Dat is fijn om te zien.", avoid:"Tevreden momenten onderbreken met de volgende activiteit." },
 
   { id:"e22", title:"Vraag stellen i.p.v. oordelen", skill:"Emotiecoaching", ageGroups:["6-9","10-12","13-16"], durationMin:2,
     goal:"Nieuwsgierigheid als default reactie op gedrag.",
     why:"Vragen openen, oordelen sluiten. Een vraag geeft het kind de kans zichzelf te begrijpen.",
     steps:["Als je wil oordelen: stop, adem.","Formuleer een echte vraag ('wat maakte dat je dat deed?').","Luister het antwoord echt af."],
-    say:"Wat maakte dat je dat koos?", avoid:"'Waarom doe je altijd...' — dat is een verkapt oordeel." },
+    say:"Wat maakte dat je dat koos?", avoid:"'Waarom doe je altijd...' - dat is een verkapt oordeel." },
 
   { id:"e23", title:"Empathie zonder oplossing", skill:"Emotiecoaching", ageGroups:["6-9","10-12","13-16"], durationMin:5,
     goal:"Aanwezig zijn bij pijn zonder te fixen.",
-    why:"Empathie en oplossingen activeren ander gedrag in de ander — empathie bouwt band, oplossingen sluiten soms af.",
+    why:"Empathie en oplossingen activeren ander gedrag in de ander - empathie bouwt band, oplossingen sluiten soms af.",
     steps:["Luister het volledige verhaal af.","Zeg: 'Dat klinkt echt zwaar/rot/verdrietig.'","Vraag: 'Heb je een oplossing nodig of wil je gewoon dat ik het hoor?'"],
     say:"Dat klinkt echt moeilijk. Wat heb je nu van mij nodig?", avoid:"Direct naar oplossingen springen." },
 
   { id:"e24", title:"Schaamte normaliseren", skill:"Emotiecoaching", ageGroups:["6-9","10-12","13-16"], durationMin:5,
     goal:"Schaamte verminderen door te normaliseren en zelf kwetsbaarheid te tonen.",
-    why:"Schaamte gedijt in stilte en geheimhouding — licht erop zetten verkleint het.",
+    why:"Schaamte gedijt in stilte en geheimhouding - licht erop zetten verkleint het.",
     steps:["Herken schaamte bij je kind (hoofd omlaag, vermijden).","Normaliseer: 'Ik schaam me ook wel eens. Iedereen doet dat.'","Deel een eigen moment van schaamte."],
     say:"Ik schaam me ook wel eens. Dat is heel menselijk.", avoid:"Schaamte versterken met opmerkingen over wat anderen denken." },
 
-  // ── Zelfregulatie — extra 12 ──────────────────────────────────
+  // ── Zelfregulatie - extra 12 ──────────────────────────────────
   { id:"z13", title:"Boosheidsprotocol opstellen", skill:"Zelfregulatie", ageGroups:["0-2","3-5","6-9","10-12","13-16"], durationMin:10,
     goal:"Een persoonlijk protocol hebben voor de momenten dat je kookt.",
     why:"Vooraf bepaald gedrag kost minder cognitieve energie in het moment zelf.",
@@ -1331,7 +1331,7 @@ export const challenges: Challenge[] = [
 
   { id:"z14", title:"Schuldgevoel omzetten", skill:"Zelfregulatie", ageGroups:["0-2","3-5","6-9","10-12","13-16"], durationMin:5,
     goal:"Schuldgevoel als informatie gebruiken, niet als zelfkastijding.",
-    why:"Schuld signaleert een waardenverschil tussen je gedrag en je intentie — dat is nuttig, zelfkastijding niet.",
+    why:"Schuld signaleert een waardenverschil tussen je gedrag en je intentie - dat is nuttig, zelfkastijding niet.",
     steps:["Erken het schuld gevoel.","Vraag jezelf: wat zegt dit over wat ik echt wil?","Zet om in één concrete actie (herstel of gedragsverandering)."],
     say:"Ik voel schuld. Dat zegt me dat ik het anders wil. Wat is mijn volgende stap?", avoid:"Schuldgevoel als bewijs dat je een slechte vader bent." },
 
@@ -1349,19 +1349,19 @@ export const challenges: Challenge[] = [
 
   { id:"z17", title:"Eigen behoeften erkennen", skill:"Zelfregulatie", ageGroups:["0-2","3-5","6-9","10-12","13-16"], durationMin:5,
     goal:"Bewust zijn van wat jij nodig hebt om goed te kunnen geven.",
-    why:"Onvervulde eigen behoeften lekken door in irritatie en ongeduld — erkenning vermindert dit.",
+    why:"Onvervulde eigen behoeften lekken door in irritatie en ongeduld - erkenning vermindert dit.",
     steps:["Vraag jezelf: wat heb ik vandaag nodig? (rust, erkenning, beweging, verbinding).","Communiceer dat behoefte aan je partner/omgeving.","Neem 1 kleine stap om erin te voorzien."],
     say:"Ik merk dat ik rust nodig heb. Ik ga 10 minuten voor mezelf nemen.", avoid:"Eigen behoeften als zwakte of luxe zien." },
 
   { id:"z18", title:"Pauzeren bij escalatie", skill:"Zelfregulatie", ageGroups:["3-5","6-9","10-12","13-16"], durationMin:2,
     goal:"Bewust stoppen midden in een escalatie.",
-    why:"Escalatiespiralen stoppen alleen als iemand uitstapt — dat ben jij als volwassene.",
+    why:"Escalatiespiralen stoppen alleen als iemand uitstapt - dat ben jij als volwassene.",
     steps:["Zeg hardop: 'We stoppen nu even.'","Loop letterlijk weg (of ga zitten).","Kom terug na 1-2 minuten."],
     say:"We stoppen nu. Ik ben over 2 minuten terug.", avoid:"Doorgaan tot het explodeert." },
 
   { id:"z19", title:"Slaap en geduld koppelen", skill:"Zelfregulatie", ageGroups:["0-2","3-5","6-9","10-12","13-16"], durationMin:5,
     goal:"Bewustzijn over de impact van slaapgebrek op jouw geduld.",
-    why:"Slaaptekort verlaagt prefrontale activiteit — je geduld letterlijk kleiner wordt. Dit is biologie, geen zwakheid.",
+    why:"Slaaptekort verlaagt prefrontale activiteit - je geduld letterlijk kleiner wordt. Dit is biologie, geen zwakheid.",
     steps:["Noteer: op welke dagen ben ik het meest prikkelbaar?","Correleer met slaap.","Maak 1 afspraak om dit te verbeteren."],
     say:"Ik ben moe vandaag. Dat verklaart waarom ik prikkelbaar ben. Ik pas op.", avoid:"Slaapgebrek negeren en doorgaan alsof er niks aan de hand is." },
 
@@ -1373,13 +1373,13 @@ export const challenges: Challenge[] = [
 
   { id:"z21", title:"Grenzen stellen naar volwassenen", skill:"Zelfregulatie", ageGroups:["0-2","3-5","6-9","10-12","13-16"], durationMin:5,
     goal:"Eigen grenzen handhaven als model voor het kind.",
-    why:"Kinderen leren grenzen stellen door te zien hoe jij dat doet — ook naar andere volwassenen.",
+    why:"Kinderen leren grenzen stellen door te zien hoe jij dat doet - ook naar andere volwassenen.",
     steps:["Herken wanneer jij ja zegt maar nee bedoelt.","Oefen een directe nee in een situatie met lage inzet.","Benoem het naar je kind: 'ik zei nee omdat dat mijn grens is.'"],
     say:"Nee, dat werkt niet voor mij.", avoid:"Kinderen leren grenzen stellen maar zelf nooit nee zeggen." },
 
   { id:"z22", title:"Vergeven van jezelf", skill:"Zelfregulatie", ageGroups:["0-2","3-5","6-9","10-12","13-16"], durationMin:5,
     goal:"Zelfcompassie als vaardigheid inoefenen.",
-    why:"Vaders die zichzelf niet vergeven stapelen schuldgevoel op — dit leidt tot minder consistent gedrag.",
+    why:"Vaders die zichzelf niet vergeven stapelen schuldgevoel op - dit leidt tot minder consistent gedrag.",
     steps:["Erken het fout gegane moment concreet.","Zeg tegen jezelf: 'Ik deed het niet goed. Ik ben ook een mens.'","Formuleer 1 les en laat de rest los."],
     say:"Ik heb het niet perfect gedaan. Ik vergaf het mezelf. Ik doe het morgen anders.", avoid:"Jezelf blijven straffen na een fout." },
 
@@ -1391,11 +1391,11 @@ export const challenges: Challenge[] = [
 
   { id:"z24", title:"Hulp vragen durven", skill:"Zelfregulatie", ageGroups:["0-2","3-5","6-9","10-12","13-16"], durationMin:5,
     goal:"Hulp als teken van kracht zien, niet van zwakte.",
-    why:"Geïsoleerde opvoeding verhoogt stressniveaus. Samen opvoeden — ook met anderen — is evolutionair normaal.",
+    why:"Geïsoleerde opvoeding verhoogt stressniveaus. Samen opvoeden - ook met anderen - is evolutionair normaal.",
     steps:["Identificeer 1 situatie waar je hulp kunt gebruiken.","Vraag concreet (wie, wat, wanneer).","Accepteer het zonder 'maar ik had het zelf ook gekund'."],
     say:"Ik vraag hulp bij X. Dat is slim, niet zwak.", avoid:"Alles zelf willen doen als bewijs van goed vaderschap." },
 
-  // ── Grenzen — extra 12 ────────────────────────────────────────
+  // ── Grenzen - extra 12 ────────────────────────────────────────
   { id:"g13", title:"Grens uitleggen via gevoel", skill:"Grenzen", ageGroups:["6-9","10-12","13-16"], durationMin:5,
     goal:"Grenzen koppelen aan jouw gevoel in plaats van aan regels.",
     why:"'Ik voel X' is moeilijker te bestrijden dan 'de regel is X'. Het maakt jou menselijk en de grens persoonlijk.",
@@ -1404,19 +1404,19 @@ export const challenges: Challenge[] = [
 
   { id:"g14", title:"Grens als zelfrespect modelleren", skill:"Grenzen", ageGroups:["6-9","10-12","13-16"], durationMin:2,
     goal:"Laten zien dat jij ook grenzen mag hebben.",
-    why:"Kinderen leren grenzen stellen door te zien hoe vader dat doet — ook in kleine dagelijkse dingen.",
+    why:"Kinderen leren grenzen stellen door te zien hoe vader dat doet - ook in kleine dagelijkse dingen.",
     steps:["Als iets niet OK is: zeg het direct.","Gebruik ik-taal: 'ik wil dit niet'.","Hou het kort en zonder verontschuldiging."],
     say:"Dit wil ik niet. Ik ga dit even anders aanpakken.", avoid:"Altijd meegaan om conflict te vermijden." },
 
   { id:"g15", title:"Tijdslimiet met timer communiceren", skill:"Grenzen", ageGroups:["3-5","6-9","10-12"], durationMin:5,
     goal:"Grenzen in de tijd duidelijk en zichtbaar maken.",
-    why:"Abstracte tijdsaanduidingen ('zo meteen') werken niet — een zichtbare timer geeft het brein houvast.",
+    why:"Abstracte tijdsaanduidingen ('zo meteen') werken niet - een zichtbare timer geeft het brein houvast.",
     steps:["Gebruik altijd een zichtbare timer voor tijdsgrenzen.","Kondig aan wat er na de timer gebeurt.","Houd je aan de timer."],
     say:"Als de timer gaat, stoppen we. Je kunt de timer zien.", avoid:"Tijdslimiet steeds verschuiven." },
 
   { id:"g16", title:"Nee met empathie", skill:"Grenzen", ageGroups:["0-2","3-5","6-9","10-12","13-16"], durationMin:2,
     goal:"Nee zeggen op een manier die het kind zich begrepen laat voelen.",
-    why:"Een nee met empathie wordt beter geaccepteerd dan een nee zonder — het is een vaardigheid, niet zwakte.",
+    why:"Een nee met empathie wordt beter geaccepteerd dan een nee zonder - het is een vaardigheid, niet zwakte.",
     steps:["Erken de wens: 'ik snap dat je X wil'.","Zeg de nee duidelijk.","Bied eventueel een alternatief."],
     say:"Ik snap dat je door wil spelen. Het antwoord is nee. We kunnen later...", avoid:"Nee zeggen zonder enige erkenning van de behoefte." },
 
@@ -1428,13 +1428,13 @@ export const challenges: Challenge[] = [
 
   { id:"g18", title:"Positieve grens formuleren", skill:"Grenzen", ageGroups:["0-2","3-5","6-9","10-12"], durationMin:2,
     goal:"Grenzen als gewenst gedrag formuleren in plaats van verbod.",
-    why:"Het brein verwerkt positieve instructies sneller dan verboden — 'loop' werkt beter dan 'ren niet'.",
+    why:"Het brein verwerkt positieve instructies sneller dan verboden - 'loop' werkt beter dan 'ren niet'.",
     steps:["Vervang verboden door gewenst gedrag.","Wees concreet in wat je WEL wil.","Herhaal bij overtreding de positieve versie."],
     say:"Loop alsjeblieft. (i.p.v. ren niet)", avoid:"Altijd zeggen wat niet mag." },
 
   { id:"g19", title:"Grens van partner respecteren", skill:"Grenzen", ageGroups:["3-5","6-9","10-12","13-16"], durationMin:5,
     goal:"Consistentie in grenzen tussen ouders versterken.",
-    why:"Kinderen zoeken de weg van minste weerstand — inconsistentie tussen ouders levert meer conflicten op.",
+    why:"Kinderen zoeken de weg van minste weerstand - inconsistentie tussen ouders levert meer conflicten op.",
     steps:["Bespreek met partner: wat zijn onze niet-onderhandelbare grenzen?","Spreek af: bij twijfel steunen we elkaar.","Nooit de grens van de ander ondergraven voor het kind."],
     say:"Papa/mama heeft dat gezegd. Wij staan daarin samen.", avoid:"De ander als streng neerzetten om zelf populair te zijn." },
 
@@ -1458,17 +1458,17 @@ export const challenges: Challenge[] = [
 
   { id:"g23", title:"Grens bij anderen (sociale situaties)", skill:"Grenzen", ageGroups:["3-5","6-9","10-12","13-16"], durationMin:5,
     goal:"Grenzen handhaven ook als anderen kijken.",
-    why:"Sociale druk is een veelvoorkomende reden dat vaders grenzen laten vallen — bewustzijn helpt.",
+    why:"Sociale druk is een veelvoorkomende reden dat vaders grenzen laten vallen - bewustzijn helpt.",
     steps:["Stel je grens in ook als anderen je kind proberen te beïnvloeden.","Leg eventueel later uit waarom.","Ondersteun je kind als anderen de grens niet respecteren."],
     say:"Die afspraak hebben wij thuis. Die geldt ook hier.", avoid:"Grenzen laten vallen om anderen niet voor het hoofd te stoten." },
 
   { id:"g24", title:"Grens en gevoel scheiden", skill:"Grenzen", ageGroups:["3-5","6-9","10-12","13-16"], durationMin:2,
     goal:"Grens stellen zonder het gevoel van het kind te ontkennen.",
-    why:"Gevoelens zijn altijd geldig — gedrag is wat gereguleerd wordt. Dit onderscheid is de basis van warm begrenzen.",
+    why:"Gevoelens zijn altijd geldig - gedrag is wat gereguleerd wordt. Dit onderscheid is de basis van warm begrenzen.",
     steps:["Erken het gevoel volledig.","Dan pas: de grens stellen.","Twee aparte zinnen."],
     say:"Jij bent boos. (pauze) En toch: schoenen aan.", avoid:"Grens stellen op het gevoel in plaats van het gedrag." },
 
-  // ── Autonomie — extra 12 ──────────────────────────────────────
+  // ── Autonomie - extra 12 ──────────────────────────────────────
   { id:"au13", title:"Echte keuzes geven", skill:"Autonomie", ageGroups:["3-5","6-9","10-12","13-16"], durationMin:2,
     goal:"Onderscheid maken tussen echte keuzes en schijnkeuzes.",
     why:"Schijnkeuzes ondermijnen vertrouwen als het kind doorheeft dat er maar één goed antwoord is.",
@@ -1489,7 +1489,7 @@ export const challenges: Challenge[] = [
 
   { id:"au16", title:"Verantwoordelijkheid toewijzen", skill:"Autonomie", ageGroups:["6-9","10-12","13-16"], durationMin:5,
     goal:"Kind eigenaar maken van een vaste taak.",
-    why:"Echte verantwoordelijkheid — niet schijn — bouwt betrouwbaarheid en zelfvertrouwen.",
+    why:"Echte verantwoordelijkheid - niet schijn - bouwt betrouwbaarheid en zelfvertrouwen.",
     steps:["Kies 1 taak die echt van het kind wordt (wasgoed, boodschapjes, planten).","Maak duidelijk dat jij er niet meer op let.","Bespreek wekelijks hoe het gaat."],
     say:"Dit is vanaf nu jouw verantwoordelijkheid. Ik vertrouw erop.", avoid:"Toch controleren of het gedaan is." },
 
@@ -1501,25 +1501,25 @@ export const challenges: Challenge[] = [
 
   { id:"au18", title:"Conflict laten uitvechten", skill:"Autonomie", ageGroups:["6-9","10-12"], durationMin:10,
     goal:"Kinderen zelf conflicten leren oplossen.",
-    why:"Conflicten zijn oefenplaatsen voor onderhandelen en empathie — ingrijpen beroofd hen van de oefening.",
+    why:"Conflicten zijn oefenplaatsen voor onderhandelen en empathie - ingrijpen beroofd hen van de oefening.",
     steps:["Als kinderen in conflict zijn: wacht eerst 2 minuten.","Grijp alleen in bij fysiek gevaar.","Als gevraagd: vraag wat zij zelf kunnen doen."],
     say:"Jullie zijn slim genoeg om dit zelf op te lossen. Wat denken jullie?", avoid:"Elk conflict onmiddellijk oplossen." },
 
   { id:"au19", title:"Falen als leermomenten benoemen", skill:"Autonomie", ageGroups:["6-9","10-12","13-16"], durationMin:5,
     goal:"Fouten heretiketteren als waardevolle informatie.",
-    why:"Groeimindset — fouten als leerkansen zien — wordt aangeleerd, niet geboren.",
+    why:"Groeimindset - fouten als leerkansen zien - wordt aangeleerd, niet geboren.",
     steps:["Na een mislukking: 'Wat heb je nu geleerd?'","Deel je eigen leermomenten uit fouten.","Celebreer de poging, onafhankelijk van resultaat."],
     say:"Wat heb je nu geleerd? Dat is waardevolle informatie.", avoid:"Focussen op wat er fout ging in plaats van wat er geleerd werd." },
 
   { id:"au20", title:"Gevoel van competentie versterken", skill:"Autonomie", ageGroups:["3-5","6-9","10-12"], durationMin:5,
     goal:"Kind bewust laten voelen dat het dingen kan.",
-    why:"Competentiegevoel is een basisbehoefte — het motiveert meer dan beloningen.",
+    why:"Competentiegevoel is een basisbehoefte - het motiveert meer dan beloningen.",
     steps:["Geef een taak die net boven het niveau ligt.","Ondersteun minimaal.","Benoem concreet wat het kind lukte."],
     say:"Je deed dat zelf! Jij kon dat al.", avoid:"Te moeilijke taken geven waardoor falen zeker is." },
 
   { id:"au21", title:"Mening telt mee", skill:"Autonomie", ageGroups:["6-9","10-12","13-16"], durationMin:5,
     goal:"Kind ervaring geven dat zijn/haar mening beslissingen beïnvloedt.",
-    why:"Inspraak — ook als je soms nee zegt — verhoogt betrokkenheid en respect voor beslissingen.",
+    why:"Inspraak - ook als je soms nee zegt - verhoogt betrokkenheid en respect voor beslissingen.",
     steps:["Neem bij een gezinsbeslissing de mening van je kind serieus mee.","Leg uit hoe het meewoog.","Ook als de beslissing anders uitvalt."],
     say:"Jouw mening weegt mee bij deze beslissing. Wat vind jij?", avoid:"Inspraak simuleren maar de uitkomst al vaststaan." },
 
@@ -1531,7 +1531,7 @@ export const challenges: Challenge[] = [
 
   { id:"au23", title:"Eigen grenzen bij vriendschappen", skill:"Autonomie", ageGroups:["10-12","13-16"], durationMin:5,
     goal:"Kind ondersteunen in het stellen van eigen grenzen bij vrienden.",
-    why:"Grenzen in vriendschappen stellen is een vaardigheid die geleerd moet worden — niet vanzelf gaat.",
+    why:"Grenzen in vriendschappen stellen is een vaardigheid die geleerd moet worden - niet vanzelf gaat.",
     steps:["Als kind klaagt over een vriend: vraag wat het kind zelf wil.","Bespreek hoe een grens te stellen.","Oefen de zin samen."],
     say:"Wat wil jij dat er verandert? Hoe zou je dat kunnen zeggen?", avoid:"De vriend direct afwijzen of het conflict overnemen." },
 
@@ -1541,7 +1541,7 @@ export const challenges: Challenge[] = [
     steps:["Vraag kind om advies over iets in jouw leven waar het iets van weet.","Luister serieus.","Geef aan wat je ermee doet."],
     say:"Jij weet hier meer van dan ik. Wat zou jij doen?", avoid:"Altijd de expert zijn in het gesprek." },
 
-  // ── Herstel — extra 12 ────────────────────────────────────────
+  // ── Herstel - extra 12 ────────────────────────────────────────
   { id:"h13", title:"Herstel na grote ruzie", skill:"Herstel", ageGroups:["3-5","6-9","10-12","13-16"], durationMin:10,
     goal:"Grote conflicten volledig herstellen.",
     why:"Onhersteld conflict stapelt zich op in de hechtingsrelatie en vermindert veiligheid.",
@@ -1550,7 +1550,7 @@ export const challenges: Challenge[] = [
 
   { id:"h14", title:"Excuses in actie", skill:"Herstel", ageGroups:["3-5","6-9","10-12","13-16"], durationMin:10,
     goal:"Sorry omzetten in concreet ander gedrag.",
-    why:"'Sorry' zonder gedragsverandering verliest zijn waarde — het kind gelooft daden meer dan woorden.",
+    why:"'Sorry' zonder gedragsverandering verliest zijn waarde - het kind gelooft daden meer dan woorden.",
     steps:["Zeg sorry.","Benoem wat je anders gaat doen.","Doe dat anders, die dag nog."],
     say:"Sorry voor gisteren. Vandaag doe ik het zo: X.", avoid:"Sorry zeggen zonder concrete gedragsverandering." },
 
@@ -1562,14 +1562,14 @@ export const challenges: Challenge[] = [
 
   { id:"h16", title:"Herstel na schreeuwen", skill:"Herstel", ageGroups:["0-2","3-5","6-9","10-12","13-16"], durationMin:5,
     goal:"Direct herstel na de meest voorkomende escalatie.",
-    why:"Schreeuwen is de meest voorkomende schade in de vader-kind relatie — direct herstel beperkt de impact.",
+    why:"Schreeuwen is de meest voorkomende schade in de vader-kind relatie - direct herstel beperkt de impact.",
     steps:["Zo snel mogelijk (minimaal 10 min): ga naar je kind.","'Ik schreeuwde. Dat was niet goed van mij. Sorry.'","Geef ruimte voor reactie."],
     say:"Ik schreeuwde net. Dat was niet oké. Sorry. Gaat het?", avoid:"Doen alsof het niet gebeurd is." },
 
   { id:"h17", title:"Kwetsbaarheid tonen", skill:"Herstel", ageGroups:["6-9","10-12","13-16"], durationMin:5,
     goal:"Emotionele openheid modelleren als herstelmechanisme.",
     why:"Kwetsbaarheid van vader normaliseert gevoelens en vergroot de bereidheid van het kind om open te zijn.",
-    steps:["Deel een moment waarop jij je kwetsbaar voelde.","Gebruik ik-taal, geen drama.","Vraag geen reactie — het is een gift, geen uitwisseling."],
+    steps:["Deel een moment waarop jij je kwetsbaar voelde.","Gebruik ik-taal, geen drama.","Vraag geen reactie - het is een gift, geen uitwisseling."],
     say:"Ik wil je iets vertellen over een moment dat ik het moeilijk had.", avoid:"Kwetsbaarheid als last op het kind leggen." },
 
   { id:"h18", title:"Check-in na moeilijke week", skill:"Herstel", ageGroups:["6-9","10-12","13-16"], durationMin:10,
@@ -1581,12 +1581,12 @@ export const challenges: Challenge[] = [
   { id:"h19", title:"Gratitude als herstelritueel", skill:"Herstel", ageGroups:["3-5","6-9","10-12","13-16"], durationMin:5,
     goal:"Dagelijkse dankbaarheid als smeermiddel voor de relatie.",
     why:"Positieve aandacht correleert direct met veerkracht bij moeilijke momenten.",
-    steps:["Elke avond: noem 1 concreet ding dat je waardeert aan je kind van vandaag.","Specifiek — niet 'je was lief'.","Vraag kind om hetzelfde."],
+    steps:["Elke avond: noem 1 concreet ding dat je waardeert aan je kind van vandaag.","Specifiek - niet 'je was lief'.","Vraag kind om hetzelfde."],
     say:"Wat ik vandaag waardeerde aan jou: je hielp zonder dat ik het vroeg.", avoid:"Algemene complimenten ('je was geweldig') zonder inhoud." },
 
   { id:"h20", title:"Verleden benoemen", skill:"Herstel", ageGroups:["10-12","13-16"], durationMin:10,
     goal:"Eerlijk zijn over moeilijke periodes uit het verleden.",
-    why:"Kinderen weten meer dan ouders denken — openheid schept vertrouwen.",
+    why:"Kinderen weten meer dan ouders denken - openheid schept vertrouwen.",
     steps:["Als er een moeilijke periode was (scheiding, ziekte, werk): benoem het.","Erken de impact op het kind.","Bied opening voor vragen."],
     say:"Ik weet dat die periode zwaar was. Heb je daar vragen over?", avoid:"Moeilijke periodes toedekken alsof ze niet bestonden." },
 
@@ -1594,11 +1594,11 @@ export const challenges: Challenge[] = [
     goal:"Langetermijn intenties voor de relatie verwoorden.",
     why:"Schriftelijk formuleren van bedoelingen versterkt de kans op gedragsverandering.",
     steps:["Schrijf een brief aan je kind voor als hij/zij 18 is.","Vertel wat je hoopt voor jullie relatie.","Bewaar de brief."],
-    say:"(schrijven) 'Lieve X, als je dit leest...'", avoid:"Te veelbelovend schrijven — hou het eerlijk." },
+    say:"(schrijven) 'Lieve X, als je dit leest...'", avoid:"Te veelbelovend schrijven - hou het eerlijk." },
 
   { id:"h22", title:"Contact herstellen na afwezigheid", skill:"Herstel", ageGroups:["0-2","3-5","6-9","10-12","13-16"], durationMin:10,
     goal:"Na lange afwezigheid (werk, reis) de band bewust herstellen.",
-    why:"Heroveren van nabijheid na afwezigheid kost tijd — actief investeren verkort die periode.",
+    why:"Heroveren van nabijheid na afwezigheid kost tijd - actief investeren verkort die periode.",
     steps:["Verwacht geen direct enthousiasme na terugkomst.","Wees aanwezig en beschikbaar zonder te eisen.","Doe iets samen aan het eind van de eerste dag terug."],
     say:"Ik was er even niet. Ik ben blij je te zien. Wat wil jij doen samen?", avoid:"Verwachten dat het direct weer hetzelfde is." },
 

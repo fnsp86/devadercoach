@@ -15,6 +15,8 @@ import { useStore } from '@/lib/store';
 import { getTrainingForSkill } from '@/lib/training-content';
 import { QUIZ_XP, getLevelFromXP } from '@/lib/gamification-types';
 import { checkAndUnlockBadges } from '@/lib/badge-checker';
+import { processBadgeRewards } from '@/lib/badge-rewards';
+import { useAuth } from '@/lib/auth';
 import GamificationPopup from '@/components/GamificationPopup';
 import type { GamificationEvent } from '@/components/GamificationPopup';
 import type { Skill, TrainingItem, QuizOption, ThemeTag } from '@/lib/types';
@@ -52,6 +54,7 @@ export default function SkillTraining() {
   }, [navigation, selectedPart]);
 
   const store = useStore();
+  const { user } = useAuth();
   const activeThemes = useMemo(() => {
     const profile = store.profile;
     if (!profile) return [] as ThemeTag[];
@@ -120,7 +123,7 @@ export default function SkillTraining() {
         );
         if (nextIndex >= 0) setCurrentIndex(nextIndex);
       } else {
-        // No progress — fresh start
+        // No progress - fresh start
         setShowCompletion(false);
         setCurrentIndex(0);
       }
@@ -225,7 +228,9 @@ export default function SkillTraining() {
         quizCompleted: true,
       });
       if (newBadges.length > 0) {
-        setGamificationEvent({ type: 'badge', badge: newBadges[0] });
+        processBadgeRewards(newBadges, user?.email).then((evt) => {
+          if (evt) setGamificationEvent(evt);
+        });
       }
 
       setShowCompletion(true);
@@ -441,7 +446,7 @@ export default function SkillTraining() {
               Quiz voltooid!
             </Text>
             <Text style={[styles.completionSubtitle, { color: colors.text2 }]}>
-              {part ? `${skill} — Deel ${part} afgerond` : `Je hebt de ${skill} quiz afgerond`}
+              {part ? `${skill} - Deel ${part} afgerond` : `Je hebt de ${skill} quiz afgerond`}
             </Text>
 
             {/* Stats */}

@@ -18,9 +18,10 @@ import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
 import {
   getMessages, sendMessage, supabase, getConversationById,
-  getCommunityProfile, blockUser, reportContent,
+  getCommunityProfile, blockUser, reportContent, deleteConversation,
   type Message, type CommunityProfile,
 } from '@/lib/supabase';
+import { markConversationRead } from '@/lib/unread';
 import { InlineIcon } from '@/lib/icons';
 import * as Haptics from 'expo-haptics';
 
@@ -57,6 +58,7 @@ export default function ChatScreen() {
     if (!conversationId) return;
     setLoading(true);
     loadMessages().finally(() => setLoading(false));
+    markConversationRead(conversationId);
 
     // Realtime subscription with fallback polling
     const channel = supabase
@@ -75,16 +77,17 @@ export default function ChatScreen() {
             if (prev.some((m) => m.id === newMsg.id)) return prev;
             return [newMsg, ...prev];
           });
+          markConversationRead(conversationId!);
         },
       )
       .subscribe((status) => {
         if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
-          // Realtime failed — ensure polling is running
+          // Realtime failed - ensure polling is running
           if (!pollingRef.current) {
             pollingRef.current = setInterval(loadMessages, 5000);
           }
         } else if (status === 'SUBSCRIBED') {
-          // Realtime working — stop polling
+          // Realtime working - stop polling
           if (pollingRef.current) {
             clearInterval(pollingRef.current);
             pollingRef.current = null;
@@ -92,7 +95,7 @@ export default function ChatScreen() {
         }
       });
 
-    // Start polling as safety net — Realtime may silently fail
+    // Start polling as safety net - Realtime may silently fail
     pollingRef.current = setInterval(loadMessages, 5000);
 
     return () => {
@@ -206,6 +209,32 @@ export default function ChatScreen() {
           );
         },
       },
+      {
+        text: 'Chat verwijderen',
+        style: 'destructive',
+        onPress: () => {
+          Alert.alert(
+            'Chat verwijderen',
+            `Weet je zeker dat je dit gesprek wilt verwijderen? Alle berichten worden gewist.`,
+            [
+              { text: 'Annuleer', style: 'cancel' },
+              {
+                text: 'Verwijder',
+                style: 'destructive',
+                onPress: async () => {
+                  try {
+                    await deleteConversation(conversationId!);
+                    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                    router.back();
+                  } catch {
+                    Alert.alert('Fout', 'Kon gesprek niet verwijderen. Probeer het opnieuw.');
+                  }
+                },
+              },
+            ],
+          );
+        },
+      },
       { text: 'Annuleer', style: 'cancel' },
     ]);
   }
@@ -288,6 +317,9 @@ export default function ChatScreen() {
             inverted
             contentContainerStyle={styles.listContent}
             showsVerticalScrollIndicator={false}
+            removeClippedSubviews
+            maxToRenderPerBatch={15}
+            windowSize={10}
             ListEmptyComponent={
               <View style={styles.emptyContainer}>
                 <Text style={[styles.emptyText, { color: colors.text3 }]}>

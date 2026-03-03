@@ -106,7 +106,7 @@ export function transformModuleToStages(mod: LearningModule): ModuleStages {
   const stages: Stage[] = [];
   let stageIdx = 0;
 
-  // ── 1. INZICHTEN — hook, kern-inzicht, wetenschap + diagram ───
+  // ── 1. INZICHTEN - hook, kern-inzicht, wetenschap + diagram ───
   const insightCards: InsightCard[] = [];
 
   for (const section of learningTexts) {
@@ -173,7 +173,7 @@ export function transformModuleToStages(mod: LearningModule): ModuleStages {
     stageIdx++;
   }
 
-  // ── 3. JE TOOLKIT — praktische tips (na scenario) ─────────────
+  // ── 3. JE TOOLKIT - praktische tips (na scenario) ─────────────
   if (toolkitTexts.length > 0) {
     const toolkitCards: InsightCard[] = toolkitTexts.map((section) => ({
       title: mod.title,
@@ -259,7 +259,7 @@ export function transformModuleToStages(mod: LearningModule): ModuleStages {
     stageIdx++;
   }
 
-  // ── 5. MISSIE — volledige instructies ──────────────────────────
+  // ── 5. MISSIE - volledige instructies ──────────────────────────
   const exercise = exercises[0];
   if (exercise) {
     stages.push({
@@ -364,7 +364,7 @@ function extractTips(text: string): { title: string; body: string }[] {
   const tips: { title: string; body: string }[] = [];
 
   for (const line of lines) {
-    // Format: "1. Titel. Uitleg hier." — numbered tip met punt als scheiding
+    // Format: "1. Titel. Uitleg hier." - numbered tip met punt als scheiding
     const numbered = line.match(/^[\d•·]+[.)]\s*(.+?)\.\s+(.+)/);
     if (numbered && numbered[1].length >= 3) {
       tips.push({ title: numbered[1].replace(/\*/g, '').trim(), body: numbered[2].trim() });
@@ -376,8 +376,8 @@ function extractTips(text: string): { title: string; body: string }[] {
       tips.push({ title: bold[1].trim(), body: bold[2].trim() });
       continue;
     }
-    // "Titel — uitleg" or "Titel: uitleg" (met em-dash of dubbelpunt)
-    const dashSplit = line.match(/^(.{5,40}?)\s*[—–:]\s+(.{20,})/);
+    // "Titel - uitleg" or "Titel: uitleg" (met em-dash of dubbelpunt)
+    const dashSplit = line.match(/^(.{5,40}?)\s*[ - –:]\s+(.{20,})/);
     if (dashSplit) {
       tips.push({ title: dashSplit[1].trim(), body: dashSplit[2].trim() });
       continue;
@@ -418,7 +418,7 @@ export function transformModuleToDiscoveryCards(mod: LearningModule): ModuleStag
     return n === 0 ? `${mod.id}_${type}` : `${mod.id}_${type}_${n}`;
   }
 
-  // ── 1. HERKEN — relatable opening ──
+  // ── 1. HERKEN - relatable opening ──
   const example = examples[0];
   if (example?.situation) {
     stages.push({
@@ -430,7 +430,7 @@ export function transformModuleToDiscoveryCards(mod: LearningModule): ModuleStag
     });
   }
 
-  // ── 2-5. INZICHT kaarten — leerstof in volle stukken ──
+  // ── 2-5. INZICHT kaarten - leerstof in volle stukken ──
   const allFacts: string[] = [];
   let inzichtCount = 0;
 
@@ -473,7 +473,7 @@ export function transformModuleToDiscoveryCards(mod: LearningModule): ModuleStag
     }
   }
 
-  // ── 6. WIST-JE-DAT — verrassende feiten (altijd 2) ──
+  // ── 6. WIST-JE-DAT - verrassende feiten (altijd 2) ──
   // Ook feiten uit toolkit-tekst halen
   for (const toolkit of toolkitTexts) {
     if (toolkit.text) allFacts.push(...extractFacts(toolkit.text));
@@ -518,7 +518,7 @@ export function transformModuleToDiscoveryCards(mod: LearningModule): ModuleStag
     });
   }
 
-  // ── 7. DIAGRAM — visueel model ──
+  // ── 7. DIAGRAM - visueel model ──
   const diagram = diagrams[0];
   if (diagram?.diagramData && diagram.diagramData.length > 0) {
     stages.push({
@@ -535,7 +535,7 @@ export function transformModuleToDiscoveryCards(mod: LearningModule): ModuleStag
     });
   }
 
-  // ── 8. KEUZE-MOMENT — interactief scenario ──
+  // ── 8. KEUZE-MOMENT - interactief scenario ──
   // Gebruik een apart keuze-voorbeeld als beschikbaar (examples[1]), anders fallback naar examples[0]
   const keuzeExample = examples[1] ?? example;
   if (keuzeExample?.wrongApproach && keuzeExample?.rightApproach) {
@@ -566,7 +566,7 @@ export function transformModuleToDiscoveryCards(mod: LearningModule): ModuleStag
     });
   }
 
-  // ── 9. Extra INZICHT na keuze — waarom de goede aanpak werkt ──
+  // ── 9. Extra INZICHT na keuze - waarom de goede aanpak werkt ──
   // Gebruik de uitleg van het keuze-voorbeeld (niet example[0]) zodat namen kloppen
   const keuzeExplanation = keuzeExample?.explanation ?? example?.explanation;
   if (keuzeExplanation && keuzeExplanation.length > 40) {
@@ -583,7 +583,7 @@ export function transformModuleToDiscoveryCards(mod: LearningModule): ModuleStag
     });
   }
 
-  // ── 10-12. STRATEGIE kaarten — 1 tip per kaart ──
+  // ── 10-12. STRATEGIE kaarten - 1 tip per kaart ──
   const allTips: { title: string; body: string }[] = [];
   for (const toolkit of toolkitTexts) {
     if (!toolkit.text) continue;
@@ -613,7 +613,7 @@ export function transformModuleToDiscoveryCards(mod: LearningModule): ModuleStag
     });
   }
 
-  // ── 13. UITDAGING — praktische missie ──
+  // ── 13. UITDAGING - praktische missie ──
   const exercise = exercises[0];
   if (exercise) {
     stages.push({
@@ -628,7 +628,7 @@ export function transformModuleToDiscoveryCards(mod: LearningModule): ModuleStag
     });
   }
 
-  // ── 15. SPIEGEL — reflectie ──
+  // ── 15. SPIEGEL - reflectie ──
   const reflection = reflections[0];
   if (reflection?.questions && reflection.questions.length > 0) {
     stages.push({
@@ -642,7 +642,7 @@ export function transformModuleToDiscoveryCards(mod: LearningModule): ModuleStag
     });
   }
 
-  // ── 16. SAMENVATTING — key takeaways ──
+  // ── 16. SAMENVATTING - key takeaways ──
   stages.push({
     id: stageId('samenvatting'),
     type: 'samenvatting',

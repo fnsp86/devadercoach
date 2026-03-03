@@ -75,7 +75,7 @@ export const BADGES: Badge[] = [
   { id: "streak_100", name: "Legende", description: "100 dagen streak", emoji: "👑", category: "streak", requirement: { type: "streak", value: 100 }, rarity: "epic" },
   { id: "streak_365", name: "Titan", description: "365 dagen streak!", emoji: "🏆", category: "streak", requirement: { type: "streak", value: 365 }, rarity: "legendary" },
   
-  // SKILL BADGES — per skill: 10 (starter) + 50 (expert)
+  // SKILL BADGES - per skill: 10 (starter) + 50 (expert)
   { id: "aanw_10", name: "Aandachtig", description: "10 Aanwezigheid taken", emoji: "👁️", category: "skill", requirement: { type: "skill_tasks", value: 10, skill: "Aanwezigheid" }, rarity: "common" },
   { id: "aanw_50", name: "Luisteraar", description: "50 Aanwezigheid taken", emoji: "👂", category: "skill", requirement: { type: "skill_tasks", value: 50, skill: "Aanwezigheid" }, rarity: "rare" },
   { id: "emco_10", name: "Emotie Spotter", description: "10 Emotiecoaching taken", emoji: "💗", category: "skill", requirement: { type: "skill_tasks", value: 10, skill: "Emotiecoaching" }, rarity: "common" },
@@ -267,7 +267,7 @@ export const MILESTONES: Milestone[] = [
     tasks: 5,
     emoji: '\u{1F331}',
     title: 'Eerste stappen',
-    message: 'Je bent begonnen. Dat is het moeilijkste deel — en je hebt het gedaan.',
+    message: 'Je bent begonnen. Dat is het moeilijkste deel - en je hebt het gedaan.',
   },
   {
     tasks: 10,
@@ -285,7 +285,7 @@ export const MILESTONES: Milestone[] = [
     tasks: 50,
     emoji: '\u{2B50}',
     title: 'Halve eeuw',
-    message: '50 oefeningen. Dat is niet "een app gebruiken" — dat is investeren in je kind.',
+    message: '50 oefeningen. Dat is niet "een app gebruiken" - dat is investeren in je kind.',
   },
   {
     tasks: 75,
@@ -297,7 +297,7 @@ export const MILESTONES: Milestone[] = [
     tasks: 100,
     emoji: '\u{1F3C6}',
     title: 'Honderd keer aanwezig',
-    message: '100 oefeningen. Je bent een voorbeeld voor je kind — en voor andere vaders.',
+    message: '100 oefeningen. Je bent een voorbeeld voor je kind - en voor andere vaders.',
   },
   {
     tasks: 200,
@@ -309,7 +309,7 @@ export const MILESTONES: Milestone[] = [
     tasks: 500,
     emoji: '\u{1F680}',
     title: 'Legendarisch',
-    message: '500 oefeningen. Je hebt laten zien dat goed vaderschap geen toeval is — het is een keuze, elke dag opnieuw.',
+    message: '500 oefeningen. Je hebt laten zien dat goed vaderschap geen toeval is - het is een keuze, elke dag opnieuw.',
   },
 ];
 
@@ -360,17 +360,17 @@ export function checkStreakStatus(
     freezes = Math.max(freezes, 1); // Give at least 1 free freeze per week
   }
 
-  // Same day — no changes
+  // Same day - no changes
   if (gap <= 0) {
     return { newStreak: profile.currentStreak, freezeUsed: false, streakLost: false, compassionateMessage: null };
   }
 
-  // Consecutive day — streak continues
+  // Consecutive day - streak continues
   if (gap === 1) {
     return { newStreak: profile.currentStreak, freezeUsed: false, streakLost: false, compassionateMessage: null };
   }
 
-  // Missed 1 day (gap === 2) — use freeze if available
+  // Missed 1 day (gap === 2) - use freeze if available
   if (gap === 2 && freezes > 0) {
     return {
       newStreak: profile.currentStreak,
@@ -380,11 +380,11 @@ export function checkStreakStatus(
     };
   }
 
-  // Streak lost — but with compassionate messaging
+  // Streak lost - but with compassionate messaging
   const messages = [
     'Welkom terug! Elke dag is een nieuwe kans om er te zijn voor je kind.',
     'Even niet actief geweest? Geen stress. Het feit dat je nu hier bent zegt genoeg.',
-    'Een pauze is geen falen. Je bent er nu weer — dat is wat telt.',
+    'Een pauze is geen falen. Je bent er nu weer - dat is wat telt.',
   ];
   const msg = messages[Math.floor(Math.random() * messages.length)];
 
@@ -502,7 +502,7 @@ export function generateWeeklyChallenges(
     return (seed - 1) / 2147483646;
   };
 
-  // Build candidate pool — prioritize skill-specific challenges matching doelen
+  // Build candidate pool - prioritize skill-specific challenges matching doelen
   let candidates = [...WEEKLY_TEMPLATES];
 
   // If doelen are set, prioritize matching skill challenges
@@ -586,9 +586,11 @@ export function getDailyQuestForDate(dateStr: string): VariableDailyQuest {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// FIRST-OF-DAY BONUS
+// XP CONSTANTS
 // ═══════════════════════════════════════════════════════════════════
 
+export const XP_PER_TASK = 15;
+export const XP_WEEK_BONUS = 50;
 export const FIRST_TASK_BONUS_XP = 5;
 
 /**
@@ -710,7 +712,7 @@ export interface ModuleMilestone {
 export const MODULE_MILESTONES: ModuleMilestone[] = [
   { modules: 5,  emoji: '📖', title: 'Eerste Skill Voltooid',  message: 'Je hebt je eerste volledige skill afgerond! Dat is een serieuze stap.' },
   { modules: 10, emoji: '📚', title: 'Dubbele Cijfers',        message: '10 modules! Je bent een kwart van de weg. Je kind merkt het verschil.' },
-  { modules: 20, emoji: '🎓', title: 'Halverwege',             message: 'De helft van alle modules voltooid. Je groeit als vader — meetbaar.' },
+  { modules: 20, emoji: '🎓', title: 'Halverwege',             message: 'De helft van alle modules voltooid. Je groeit als vader - meetbaar.' },
   { modules: 40, emoji: '👑', title: 'Meester Vader',          message: 'ALLE 40 modules voltooid. Legendarisch. Je kind heeft de beste vader.' },
 ];
 

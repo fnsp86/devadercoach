@@ -288,7 +288,7 @@ function ArenaSection() {
           <Text style={[arena.dailyTitle, { color: colors.text }]}>Dagelijkse Duel</Text>
           <Text style={[arena.dailySub, { color: colors.text3 }]}>
             {store.dailyArenaLastPlayed === getTodayDateStr()
-              ? 'Vandaag al gespeeld — bekijk de ranglijst!'
+              ? 'Vandaag al gespeeld - bekijk de ranglijst!'
               : '5 vragen · 20 sec per vraag · Versla andere vaders'}
           </Text>
         </View>
@@ -588,14 +588,22 @@ export default function LerenOverview() {
           <Text style={[s.segmentText, { color: section === 'modules' ? colors.amber : colors.text2 }]}>
             Modules
           </Text>
+          <Text style={{ fontSize: 10, fontWeight: '500', color: section === 'modules' ? colors.amber : colors.text3, marginTop: 1 }}>
+            Leer op je eigen tempo
+          </Text>
         </Pressable>
         <Pressable
           onPress={() => setSection('arena')}
           style={[s.segment, section === 'arena' && { borderBottomColor: colors.amber, borderBottomWidth: 2 }]}
         >
-          <InlineIcon name="swords" size={14} color={section === 'arena' ? colors.amber : colors.text2} />
-          <Text style={[s.segmentText, { color: section === 'arena' ? colors.amber : colors.text2 }]}>
-            Arena
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+            <InlineIcon name="swords" size={14} color={section === 'arena' ? colors.amber : colors.text2} />
+            <Text style={[s.segmentText, { color: section === 'arena' ? colors.amber : colors.text2 }]}>
+              Arena
+            </Text>
+          </View>
+          <Text style={{ fontSize: 10, fontWeight: '500', color: section === 'arena' ? colors.amber : colors.text3, marginTop: 1 }}>
+            Test je kennis
           </Text>
         </Pressable>
       </View>
@@ -677,11 +685,10 @@ const s = StyleSheet.create({
   },
   segment: {
     flex: 1,
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
-    paddingVertical: 12,
+    gap: 2,
+    paddingVertical: 10,
     borderBottomWidth: 2,
     borderBottomColor: 'transparent',
   },

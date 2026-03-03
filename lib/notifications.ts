@@ -6,20 +6,24 @@ import { supabase } from './supabase';
 import { getWijsheidVanDeDag } from './vader-wijsheid';
 
 // Configure how notifications appear when app is in foreground
+// Duel notifications don't show as banner to prevent interrupting active training
 Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldShowBanner: true,
-    shouldShowList: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
+  handleNotification: async (notification) => {
+    const data = notification.request.content.data;
+    const isDuel = data?.type === 'duel';
+    return {
+      shouldShowAlert: !isDuel,
+      shouldShowBanner: !isDuel,
+      shouldShowList: true,
+      shouldPlaySound: !isDuel,
+      shouldSetBadge: false,
+    };
+  },
 });
 
 export async function registerForPushNotifications(): Promise<string | null> {
   // Push notifications only work on physical devices
   if (!Device.isDevice) {
-    console.log('[notifications] Not a physical device — skipping push registration');
     return null;
   }
 
@@ -33,7 +37,6 @@ export async function registerForPushNotifications(): Promise<string | null> {
   }
 
   if (finalStatus !== 'granted') {
-    console.log('[notifications] Permission not granted');
     return null;
   }
 
@@ -62,13 +65,11 @@ export async function registerForPushNotifications(): Promise<string | null> {
   // Get Expo push token
   const projectId = Constants.expoConfig?.extra?.eas?.projectId;
   if (!projectId) {
-    console.log('[notifications] No EAS project ID found — push tokens require a production build');
     return null;
   }
 
   const { data: token } = await Notifications.getExpoPushTokenAsync({ projectId });
 
-  console.log('[notifications] Push token:', token);
   return token;
 }
 
@@ -99,7 +100,7 @@ export async function registerAndSaveToken(userId: string) {
 const QUOTE_NOTIFICATION_ID_PREFIX = 'daily-quote-';
 
 /** Plan dagelijkse quote-notificaties voor de komende 7 dagen */
-export async function scheduleDailyQuoteNotifications() {
+export async function scheduleDailyQuoteNotifications(hour = 8) {
   // Cancel bestaande quote-notificaties
   await cancelDailyQuoteNotifications();
 
@@ -111,9 +112,9 @@ export async function scheduleDailyQuoteNotifications() {
     const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     const wijsheid = getWijsheidVanDeDag(dateStr);
 
-    // Trigger om 08:00 lokale tijd
+    // Trigger op gekozen uur lokale tijd
     const trigger = new Date(date);
-    trigger.setHours(8, 0, 0, 0);
+    trigger.setHours(hour, 0, 0, 0);
 
     // Sla over als trigger in het verleden ligt
     if (trigger.getTime() <= now.getTime()) continue;
@@ -123,7 +124,7 @@ export async function scheduleDailyQuoteNotifications() {
       content: {
         title: 'Vader Wijsheid',
         body: wijsheid.text,
-        subtitle: wijsheid.bron ? `— ${wijsheid.bron}` : undefined,
+        subtitle: wijsheid.bron ? `- ${wijsheid.bron}` : undefined,
         data: { type: 'daily_quote' },
         ...(Platform.OS === 'android' && { channelId: 'daily-quote' }),
       },
@@ -131,7 +132,6 @@ export async function scheduleDailyQuoteNotifications() {
     });
   }
 
-  console.log('[notifications] Scheduled 7 daily quote notifications');
 }
 
 /** Cancel alle geplande quote-notificaties */
@@ -149,7 +149,7 @@ export async function cancelDailyQuoteNotifications() {
 const TASK_REMINDER_ID_PREFIX = 'task-reminder-';
 
 /** Plan dagelijkse taak-herinneringen voor de komende 7 dagen */
-export async function scheduleTaskReminderNotifications(incompleteTasks: number) {
+export async function scheduleTaskReminderNotifications(incompleteTasks: number, hour = 18) {
   await cancelTaskReminderNotifications();
   if (incompleteTasks <= 0) return;
 
@@ -160,9 +160,9 @@ export async function scheduleTaskReminderNotifications(incompleteTasks: number)
     date.setDate(date.getDate() + dayOffset);
     const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
-    // Trigger om 18:00 lokale tijd
+    // Trigger op gekozen uur lokale tijd
     const trigger = new Date(date);
-    trigger.setHours(18, 0, 0, 0);
+    trigger.setHours(hour, 0, 0, 0);
 
     if (trigger.getTime() <= now.getTime()) continue;
 
@@ -180,7 +180,6 @@ export async function scheduleTaskReminderNotifications(incompleteTasks: number)
     });
   }
 
-  console.log(`[notifications] Scheduled task reminders (${incompleteTasks} incomplete)`);
 }
 
 /** Cancel alle geplande taak-herinneringen */

@@ -42,12 +42,19 @@ export default function HelpDetailPage() {
     addHelpHistory,
     helpFeedback,
     setHelpFeedback,
+    weekTaskCompletions,
   } = useStore();
 
   const activeThemes = useMemo(
     () => (profile ? resolveActiveThemes(profile) : []),
     [profile],
   );
+
+  // Community is locked tot > 3 niet-reflectie taken zijn afgerond
+  const communityUnlocked = useMemo(() => {
+    const realTasks = weekTaskCompletions.filter((c) => !/^refl_\d{4}-/.test(c.taskId));
+    return realTasks.length > 3;
+  }, [weekTaskCompletions]);
 
   const allSituations = useMemo(
     () => getHelpSituations(activeThemes),
@@ -295,6 +302,10 @@ export default function HelpDetailPage() {
         {/* Share with community */}
         <Pressable
           onPress={() => {
+            if (!communityUnlocked) {
+              // Show locked message
+              return;
+            }
             const prefillText = `Hoe gaan jullie om met: "${situation.situatie}"?\n\nIk las net de tips in de app en vroeg me af hoe andere vaders dit aanpakken.`;
             const returnTo = `/(tabs)/help/${situation.id}`;
             router.push(
@@ -304,14 +315,19 @@ export default function HelpDetailPage() {
           style={[styles.shareBtn, {
             backgroundColor: colors.surface,
             borderColor: colors.border,
+            opacity: communityUnlocked ? 1 : 0.5,
           }]}
         >
-          <InlineIcon name="users" size={20} color={colors.amber} />
+          <InlineIcon name={communityUnlocked ? 'users' : 'lock'} size={20} color={communityUnlocked ? colors.amber : colors.text3} />
           <View style={styles.shareTextWrap}>
-            <Text style={[styles.shareTitle, { color: colors.text }]}>Bespreek in community</Text>
-            <Text style={[styles.shareSub, { color: colors.text3 }]}>Vraag andere vaders hoe zij dit doen</Text>
+            <Text style={[styles.shareTitle, { color: communityUnlocked ? colors.text : colors.text3 }]}>
+              {communityUnlocked ? 'Bespreek in community' : 'Community nog vergrendeld'}
+            </Text>
+            <Text style={[styles.shareSub, { color: colors.text3 }]}>
+              {communityUnlocked ? 'Vraag andere vaders hoe zij dit doen' : 'Rond eerst een paar taken af om toegang te krijgen'}
+            </Text>
           </View>
-          <InlineIcon name="arrowRight" size={16} color={colors.text3} />
+          {communityUnlocked && <InlineIcon name="arrowRight" size={16} color={colors.text3} />}
         </Pressable>
 
         {/* Related situations */}

@@ -75,7 +75,7 @@ function ModuleCard({ item, expanded, onToggle }: {
 
   return (
     <View style={[st.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-      {/* Header — always visible, tappable */}
+      {/* Header - always visible, tappable */}
       <Pressable onPress={onToggle} style={st.cardHeader}>
         <View style={[st.cardIcon, { backgroundColor: skillColor + '18' }]}>
           <InlineIcon name="compass" size={18} color={skillColor} />
@@ -127,7 +127,7 @@ function ModuleCard({ item, expanded, onToggle }: {
             <View style={[st.noNoteBox, { backgroundColor: colors.surface2 }]}>
               <InlineIcon name="penLine" size={16} color={colors.text3} />
               <Text style={[st.noNoteBoxText, { color: colors.text3 }]}>
-                Geen notitie geschreven — je hebt er wel over nagedacht!
+                Geen notitie geschreven - je hebt er wel over nagedacht!
               </Text>
             </View>
           )}
@@ -147,7 +147,7 @@ function WeeklyCard({ item, expanded, onToggle }: {
 
   return (
     <View style={[st.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-      {/* Header — always visible, tappable */}
+      {/* Header - always visible, tappable */}
       <Pressable onPress={onToggle} style={st.cardHeader}>
         <View style={[st.cardIcon, { backgroundColor: '#A78BFA18' }]}>
           <InlineIcon name="brain" size={18} color="#A78BFA" />
@@ -492,7 +492,7 @@ const st = StyleSheet.create({
   },
   weekSectionText: { fontSize: 13, fontWeight: '700' },
 
-  // Card — collapsed
+  // Card - collapsed
   card: {
     borderRadius: 16,
     borderWidth: 1,
@@ -539,7 +539,7 @@ const st = StyleSheet.create({
   skillPillText: { fontSize: 11, fontWeight: '700' },
   cardDate: { fontSize: 11, fontWeight: '500' },
 
-  // Card — expanded
+  // Card - expanded
   expandedBody: {
     borderTopWidth: 1,
     paddingHorizontal: 14,

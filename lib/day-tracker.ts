@@ -28,13 +28,17 @@ export function calculateCurrentDay(tracking: DayTracking): number {
 }
 
 export async function getDayTracking(): Promise<DayTracking> {
-  const stored = await AsyncStorage.getItem('vc-day-tracking');
-  if (stored) {
-    const tracking: DayTracking = JSON.parse(stored);
-    tracking.currentDay = calculateCurrentDay(tracking);
-    tracking.lastCheckIn = new Date().toISOString().split('T')[0];
-    await AsyncStorage.setItem('vc-day-tracking', JSON.stringify(tracking));
-    return tracking;
+  try {
+    const stored = await AsyncStorage.getItem('vc-day-tracking');
+    if (stored) {
+      const tracking: DayTracking = JSON.parse(stored);
+      tracking.currentDay = calculateCurrentDay(tracking);
+      tracking.lastCheckIn = new Date().toISOString().split('T')[0];
+      await AsyncStorage.setItem('vc-day-tracking', JSON.stringify(tracking));
+      return tracking;
+    }
+  } catch {
+    // Corrupt data - reset tracking
   }
 
   const newTracking = initializeDayTracking();

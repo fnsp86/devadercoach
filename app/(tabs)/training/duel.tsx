@@ -18,6 +18,7 @@ import { submitDuelScore, getDuelHistory, getOrCreateConversation, sendMessage }
 import { SKILL_COLORS } from '@/lib/colors';
 import { InlineIcon, getSkillIcon, AppIcon } from '@/lib/icons';
 import { checkAndUnlockBadges } from '@/lib/badge-checker';
+import { processBadgeRewards } from '@/lib/badge-rewards';
 import GamificationPopup from '@/components/GamificationPopup';
 import type { TrainingItem, QuizOption, Skill } from '@/lib/types';
 
@@ -143,7 +144,9 @@ export default function DuelScreen() {
           totalDuelsWon: wonDuels.length,
         });
         if (newBadges.length > 0) {
-          setGamificationEvent({ type: 'badge', badge: newBadges[0] });
+          processBadgeRewards(newBadges, user?.email).then((evt) => {
+            if (evt) setGamificationEvent(evt);
+          });
         }
       } catch { /* badge check is optional */ }
     }

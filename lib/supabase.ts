@@ -4,7 +4,7 @@ import * as SecureStore from 'expo-secure-store';
 import { File as ExpoFile } from 'expo-file-system';
 import { Platform } from 'react-native';
 
-// AsyncStorage adapter — SecureStore has a 2048-byte limit which breaks
+// AsyncStorage adapter - SecureStore has a 2048-byte limit which breaks
 // Supabase session storage (JWT + refresh token easily exceeds this).
 // We keep SecureStore import for one-time migration of existing sessions.
 const MIGRATED_KEY = 'vc-secure-store-migrated';
@@ -278,7 +278,7 @@ export async function toggleStoryLike(storyId: string, userId: string) {
     await supabase.from('story_likes').delete().eq('id', existing.id);
     // Best-effort update denormalized count (may fail due to RLS, but real counts are fetched via embedded resources)
     try {
-      const { data: story } = await supabase.from('stories').select('likes_count').eq('id', storyId).single();
+      const { data: story } = await supabase.from('stories').select('likes_count').eq('id', storyId).maybeSingle();
       if (story) {
         await supabase.from('stories').update({ likes_count: Math.max(0, (story.likes_count ?? 0) - 1) }).eq('id', storyId);
       }
@@ -292,7 +292,7 @@ export async function toggleStoryLike(storyId: string, userId: string) {
     }
     // Best-effort update denormalized count
     try {
-      const { data: story } = await supabase.from('stories').select('likes_count').eq('id', storyId).single();
+      const { data: story } = await supabase.from('stories').select('likes_count').eq('id', storyId).maybeSingle();
       if (story) {
         await supabase.from('stories').update({ likes_count: (story.likes_count ?? 0) + 1 }).eq('id', storyId);
       }
@@ -327,7 +327,7 @@ export async function addStoryComment(comment: {
     .from('stories')
     .select('comments_count')
     .eq('id', comment.story_id)
-    .single();
+    .maybeSingle();
   if (story) {
     await supabase
       .from('stories')
@@ -352,7 +352,7 @@ export async function deleteStoryComment(commentId: string, storyId?: string) {
         .from('stories')
         .select('comments_count')
         .eq('id', storyId)
-        .single();
+        .maybeSingle();
       if (story) {
         await supabase
           .from('stories')
@@ -406,6 +406,21 @@ export async function getOrCreateConversation(userId: string, otherUserId: strin
   return data as Conversation;
 }
 
+export async function deleteConversation(conversationId: string) {
+  // Delete messages first (foreign key), then the conversation
+  const { error: msgErr } = await supabase
+    .from('messages')
+    .delete()
+    .eq('conversation_id', conversationId);
+  if (msgErr) throw msgErr;
+
+  const { error } = await supabase
+    .from('conversations')
+    .delete()
+    .eq('id', conversationId);
+  if (error) throw error;
+}
+
 export async function getMessages(conversationId: string, cursor?: string) {
   let query = supabase
     .from('messages')
@@ -436,10 +451,11 @@ export async function sendMessage(msg: {
   if (error) throw error;
 
   // Update conversation last message
-  await supabase
+  const { error: updateErr } = await supabase
     .from('conversations')
     .update({ last_message: msg.content, last_message_at: new Date().toISOString() })
     .eq('id', msg.conversation_id);
+  if (updateErr) console.warn('[sendMessage] conversation update failed:', updateErr.message);
 
   return data as Message;
 }
@@ -545,10 +561,11 @@ export async function sendGroupMessage(
   if (error) throw error;
 
   // Update group's last message
-  await supabase
+  const { error: updateErr } = await supabase
     .from('groups')
     .update({ last_message: content, last_message_at: new Date().toISOString() })
     .eq('id', groupId);
+  if (updateErr) console.warn('[sendGroupMessage] group update failed:', updateErr.message);
 
   return data as GroupMessage;
 }
@@ -779,17 +796,11 @@ export async function updateReportStatus(reportId: string, status: 'resolved' | 
 
 export async function sendAccountDeletionEmail(email: string, name: string) {
   try {
-    console.log('[deletion-email] Invoking edge function for:', email);
-    console.log('[deletion-email] Supabase URL:', supabaseUrl);
     const { data, error } = await supabase.functions.invoke('send-deletion-email', {
       body: { email, name },
     });
-    console.log('[deletion-email] Response data:', JSON.stringify(data));
-    console.log('[deletion-email] Response error:', JSON.stringify(error));
     if (error) {
       console.error('[deletion-email] Error:', error.message, error);
-    } else {
-      console.log('[deletion-email] Success:', data);
     }
   } catch (e: any) {
     console.error('[deletion-email] Exception:', e?.message || e);
@@ -942,7 +953,6 @@ export async function uploadAvatar(userId: string, uri: string) {
   if (error) throw error;
 
   const { data } = supabase.storage.from('avatars').getPublicUrl(path);
-  console.log('[avatar] public url:', data.publicUrl);
   return data.publicUrl + '?t=' + Date.now();
 }
 

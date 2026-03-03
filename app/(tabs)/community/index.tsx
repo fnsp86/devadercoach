@@ -11,6 +11,7 @@ import {
   ScrollView,
   Modal,
   TextInput,
+  Alert,
   LayoutAnimation,
   UIManager,
   Platform,
@@ -30,6 +31,7 @@ import {
   getUserLikedStoryIds,
   getChallengeStories,
   getGroups,
+  reportContent,
   type Story,
   type CommunityProfile,
   type Group,
@@ -104,7 +106,7 @@ function timeAgo(dateStr: string): string {
 export default function SocialFeed() {
   const { colors } = useTheme();
   const { user, communityProfile, setCommunityProfile, isAdmin } = useAuth();
-  const { profile } = useStore();
+  const { profile, weekTaskCompletions } = useStore();
   const router = useRouter();
 
   // View mode
@@ -279,10 +281,10 @@ export default function SocialFeed() {
         // Only re-fetch if enough time has passed since last load
         if (now - lastFetchTime.current < REFETCH_THROTTLE_MS) return;
         lastFetchTime.current = now;
-        // Already have data — refresh silently in background (no spinner)
+        // Already have data - refresh silently in background (no spinner)
         loadStories(undefined, true);
       } else {
-        // First load — show spinner
+        // First load - show spinner
         hasLoadedOnce.current = true;
         lastFetchTime.current = now;
         loadStories();
@@ -348,6 +350,39 @@ export default function SocialFeed() {
             <Button title="Account aanmaken" onPress={() => router.push('/register' as any)} variant="secondary" size="lg" />
           </View>
         </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  // Locked state: community opens after week 1 is complete (> 3 tasks = begin week 2)
+  const totalTasksDone = weekTaskCompletions.filter((c) => !/^refl_\d{4}-/.test(c.taskId)).length;
+  const week1Target = 3;
+  const socialUnlocked = totalTasksDone > week1Target;
+
+  if (!socialUnlocked) {
+    const progress = Math.min(totalTasksDone, week1Target);
+    return (
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.bg }]}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 }}>
+          <View style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: colors.amberDim, alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
+            <InlineIcon name="lock" size={36} color={colors.amber} />
+          </View>
+          <Text style={{ fontSize: 22, fontWeight: '800', color: colors.text, textAlign: 'center', marginBottom: 8 }}>
+            Community ontgrendelen
+          </Text>
+          <Text style={{ fontSize: 15, color: colors.text2, textAlign: 'center', lineHeight: 22, marginBottom: 24 }}>
+            Rond je eerste week af om toegang te krijgen tot de vadercommunity. Vanaf week 2 kun je ervaringen delen met andere vaders.
+          </Text>
+          <View style={{ backgroundColor: colors.surface, borderRadius: 14, padding: 16, width: '100%', borderWidth: 1, borderColor: colors.border }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Text style={{ fontSize: 14, fontWeight: '600', color: colors.text }}>Week 1 taken</Text>
+              <Text style={{ fontSize: 14, fontWeight: '800', color: colors.amber }}>{progress}/{week1Target}</Text>
+            </View>
+            <View style={{ height: 8, borderRadius: 4, backgroundColor: colors.border, marginTop: 10, overflow: 'hidden' }}>
+              <View style={{ height: '100%', width: `${(progress / week1Target) * 100}%`, backgroundColor: colors.amber, borderRadius: 4 }} />
+            </View>
+          </View>
+        </View>
       </SafeAreaView>
     );
   }
@@ -519,6 +554,35 @@ export default function SocialFeed() {
                 <Text style={[styles.actionCount, { color: colors.text3 }]}>{item.comments_count}</Text>
               </View>
               <View style={{ flex: 1 }} />
+              {item.author?.user_id !== user?.id && (
+                <Pressable
+                  onPress={(e) => {
+                    e.stopPropagation?.();
+                    Alert.alert('Bericht melden', 'Wil je dit bericht melden als ongepast?', [
+                      { text: 'Annuleren', style: 'cancel' },
+                      {
+                        text: 'Melden',
+                        style: 'destructive',
+                        onPress: () => {
+                          if (!user) return;
+                          reportContent({
+                            reporter_id: user.id,
+                            reported_user_id: item.author?.user_id ?? item.author_id,
+                            content_type: 'story',
+                            content_id: item.id,
+                            reason: 'Gemeld via feed',
+                          }).catch(() => {});
+                          Alert.alert('Bedankt', 'Je melding is ontvangen. We bekijken dit zo snel mogelijk.');
+                        },
+                      },
+                    ]);
+                  }}
+                  style={styles.actionItem}
+                  hitSlop={8}
+                >
+                  <InlineIcon name="flag" size={15} color={colors.text3} />
+                </Pressable>
+              )}
               <InlineIcon name="arrowRight" size={14} color={colors.text3} />
             </View>
           </View>
@@ -546,7 +610,7 @@ export default function SocialFeed() {
       {/* Header */}
       <View style={styles.header}>
         <View style={{ flex: 1 }}>
-          <Text style={[styles.headerTitle, { color: colors.text }]}>Social</Text>
+          <Text style={[styles.headerTitle, { color: colors.text }]}>Community</Text>
           {communityProfile?.stad && (
             <View style={styles.locationRow}>
               <InlineIcon name="mapPin" size={12} color={colors.text3} />
@@ -1144,7 +1208,7 @@ const styles = StyleSheet.create({
   challengeBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingVertical: 12, borderRadius: 12, marginTop: 4 },
   challengeBtnText: { color: '#fff', fontSize: 14, fontWeight: '700' },
 
-  // View toggle (Feed / Groepen) — tab bar style
+  // View toggle (Feed / Groepen) - tab bar style
   viewToggleRow: {
     flexDirection: 'row',
     borderBottomWidth: StyleSheet.hairlineWidth,

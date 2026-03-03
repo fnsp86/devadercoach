@@ -263,7 +263,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
   {
     id: 'pulse_aanw_19',
     skill: 'Aanwezigheid',
-    vraag: 'Heb je vandaag stilte gedeeld met je kind — samen zijn zonder dat er gepraat hoefde te worden?',
+    vraag: 'Heb je vandaag stilte gedeeld met je kind - samen zijn zonder dat er gepraat hoefde te worden?',
     antwoorden: [
       'Ja, we hadden een rustig moment van samen zijn zonder woorden',
       'Er was een kort stil moment maar ik vulde het al snel op',
@@ -347,7 +347,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
   {
     id: 'pulse_aanw_25',
     skill: 'Aanwezigheid',
-    vraag: 'Heb je vandaag opgemerkt hoe je kind zich bewoog — rustig, druk, gespannen, ontspannen?',
+    vraag: 'Heb je vandaag opgemerkt hoe je kind zich bewoog - rustig, druk, gespannen, ontspannen?',
     antwoorden: [
       'Ja, ik merkte de lichamelijke toestand van mijn kind op en stemde mijn energie erop af',
       'Ik merkte het wel op maar deed er niets mee',
@@ -410,7 +410,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik heb er niet op gelet of mijn kind naar me keek',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Social referencing — het kind dat naar de ouder kijkt voor bevestiging — is een fundamenteel hechtingsgedrag. Een responsieve reactie van de vader geeft het kind het signaal dat de wereld veilig is.',
+    inzicht: 'Social referencing - het kind dat naar de ouder kijkt voor bevestiging - is een fundamenteel hechtingsgedrag. Een responsieve reactie van de vader geeft het kind het signaal dat de wereld veilig is.',
     bron: 'Bowlby, J. (1969) – Attachment and Loss, Vol. 1: Attachment',
   },
 
@@ -557,14 +557,14 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
   {
     id: 'pulse_aanw_40',
     skill: 'Aanwezigheid',
-    vraag: 'Heb je vandaag gemerkt dat je kind hulp vroeg — met woorden of met gedrag?',
+    vraag: 'Heb je vandaag gemerkt dat je kind hulp vroeg - met woorden of met gedrag?',
     antwoorden: [
       'Ja, ik heb het hulpverzoek opgemerkt en er direct op gereageerd',
       'Ik merkte het maar was te druk om direct te reageren',
       'Ik weet niet zeker of mijn kind vandaag om hulp vroeg',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Niet alle hulpvragen zijn verbaal — veel jonge kinderen communiceren hun behoeften via gedrag. Een vader die ook non-verbale verzoeken herkent, bouwt een veilige hechtingsrelatie op.',
+    inzicht: 'Niet alle hulpvragen zijn verbaal - veel jonge kinderen communiceren hun behoeften via gedrag. Een vader die ook non-verbale verzoeken herkent, bouwt een veilige hechtingsrelatie op.',
     bron: 'Bowlby, J. (1973) – Attachment and Loss, Vol. 2: Separation',
   },
 
@@ -599,14 +599,14 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
   {
     id: 'pulse_aanw_43',
     skill: 'Aanwezigheid',
-    vraag: 'Heb je vandaag samen met je kind naar iets gekeken — een dier, een vliegtuig, de wolken?',
+    vraag: 'Heb je vandaag samen met je kind naar iets gekeken - een dier, een vliegtuig, de wolken?',
     antwoorden: [
       'Ja, we deelden een moment van gezamenlijke aandacht voor iets in onze omgeving',
       'Mijn kind wees iets aan maar ik keek niet echt mee',
       'Er was geen gedeeld kijkmoment vandaag',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Joint attention — samen ergens naar kijken — is een van de vroegste vormen van sociale verbinding. Het vormt de basis voor gedeelde betekenisgeving en taalverwerving.',
+    inzicht: 'Joint attention - samen ergens naar kijken - is een van de vroegste vormen van sociale verbinding. Het vormt de basis voor gedeelde betekenisgeving en taalverwerving.',
     bron: 'Stern, D. (1985) – The Interpersonal World of the Infant',
   },
 
@@ -627,7 +627,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
   {
     id: 'pulse_aanw_45',
     skill: 'Aanwezigheid',
-    vraag: 'Heb je vandaag iets nieuws geleerd over je kind — een voorkeur, gedachte of eigenschap die je nog niet kende?',
+    vraag: 'Heb je vandaag iets nieuws geleerd over je kind - een voorkeur, gedachte of eigenschap die je nog niet kende?',
     antwoorden: [
       'Ja, ik ontdekte iets nieuws over wie mijn kind is',
       'Ik had het gevoel dat er iets was maar kon het niet benoemen',
@@ -790,7 +790,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik merkte dat mijn kind een emotie had maar hielp niet met benoemen',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Het helpen benoemen van emoties — affect labeling — vermindert de activiteit in de amygdala en vergroot de activiteit in de prefrontale cortex. Letterlijk: een naam geven aan een gevoel maakt het draaglijker.',
+    inzicht: 'Het helpen benoemen van emoties - affect labeling - vermindert de activiteit in de amygdala en vergroot de activiteit in de prefrontale cortex. Letterlijk: een naam geven aan een gevoel maakt het draaglijker.',
     bron: 'Siegel, D. & Bryson, T. (2011) – The Whole-Brain Child',
   },
 
@@ -832,7 +832,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik wachtte tot de emotie vanzelf overging zonder actief te begeleiden',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Co-regulatie — het proces waarbij de vader als extern regulatiesysteem fungeert — is de voorloper van zelfregulatie. Het kind leert kalmte door de kalmte van de vader te internaliseren.',
+    inzicht: 'Co-regulatie - het proces waarbij de vader als extern regulatiesysteem fungeert - is de voorloper van zelfregulatie. Het kind leert kalmte door de kalmte van de vader te internaliseren.',
     bron: 'Schore, A. (2001) – Affect Regulation and the Origin of the Self',
   },
 
@@ -930,7 +930,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik temperde het enthousiasme of gaf er weinig aandacht aan',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Het matchen van positief affect — meegaan in de vreugde van het kind — is net zo belangrijk als troost bij verdriet. Dit leert het kind dat positieve emoties veilig gedeeld en vergroot mogen worden.',
+    inzicht: 'Het matchen van positief affect - meegaan in de vreugde van het kind - is net zo belangrijk als troost bij verdriet. Dit leert het kind dat positieve emoties veilig gedeeld en vergroot mogen worden.',
     bron: 'Stern, D. (1985) – The Interpersonal World of the Infant',
   },
 
@@ -1084,7 +1084,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik reageerde verbaal maar mijn gezicht drukte weinig uit',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Affectieve spiegeling — het weergeven van de emotie van het kind op het gezicht van de ouder — is de primaire manier waarop jonge kinderen hun eigen innerlijke toestand leren herkennen.',
+    inzicht: 'Affectieve spiegeling - het weergeven van de emotie van het kind op het gezicht van de ouder - is de primaire manier waarop jonge kinderen hun eigen innerlijke toestand leren herkennen.',
     bron: 'Fonagy, P. & Target, M. (1997) – Attachment and Reflective Function',
   },
 
@@ -1154,7 +1154,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik heb er niet aan gedacht om naar het lichaam te vragen',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'De verbinding tussen emotie en lichaam — interoceptie — is een vaardigheid die aangeleerd moet worden. Een vader die helpt het gevoel te lokaliseren in het lichaam, bevordert het lichaams- en emotioneel bewustzijn.',
+    inzicht: 'De verbinding tussen emotie en lichaam - interoceptie - is een vaardigheid die aangeleerd moet worden. Een vader die helpt het gevoel te lokaliseren in het lichaam, bevordert het lichaams- en emotioneel bewustzijn.',
     bron: 'Van der Kolk, B. (2014) – The Body Keeps the Score',
   },
 
@@ -1168,7 +1168,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik merkte niet dat er meerdere gevoelens speelden',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Ambivalentie — het tegelijk ervaren van tegenstrijdige emoties — is een normaal maar verwarrend fenomeen voor kinderen. Een vader die dit benoemt, helpt het kind een complexer emotioneel vocabulaire te ontwikkelen.',
+    inzicht: 'Ambivalentie - het tegelijk ervaren van tegenstrijdige emoties - is een normaal maar verwarrend fenomeen voor kinderen. Een vader die dit benoemt, helpt het kind een complexer emotioneel vocabulaire te ontwikkelen.',
     bron: 'Stern, D. (1985) – The Interpersonal World of the Infant',
   },
 
@@ -1196,7 +1196,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik sprak op normaal of verhoogd volume',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'De prosodie van de stem — toon, volume en ritme — wordt door het autonome zenuwstelsel van het kind sneller verwerkt dan de inhoud van de woorden. Een lage, rustige stem activeert het veiligheidssysteem.',
+    inzicht: 'De prosodie van de stem - toon, volume en ritme - wordt door het autonome zenuwstelsel van het kind sneller verwerkt dan de inhoud van de woorden. Een lage, rustige stem activeert het veiligheidssysteem.',
     bron: 'Porges, S. (2011) – The Polyvagal Theory',
   },
 
@@ -1266,7 +1266,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'We hebben het niet over coping-strategieën gehad',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Een kind dat leert om zelf strategieën te bedenken voor emotionele momenten, bouwt aan zelfregulatie. De rol van de vader verschuift daarbij van regulator naar coach — van doen naar samen bedenken.',
+    inzicht: 'Een kind dat leert om zelf strategieën te bedenken voor emotionele momenten, bouwt aan zelfregulatie. De rol van de vader verschuift daarbij van regulator naar coach - van doen naar samen bedenken.',
     bron: 'Gottman, J. (1997) – Raising an Emotionally Intelligent Child',
   },
 
@@ -1294,7 +1294,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik heb vandaag niet expliciet mijn liefde uitgesproken',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Onvoorwaardelijke liefde — liefde die niet afhankelijk is van prestatie of gedrag — is de basis van veilige hechting. Een kind dat weet dat het geliefd is ook na een moeilijke dag, ontwikkelt een stabiel en positief zelfbeeld.',
+    inzicht: 'Onvoorwaardelijke liefde - liefde die niet afhankelijk is van prestatie of gedrag - is de basis van veilige hechting. Een kind dat weet dat het geliefd is ook na een moeilijke dag, ontwikkelt een stabiel en positief zelfbeeld.',
     bron: 'Bowlby, J. (1988) – A Secure Base: Parent-Child Attachment and Healthy Human Development',
   },
 
@@ -1436,7 +1436,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik reageerde geïrriteerd op de verandering',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Cognitieve flexibiliteit — het vermogen om je aan te passen aan veranderende omstandigheden — is een kerncomponent van executief functioneren en wordt door kinderen gemodelleerd via observatie van ouders.',
+    inzicht: 'Cognitieve flexibiliteit - het vermogen om je aan te passen aan veranderende omstandigheden - is een kerncomponent van executief functioneren en wordt door kinderen gemodelleerd via observatie van ouders.',
     bron: 'Mischel (2014) – The Marshmallow Test: Why Self-Control Is the Engine of Success',
   },
 
@@ -1548,7 +1548,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik was veel op mijn telefoon terwijl mijn kind aandacht vroeg',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Technoference — de onderbreking van ouder-kindinteracties door technologie — is geassocieerd met meer gedragsproblemen bij kinderen en een verminderd gevoel van verbondenheid.',
+    inzicht: 'Technoference - de onderbreking van ouder-kindinteracties door technologie - is geassocieerd met meer gedragsproblemen bij kinderen en een verminderd gevoel van verbondenheid.',
     bron: 'McDaniel & Radesky (2018) – Technoference: Parent Distraction With Technology and Associations With Child Behavior Problems',
   },
 
@@ -1562,7 +1562,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik werd ongeduldig en haastte mijn kind',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Kinderen hebben een ander tijdbesef dan volwassenen. Wanneer ouders het tempo van het kind respecteren, versterken zij het gevoel van autonomie en competentie — basisbehoeften volgens de zelfdeterminatietheorie.',
+    inzicht: 'Kinderen hebben een ander tijdbesef dan volwassenen. Wanneer ouders het tempo van het kind respecteren, versterken zij het gevoel van autonomie en competentie - basisbehoeften volgens de zelfdeterminatietheorie.',
     bron: 'Deci & Ryan (2000) – The "What" and "Why" of Goal Pursuits: Human Needs and the Self-Determination of Behavior',
   },
 
@@ -1576,7 +1576,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Negatieve gedachten bepaalden mijn reactie richting mijn kind',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Cognitieve herwaardering — het herinterpreteren van een situatie — is een van de meest effectieve emotieregulatiestrategieën en vermindert zowel de emotionele beleving als de fysiologische stressrespons.',
+    inzicht: 'Cognitieve herwaardering - het herinterpreteren van een situatie - is een van de meest effectieve emotieregulatiestrategieën en vermindert zowel de emotionele beleving als de fysiologische stressrespons.',
     bron: 'Gross (2002) – Emotion Regulation: Affective, Cognitive, and Social Consequences',
   },
 
@@ -1786,7 +1786,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik was prikkelbaar en dat beïnvloedde mijn interacties met mijn kind',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Verhoogde prikkelbaarheid is vaak een teken van een overbelast zenuwstelsel. Herkenning van dit patroon is de eerste stap naar regulatie — zonder bewustzijn is bijsturing onmogelijk.',
+    inzicht: 'Verhoogde prikkelbaarheid is vaak een teken van een overbelast zenuwstelsel. Herkenning van dit patroon is de eerste stap naar regulatie - zonder bewustzijn is bijsturing onmogelijk.',
     bron: 'McGonigal (2012) – The Willpower Instinct: How Self-Control Works, Why It Matters, and What You Can Do to Get More of It',
   },
 
@@ -1870,7 +1870,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Mijn perfectionisme bepaalde hoe ik reageerde op mijn kind',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Perfectionisme bij ouders is geassocieerd met hogere niveaus van ouderlijke stress en kritisch gedrag. Zelfcompassie — de bereidheid om eigen onvolmaaktheid te aanvaarden — is een beschermende factor.',
+    inzicht: 'Perfectionisme bij ouders is geassocieerd met hogere niveaus van ouderlijke stress en kritisch gedrag. Zelfcompassie - de bereidheid om eigen onvolmaaktheid te aanvaarden - is een beschermende factor.',
     bron: 'Neff (2011) – Self-Compassion: The Proven Power of Being Kind to Yourself',
   },
 
@@ -1926,7 +1926,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik ging meteen door naar de volgende activiteit zonder reflectie',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Reflectief functioneren — het vermogen om na te denken over eigen en andermans mentale toestanden — is een van de sterkste voorspellers van veilige gehechtheid bij kinderen.',
+    inzicht: 'Reflectief functioneren - het vermogen om na te denken over eigen en andermans mentale toestanden - is een van de sterkste voorspellers van veilige gehechtheid bij kinderen.',
     bron: 'Fonagy et al. (2002) – Affect Regulation, Mentalization, and the Development of the Self',
   },
 
@@ -2068,7 +2068,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik gaf een bevel zonder uitleg',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Inductief redeneren — het uitleggen van de reden achter een regel — bevordert de morele ontwikkeling van het kind. Kinderen die begrijpen waarom een grens er is, internaliseren deze sneller.',
+    inzicht: 'Inductief redeneren - het uitleggen van de reden achter een regel - bevordert de morele ontwikkeling van het kind. Kinderen die begrijpen waarom een grens er is, internaliseren deze sneller.',
     bron: 'Hoffman (2000) – Empathy and Moral Development: Implications for Caring and Justice',
   },
 
@@ -2096,7 +2096,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik verwachtte dat mijn kind het zelf zou weten',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Proactief grenzen stellen — voordat een situatie escaleert — is effectiever dan reactief ingrijpen. Kinderen functioneren beter als zij weten wat er van hen verwacht wordt.',
+    inzicht: 'Proactief grenzen stellen - voordat een situatie escaleert - is effectiever dan reactief ingrijpen. Kinderen functioneren beter als zij weten wat er van hen verwacht wordt.',
     bron: 'Greene (2014) – The Explosive Child: A New Approach for Understanding and Parenting Easily Frustrated, Chronically Inflexible Children',
   },
 
@@ -2110,7 +2110,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Er was geen consequentie; ik liet het gaan',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Logische consequenties — die direct verband houden met het gedrag — zijn effectiever dan willekeurige straffen. Ze helpen kinderen het verband te leggen tussen hun keuzes en de gevolgen.',
+    inzicht: 'Logische consequenties - die direct verband houden met het gedrag - zijn effectiever dan willekeurige straffen. Ze helpen kinderen het verband te leggen tussen hun keuzes en de gevolgen.',
     bron: 'Gordon (1970) – Parent Effectiveness Training: The Proven Program for Raising Responsible Children',
   },
 
@@ -2222,7 +2222,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Eetmomenten verliepen chaotisch zonder heldere grenzen',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Autoritatieve grenzen rond voeding — duidelijk maar niet dwingend — zijn geassocieerd met gezondere eetpatronen bij kinderen. Druk uitoefenen om te eten werkt averechts en vergroot voedselweigering.',
+    inzicht: 'Autoritatieve grenzen rond voeding - duidelijk maar niet dwingend - zijn geassocieerd met gezondere eetpatronen bij kinderen. Druk uitoefenen om te eten werkt averechts en vergroot voedselweigering.',
     bron: 'Baumrind (1991) – The Influence of Parenting Style on Adolescent Competence and Substance Use',
   },
 
@@ -2236,7 +2236,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik gaf het op omdat herhalen zinloos leek',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Herhaling is een normaal onderdeel van het leerproces bij kinderen. Grenzen moeten gemiddeld tientallen keren herhaald worden voordat ze geïnternaliseerd zijn — dit is neurobiologisch bepaald, niet onwil.',
+    inzicht: 'Herhaling is een normaal onderdeel van het leerproces bij kinderen. Grenzen moeten gemiddeld tientallen keren herhaald worden voordat ze geïnternaliseerd zijn - dit is neurobiologisch bepaald, niet onwil.',
     bron: 'Siegel (2012) – The Developing Mind: How Relationships and the Brain Interact to Shape Who We Are',
   },
 
@@ -2264,7 +2264,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik was extreem streng of extreem soepel zonder reflectie',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'De balans tussen warmte en structuur is het kenmerk van autoritative opvoeding — de stijl die consistent geassocieerd wordt met de beste uitkomsten voor kinderen op sociaal, emotioneel en cognitief vlak.',
+    inzicht: 'De balans tussen warmte en structuur is het kenmerk van autoritative opvoeding - de stijl die consistent geassocieerd wordt met de beste uitkomsten voor kinderen op sociaal, emotioneel en cognitief vlak.',
     bron: 'Baumrind (1991) – The Influence of Parenting Style on Adolescent Competence and Substance Use',
   },
 
@@ -2306,7 +2306,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik bepaalde zelf hoe de situatie moest verlopen zonder mijn kind erbij te betrekken',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Kinderen die leren hun eigen grenzen aan te geven, ontwikkelen een sterker gevoel van persoonlijke agency. De vader als coach — in plaats van als scheidsrechter — bevordert de zelfstandigheid van het kind.',
+    inzicht: 'Kinderen die leren hun eigen grenzen aan te geven, ontwikkelen een sterker gevoel van persoonlijke agency. De vader als coach - in plaats van als scheidsrechter - bevordert de zelfstandigheid van het kind.',
     bron: 'Erikson (1950) – Childhood and Society',
   },
 
@@ -2334,7 +2334,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik reageerde op dezelfde manier terug (schreeuwen, sarcasme)',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Grenzen stellen rond communicatie leert kinderen dat alle gevoelens welkom zijn maar niet alle uitingen. Dit onderscheid — emotie valideren, gedrag begrenzen — is de kern van emotiecoaching.',
+    inzicht: 'Grenzen stellen rond communicatie leert kinderen dat alle gevoelens welkom zijn maar niet alle uitingen. Dit onderscheid - emotie valideren, gedrag begrenzen - is de kern van emotiecoaching.',
     bron: 'Gottman & DeClaire (1997) – Raising an Emotionally Intelligent Child',
   },
 
@@ -2404,7 +2404,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik liet het te lang doorgaan of reageerde te heftig',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Bij conflicten tussen broers en zussen is het belangrijk dat de vader als bemiddelaar optreedt zonder partij te kiezen. Favoritisme — zelfs onbewust — beschadigt de onderlinge relatie en het zelfbeeld van het buitengesloten kind.',
+    inzicht: 'Bij conflicten tussen broers en zussen is het belangrijk dat de vader als bemiddelaar optreedt zonder partij te kiezen. Favoritisme - zelfs onbewust - beschadigt de onderlinge relatie en het zelfbeeld van het buitengesloten kind.',
     bron: 'Faber & Mazlish (2012) – Siblings Without Rivalry: How to Help Your Children Live Together So You Can Live Too',
   },
 
@@ -2446,7 +2446,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik week af van regels zonder het te benoemen of uit te leggen',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Flexibiliteit binnen structuur is een kenmerk van autoritative opvoeding. Uitzonderingen mogen, mits ze bewust zijn en uitgelegd worden — zo leert het kind dat regels er zijn om redenen, niet als willekeur.',
+    inzicht: 'Flexibiliteit binnen structuur is een kenmerk van autoritative opvoeding. Uitzonderingen mogen, mits ze bewust zijn en uitgelegd worden - zo leert het kind dat regels er zijn om redenen, niet als willekeur.',
     bron: 'Baumrind (1991) – The Influence of Parenting Style on Adolescent Competence and Substance Use',
   },
 
@@ -2460,7 +2460,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik reageerde boos toen mijn kind iets kapotmaakte of niet netjes behandelde',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Grenzen rond bezittingen leren kinderen respect en verantwoordelijkheid. De manier waarop een vader dit begeleidt — met uitleg of met straf — bepaalt of het kind intrinsieke of extrinsieke motivatie ontwikkelt.',
+    inzicht: 'Grenzen rond bezittingen leren kinderen respect en verantwoordelijkheid. De manier waarop een vader dit begeleidt - met uitleg of met straf - bepaalt of het kind intrinsieke of extrinsieke motivatie ontwikkelt.',
     bron: 'Deci & Ryan (2000) – The "What" and "Why" of Goal Pursuits: Human Needs and the Self-Determination of Behavior',
   },
 
@@ -2502,7 +2502,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik behoedde mijn kind voor elk ongemak',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'Natuurlijke gevolgen — mits veilig — zijn krachtige leermomenten. Een kind dat zijn jas vergeet en het koud heeft, leert effectiever dan een kind dat tien keer wordt herinnerd. Dit vereist dat de vader ongemak bij het kind kan verdragen.',
+    inzicht: 'Natuurlijke gevolgen - mits veilig - zijn krachtige leermomenten. Een kind dat zijn jas vergeet en het koud heeft, leert effectiever dan een kind dat tien keer wordt herinnerd. Dit vereist dat de vader ongemak bij het kind kan verdragen.',
     bron: 'Dreikurs & Soltz (1964) – Children: The Challenge',
   },
 
@@ -2530,7 +2530,7 @@ export const PULSE_QUESTIONS: PulseQuestion[] = [
       'Ik ontkende de emotie ("stel je niet aan") of gaf toe aan het verdriet',
       'Kind niet gezien vandaag',
     ],
-    inzicht: 'De combinatie van empathie en begrenzing is het kenmerk van autoritative opvoeding. Het kind leert dat het gehoord wordt én dat grenzen stabiel zijn — beide zijn nodig voor emotionele veiligheid.',
+    inzicht: 'De combinatie van empathie en begrenzing is het kenmerk van autoritative opvoeding. Het kind leert dat het gehoord wordt én dat grenzen stabiel zijn - beide zijn nodig voor emotionele veiligheid.',
     bron: 'Siegel & Bryson (2014) – No-Drama Discipline: The Whole-Brain Way to Calm the Chaos and Nurture Your Child\'s Developing Mind',
   },
 

@@ -14,12 +14,12 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     description: 'Spiegel de gezichtsuitdrukkingen van je baby om emotionele afstemming te oefenen.',
     instructions: [
       'Ga op ooghoogte zitten zodat je baby je gezicht goed kan zien.',
-      'Wacht tot je baby een emotie toont — een glimlach, fronsen of verbazing.',
+      'Wacht tot je baby een emotie toont - een glimlach, fronsen of verbazing.',
       'Spiegel diezelfde uitdrukking terug met een warme stem: "Oh, jij bent blij!"',
       'Houd het contact minstens 30 seconden vast en volg het ritme van je baby.',
     ],
     reflection: 'Merkte je hoe je baby reageerde toen je zijn of haar emotie spiegelde? Wat deed dat met jullie verbinding?',
-    scienceNote: 'Spiegeling activeert het spiegelneuronensysteem en bevordert emotionele afstemming — een kerncomponent van veilige hechting (Winnicott, 1971; Meltzoff & Moore, 1977).',
+    scienceNote: 'Spiegeling activeert het spiegelneuronensysteem en bevordert emotionele afstemming - een kerncomponent van veilige hechting (Winnicott, 1971; Meltzoff & Moore, 1977).',
     durationMin: 5,
   },
   {
@@ -51,7 +51,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     instructions: [
       'Wanneer je peuter gefrustreerd raakt (bijv. een toren valt om), ga op zijn of haar niveau zitten.',
       'Haal zelf hoorbaar langzaam adem en zeg: "Oef, dat is balen."',
-      'Leg een hand op de rug van je kind en wacht even — geef ruimte voor de emotie.',
+      'Leg een hand op de rug van je kind en wacht even - geef ruimte voor de emotie.',
       'Bied pas een oplossing aan als je kind weer rustiger is: "Zullen we het opnieuw proberen?"',
     ],
     reflection: 'Lukte het je om eerst te wachten en de frustratie te erkennen voordat je ging helpen? Wat was het effect?',
@@ -68,7 +68,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     description: 'Speel kiekeboe met emotionele variaties om sociale wederkerigheid te oefenen.',
     instructions: [
       'Begin een spelletje kiekeboe met je baby of peuter.',
-      'Varieer je gezichtsuitdrukking bij elk "kiekeboe" — blij, verbaasd, een beetje gek.',
+      'Varieer je gezichtsuitdrukking bij elk "kiekeboe" - blij, verbaasd, een beetje gek.',
       'Pauzeer na elke onthulling en laat je kind reageren; wacht op een lach of geluidje.',
       'Speel minstens 5 rondjes en let op welke uitdrukking de meeste reactie oproept.',
     ],
@@ -86,7 +86,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     description: 'Oefen grenzen stellen met empathie door altijd een alternatief te bieden.',
     instructions: [
       'Wanneer je peuter iets onveiligs doet, ga naar hem of haar toe in plaats van op afstand "nee" te roepen.',
-      'Zeg op warme toon: "Dat mag niet, want het is gevaarlijk" — benoem kort de reden.',
+      'Zeg op warme toon: "Dat mag niet, want het is gevaarlijk" - benoem kort de reden.',
       'Bied meteen een alternatief: "Je mag hier wél mee spelen" en geef het vervangende voorwerp.',
       'Bevestig het gewenste gedrag: "Goed zo, dat is veilig spelen!"',
     ],
@@ -103,7 +103,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     title: 'Herstel na een boze reactie',
     description: 'Herstel de verbinding met je baby of peuter nadat je te snel of te hard reageerde.',
     instructions: [
-      'Herken het moment dat je te scherp reageerde — misschien door vermoeidheid of stress.',
+      'Herken het moment dat je te scherp reageerde - misschien door vermoeidheid of stress.',
       'Ga naar je kind toe, maak oogcontact en zeg op zachte toon: "Sorry, papa was even boos. Dat was niet fijn."',
       'Bied fysiek troost aan: een knuffel, wiegen, of streeltjes over het hoofd.',
       'Observeer of je kind weer ontspant en zoek samen een rustig moment.',
@@ -123,7 +123,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     instructions: [
       'Bereid twee gezonde snacks voor en zet ze allebei voor je peuter neer.',
       'Vraag: "Wil je de banaan of de cracker?" en wacht geduldig op een keuze.',
-      'Respecteer de keuze, ook als die je verrast — zeg: "Goed gekozen!"',
+      'Respecteer de keuze, ook als die je verrast - zeg: "Goed gekozen!"',
       'Herhaal bij de volgende maaltijd en observeer of je peuter sneller kiest.',
     ],
     reflection: 'Hoe reageerde je peuter op het zelf mogen kiezen? Merkte je trots of plezier?',
@@ -176,7 +176,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     description: 'Ga vijf minuten volledig aanwezig op de grond zitten en volg het spel van je kind.',
     instructions: [
       'Leg je telefoon weg, zet de tv uit en ga op de grond bij je kind zitten.',
-      'Volg het initiatief van je kind — pak op wat hij of zij oppakt, kijk waar hij of zij kijkt.',
+      'Volg het initiatief van je kind - pak op wat hij of zij oppakt, kijk waar hij of zij kijkt.',
       'Geef sportverslagcommentaar: "Je pakt de rode blokken... je stapelt ze op!"',
       'Vermijd sturen of corrigeren; jouw enige taak is aanwezig zijn en volgen.',
     ],
@@ -221,7 +221,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
       'Maak het een ritueel door het elke dag op hetzelfde moment te doen.',
     ],
     reflection: 'Wat noemde je kind? Viel je iets op aan de dingen waarvoor hij of zij dankbaar is?',
-    scienceNote: 'Dagelijkse dankbaarheidspraktijken verhogen het welzijn en prosociaal gedrag bij kinderen (Froh et al., 2008; Seligman, 2011 — PERMA-model).',
+    scienceNote: 'Dagelijkse dankbaarheidspraktijken verhogen het welzijn en prosociaal gedrag bij kinderen (Froh et al., 2008; Seligman, 2011 - PERMA-model).',
     durationMin: 5,
   },
   {
@@ -235,7 +235,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     instructions: [
       'Vertel het verhaal van de kleine schildpad die leerde om in zijn schild te kruipen als hij boos was.',
       'Oefen samen: armen om je lijf, hoofd naar beneden, drie keer diep ademhalen.',
-      'Speel een rollenspel: "Je vriendje pakt je schep af in de zandbak — wat doe je?"',
+      'Speel een rollenspel: "Je vriendje pakt je schep af in de zandbak - wat doe je?"',
       'Oefen de schildpadtechniek minstens drie keer in een rustig moment, zodat het beschikbaar is bij echte boosheid.',
     ],
     reflection: 'Kon je kind de stappen onthouden? Wat hielp het meest: het verhaal, het oefenen, of het rollenspel?',
@@ -271,7 +271,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     instructions: [
       'Ga samen wandelen of naar een speeltuin en zeg: "We gaan emoties zoeken bij andere mensen."',
       'Wijs subtiel naar iemand en vraag: "Hoe zou die mevrouw zich voelen? Waarom denk je dat?"',
-      'Help je kind verder: "Kijk naar haar mond, haar ogen — wat vertellen die?"',
+      'Help je kind verder: "Kijk naar haar mond, haar ogen - wat vertellen die?"',
       'Bespreek samen dat je niet altijd kunt weten hoe iemand zich voelt, maar dat kijken en nadenken een goede start is.',
     ],
     reflection: 'Welke emotie herkende je kind het beste? Was er een emotie die moeilijk te raden was?',
@@ -308,7 +308,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
       'Wanneer je kind klaagt over een conflict ("Hij pakte mijn auto!"), luister eerst zonder oordeel.',
       'Vraag: "Dat klinkt vervelend. Wat zou jij kunnen doen om het op te lossen?"',
       'Als je kind vastloopt, bied opties: "Je kunt vragen of je hem terug mag, of om de beurt spelen."',
-      'Laat je kind kiezen en uitvoeren — stap pas in als het escaleert.',
+      'Laat je kind kiezen en uitvoeren - stap pas in als het escaleert.',
     ],
     reflection: 'Welke oplossing bedacht je kind zelf? Was je verrast door het probleemoplossend vermogen?',
     scienceNote: 'Kinderen die geoefend worden in zelfstandig conflicten oplossen ontwikkelen sterkere executieve functies en sociale vaardigheden (Shure & Spivack, 1982).',
@@ -325,7 +325,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     instructions: [
       'Geef je kind een vel papier en kleurpotloden.',
       'Vraag: "Welk gevoel had je het meest vandaag? Kun je dat tekenen?"',
-      'Stel geen eisen aan de tekening — het gaat om het proces, niet het resultaat.',
+      'Stel geen eisen aan de tekening - het gaat om het proces, niet het resultaat.',
       'Bespreek de tekening: "Vertel eens, wat zie ik hier? Wanneer voelde je dit?"',
     ],
     reflection: 'Wat tekende je kind? Verraste het gevoel je, of had je het al opgemerkt vandaag?',
@@ -360,7 +360,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     description: 'Oefen ademhalingsoefeningen met een knuffel op de buik om zelfregulatie aan te leren.',
     instructions: [
       'Laat je kind op de rug liggen en leg een knuffeldier op zijn of haar buik.',
-      'Zeg: "We gaan je knuffel een ritje geven. Adem in door je neus — je knuffel gaat omhoog!"',
+      'Zeg: "We gaan je knuffel een ritje geven. Adem in door je neus - je knuffel gaat omhoog!"',
       'Adem uit door de mond: "Je knuffel gaat weer omlaag. Langzaam, zodat hij niet valt."',
       'Herhaal vijf keer en bespreek: "Hoe voel je je nu? Rustiger dan daarvoor?"',
     ],
@@ -417,7 +417,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     title: 'Luisteren zonder oplossing',
     description: 'Oefen vijf minuten aandachtig luisteren naar je kind zonder advies te geven.',
     instructions: [
-      'Vraag je kind: "Vertel eens over je dag — ik ga alleen maar luisteren."',
+      'Vraag je kind: "Vertel eens over je dag - ik ga alleen maar luisteren."',
       'Luister actief: knik, zeg "hmm" en "oh ja?", maar geef geen advies of oordeel.',
       'Als je de neiging voelt om iets op te lossen, haal adem en stel in plaats daarvan een vraag: "Hoe was dat voor je?"',
       'Sluit af met: "Dankjewel dat je dit met me deelde. Dat vind ik fijn."',
@@ -436,7 +436,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     description: 'Voer een gestructureerd herstelgesprek na een conflict tussen broers of zussen.',
     instructions: [
       'Wacht tot beide kinderen rustig zijn. Ga met hen aan tafel zitten.',
-      'Laat elk kind vertellen wat er gebeurde vanuit zijn of haar perspectief — de ander luistert zonder onderbreken.',
+      'Laat elk kind vertellen wat er gebeurde vanuit zijn of haar perspectief - de ander luistert zonder onderbreken.',
       'Vraag aan elk kind: "Hoe voelde jij je? En hoe denk je dat je broer/zus zich voelde?"',
       'Zoek samen een oplossing: "Wat kunnen we afspreken zodat dit de volgende keer anders gaat?"',
     ],
@@ -455,7 +455,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     instructions: [
       'Teken samen een trap met vijf treden: een beetje geïrriteerd onderaan, razend bovenaan.',
       'Bedenk voor elke trede een strategie: trede 1 = diep ademhalen, trede 3 = even weglopen, trede 5 = papa roepen.',
-      'Oefen met een echt voorbeeld: "Gisteren bij het voetballen — op welke trede was je?"',
+      'Oefen met een echt voorbeeld: "Gisteren bij het voetballen - op welke trede was je?"',
       'Hang het trappetje op in de kamer van je kind als geheugensteun.',
     ],
     reflection: 'Herkende je kind de verschillende niveaus van boosheid? Welke strategie sprak het meest aan?',
@@ -491,7 +491,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     instructions: [
       'Vraag je kind om een sociaal probleem te noemen waar het mee zit, bijvoorbeeld buitengesloten worden bij een spelletje.',
       'Vraag: "Wat zou je allemaal kunnen doen?" en schrijf alle ideeën op, ook de gekke.',
-      'Bespreek elk idee: "Wat zou er gebeuren als je dit doet?" — help voor- en nadelen te zien.',
+      'Bespreek elk idee: "Wat zou er gebeuren als je dit doet?" - help voor- en nadelen te zien.',
       'Laat je kind één plan kiezen en spreek af om er morgen op terug te komen.',
     ],
     reflection: 'Welk plan koos je kind? Vertrouw je erop dat het kan werken, of wil je bijsturen?',
@@ -527,7 +527,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     instructions: [
       'Pak een lege glazen pot en versier die samen met je kind.',
       'Leg uit: "Elke dag schrijven we iets op waar we dankbaar voor zijn en stoppen het in de pot."',
-      'Schrijf vandaag samen de eerste briefjes — lees ze hardop voor als je ze erin doet.',
+      'Schrijf vandaag samen de eerste briefjes - lees ze hardop voor als je ze erin doet.',
       'Spreek af om de pot aan het einde van de maand samen te openen en alles voor te lezen.',
     ],
     reflection: 'Waar was je kind dankbaar voor? Verschilt dat van wat jij opschreef?',
@@ -571,7 +571,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
       'Bespreek: "Als je merkt dat je buik samenknijpt, weet je nu dat dat spanning kan zijn."',
     ],
     reflection: 'Was je kind verbaasd over waar emoties in het lichaam zitten? Herken je de patronen?',
-    scienceNote: 'Interoceptief bewustzijn — het waarnemen van lichamelijke signalen — is gekoppeld aan betere emotieregulatie (Nummenmaa et al., 2014; Damasio, 1994).',
+    scienceNote: 'Interoceptief bewustzijn - het waarnemen van lichamelijke signalen - is gekoppeld aan betere emotieregulatie (Nummenmaa et al., 2014; Damasio, 1994).',
     durationMin: 15,
   },
   {
@@ -601,7 +601,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     title: 'Aandachtig gesprek zonder telefoon',
     description: 'Voer een gesprek van tien minuten waarbij alle telefoons in een andere kamer liggen.',
     instructions: [
-      'Leg samen alle telefoons in een andere kamer — maak er een bewust ritueel van.',
+      'Leg samen alle telefoons in een andere kamer - maak er een bewust ritueel van.',
       'Kies een gespreksonderwerp dat je kind bezighoudt: een vriendschap, een droom, een zorg.',
       'Luister actief, stel doorvragen en deel ook iets van jezelf.',
       'Sluit af met: "Dit vond ik fijn. Zullen we dit vaker doen?"',
@@ -620,7 +620,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     description: 'Plan bewust een activiteit die jullie allebei leuk vinden om de verbinding te versterken.',
     instructions: [
       'Vraag je kind: "Als we samen één ding mochten doen dit weekend, wat zou jij kiezen?"',
-      'Kies samen iets dat voor allebei leuk is — een wandeling, samen koken, een bordspel.',
+      'Kies samen iets dat voor allebei leuk is - een wandeling, samen koken, een bordspel.',
       'Zorg dat je tijdens de activiteit volledig aanwezig bent: geen telefoon, geen multitasking.',
       'Benoem achteraf het positieve: "Ik vond het echt leuk om samen te... Jij ook?"',
     ],
@@ -637,7 +637,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     title: 'Digitale grenzen bespreken',
     description: 'Bespreek samen eerlijk welke grenzen er gelden voor online gedrag en social media.',
     instructions: [
-      'Begin met: "Ik wil samen praten over telefoon en internet — niet om te verbieden, maar om samen regels te maken."',
+      'Begin met: "Ik wil samen praten over telefoon en internet - niet om te verbieden, maar om samen regels te maken."',
       'Vraag: "Wat vind jij zelf slimme regels? En waar maak jij je soms zorgen over online?"',
       'Deel je eigen zorgen eerlijk en luister naar de reactie zonder te oordelen.',
       'Maak samen drie tot vijf afspraken die jullie allebei eerlijk vinden en schrijf ze op.',
@@ -673,7 +673,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     title: 'Foutenverhalen delen',
     description: 'Deel een eigen fout uit je jeugd om te normaliseren dat iedereen fouten maakt.',
     instructions: [
-      'Vertel je kind over een fout die je maakte toen je zelf jong was — iets dat je beschaamd over was.',
+      'Vertel je kind over een fout die je maakte toen je zelf jong was - iets dat je beschaamd over was.',
       'Beschrijf wat je voelde, wat je deed, en wat je ervan leerde.',
       'Vraag: "Heb jij weleens zoiets meegemaakt? Hoe voelde dat?"',
       'Sluit af: "Fouten horen bij groeien. Het gaat erom wat je daarna doet."',
@@ -710,7 +710,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     description: 'Laat je kind een week lang dagelijks emoties bijhouden in een simpel logboek.',
     instructions: [
       'Maak samen een simpel schema: datum, situatie, emotie, intensiteit (1-10), wat ik deed.',
-      'Laat je kind elke avond invullen — help de eerste twee dagen mee.',
+      'Laat je kind elke avond invullen - help de eerste twee dagen mee.',
       'Bespreek na een week samen de patronen: "Wanneer scoor je hoog? Wat helpt om lager te scoren?"',
       'Zoek samen naar triggers en strategieën die al werken.',
     ],
@@ -750,7 +750,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     description: 'Oefen aanwezig zijn voor je tiener zonder een gesprek te forceren.',
     instructions: [
       'Zoek een moment waarop je tiener thuis is en iets rustigs doet.',
-      'Ga in dezelfde ruimte zitten zonder een gesprek te starten — lees, drink koffie, wees gewoon aanwezig.',
+      'Ga in dezelfde ruimte zitten zonder een gesprek te starten - lees, drink koffie, wees gewoon aanwezig.',
       'Als je tiener iets zegt, reageer warm maar kort. Stel geen doorvragen tenzij het wordt uitgenodigd.',
       'Herhaal dit meerdere keren deze week en let op of je tiener vanzelf meer deelt.',
     ],
@@ -769,7 +769,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     instructions: [
       'Wacht op een moment dat je tiener klaagt of gefrustreerd is over iets waar jij anders over denkt.',
       'Erken de emotie eerst: "Ik snap dat je daar boos over bent. Dat klinkt echt vervelend."',
-      'Weersta de neiging om te corrigeren of te relativeren — houd het bij de emotie.',
+      'Weersta de neiging om te corrigeren of te relativeren - houd het bij de emotie.',
       'Pas daarna, als de emotie gezakt is, kun je voorzichtig je eigen perspectief delen.',
     ],
     reflection: 'Lukte het om te valideren zonder het eens te zijn? Hoe reageerde je tiener anders dan wanneer je meteen je mening geeft?',
@@ -804,7 +804,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     description: 'Onderhandel samen over een huisregel waar je tiener meer vrijheid in wil.',
     instructions: [
       'Vraag: "Is er een regel waar je het niet mee eens bent of waar je meer vrijheid in wilt?"',
-      'Luister naar het argument en neem het serieus — ook als je het er niet mee eens bent.',
+      'Luister naar het argument en neem het serieus - ook als je het er niet mee eens bent.',
       'Zoek samen een compromis: "Wat als we het zo doen... zou dat voor jou werken?"',
       'Spreek een proefperiode af: "We proberen het een maand en evalueren dan samen."',
     ],
@@ -822,7 +822,7 @@ export const INTERACTIVE_TASKS_25: InteractiveTask[] = [
     description: 'Deel een eigen emotionele ervaring om je tiener te laten zien dat ook vaders kwetsbaar mogen zijn.',
     instructions: [
       'Kies een geschikt moment en deel iets waar je zelf mee zit: werkstress, onzekerheid, een lastige keuze.',
-      'Wees eerlijk maar leeftijdsgeschikt — het doel is verbinding, niet belasting.',
+      'Wees eerlijk maar leeftijdsgeschikt - het doel is verbinding, niet belasting.',
       'Vertel ook wat je eraan doet of hoe je ermee omgaat.',
       'Vraag je tiener: "Herken jij dat gevoel? Hoe ga jij daarmee om?"',
     ],

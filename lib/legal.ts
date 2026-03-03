@@ -1,9 +1,9 @@
 // Legal documents for De Vadercoach
-// Last updated: 2026-02-23
+// Last updated: 2026-03-03
 
-export const LEGAL_LAST_UPDATED = '23 februari 2026';
+export const LEGAL_LAST_UPDATED = '3 maart 2026';
 
-export const PRIVACY_POLICY = `Privacyverklaring — De Vadercoach
+export const PRIVACY_POLICY = `Privacyverklaring - De Vadercoach
 
 Laatst bijgewerkt: ${LEGAL_LAST_UPDATED}
 
@@ -16,6 +16,8 @@ Deze privacyverklaring beschrijft welke gegevens wij verzamelen, waarom wij dat 
 De Vadercoach is een mobiele applicatie die vaders ondersteunt bij het opvoeden van hun kinderen door middel van coaching, taken, leermodules en een sociale community.
 
 Verantwoordelijke: De Vadercoach
+KvK-nummer: [wordt aangevuld]
+BTW-id: [wordt aangevuld]
 Website: https://devadercoach.nl
 E-mail: privacy@devadercoach.nl
 
@@ -34,7 +36,7 @@ E-mail: privacy@devadercoach.nl
 2.3 Locatiegegevens (optioneel)
 • GPS-coördinaten (alleen na jouw expliciete toestemming)
 • Woonplaats/stad (handmatig ingevoerd of via GPS gedetecteerd)
-Locatiegegevens worden uitsluitend gebruikt om vaders in de buurt te tonen. Je kunt locatiedeling op elk moment uitschakelen.
+Locatiegegevens worden uitsluitend gebruikt om vaders in de buurt te tonen. Exacte GPS-coordinaten worden alleen server-side gebruikt om afstand te berekenen en worden niet gedeeld met andere gebruikers. Aan andere gebruikers wordt alleen je stad of een geschatte afstand getoond. Je kunt locatiedeling op elk moment uitschakelen.
 
 2.4 Gebruiksgegevens
 • Voltooide taken en behaalde punten (XP)
@@ -74,9 +76,9 @@ Push-tokens worden alleen opgeslagen als je toestemming geeft voor notificaties.
 
 Wij delen jouw gegevens alleen met de volgende partijen, uitsluitend voor zover noodzakelijk:
 
-• Supabase Inc. — Database en authenticatie (hosting in de EU, Frankfurt). Verwerkersovereenkomst is afgesloten.
-• Expo (Expo Application Services) — App-framework en push-notificatieservice. Push-tokens worden via Expo's servers verzonden naar Apple (APNs) en Google (FCM) om notificaties af te leveren. Expo verwerkt hierbij het push-token en de notificatie-inhoud.
-• Apple / Google — App-distributie via App Store en Google Play
+• Supabase Inc. - Database en authenticatie (hosting in de EU, Frankfurt). Verwerkersovereenkomst is afgesloten.
+• Expo (Expo Application Services) - App-framework en push-notificatieservice. Push-tokens worden via Expo's servers verzonden naar Apple (APNs) en Google (FCM) om notificaties af te leveren. Expo verwerkt hierbij het push-token en de notificatie-inhoud.
+• Apple / Google - App-distributie via App Store en Google Play
 
 Wij verkopen jouw gegevens NOOIT aan derden. Wij gebruiken geen advertentienetwerken of tracking voor marketingdoeleinden.
 
@@ -107,17 +109,20 @@ Wij nemen passende technische en organisatorische maatregelen om jouw gegevens t
 • Toegang tot de database is beperkt tot geautoriseerde systemen
 • Regelmatige beveiligingsupdates
 
+7.1 Datalekken
+In geval van een datalek dat risico's oplevert voor jouw rechten, melden wij dit binnen 72 uur aan de Autoriteit Persoonsgegevens (conform AVG art. 33). Als het lek een hoog risico vormt voor jou persoonlijk, brengen wij je ook rechtstreeks op de hoogte via e-mail en/of een melding in de app (conform AVG art. 34).
+
 8. Jouw rechten
 
 Op grond van de AVG heb je de volgende rechten:
 
-• Recht op inzage — Je kunt opvragen welke gegevens wij van je hebben.
-• Recht op rectificatie — Je kunt onjuiste gegevens laten corrigeren.
-• Recht op verwijdering — Je kunt je account en alle gegevens laten verwijderen.
-• Recht op beperking — Je kunt vragen om beperking van de verwerking.
-• Recht op dataportabiliteit — Je kunt je gegevens in een gestructureerd formaat opvragen.
-• Recht op bezwaar — Je kunt bezwaar maken tegen verwerking op basis van gerechtvaardigd belang.
-• Recht om toestemming in te trekken — Je kunt op elk moment je toestemming intrekken (bijv. voor locatiedeling).
+• Recht op inzage - Je kunt opvragen welke gegevens wij van je hebben.
+• Recht op rectificatie - Je kunt onjuiste gegevens laten corrigeren.
+• Recht op verwijdering - Je kunt je account en alle gegevens laten verwijderen.
+• Recht op beperking - Je kunt vragen om beperking van de verwerking.
+• Recht op dataportabiliteit - Je kunt je gegevens in een gestructureerd formaat opvragen.
+• Recht op bezwaar - Je kunt bezwaar maken tegen verwerking op basis van gerechtvaardigd belang.
+• Recht om toestemming in te trekken - Je kunt op elk moment je toestemming intrekken (bijv. voor locatiedeling).
 
 Om je rechten uit te oefenen, neem contact op via privacy@devadercoach.nl. Wij reageren binnen 30 dagen.
 
@@ -152,7 +157,7 @@ Wij delen je e-mailadres NOOIT met derden voor marketingdoeleinden.
 
 Wij kunnen deze privacyverklaring van tijd tot tijd aanpassen. Bij belangrijke wijzigingen stellen wij je op de hoogte via een melding in de app. De datum bovenaan geeft aan wanneer de verklaring voor het laatst is bijgewerkt.`;
 
-export const TERMS_OF_SERVICE = `Algemene Voorwaarden — De Vadercoach
+export const TERMS_OF_SERVICE = `Algemene Voorwaarden - De Vadercoach
 
 Laatst bijgewerkt: ${LEGAL_LAST_UPDATED}
 
@@ -160,11 +165,11 @@ Door het aanmaken van een account of het gebruiken van De Vadercoach app ga je a
 
 1. Definities
 
-• "App" — de mobiele applicatie De Vadercoach
-• "Dienst" — alle functionaliteit die de App biedt, inclusief coaching-taken, leermodules, de sociale community en berichten
-• "Gebruiker" of "je/jij" — iedere natuurlijke persoon die een account aanmaakt of de App gebruikt
-• "Wij" of "De Vadercoach" — de aanbieder van de App
-• "Inhoud" — alle tekst, afbeeldingen en andere materialen die je plaatst in de App
+• "App" - de mobiele applicatie De Vadercoach
+• "Dienst" - alle functionaliteit die de App biedt, inclusief coaching-taken, leermodules, de sociale community en berichten
+• "Gebruiker" of "je/jij" - iedere natuurlijke persoon die een account aanmaakt of de App gebruikt
+• "Wij" of "De Vadercoach" - de aanbieder van de App
+• "Inhoud" - alle tekst, afbeeldingen en andere materialen die je plaatst in de App
 
 2. Account
 
@@ -256,6 +261,10 @@ Door het aanmaken van een account of het gebruiken van De Vadercoach app ga je a
 
 9.4 Niets in deze voorwaarden beperkt onze aansprakelijkheid voor opzet of grove schuld.
 
+9.5 Onze totale aansprakelijkheid is in alle gevallen beperkt tot het bedrag dat je in de 12 maanden voorafgaand aan de schadeveroorzakende gebeurtenis aan De Vadercoach hebt betaald.
+
+9.6 Wij zijn niet aansprakelijk voor tekortkomingen als gevolg van omstandigheden buiten onze redelijke macht, waaronder maar niet beperkt tot storingen bij hostingproviders, cyberaanvallen, natuurrampen of overheidsmaatregelen (overmacht).
+
 10. Account beëindigen
 
 10.1 Je kunt je account op elk moment verwijderen via de profielpagina in de App.
@@ -289,17 +298,20 @@ Door het aanmaken van een account of het gebruiken van De Vadercoach app ga je a
 14. Contact
 
 Voor vragen over deze voorwaarden kun je contact opnemen via:
-E-mail: info@devadercoach.nl`;
+E-mail: info@devadercoach.nl
+Website: https://devadercoach.nl
+KvK-nummer: [wordt aangevuld]
+BTW-id: [wordt aangevuld]`;
 
-export const COMMUNITY_GUIDELINES = `Communityrichtlijnen — De Vadercoach
+export const COMMUNITY_GUIDELINES = `Communityrichtlijnen - De Vadercoach
 
 Welkom bij de Social-community van De Vadercoach! Dit is een plek waar vaders elkaar steunen, tips delen en samen groeien. Om dit een veilige en prettige plek te houden, gelden de volgende richtlijnen.
 
 Wat wij verwachten:
-• Wees respectvol — Iedereen heeft een andere opvoedstijl. Respecteer dat.
-• Wees eerlijk — Deel je eigen ervaringen. Geef geen medisch of professioneel advies.
-• Wees behulpzaam — Moedig andere vaders aan en bied steun.
-• Bescherm privacy — Deel geen herkenbare informatie over kinderen (volledige namen, scholen, foto's).
+• Wees respectvol - Iedereen heeft een andere opvoedstijl. Respecteer dat.
+• Wees eerlijk - Deel je eigen ervaringen. Geef geen medisch of professioneel advies.
+• Wees behulpzaam - Moedig andere vaders aan en bied steun.
+• Bescherm privacy - Deel geen herkenbare informatie over kinderen (volledige namen, scholen, foto's).
 
 Wat NIET is toegestaan:
 • Beledigingen, discriminatie, intimidatie of bedreigingen

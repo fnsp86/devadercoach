@@ -72,12 +72,14 @@ export default function SkillCompletionPopup({
       ]).start();
     });
 
-    Animated.loop(
+    const glowLoop = Animated.loop(
       Animated.sequence([
         Animated.timing(glowAnim, { toValue: 1, duration: 900, useNativeDriver: true }),
         Animated.timing(glowAnim, { toValue: 0.2, duration: 900, useNativeDriver: true }),
       ]),
-    ).start();
+    );
+    glowLoop.start();
+    return () => glowLoop.stop();
   }, [visible]);
 
   function dismiss() {

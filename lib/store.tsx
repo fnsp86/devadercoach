@@ -54,15 +54,18 @@ async function load<T>(key: string): Promise<T | null> {
 }
 
 function save<T>(key: string, value: T): void {
-  AsyncStorage.setItem(key, JSON.stringify(value)).catch(() => {});
-}
-
-function remove(key: string): void {
-  AsyncStorage.removeItem(key).catch(() => {});
+  const json = JSON.stringify(value);
+  AsyncStorage.setItem(key, json).catch(() => {
+    // Retry once after short delay
+    setTimeout(() => {
+      AsyncStorage.setItem(key, json).catch((e) => {
+        console.error(`[store] Save failed for ${key}:`, e);
+      });
+    }, 200);
+  });
 }
 
 // -- Daily pick -------------------------------------------------------------
-const MAX_SWAPS = 2;
 
 function getTodayKey(): string {
   const d = new Date();
@@ -73,7 +76,8 @@ function getWeekKey(): string {
   const d = new Date();
   const day = d.getDay();
   const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-  const monday = new Date(d.setDate(diff));
+  const monday = new Date(d);
+  monday.setDate(diff);
   return `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`;
 }
 
@@ -112,6 +116,7 @@ const KEYS = {
   TASK_OUTCOMES: 'vc-task-outcomes',                // TaskOutcome[]
   WEEKLY_RECAPS_SEEN: 'vc-weekly-recaps-seen',     // string[] (weekKeys)
   JOURNAL_ENTRIES: 'vc-journal-entries',            // JournalEntry[]
+  PAUSE_STATE: 'vc-pause-state',                   // { isPaused, pausedAt, streakFrozenAt }
 } as const;
 
 // -- Week task completion type ----------------------------------------------
@@ -212,6 +217,12 @@ interface StoreState {
   helpFeedback: Record<string, 'up' | 'down'>;
   setHelpFeedback: (situationId: string, feedback: 'up' | 'down') => void;
 
+  // Pause (vakantie / pauze modus)
+  isPaused: boolean;
+  pausedAt: string | null;     // ISO date string when paused
+  streakFrozenAt: number;      // streak count when paused
+  setPaused: (paused: boolean) => void;
+
   saveProfile: (p: UserProfile) => void;
   saveOnboarding: (o: OnboardingState) => void;
   addCompletion: (c: {
@@ -271,6 +282,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [taskOutcomes, setTaskOutcomes] = useState<TaskOutcome[]>([]);
   const [weeklyRecapsSeen, setWeeklyRecapsSeen] = useState<string[]>([]);
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
+  const [isPaused, setIsPaused] = useState(false);
+  const [pausedAt, setPausedAt] = useState<string | null>(null);
+  const [streakFrozenAt, setStreakFrozenAt] = useState(0);
 
   // -- Per-user data isolation ------------------------------------------------
   const { user, loading: authLoading } = useAuth();
@@ -303,6 +317,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       storedTaskOutcomes,
       storedWeeklyRecapsSeen,
       storedJournalEntries,
+      storedPauseState,
     ] = await Promise.all([
       load<UserProfile>(KEYS.PROFILE),
       load<OnboardingState>(KEYS.ONBOARDING),
@@ -328,6 +343,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       load<TaskOutcome[]>(KEYS.TASK_OUTCOMES),
       load<string[]>(KEYS.WEEKLY_RECAPS_SEEN),
       load<JournalEntry[]>(KEYS.JOURNAL_ENTRIES),
+      load<{ isPaused: boolean; pausedAt: string | null; streakFrozenAt: number }>(KEYS.PAUSE_STATE),
     ]);
 
     setProfile(storedProfile);
@@ -366,6 +382,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setTaskOutcomes(storedTaskOutcomes || []);
     setWeeklyRecapsSeen(storedWeeklyRecapsSeen || []);
     setJournalEntries(storedJournalEntries || []);
+    if (storedPauseState) {
+      setIsPaused(storedPauseState.isPaused);
+      setPausedAt(storedPauseState.pausedAt);
+      setStreakFrozenAt(storedPauseState.streakFrozenAt);
+    }
   }
 
   // Hydrate all state from AsyncStorage on mount
@@ -405,6 +426,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       if (taskOutcomes.length > 0) blob[KEYS.TASK_OUTCOMES] = JSON.stringify(taskOutcomes);
       if (weeklyRecapsSeen.length > 0) blob[KEYS.WEEKLY_RECAPS_SEEN] = JSON.stringify(weeklyRecapsSeen);
       if (journalEntries.length > 0) blob[KEYS.JOURNAL_ENTRIES] = JSON.stringify(journalEntries);
+      if (isPaused || pausedAt) blob[KEYS.PAUSE_STATE] = JSON.stringify({ isPaused, pausedAt, streakFrozenAt });
 
       // Also grab non-store keys from AsyncStorage (gamification, notifications, etc.)
       const allAsyncKeys = await AsyncStorage.getAllKeys();
@@ -420,7 +442,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         });
       }
 
-      console.log('[store] saveForUser', userId, '→', Object.keys(blob).length, 'keys, has profile:', !!blob[KEYS.PROFILE]);
       await AsyncStorage.setItem(`vc-userdata-${userId}`, JSON.stringify(blob));
     } catch (e) {
       console.error('[store] saveForUser error:', e);
@@ -434,25 +455,22 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     // Without this, the effect can start its own swap while we're mid-await.
     lastRestoredUserRef.current = userId;
 
+    try {
     const marker = await AsyncStorage.getItem('vc-current-user-id');
-    console.log('[store] restoreUserData:', userId.slice(0, 8), 'marker:', marker?.slice(0, 8) ?? 'null');
-
     if (marker === userId) {
-      // Data already belongs to this user — no swap needed
-      console.log('[store] restoreUserData: marker matches');
+      // Data already belongs to this user - no swap needed
       const profileData = await load<UserProfile>(KEYS.PROFILE);
       return { hasProfile: !!profileData };
     }
 
     if (!marker) {
-      // No marker — check if there's a backup for this user (e.g., after local data reset)
-      console.log('[store] restoreUserData: no marker, checking backup');
+      // No marker - check if there's a backup for this user (e.g., after local data reset)
       await AsyncStorage.setItem('vc-current-user-id', userId);
       const raw = await AsyncStorage.getItem(`vc-userdata-${userId}`);
       if (raw) {
-        const blob: Record<string, string> = JSON.parse(raw);
+        let blob: Record<string, string> = {};
+        try { blob = JSON.parse(raw); } catch { /* corrupt backup, start fresh */ }
         const entries = Object.entries(blob);
-        console.log('[store] restoreUserData: found backup with', entries.length, 'keys');
         if (entries.length > 0) {
           await AsyncStorage.multiSet(entries);
         }
@@ -462,9 +480,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       return { hasProfile: !!profileData };
     }
 
-    // marker !== userId — different user! Save old, restore new.
-    console.log('[store] restoreUserData: swapping from', marker.slice(0, 8), 'to', userId.slice(0, 8));
-
+    // marker !== userId - different user! Save old, restore new.
     // 1. Save current in-memory state for the old user
     await saveForUserFn(marker);
 
@@ -483,9 +499,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
     // 3. Restore backup for new user
     const raw = await AsyncStorage.getItem(`vc-userdata-${userId}`);
-    const blob: Record<string, string> = raw ? JSON.parse(raw) : {};
+    let blob: Record<string, string> = {};
+    try { blob = raw ? JSON.parse(raw) : {}; } catch { /* corrupt backup, start fresh */ }
     const entries = Object.entries(blob);
-    console.log('[store] restoreUserData: restored', entries.length, 'keys');
     if (entries.length > 0) {
       await AsyncStorage.multiSet(entries);
     }
@@ -496,6 +512,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
     const profileData = await load<UserProfile>(KEYS.PROFILE);
     return { hasProfile: !!profileData };
+    } catch (e) {
+      console.error('[store] restoreUserData error:', e);
+      return { hasProfile: false };
+    }
   }
 
   // Per-user data isolation: fallback for app startup when a session already exists.
@@ -514,22 +534,18 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     (async () => {
       try {
         const marker = await AsyncStorage.getItem('vc-current-user-id');
-        console.log('[store] restore: uid=', uid.slice(0, 8), 'marker=', marker?.slice(0, 8) ?? 'null');
-
         if (marker === uid) {
-          console.log('[store] restore: marker matches, data is correct');
           return;
         }
 
         if (!marker) {
-          // No marker — check if there's a backup (e.g., after local data reset)
-          console.log('[store] restore: no marker, checking backup for user');
+          // No marker - check if there's a backup (e.g., after local data reset)
           await AsyncStorage.setItem('vc-current-user-id', uid);
           const raw = await AsyncStorage.getItem(`vc-userdata-${uid}`);
           if (raw) {
-            const blob: Record<string, string> = JSON.parse(raw);
+            let blob: Record<string, string> = {};
+            try { blob = JSON.parse(raw); } catch { /* corrupt backup */ }
             const entries = Object.entries(blob);
-            console.log('[store] restore: found backup with', entries.length, 'keys');
             if (entries.length > 0) {
               await AsyncStorage.multiSet(entries);
             }
@@ -539,8 +555,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
 
         // marker !== uid → Different user! Save old user's data, restore new user's.
-        console.log('[store] restore: different user, swapping data');
-
         // 1. Save current data as backup for the old user (safety net)
         const existingBackup = await AsyncStorage.getItem(`vc-userdata-${marker}`);
         if (!existingBackup) {
@@ -556,7 +570,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
             pairs.forEach(([key, value]) => { if (value) blob[key] = value; });
             if (Object.keys(blob).length > 0) {
               await AsyncStorage.setItem(`vc-userdata-${marker}`, JSON.stringify(blob));
-              console.log('[store] restore: saved', Object.keys(blob).length, 'keys for old user (fallback)');
             }
           }
         }
@@ -576,10 +589,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
         // 3. Restore backup for new user
         const raw = await AsyncStorage.getItem(`vc-userdata-${uid}`);
-        const blob: Record<string, string> = raw ? JSON.parse(raw) : {};
+        let blob: Record<string, string> = {};
+        try { blob = raw ? JSON.parse(raw) : {}; } catch { /* corrupt backup */ }
         const entries = Object.entries(blob);
-        console.log('[store] restore: backup for new user has', entries.length, 'keys');
-
         if (entries.length > 0) {
           await AsyncStorage.multiSet(entries);
         }
@@ -670,7 +682,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     if (!profile) return;
     const weekKey = getWeekKey();
     const days: WeekPlan['days'] = [];
-    const startDate = new Date(weekKey);
+    const startDate = new Date(weekKey + 'T00:00:00');
 
     for (let i = 0; i < 5; i++) {
       const d = new Date(startDate);
@@ -817,7 +829,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       currentStreak,
       longestStreak,
       perSkill,
-      lastCheckIn: sortedDates[sortedDates.length - 1],
+      lastCheckIn: sortedDates.length > 0 ? sortedDates[sortedDates.length - 1] : undefined,
     };
   }
 
@@ -881,34 +893,34 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   // -- Task outcomes ("Hoe ging het?") ----------------------------------------
   function addTaskOutcomeFn(outcome: TaskOutcome) {
+    // Check for duplicate BEFORE setState to avoid race condition
+    const isNew = !taskOutcomes.some(
+      (o) => o.taskId === outcome.taskId && o.weekKey === outcome.weekKey,
+    );
+
     setTaskOutcomes((prev) => {
-      const isNew = !prev.some(
-        (o) => o.taskId === outcome.taskId && o.weekKey === outcome.weekKey,
-      );
-      // Vervang bestaande outcome voor dezelfde taak+week
       const filtered = prev.filter(
         (o) => !(o.taskId === outcome.taskId && o.weekKey === outcome.weekKey),
       );
       const updated = [...filtered, outcome];
       save(KEYS.TASK_OUTCOMES, updated);
-
-      // +2 XP voor eerlijkheid (alleen bij eerste keer)
-      if (isNew && outcome.skill) {
-        setSkillXP((prevXP) => {
-          const current = prevXP[outcome.skill!] || { xp: 0, level: 1, lastUpdated: '' };
-          const newXP = current.xp + 2;
-          const newLevel = getCurrentLevel(newXP);
-          const updatedXP = {
-            ...prevXP,
-            [outcome.skill!]: { xp: newXP, level: newLevel, lastUpdated: new Date().toISOString() },
-          };
-          save(KEYS.SKILL_XP, updatedXP);
-          return updatedXP;
-        });
-      }
-
       return updated;
     });
+
+    // +2 XP voor eerlijkheid (alleen bij eerste keer)
+    if (outcome.skill && isNew) {
+      setSkillXP((prevXP) => {
+        const current = prevXP[outcome.skill!] || { xp: 0, level: 1, lastUpdated: '' };
+        const newXP = current.xp + 2;
+        const newLevel = getCurrentLevel(newXP);
+        const updatedXP = {
+          ...prevXP,
+          [outcome.skill!]: { xp: newXP, level: newLevel, lastUpdated: new Date().toISOString() },
+        };
+        save(KEYS.SKILL_XP, updatedXP);
+        return updatedXP;
+      });
+    }
   }
 
   function getTaskOutcomeFn(taskId: string, weekKey: string): TaskOutcome | undefined {
@@ -938,19 +950,20 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setJournalEntries((prev) => {
       const updated = [...prev, entry];
       save(KEYS.JOURNAL_ENTRIES, updated);
-      // +5 XP voor dagboek entry
-      if (entry.skill) {
-        setSkillXP((prevXP) => {
-          const current = prevXP[entry.skill!] || { xp: 0, level: 1, lastUpdated: '' };
-          const newXP = current.xp + 5;
-          const newLevel = getCurrentLevel(newXP);
-          const updatedXP = { ...prevXP, [entry.skill!]: { xp: newXP, level: newLevel, lastUpdated: new Date().toISOString() } };
-          save(KEYS.SKILL_XP, updatedXP);
-          return updatedXP;
-        });
-      }
       return updated;
     });
+
+    // +5 XP voor dagboek entry (buiten de setState om race condition te voorkomen)
+    if (entry.skill) {
+      setSkillXP((prevXP) => {
+        const current = prevXP[entry.skill!] || { xp: 0, level: 1, lastUpdated: '' };
+        const newXP = current.xp + 5;
+        const newLevel = getCurrentLevel(newXP);
+        const updatedXP = { ...prevXP, [entry.skill!]: { xp: newXP, level: newLevel, lastUpdated: new Date().toISOString() } };
+        save(KEYS.SKILL_XP, updatedXP);
+        return updatedXP;
+      });
+    }
   }
 
   function getJournalEntriesForDateFn(date: string): JournalEntry[] {
@@ -959,8 +972,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   // -- Stage progress (Vader Missies) ----------------------------------------
   function completeStageFn(moduleId: string, stageId: string, xpEarned: number, skill: Skill, totalStages: number) {
+    // Check if stage was already completed using current state snapshot
+    const current = stageProgress[moduleId];
+    if (current?.completedStageIds.includes(stageId)) return;
+
+    // Update stage progress
     setStageProgress((prev) => {
-      const current = prev[moduleId] ?? {
+      const existing = prev[moduleId] ?? {
         moduleId,
         completedStageIds: [],
         currentStageIndex: 0,
@@ -968,13 +986,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         quizTotal: 0,
         startedAt: new Date().toISOString(),
       };
-      if (current.completedStageIds.includes(stageId)) return prev;
-      const newCompletedIds = [...current.completedStageIds, stageId];
+      const newCompletedIds = [...existing.completedStageIds, stageId];
       const isModuleComplete = newCompletedIds.length >= totalStages;
       const updated = {
         ...prev,
         [moduleId]: {
-          ...current,
+          ...existing,
           completedStageIds: newCompletedIds,
           currentStageIndex: newCompletedIds.length,
           ...(isModuleComplete ? { completedAt: new Date().toISOString() } : {}),
@@ -984,18 +1001,20 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       return updated;
     });
 
-    // Add XP to skill (functional setState to avoid stale closure)
-    setSkillXP((prev) => {
-      const currentXP = prev[skill] || { xp: 0, level: 1, lastUpdated: '' };
-      const newXP = currentXP.xp + xpEarned;
-      const newLevel = getCurrentLevel(newXP);
-      const updatedXP = {
-        ...prev,
-        [skill]: { xp: newXP, level: newLevel, lastUpdated: new Date().toISOString() },
-      };
-      save(KEYS.SKILL_XP, updatedXP);
-      return updatedXP;
-    });
+    // Award XP unconditionally (we already checked for duplicates above)
+    if (xpEarned > 0) {
+      setSkillXP((prev) => {
+        const currentXP = prev[skill] || { xp: 0, level: 1, lastUpdated: '' };
+        const newXP = currentXP.xp + xpEarned;
+        const newLevel = getCurrentLevel(newXP);
+        const updatedXP = {
+          ...prev,
+          [skill]: { xp: newXP, level: newLevel, lastUpdated: new Date().toISOString() },
+        };
+        save(KEYS.SKILL_XP, updatedXP);
+        return updatedXP;
+      });
+    }
   }
 
   function getStageProgressFn(moduleId: string): StageProgress | null {
@@ -1003,6 +1022,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }
 
   function recordActiveDayFn() {
+    if (isPaused) return; // Geen activiteit bijhouden tijdens pauze
     const today = getTodayKey();
     if (today === lastActiveDate) return; // Already recorded today
 
@@ -1014,6 +1034,28 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setConsecutiveActiveDays(newDays);
     setLastActiveDate(today);
     save(KEYS.COMBO_STATE, { consecutiveDays: newDays, lastActiveDate: today });
+  }
+
+  function setPausedFn(paused: boolean) {
+    if (paused) {
+      // Pauze inschakelen: bewaar huidige streak
+      setIsPaused(true);
+      const now = new Date().toISOString();
+      setPausedAt(now);
+      setStreakFrozenAt(consecutiveActiveDays);
+      save(KEYS.PAUSE_STATE, { isPaused: true, pausedAt: now, streakFrozenAt: consecutiveActiveDays });
+    } else {
+      // Pauze uitschakelen: herstel streak en markeer vandaag als actief
+      setIsPaused(false);
+      setPausedAt(null);
+      // Herstel de bevroren streak en zet lastActiveDate op vandaag zodat streak niet reset
+      const today = getTodayKey();
+      setConsecutiveActiveDays(streakFrozenAt);
+      setLastActiveDate(today);
+      save(KEYS.COMBO_STATE, { consecutiveDays: streakFrozenAt, lastActiveDate: today });
+      save(KEYS.PAUSE_STATE, { isPaused: false, pausedAt: null, streakFrozenAt: 0 });
+      setStreakFrozenAt(0);
+    }
   }
 
   // -- Badge tracking -------------------------------------------------------
@@ -1044,7 +1086,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   function updateDailyArenaFn(date: string) {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toISOString().split('T')[0];
+    const yesterdayStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
 
     const newStreak = dailyArenaLastPlayed === yesterdayStr
       ? dailyArenaStreak + 1
@@ -1058,7 +1100,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }
 
   function updateQuickFireFn(score: number) {
-    const today = new Date().toISOString().split('T')[0];
+    const today = getTodayKey();
     setQuickFireLastPlayed(today);
     if (score > quickFireBest) {
       setQuickFireBest(score);
@@ -1119,7 +1161,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       'vc-week-tasks-cache',
       ...skills.map((s) => `vc-completed-modules-${s}`),
     ];
-    await AsyncStorage.multiRemove(keysToRemove).catch(() => {});
+    await AsyncStorage.multiRemove(keysToRemove).catch((e) => console.error('[store] multiRemove failed:', e));
   }
 
   // Count number of unique days this week with completed tasks
@@ -1217,6 +1259,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     getTrainingProgress: getTrainingProgressFn,
     markTrainingItemComplete: markTrainingItemCompleteFn,
     resetTraining: resetTrainingFn,
+    isPaused,
+    pausedAt,
+    streakFrozenAt,
+    setPaused: setPausedFn,
     saveForUser: saveForUserFn,
     restoreUserData: restoreUserDataFn,
     clearAll: clearAllFn,

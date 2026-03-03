@@ -19,7 +19,7 @@ import type { Skill } from '@/lib/types';
 
 const MOTIVATIONAL = [
   'Elke stap die je zet als vader telt. Ga zo door!',
-  'Bewust opvoeden is een keuze — en jij maakt hem elke dag.',
+  'Bewust opvoeden is een keuze - en jij maakt hem elke dag.',
   'Jouw kinderen voelen dat je erin investeert.',
   'Vooruitgang is niet altijd zichtbaar, maar altijd waardevol.',
   'Een vader die leert, is een vader die groeit.',
@@ -59,7 +59,7 @@ export default function WeeklyRecapModal({ visible, onClose, weekKey }: WeeklyRe
     const taskCount = completions.filter((c) => !/^refl_\d{4}-/.test(c.taskId)).length;
     const totalXP = completions.reduce((sum, c) => sum + c.points, 0) + (taskCount >= 7 ? 50 : 0);
 
-    // Skills geoefend — opzoeken via task map
+    // Skills geoefend - opzoeken via task map
     const taskMap = new Map(ALL_INTERACTIVE_TASKS.map((t) => [t.id, t]));
     const skillSet = new Set<Skill>();
     completions.forEach((c) => {

@@ -698,7 +698,7 @@ export const INTERACTIVE_TASKS_15: InteractiveTask[] = [
     points: 15,
     psychologie: 'Maatschappelijke betrokkenheid is een gezonde identiteitsontwikkeling bij tieners. Vader die dit steunt, verbindt zich met zijn groeiende morele en sociale bewustzijn.',
     skillTip: 'Vraag: "Hoe denk jij dat dit verbeterd kan worden?" – dat gaat naar zijn agentschap, niet alleen zijn opinie.',
-    vermijd: 'Vermijd zijn standpunten relativeren als naïef. Neem ze serieus als de zijne.',
+    vermijd: 'Vermijd zijn standpunten relativeren als naief. Neem ze serieus als de zijne.',
     leerdoel: 'Je vergroot de verbinding via steun voor zijn maatschappelijke identiteitsontwikkeling.',
     bron: 'Kohlberg, L. (1969). Stage and sequence.',
   },
