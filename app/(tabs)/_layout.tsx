@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Tabs } from 'expo-router';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
@@ -74,20 +74,18 @@ export default function TabLayout() {
 
   return (
     <Tabs
-      sceneContainerStyle={{ backgroundColor: colors.bg }}
+      sceneContainerStyle={{ backgroundColor: colors.surface }}
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: colors.bg,
+          backgroundColor: colors.surface,
           borderTopWidth: 0,
-          height: 50 + insets.bottom,
+          borderTopColor: 'transparent',
+          height: 48 + insets.bottom,
           paddingBottom: insets.bottom,
-          paddingTop: 6,
+          paddingTop: 4,
           elevation: 0,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: -2 },
-          shadowOpacity: 0.06,
-          shadowRadius: 8,
+          shadowOpacity: 0,
         },
         tabBarShowLabel: true,
         tabBarActiveTintColor: colors.amber,
