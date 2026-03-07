@@ -80,9 +80,9 @@ export default function TabLayout() {
         tabBarStyle: {
           backgroundColor: colors.bg,
           borderTopWidth: 0,
-          height: 60 + Math.max(insets.bottom, 10),
-          paddingBottom: Math.max(insets.bottom, 10),
-          paddingTop: 8,
+          height: 50 + insets.bottom,
+          paddingBottom: insets.bottom,
+          paddingTop: 6,
           elevation: 0,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: -2 },
@@ -93,9 +93,9 @@ export default function TabLayout() {
         tabBarActiveTintColor: colors.amber,
         tabBarInactiveTintColor: colors.text3,
         tabBarLabelStyle: {
-          fontSize: 11,
+          fontSize: 10,
           fontWeight: '600',
-          marginTop: 2,
+          marginTop: 1,
         },
       }}
     >
@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
   iconContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 36,
-    height: 32,
+    width: 32,
+    height: 28,
   },
   activeIndicator: {
     position: 'absolute',
