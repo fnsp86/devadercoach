@@ -35,10 +35,19 @@ export default function IndexScreen() {
   useEffect(() => {
     if (hydrated && !authLoading && profile && session) {
       // Verify session is still valid (not stale from a recent signOut)
+      const timeout = setTimeout(() => {
+        // On timeout, trust local session and redirect anyway
+        router.replace('/(tabs)/vandaag');
+      }, 3000);
       supabase.auth.getSession().then(({ data: { session: current } }) => {
+        clearTimeout(timeout);
         if (current) {
           router.replace('/(tabs)/vandaag');
         }
+      }).catch(() => {
+        clearTimeout(timeout);
+        // Network error - trust local session
+        router.replace('/(tabs)/vandaag');
       });
     }
   }, [hydrated, authLoading, profile, session]);

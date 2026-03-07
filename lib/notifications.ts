@@ -98,15 +98,16 @@ export async function registerAndSaveToken(userId: string) {
 // ── Dagelijkse Quote Notificaties ────────────────────────────────────────────
 
 const QUOTE_NOTIFICATION_ID_PREFIX = 'daily-quote-';
+const SCHEDULE_DAYS = 14;
 
-/** Plan dagelijkse quote-notificaties voor de komende 7 dagen */
+/** Plan dagelijkse quote-notificaties voor de komende 14 dagen */
 export async function scheduleDailyQuoteNotifications(hour = 8) {
   // Cancel bestaande quote-notificaties
   await cancelDailyQuoteNotifications();
 
   const now = new Date();
 
-  for (let dayOffset = 1; dayOffset <= 7; dayOffset++) {
+  for (let dayOffset = 1; dayOffset <= SCHEDULE_DAYS; dayOffset++) {
     const date = new Date(now);
     date.setDate(date.getDate() + dayOffset);
     const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -148,14 +149,14 @@ export async function cancelDailyQuoteNotifications() {
 
 const TASK_REMINDER_ID_PREFIX = 'task-reminder-';
 
-/** Plan dagelijkse taak-herinneringen voor de komende 7 dagen */
+/** Plan dagelijkse taak-herinneringen voor de komende 14 dagen */
 export async function scheduleTaskReminderNotifications(incompleteTasks: number, hour = 18) {
   await cancelTaskReminderNotifications();
   if (incompleteTasks <= 0) return;
 
   const now = new Date();
 
-  for (let dayOffset = 0; dayOffset <= 6; dayOffset++) {
+  for (let dayOffset = 0; dayOffset <= SCHEDULE_DAYS - 1; dayOffset++) {
     const date = new Date(now);
     date.setDate(date.getDate() + dayOffset);
     const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -187,6 +188,55 @@ export async function cancelTaskReminderNotifications() {
   const scheduled = await Notifications.getAllScheduledNotificationsAsync();
   for (const n of scheduled) {
     if (n.identifier.startsWith(TASK_REMINDER_ID_PREFIX)) {
+      await Notifications.cancelScheduledNotificationAsync(n.identifier);
+    }
+  }
+}
+
+// ── Re-engagement Notificaties ──────────────────────────────────────────────
+
+const REENGAGEMENT_ID_PREFIX = 'reengagement-';
+
+const REENGAGEMENT_MESSAGES = [
+  { day: 3, title: 'We missen je!', body: 'Drie dagen zonder oefening. Vijf minuten is genoeg om in vorm te blijven als vader.' },
+  { day: 5, title: 'Kleine stappen tellen', body: 'Je streak is weg, maar je groei niet. Open de app en pak de draad weer op.' },
+  { day: 7, title: 'Je kinderen verdienen de beste versie van jou', body: 'Een week zonder training. Kom terug en begin opnieuw - dat is pas kracht.' },
+  { day: 14, title: 'Nog steeds hier voor je', body: 'Het maakt niet uit hoe lang je weg was. Wat telt is dat je terugkomt.' },
+];
+
+/**
+ * Plan re-engagement notificaties.
+ * Wordt gecanceld en opnieuw gepland bij elke app-open,
+ * zodat actieve gebruikers ze nooit zien.
+ */
+export async function scheduleReengagementNotifications() {
+  await cancelReengagementNotifications();
+
+  const now = new Date();
+
+  for (const msg of REENGAGEMENT_MESSAGES) {
+    const trigger = new Date(now);
+    trigger.setDate(trigger.getDate() + msg.day);
+    trigger.setHours(10, 0, 0, 0);
+
+    await Notifications.scheduleNotificationAsync({
+      identifier: `${REENGAGEMENT_ID_PREFIX}${msg.day}`,
+      content: {
+        title: msg.title,
+        body: msg.body,
+        data: { type: 'reengagement' },
+        ...(Platform.OS === 'android' && { channelId: 'task-reminders' }),
+      },
+      trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: trigger },
+    });
+  }
+}
+
+/** Cancel alle re-engagement notificaties */
+export async function cancelReengagementNotifications() {
+  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+  for (const n of scheduled) {
+    if (n.identifier.startsWith(REENGAGEMENT_ID_PREFIX)) {
       await Notifications.cancelScheduledNotificationAsync(n.identifier);
     }
   }

@@ -62,13 +62,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       handleDeepLink(event.url);
     });
 
-    // Get initial session
+    // Get initial session (with timeout to prevent infinite loading on bad network)
+    const timeout = setTimeout(() => setLoading(false), 5000);
     supabase.auth.getSession().then(({ data: { session: s } }) => {
+      clearTimeout(timeout);
       setSession(s);
       setUser(s?.user ?? null);
       if (s?.user) {
         getCommunityProfile(s.user.id).then(setCommunityProfile);
       }
+      setLoading(false);
+    }).catch(() => {
+      clearTimeout(timeout);
       setLoading(false);
     });
 

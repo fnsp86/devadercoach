@@ -15,6 +15,9 @@
       "distribution": "internal",
       "ios": {
         "simulator": false
+      },
+      "android": {
+        "buildType": "apk"
       }
     },
     "production": {
@@ -26,7 +29,7 @@
       "ios": {
         "appleId": "drijfzand8629@icloud.com",
         "appleTeamId": "S44992LZLP",
-        "ascAppId": ""
+        "ascAppId": "6759968429"
       }
     }
   }

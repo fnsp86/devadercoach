@@ -8,7 +8,7 @@ import { View } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import type { EventSubscription } from 'expo-modules-core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { scheduleDailyQuoteNotifications, scheduleTaskReminderNotifications } from '@/lib/notifications';
+import { registerForPushNotifications, scheduleDailyQuoteNotifications, scheduleTaskReminderNotifications, scheduleReengagementNotifications } from '@/lib/notifications';
 
 function RootLayoutContent() {
   const { colors, isDark } = useTheme();
@@ -20,7 +20,7 @@ function RootLayoutContent() {
     // Handle tap on notification → navigate to relevant screen
     responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
       const data = response.notification.request.content.data;
-      if (data?.type === 'daily_quote' || data?.type === 'task_reminder') {
+      if (data?.type === 'daily_quote' || data?.type === 'task_reminder' || data?.type === 'reengagement') {
         router.navigate('/(tabs)/vandaag' as any);
       } else if (data?.type === 'duel' && data?.duelId) {
         // Use navigate instead of push to prevent interrupting active training screens
@@ -30,13 +30,20 @@ function RootLayoutContent() {
       }
     });
 
-    // Schedule notifications if enabled
+    // Ensure notification permissions and schedule if enabled
     (async () => {
       try {
+        // Request permissions first - required on iOS before scheduling
+        await registerForPushNotifications();
+
+        // Re-engagement notificaties: worden bij elke app-open opnieuw gepland
+        // zodat de timer reset. Actieve gebruikers krijgen ze nooit te zien.
+        await scheduleReengagementNotifications();
+
         const stored = await AsyncStorage.getItem('vc-notifications');
         const settings = stored ? JSON.parse(stored) : { dagelijksQuote: true, taakReminder: true };
         if (settings.dagelijksQuote !== false) {
-          await scheduleDailyQuoteNotifications();
+          await scheduleDailyQuoteNotifications(settings.quoteHour || 8);
         }
         // Schedule task reminders based on incomplete tasks
         if (settings.taakReminder !== false) {
@@ -53,7 +60,7 @@ function RootLayoutContent() {
               );
               const incomplete = (cache.taskIds as string[]).filter((id: string) => !completedIds.has(id)).length;
               if (incomplete > 0) {
-                await scheduleTaskReminderNotifications(incomplete);
+                await scheduleTaskReminderNotifications(incomplete, settings.reminderHour || 18);
               }
             }
           } catch {}

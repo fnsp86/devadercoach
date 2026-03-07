@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Tabs } from 'expo-router';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
 import { AppIcon, type IconName } from '@/lib/icons';
@@ -40,6 +41,7 @@ function TabIcon({
 export default function TabLayout() {
   const { colors } = useTheme();
   const { user } = useAuth();
+  const insets = useSafeAreaInsets();
   const [unreadCount, setUnreadCount] = useState(0);
 
   const refreshUnread = useCallback(async () => {
@@ -77,15 +79,16 @@ export default function TabLayout() {
         tabBarStyle: {
           backgroundColor: colors.surface,
           borderTopWidth: 0,
-          height: 88,
-          paddingBottom: 30,
-          paddingTop: 10,
+          height: 60 + Math.max(insets.bottom, 10),
+          paddingBottom: Math.max(insets.bottom, 10),
+          paddingTop: 8,
           elevation: 0,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: -2 },
           shadowOpacity: 0.06,
           shadowRadius: 8,
         },
+        tabBarShowLabel: true,
         tabBarActiveTintColor: colors.amber,
         tabBarInactiveTintColor: colors.text3,
         tabBarLabelStyle: {
