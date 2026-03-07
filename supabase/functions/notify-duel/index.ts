@@ -74,7 +74,7 @@ Deno.serve(async (req) => {
     });
 
     const pushResult = await pushResponse.json();
-    console.log('[notify-duel] Push result:', JSON.stringify(pushResult));
+    console.log('[notify-duel] Push status:', pushResult?.data?.[0]?.status ?? 'unknown');
 
     return new Response(JSON.stringify({ success: true }), {
       headers: { 'Content-Type': 'application/json' },

@@ -43,6 +43,9 @@ interface PendingReward {
 // ── API ──
 
 const WEBSITE_URL = process.env.EXPO_PUBLIC_WEBSITE_URL || 'https://devadercoach.nl';
+// Note: This secret is bundled into the app JS. The server-side endpoint
+// also validates the badge+email combo to prevent abuse, so exposure risk is limited
+// to someone generating discount codes for badges they haven't earned.
 const BADGE_SECRET = process.env.EXPO_PUBLIC_BADGE_REWARD_SECRET || '';
 
 /**

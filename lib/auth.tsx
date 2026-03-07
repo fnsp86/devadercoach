@@ -35,6 +35,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Handle deep links (e.g. email confirmation redirects with auth tokens)
     function handleDeepLink(url: string) {
       if (!url) return;
+      // Only accept deep links from our own scheme
+      if (!url.startsWith('vadercoach://') && !url.startsWith('exp://')) return;
       // Supabase redirects with tokens in the fragment: vadercoach://#access_token=...&refresh_token=...&type=recovery
       const fragment = url.split('#')[1];
       if (!fragment) return;
@@ -42,7 +44,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const accessToken = params.get('access_token');
       const refreshToken = params.get('refresh_token');
       const type = params.get('type');
-      if (accessToken && refreshToken) {
+      // Basic JWT format validation (3 base64url segments separated by dots)
+      const jwtPattern = /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
+      if (accessToken && refreshToken && jwtPattern.test(accessToken)) {
         supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
         // detectSessionInUrl is false, so PASSWORD_RECOVERY event won't fire automatically.
         // We detect it manually from the URL fragment type parameter.
